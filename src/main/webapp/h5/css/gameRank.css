@@ -1,0 +1,128 @@
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th,textarea, td {
+  border: 0 none;
+  font-size: inherit;
+  color: inherit;
+  margin: 0;
+  padding: 0;
+  vertical-align: baseline;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal;
+}
+
+em, strong {
+  font-style: normal;
+}
+
+ul, ol, li {
+  list-style: none;
+}
+
+body {
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","\5FAE\8F6F\96C5\9ED1",Arial,sans-serif;
+    color: #b4b4b4;
+    font-size: 16px;
+    width: auto;
+    min-width: 320px;
+    max-width: 414px;
+    margin: 0 auto;
+}
+.container{
+	width: 100%;
+	height: 100%;
+	background: url(../img/qwer.png);   
+    background-position:  top center;  
+    background-repeat: no-repeat;
+}
+a {
+  text-decoration: none;
+}
+.fr{
+	float: right;
+    margin-right: 5%;
+}
+.fl{
+	float: left;
+    margin-left: 5%;
+}
+.wrap{
+	margin: -43px auto  0; 
+}
+.imgBox img{
+	width: 100%;
+	z-index: 998;
+}
+.rankList {
+	width: 90%;
+	margin:0 auto 20px;
+	overflow: hidden;
+	background: #fef4db;
+	border-radius: 7px;
+}
+.linkUrl {
+	overflow: hidden;
+	font-size: 12px;
+	color: #FFFFFF;
+	margin-bottom: 5px;
+}
+.rankList .tableBpx {
+	padding: 10px;
+	margin: 7px;
+    margin-top: 3px;
+    border: 1px dotted #ffcbb2;
+    border-radius: 8px;
+}
+.rankList .tableBpx table{
+	width: 100%;
+	margin: 0 auto;
+	text-align: center;
+	font-size: 14px;
+	color: #000000;
+	border-collapse:collapse;
+}
+.rankList .tableBpx table tr{
+	border-top: 1px solid #ffdfc6;
+	vertical-align: middle;
+	line-height: 35px;
+}
+.rankList .tableBpx table tr:nth-child(1){
+	border: none;
+}
+.rankList .tableBpx table tr th{
+	color: #D43C33;
+}
+.rankList .tableBpx table tr td{
+}
+.rankList .tableBpx table tr th:nth-child(1),.rankList .tableBpx table tr td:nth-child(1){
+	width: 20%;
+}
+.rankList .tableBpx table tr th:nth-child(2),.rankList .tableBpx table tr td:nth-child(2){
+	width: 25%;
+}
+.rankList .tableBpx table tr th:nth-child(3),.rankList .tableBpx table tr td:nth-child(3){
+	width: 25%;
+}
+.rankList .tableBpx table tr th:nth-child(4),.rankList .tableBpx table tr td:nth-child(4){
+	width: 30%;
+}
+.icon_first{
+	background: url(../img/m_camp_icon.png);
+}
+.icon_second{
+	background: url(../img/m_sec_icon.png);
+}
+.icon_third{
+	background: url(../img/m_thi_icon.png);
+}
+.rankList .tableBpx table tr td i{
+	width: 18px;
+	height: 25px;
+	display: inline-block;
+	vertical-align: middle;
+	background-position: center ; 
+	background-size: 100% 100%;
+}
+tr.my_rank td:nth-child(1),tr.my_rank td:nth-child(2){
+	color: #D43C33;
+}

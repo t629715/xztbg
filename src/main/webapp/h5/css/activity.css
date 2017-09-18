@@ -1,0 +1,400 @@
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th,textarea, td {
+  border: 0 none;
+  font-size: inherit;
+  color: inherit;
+  margin: 0;
+  padding: 0;
+  vertical-align: baseline;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal;
+}
+
+em, strong {
+  font-style: normal;
+}
+
+ul, ol, li {
+  list-style: none;
+}
+
+body {
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","\5FAE\8F6F\96C5\9ED1",Arial,sans-serif;
+    color: #b4b4b4;
+    background-color: #fff;
+    font-size: 16px;
+    width: auto;
+    min-width: 320px;
+    max-width: 414px;
+    margin: 0 auto;
+    height: 100%;
+    position: relative;
+}
+a {
+  text-decoration: none;
+}
+.wrap{
+	padding: 0 10px;
+}
+.act_banner{
+	width: 100%;
+	display: block;
+}
+.fr{
+	float: right;
+}
+.fl{
+	float: left;
+}
+.act_amount_container{
+	padding: 23px 0 25px;
+	border-bottom: 1px solid #dcdcdc ;
+}
+.act_amount_container button{
+	width: 45px;
+	height: 22px;
+	border: 1px solid #dcdcdc;
+	line-height: 20px;
+	text-align: center;
+	font-size: 13px;
+	background: #D43C33;
+	color: #FFFFFF;
+	border-radius: 5px;
+	  -moz-border-radius:5px;
+	   -webkit-border-radius:5px;
+}
+.act_amount_container .card{
+	font-size: 16px;
+	color: #000000;
+	margin-left: 5px;
+}
+.act_amount_container  .fr {
+	color: #D43C33;
+	font-size: 14px;
+}
+.act_amount_container  .fr  em{
+	font-size: 24px;
+	font-style: normal;
+}
+.act_show{
+	padding: 18px 0;
+}
+.act_show ul{
+	overflow: hidden;
+}
+.act_show ul li {
+	list-style: none;
+	float: left;
+	width: 33%;
+	text-align: center;
+	font-size: 14px;
+	color: #438edb;
+}
+.act_show ul li:first-child{
+	text-align: left;
+}
+.act_show ul li:last-child{
+	text-align: right;
+}
+.act_show ul li  i{
+	width: 25px;
+	height: 25px;
+	display: inline-block;
+	line-height: 25px;
+	vertical-align: middle;
+	 border-radius:50% ;
+	  -moz-border-radius:50% ; 
+	  -webkit-border-radius:50% ;
+}
+.act_show ul li  i.icon_xu{
+	background: url(../img/act_xu.png);	
+	background-size: 100% 100%;
+	background-size:100% 100%;
+-moz-background-size:100% 100%;
+-webkit-background-size:100% 100%; 
+-o-background-size:100% 100%;
+}
+.act_show ul li  i.icon_zi{
+	background: url(../img/act_zi.png);
+		background-size: 100% 100%;
+	background-size:100% 100%;
+-moz-background-size:100% 100%;
+-webkit-background-size:100% 100%; 
+-o-background-size:100% 100%;
+}
+.act_show ul li  i.icon_shi{
+	background: url(../img/act_shi.png);
+		background-size: 100% 100%;
+	background-size:100% 100%;
+-moz-background-size:100% 100%;
+-webkit-background-size:100% 100%; 
+-o-background-size:100% 100%;
+}
+.act_show ul li  span{
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 5px;
+}
+.act_show p{
+	font-size: 12px;
+	color: #b4b4b4;
+	/*padding: 0 12px;*/
+	line-height: 20px;
+	margin-top: 20px;
+}
+.module_gap{
+	height: 10px;
+	background: #f0f0f0;
+}
+/*兑换金币*/
+.exchange{
+	padding: 20px 10px;
+}
+.exchange .number .title{
+	font-size: 16px;
+	color: #000000;
+	margin-right: 16px;
+}
+.exchange .number .minus,.exchange .number .plus{
+	font-size: 16px;
+    background: #d4e9ff;
+    outline: none;
+    line-height: 22px;
+    border: 1px solid #5d9ee1;
+}
+.exchange .number  input{
+	color: #787878;
+	font-size: 16px;
+	text-align: center;
+	width: 100px;
+	margin: 0 14px;
+	height: 22px;
+	border: 1px solid #b4b4b4;
+	  appearance: none;
+     -moz-appearance: none; 
+     -webkit-appearance: none;  
+}
+.exchange .con{
+	padding: 15px 0 0;
+}
+.exchange .con .black-c{
+	font-size: 16px;
+	color: #000000;
+}
+.exchange .con .conNumber{
+	font-size: 16px;
+	color: #D43C33;
+    margin: 0 15px 0 5px;
+}
+.exchange .con .alert{
+	color: #438EDB;
+	font-size: 12px;
+}
+.exchange_intro{
+	padding: 20px 0;
+}
+.intro_title{
+	font-size: 16px;
+	color: #000000;
+}
+.intro_title:before{
+	content: "";  /*:before和:after必带技能，重要性为满5颗星*/
+    display: inline-block;
+    position: relative;  /*日常绝对定位*/
+    width:5px;
+    height: 23px;
+    background: #D43C33;
+    vertical-align: middle;
+}
+.intro_title span{
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 5px;
+}
+.exchange_intro .intro_list p{
+	font-size: 12px;
+	color: #787878;
+	line-height: 25px;
+}
+
+.exchange_intro .intro_list p.text_title{
+	margin: 20px 0 10px;
+}
+.footer{
+	overflow: hidden;
+}
+.footer button{
+	width: 50%;
+	height: 50px;
+	border: 1px solid #D43C33;
+	line-height: 50px;
+	font-size: 16px;
+	float: left;
+}
+.footer button em{
+	font-style: normal;
+	color: #D43C33;
+}
+.footer button:first-child{
+	color: #000000;
+	font-size: 14px;
+	background: #FFFFFF;
+}
+.footer button em{
+	font-weight: bold;
+	font-style: normal;
+	color: #D43C33;
+	font-size: 16px;
+}
+.footer button:last-child{
+	background: #D43C33;
+	color: #FFFFFF;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.model{
+	position: fixed;
+	width: 300px;
+	height: 165px;
+	background: #fff;
+	z-index: 20;
+	left: 50%;
+	margin-left: -150px;
+	top: 50%;
+	margin-top: -82px;
+	 border-radius:8px ;
+	  -moz-border-radius:8px ; 
+	  -webkit-border-radius:8px ;
+}
+.model .back_icon{
+	width: 10px;
+	height: 10px;
+	display: inline-block;
+	position: absolute;
+	right: 10px;
+	top:10px;
+	background: url(../img/act_2.png);
+	background-size: 100% 100%;
+}
+.model h3{
+	font-size: 18px;
+	color: #000000;
+	text-align: center;
+	margin: 30px 0 10px;
+	
+}
+.model h5{
+	text-align: center;
+	color: #787878;
+	font-size: 12px;
+}
+.model .btnBox{
+	margin: 10px 0 20px ;
+	text-align: center;
+}
+.model .btnBox button{
+	width: 190px;
+	height: 50px;
+	background: #D43C33;
+	color: #FFFFFF;
+	font-size: 18px;
+	line-height: 50px;
+ border-radius:5px ;
+	  -moz-border-radius:5px ; 
+	  -webkit-border-radius:5px ;
+	border: none;
+}
+.model .iptBox .error{
+	font-size: 12px;
+	text-align: center;
+	color: #D43C33;	
+	visibility: hidden;
+}
+.model .iptBox{
+	text-align: center;
+}
+.model .iptBox input{
+	font-size: 16px;
+	height: 40px;
+	width: 170px;
+	line-height: 40px;
+	color: #787878;
+	border: 1px solid #D43C33;
+	 border-radius:7px; 
+	 -moz-border-radius:7px; 
+	 -webkit-border-radius:7px;
+	 text-indent: 40px;
+}
+.model .iptBox i{
+	width: 25px;
+	height: 25px;
+	display: inline-block;
+	background: url(../img/act_3.png) no-repeat 8px center / 10px 10px;
+	position: absolute;
+	left: 72px;
+top: 9px;
+}
+.model .iptBox input:focus{
+		border: 1px solid #D43C33;
+	 border-radius:7px; 
+	 -moz-border-radius:7px; 
+	 -webkit-border-radius:7px;
+	 outline: none;
+	 
+}
+#model3 {
+	height: 220px;
+}
+.coverlayer{
+	background: #000000;
+	opacity: 0.3;
+	z-index: 10;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+#model4{
+	height: 220px;
+}
+#model4 h3{
+	width: 243px;
+	margin: 30px auto 20px;
+	text-align: left;
+}
+#model4 .iptBox {
+	margin: 0 auto;
+}
+#model4 .iptBox textarea{
+	border: 1px solid #D43C33;
+	outline:none;
+	resize: none;
+	font-size: 12px;
+	color: #B4B4B4;
+	padding: 5px 10px;
+	line-height: 20px;
+}
+#model4 .iptBox textarea:focus{
+	outline: none;
+	border: 1px solid #D43C33;
+}
+#model4 .btnBox button{
+	width: 243px;
+}
+#model4 .iptBox textarea::-webkit-input-placeholder {
+　color: #B4B4B4;
+}
+#model4 .iptBox textarea:-moz-placeholder {
+　color:#B4B4B4;
+}
+#model4 .iptBox textarea::-moz-placeholder {
+　color:#B4B4B4;
+}
+#model4 .iptBox textarea:-ms-input-placeholder {
+　color:#B4B4B4;
+}

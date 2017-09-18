@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fx.jyg.sys.mapper.InfoCommentMapper" >
+    <resultMap id="BaseResultMap" type="com.fx.jyg.sys.entity.InfoComment" >
+        <id column="SerialNo" property="serialNo" jdbcType="BIGINT" />
+        <result column="InformationID" property="informationID" jdbcType="BIGINT" />
+        <result column="UserID" property="userID" jdbcType="BIGINT" />
+        <result column="CommentContent" property="commentContent" jdbcType="VARCHAR" />
+        <result column="CommentTime" property="commentTime" jdbcType="TIMESTAMP" />
+        <result column="State" property="state" jdbcType="SMALLINT" />
+    </resultMap>
+    <update id="updateByIdSelective" parameterType="com.fx.jyg.sys.entity.InfoComment" >
+        update Info_Comment
+        <set >
+            <if test="informationID != null" >
+                InformationID = #{informationID,jdbcType=BIGINT},
+            </if>
+            <if test="userID != null" >
+                UserID = #{userID,jdbcType=BIGINT},
+            </if>
+            <if test="commentContent != null" >
+                CommentContent = #{commentContent,jdbcType=VARCHAR},
+            </if>
+            <if test="commentTime != null" >
+                CommentTime = #{commentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="state != null" >
+                State = #{state,jdbcType=SMALLINT},
+            </if>
+        </set>
+        where SerialNo = #{serialNo,jdbcType=BIGINT}
+    </update>
+    <delete id="deleteByIdKey" parameterType="java.lang.Long" >
+        delete from Info_Comment
+        where SerialNo = #{serialNo,jdbcType=BIGINT}
+    </delete>
+    <select id="getCommentAll" resultType="com.fx.jyg.sys.model.InfoCommentModel">
+    <!-- select c.*,l.UserName as userName
+	from Info_Comment c
+	left join User_Login l on c.UserID = l.UserID -->
+	select c.*,l.UserName as userName,i.Title as title
+	from Info_Comment c
+	left join User_Login l on c.UserID = l.UserID
+	left join Info_Information i on c.InformationID = i.SerialNo
+	order by CommentTime desc
+    </select>
+    <select id="selectByIdKey" resultType="com.fx.jyg.sys.model.InfoCommentModel" parameterType="java.lang.Long" >
+        select c.*,l.UserName as userName
+		from Info_Comment c
+		left join User_Login l on c.UserID = l.UserID
+		where c.SerialNo = #{serialNo,jdbcType=BIGINT}
+		order by CommentTime desc
+    </select>
+<!--     <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List" >
+        SerialNo, InformationID, UserID, CommentContent, CommentTime, State
+    </sql>
+
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fx.jyg.sys.entity.InfoCommentExample" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        'false' as QUERYID,
+        <include refid="Base_Column_List" />
+        from Info_Comment
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select 
+        <include refid="Base_Column_List" />
+        from Info_Comment
+        where SerialNo = #{serialNo,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from Info_Comment
+        where SerialNo = #{serialNo,jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteByExample" parameterType="com.fx.jyg.sys.entity.InfoCommentExample" >
+        delete from Info_Comment
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+
+    <insert id="insertSelective" parameterType="com.fx.jyg.sys.entity.InfoComment" >
+        insert into Info_Comment
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="serialNo != null" >
+                SerialNo,
+            </if>
+            <if test="informationID != null" >
+                InformationID,
+            </if>
+            <if test="userID != null" >
+                UserID,
+            </if>
+            <if test="commentContent != null" >
+                CommentContent,
+            </if>
+            <if test="commentTime != null" >
+                CommentTime,
+            </if>
+            <if test="state != null" >
+                State,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="serialNo != null" >
+                #{serialNo,jdbcType=BIGINT},
+            </if>
+            <if test="informationID != null" >
+                #{informationID,jdbcType=BIGINT},
+            </if>
+            <if test="userID != null" >
+                #{userID,jdbcType=BIGINT},
+            </if>
+            <if test="commentContent != null" >
+                #{commentContent,jdbcType=VARCHAR},
+            </if>
+            <if test="commentTime != null" >
+                #{commentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="state != null" >
+                #{state,jdbcType=SMALLINT},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByExample" parameterType="com.fx.jyg.sys.entity.InfoCommentExample" resultType="java.lang.Integer" >
+        select count(*) from Info_Comment
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByExampleSelective" parameterType="map" >
+        update Info_Comment
+        <set >
+            <if test="record.serialNo != null" >
+                SerialNo = #{record.serialNo,jdbcType=BIGINT},
+            </if>
+            <if test="record.informationID != null" >
+                InformationID = #{record.informationID,jdbcType=BIGINT},
+            </if>
+            <if test="record.userID != null" >
+                UserID = #{record.userID,jdbcType=BIGINT},
+            </if>
+            <if test="record.commentContent != null" >
+                CommentContent = #{record.commentContent,jdbcType=VARCHAR},
+            </if>
+            <if test="record.commentTime != null" >
+                CommentTime = #{record.commentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.state != null" >
+                State = #{record.state,jdbcType=SMALLINT},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByExample" parameterType="map" >
+        update Info_Comment
+        set SerialNo = #{record.serialNo,jdbcType=BIGINT},
+            InformationID = #{record.informationID,jdbcType=BIGINT},
+            UserID = #{record.userID,jdbcType=BIGINT},
+            CommentContent = #{record.commentContent,jdbcType=VARCHAR},
+            CommentTime = #{record.commentTime,jdbcType=TIMESTAMP},
+            State = #{record.state,jdbcType=SMALLINT}
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.fx.jyg.sys.entity.InfoComment" >
+        update Info_Comment
+        <set >
+            <if test="informationID != null" >
+                InformationID = #{informationID,jdbcType=BIGINT},
+            </if>
+            <if test="userID != null" >
+                UserID = #{userID,jdbcType=BIGINT},
+            </if>
+            <if test="commentContent != null" >
+                CommentContent = #{commentContent,jdbcType=VARCHAR},
+            </if>
+            <if test="commentTime != null" >
+                CommentTime = #{commentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="state != null" >
+                State = #{state,jdbcType=SMALLINT},
+            </if>
+        </set>
+        where SerialNo = #{serialNo,jdbcType=BIGINT}
+    </update> -->
+</mapper>

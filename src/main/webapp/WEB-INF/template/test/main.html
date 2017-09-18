@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<span>菜单栏</span>
+	<ul>
+		[#list menus as menu]
+		<li><a href="#">${menu.menuParent.menuName}</a></li>
+		<li>
+			<ul>
+				[#list menu.menuChilds as menuChild]
+				<li><a href=${menuChild.menuUrl}>${menuChild.menuName}</a></li> 
+				[/#list]
+			</ul>
+		</li> 
+		[/#list]
+	</ul>
+	<span>${msg}</span>
+	<br/>
+	<div>
+	[@shiro.hasRole name="管理员"]
+	<span>角色是管理员才能看到此信息</span>
+	[/@shiro.hasRole]
+	</div>
+	<a href="/jygbg/login/logout">logout</a>
+</body>
+</html>

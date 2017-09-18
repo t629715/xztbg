@@ -1,0 +1,173 @@
+<div ng-controller="accountInfoController" class="container-fluid">
+		<form role="form" class="form-inline" id ="accountInfoForm">
+		     <div class="form-group " style="margin-right: 10px;">
+		        	账号：
+		        <input id="" type="email" name="name1" placeholder="" class="form-control" />
+		     </div>
+		      <div class="form-group " style="margin-right: 10px;">
+				   状态：
+				<select class="form-control " name="name2" id="selectUser">
+					<option value="" >请选择</option>	
+					<option value="1" >启用</option>
+					<option value="0" >禁用</option>
+				</select>
+		     </div>
+		      <div class="form-group " style="margin-right: 10px;">
+		        	真实姓名：
+		        <input id="" type="email" name="name3" placeholder="" class="form-control" />
+		     </div>
+		      <div class="form-group " style="margin-right: 10px;">
+		        	银行卡号：
+		        <input id="" type="email"  name="name4" placeholder="" class="form-control" />
+		     </div>
+		      <div class="form-group " style="margin-right: 10px;">
+		        	联系电话：
+		        <input id="" type="email"  name="name5" placeholder="" class="form-control" />
+		     </div>
+		     <div class="form-group " style="margin-right: 10px; ">
+		     		创建时间：
+		          <p class="input-group"   ng-controller="DatepickerDemoCtrl" style="margin: 0;">
+		            <input type="text" id="Actinput2" current-text="今天" style="float:none;"  name="name6"  datepicker-popup="{{format}}" 
+		            	ng-model="dt" is-open="opened"
+		            	 datepicker-options="dateOptions" date-disabled="disabled(date, mode)" 
+		            	 ng-required="true" close-text="关闭" clear-text ="清空"  class="form-control"/>
+		            <span class="input-group-btn">
+		               <button type="button" ng-click="open($event)" class="btn btn-default">
+		                  <em class="fa fa-calendar"></em>
+		               </button>
+		            </span>
+		         </p>
+		         <span id="" class=m-r-10>
+		         	——
+		         </span>
+		         <p class="input-group"   ng-controller="DatepickerDemoCtrl1" style="margin: 0;">
+		            <input type="text" id="Actinput3" current-text="今天" style="float:none;"  name="name7"  datepicker-popup="{{format}}" 
+		            	ng-model="dt1" is-open="opened"
+		            	datepicker-options="dateOptions" date-disabled="disabled(date, mode)" 
+		            	 ng-required="true" close-text="关闭" clear-text ="清空"  class="form-control"/>
+		            <span class="input-group-btn">
+		               <button type="button" ng-click="open($event)" class="btn btn-default">
+		                  <em class="fa fa-calendar"></em>
+		               </button>
+		            </span>
+		         </p>
+			  </div>
+			  <div class="form-group " style="margin-right: 10px;">
+				   注册来源：
+				<select class="form-control " id="selectUser"  name="name8">
+					<option value="" >请选择</option>
+					<option value="iOS" >iOS</option>
+					<option value="Android" >Android</option>
+				</select>
+		     </div>
+		    <button type="button" ng-click="search()" class="mb-sm btn btn-primary">查询</button>
+		    <button type="button" ng-click="clearInput()" class="mb-sm btn btn-default">清除</button>
+		</form>
+		<div>	
+		  <table class="table table-bordered table-hover bg-white">
+		     <tr style="font-weight: bold">
+		         <td >序号</td>
+		         <td >账号</td>
+		         <td >状态</td>
+		         <td >昵称</td>
+		           <td >真实姓名</td>
+		          <td >身份证号</td>
+		          <td >开户行</td>
+		          <td >银行卡号</td>
+		          <td >联系电话</td>
+		          <td >发货地址</td>
+		          <td >注册来源</td>
+		          <td >注册时间</td>
+		          <td >人民币余额</td>
+		          <td >优币余额</td>
+		          <td >冻结优币</td>
+		        <!--   <td >已消耗优币</td> -->
+		          <td >操作</td>
+		      </tr>
+		      <tr ng-repeat="user in users"  >
+		         <td>
+		            <span >{{ $index+1 }}</span>
+		         </td>
+			      <td>
+			        <span >{{ user.userName}}</span>
+			     </td>
+			      <td>
+			         <span ng-if=" user.status==1">正常</span>
+			         <span ng-if=" user.status==0">禁用</span>
+			     </td>
+			      <td>
+			        <span >{{ user.nickname}}</span>
+			     </td> <td>
+			        <span >{{ user.realname}}</span>
+			     </td> 
+			       <td>
+			        <span >{{ user.idcard}}</span>
+			     </td> 
+			     <td>
+			        <span >{{ user.bankName}}</span>
+			     </td>
+			     <td>
+			        <span >{{ user.accountNum}}</span>
+			     </td>
+			      <td>
+			        <span >{{ user.phoneno}}</span>
+			     </td> <td>
+			        <span >{{ user.deliveryaddress}}</span>
+			     </td> <td>
+			        <span >{{ user.registerfrom}}</span>
+			     </td>
+			      <td>
+			        <span >{{ user.registertime	 | date:"yyyy-MM-dd HH:mm:ss" }}</span>
+			     </td>
+			     <td>
+			        <span >{{ user.balanceAmt  }}</span>
+			     </td>
+			      <td>
+			        <span >{{ user.uBalanceAmt  }}</span>
+			     </td>
+			     <td>
+			        <span >{{ user.uFrozenAmt  }}</span>
+			     </td>
+			     <td style="white-space: nowrap" >
+		            <div class="buttons">
+		               <button   title="Delete" acterid ={{user.userIdString}} ng-click=fobidden($event,1)  ng-if="user.status==0" data-toggle="modal"   data-target="#myModalAlert"  class="btn btn-sm btn-primary">
+		           		       启用
+		               </button>
+		               <button   title="Delete" acterid ={{user.userIdString}} ng-click=fobidden($event,0) ng-if="user.status==1" data-toggle="modal"   data-target="#myModalAlert"  class="btn btn-sm btn-danger">
+		           		      禁用
+		               </button>
+		            </div>
+		         </td>
+		      </tr>
+		   </table>
+		   <nav class="paginationWrap">
+				<ul class="pagination">
+					<li>
+						<a ng-click="Previous()">
+							<span>上一页</span>
+						</a>
+					</li>
+					<li ng-repeat="page in pageList" ng-class="{active: isActivePage(page)}" >
+						<a ng-click="selectPage(page)" >{{ page }}</a>
+					</li>
+					<li>
+						<a ng-click="Next()">
+							<span>下一页</span>
+						</a> 
+					</li>
+				</ul>
+		</nav>
+	</div>
+		<div class="modal fade" id="myModalAlert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-body" style="text-align:center">
+	            	<h3 >{{alertTxt}}</h3>
+				  </div>
+		          <div class="modal-footer">
+		               <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+		          </div>
+	        </div>
+	    </div>
+	</div>
+</div>	

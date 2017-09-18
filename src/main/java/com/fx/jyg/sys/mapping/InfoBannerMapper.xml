@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fx.jyg.sys.mapper.InfoBannerMapper" >
+
+    <resultMap id="BaseResultMap" type="com.fx.jyg.sys.entity.InfoBanner" >
+        <id column="SerialNo" property="serialNo" jdbcType="BIGINT" />
+        <result column="Page" property="page" jdbcType="SMALLINT" />
+        <result column="PicturePath" property="picturePath" jdbcType="VARCHAR" />
+        <result column="AppID" property="appID" jdbcType="VARCHAR" />
+        <result column="SkipPath" property="skipPath" jdbcType="VARCHAR" />
+        <result column="SkipType" property="skipType" jdbcType="SMALLINT" />
+        <result column="Description" property="description" jdbcType="VARCHAR" />
+        <result column="SortNo" property="sortNo" jdbcType="INTEGER" />
+        <result column="Valid" property="valid" jdbcType="SMALLINT" />
+        <result column="CreateTime" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="ModifyTime" property="modifyTime" jdbcType="TIMESTAMP" />
+        <result column="Operator" property="operator" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        SerialNo, Page, PicturePath, AppID, SkipPath, SkipType, Description, SortNo, Valid, 
+        CreateTime, ModifyTime, Operator
+    </sql>
+    <select id="getByPageAll" resultMap="BaseResultMap" parameterType="map" >
+        select 
+        <include refid="Base_Column_List" />
+        from Info_Banner
+        <where>
+        	 <if test="page != null" >
+                and Page = #{page,jdbcType=SMALLINT}
+            </if>
+            <if test="serialNo != null" >
+           		and SerialNo = #{serialNo,jdbcType=BIGINT}
+            </if>
+        </where>
+        order by SortNo
+    </select>
+	<update id="edit" parameterType="com.fx.jyg.sys.entity.InfoBanner" >
+        update Info_Banner
+        <set >
+            <if test="page != null" >
+                Page = #{page,jdbcType=SMALLINT},
+            </if>
+            <if test="picturePath != null" >
+                PicturePath = #{picturePath,jdbcType=VARCHAR},
+            </if>
+            <if test="appID != null" >
+                AppID = #{appID,jdbcType=VARCHAR},
+            </if>
+            <if test="skipPath != null" >
+                SkipPath = #{skipPath,jdbcType=VARCHAR},
+            </if>
+            <if test="skipType != null" >
+                SkipType = #{skipType,jdbcType=SMALLINT},
+            </if>
+            <if test="description != null" >
+                Description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="sortNo != null" >
+                SortNo = #{sortNo,jdbcType=INTEGER},
+            </if>
+            <if test="valid != null" >
+                Valid = #{valid,jdbcType=SMALLINT},
+            </if>
+            <if test="createTime != null" >
+                CreateTime = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyTime != null" >
+                ModifyTime = #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operator != null" >
+                Operator = #{operator,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where SerialNo = #{serialNo,jdbcType=BIGINT}
+    </update>
+    <insert id="add" parameterType="com.fx.jyg.sys.entity.InfoBanner" useGeneratedKeys="true" keyProperty="SerialNo">
+        insert into Info_Banner
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="page != null" >
+                Page,
+            </if>
+            <if test="picturePath != null" >
+                PicturePath,
+            </if>
+            <if test="appID != null" >
+                AppID,
+            </if>
+            <if test="skipPath != null" >
+                SkipPath,
+            </if>
+            <if test="skipType != null" >
+                SkipType,
+            </if>
+            <if test="description != null" >
+                Description,
+            </if>
+            <if test="sortNo != null" >
+                SortNo,
+            </if>
+            <if test="valid != null" >
+                Valid,
+            </if>
+            <if test="createTime != null" >
+                CreateTime,
+            </if>
+            <if test="modifyTime != null" >
+                ModifyTime,
+            </if>
+            <if test="operator != null" >
+                Operator,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="page != null" >
+                #{page,jdbcType=SMALLINT},
+            </if>
+            <if test="picturePath != null" >
+                #{picturePath,jdbcType=VARCHAR},
+            </if>
+            <if test="appID != null" >
+                #{appID,jdbcType=VARCHAR},
+            </if>
+            <if test="skipPath != null" >
+                #{skipPath,jdbcType=VARCHAR},
+            </if>
+            <if test="skipType != null" >
+                #{skipType,jdbcType=SMALLINT},
+            </if>
+            <if test="description != null" >
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="sortNo != null" >
+                #{sortNo,jdbcType=INTEGER},
+            </if>
+            <if test="valid != null" >
+                #{valid,jdbcType=SMALLINT},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyTime != null" >
+                #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operator != null" >
+                #{operator,jdbcType=VARCHAR},
+            </if>
+        </trim>
+        ;update Info_Banner
+        set SortNo = @@IDENTITY
+        where SerialNo = @@IDENTITY;
+    </insert>
+    <delete id="deleteById" parameterType="java.lang.Long" >
+        delete from Info_Banner
+        where SerialNo = #{serialNo,jdbcType=BIGINT}
+    </delete>
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select 
+        <include refid="Base_Column_List" />
+        from Info_Banner
+        where SerialNo = #{serialNo,jdbcType=BIGINT}
+    </select>
+   <!--  <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List" >
+        SerialNo, Page, PicturePath, AppID, SkipPath, SkipType, Description, SortNo, Valid, 
+        CreateTime, ModifyTime, Operator
+    </sql>
+
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fx.jyg.sys.entity.InfoBannerExample" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        'false' as QUERYID,
+        <include refid="Base_Column_List" />
+        from Info_Banner
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select 
+        <include refid="Base_Column_List" />
+        from Info_Banner
+        where SerialNo = #{serialNo,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByExample" parameterType="com.fx.jyg.sys.entity.InfoBannerExample" >
+        delete from Info_Banner
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+
+    <select id="countByExample" parameterType="com.fx.jyg.sys.entity.InfoBannerExample" resultType="java.lang.Integer" >
+        select count(*) from Info_Banner
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByExampleSelective" parameterType="map" >
+        update Info_Banner
+        <set >
+            <if test="record.serialNo != null" >
+                SerialNo = #{record.serialNo,jdbcType=BIGINT},
+            </if>
+            <if test="record.page != null" >
+                Page = #{record.page,jdbcType=SMALLINT},
+            </if>
+            <if test="record.picturePath != null" >
+                PicturePath = #{record.picturePath,jdbcType=VARCHAR},
+            </if>
+            <if test="record.appID != null" >
+                AppID = #{record.appID,jdbcType=VARCHAR},
+            </if>
+            <if test="record.skipPath != null" >
+                SkipPath = #{record.skipPath,jdbcType=VARCHAR},
+            </if>
+            <if test="record.skipType != null" >
+                SkipType = #{record.skipType,jdbcType=SMALLINT},
+            </if>
+            <if test="record.description != null" >
+                Description = #{record.description,jdbcType=VARCHAR},
+            </if>
+            <if test="record.sortNo != null" >
+                SortNo = #{record.sortNo,jdbcType=INTEGER},
+            </if>
+            <if test="record.valid != null" >
+                Valid = #{record.valid,jdbcType=SMALLINT},
+            </if>
+            <if test="record.createTime != null" >
+                CreateTime = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.modifyTime != null" >
+                ModifyTime = #{record.modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.operator != null" >
+                Operator = #{record.operator,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByExample" parameterType="map" >
+        update Info_Banner
+        set SerialNo = #{record.serialNo,jdbcType=BIGINT},
+            Page = #{record.page,jdbcType=SMALLINT},
+            PicturePath = #{record.picturePath,jdbcType=VARCHAR},
+            AppID = #{record.appID,jdbcType=VARCHAR},
+            SkipPath = #{record.skipPath,jdbcType=VARCHAR},
+            SkipType = #{record.skipType,jdbcType=SMALLINT},
+            Description = #{record.description,jdbcType=VARCHAR},
+            SortNo = #{record.sortNo,jdbcType=INTEGER},
+            Valid = #{record.valid,jdbcType=SMALLINT},
+            CreateTime = #{record.createTime,jdbcType=TIMESTAMP},
+            ModifyTime = #{record.modifyTime,jdbcType=TIMESTAMP},
+            Operator = #{record.operator,jdbcType=VARCHAR}
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+ -->
+</mapper>

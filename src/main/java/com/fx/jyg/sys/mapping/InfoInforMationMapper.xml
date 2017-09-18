@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fx.jyg.sys.mapper.InfoInforMationMapper" >
+  <resultMap id="BaseResultMap" type="com.fx.jyg.sys.entity.InfoInforMation" >
+    <id column="SerialNo" property="serialno" jdbcType="BIGINT" />
+    <result column="Title" property="title" jdbcType="VARCHAR" />
+    <result column="ContentPath" property="contentpath" jdbcType="VARCHAR" />
+    <result column="ContentFromType" property="contentfromtype" jdbcType="SMALLINT" />
+    <result column="InformationFrom" property="informationfrom" jdbcType="VARCHAR" />
+    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="ReleaseTime" property="releasetime" jdbcType="TIMESTAMP" />
+    <result column="State" property="state" jdbcType="SMALLINT" />
+    <result column="Operator" property="operator" jdbcType="VARCHAR" />
+    <result column="Image1Path" property="image1Path" jdbcType="VARCHAR" />
+    <result column="Image2Path" property="image2Path" jdbcType="VARCHAR" />
+    <result column="Image3Path" property="image3Path" jdbcType="VARCHAR" />
+    <result column="TopState" property="topState" jdbcType="SMALLINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    SerialNo, Title, ContentPath, ContentFromType, InformationFrom, CreateTime, ReleaseTime, 
+    State, Operator,TopState
+  </sql>
+  <select id="getByAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
+  	select 
+    <include refid="Base_Column_List" />
+    from Info_Information
+    <where>
+	    <if test="title != null and title !='' ">
+	    	and Title like concat(concat('%',#{title,jdbcType=VARCHAR}),'%')
+	    </if>
+	    <if test="startTime !=null and startTime !='' ">
+			and ReleaseTime &gt;=#{startTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="endTime !=null and endTime !='' ">
+			and ReleaseTime &lt;=#{endTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="state != null">
+			and State = #{state,jdbcType=SMALLINT}
+		</if>
+		<if test="operator != null and operator !='' ">
+			and Operator = #{operator,jdbcType=VARCHAR}
+		</if>
+    </where>
+    order by topState desc, ReleaseTime desc
+  </select>
+  <insert id="posted" parameterType="com.fx.jyg.sys.entity.InfoInforMation" useGeneratedKeys="true" keyProperty="SerialNo">
+    insert into Info_Information
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="title != null" >
+        Title,
+      </if>
+      <if test="contentpath != null" >
+        ContentPath,
+      </if>
+      <if test="contentfromtype != null" >
+        ContentFromType,
+      </if>
+      <if test="informationfrom != null" >
+        InformationFrom,
+      </if>
+      <if test="createtime != null" >
+        CreateTime,
+      </if>
+      <if test="releasetime != null" >
+        ReleaseTime,
+      </if>
+      <if test="state != null" >
+        State,
+      </if>
+      <if test="operator != null" >
+        Operator,
+      </if>
+      <if test="topState != null" >
+        TopState,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="contentpath != null" >
+        #{contentpath,jdbcType=VARCHAR},
+      </if>
+      <if test="contentfromtype != null" >
+        #{contentfromtype,jdbcType=SMALLINT},
+      </if>
+      <if test="informationfrom != null" >
+        #{informationfrom,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="releasetime != null" >
+        #{releasetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=SMALLINT},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="topState != null" >
+        #{topState,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from Info_Information
+    where SerialNo = #{serialno,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteById" parameterType="java.lang.Long" >
+    delete from Info_Information
+    where SerialNo = #{serialno,jdbcType=BIGINT}
+  </delete>
+  <update id="edit" parameterType="com.fx.jyg.sys.entity.InfoInforMation" >
+    update Info_Information
+    <set >
+      <if test="title != null" >
+        Title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="contentpath != null" >
+        ContentPath = #{contentpath,jdbcType=VARCHAR},
+      </if>
+      <if test="contentfromtype != null" >
+        ContentFromType = #{contentfromtype,jdbcType=SMALLINT},
+      </if>
+      <if test="informationfrom != null" >
+        InformationFrom = #{informationfrom,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="releasetime != null" >
+        ReleaseTime = #{releasetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        State = #{state,jdbcType=SMALLINT},
+      </if>
+      <if test="operator != null" >
+        Operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="topState != null" >
+         TopState = #{topState,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where SerialNo = #{serialno,jdbcType=BIGINT}
+  </update>
+  <update id="editTopState" parameterType="map" >
+  	update Info_Information
+	set TopState = #{off,jdbcType=INTEGER}
+	where TopState = #{stick,jdbcType=INTEGER}
+  </update>
+<!--   <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fx.jyg.sys.entity.InfoInforMationExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from Info_Information
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.fx.jyg.sys.entity.InfoInforMationExample" >
+    delete from Info_Information
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <select id="countByExample" parameterType="com.fx.jyg.sys.entity.InfoInforMationExample" resultType="java.lang.Integer" >
+    select count(*) from Info_Information
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update Info_Information
+    <set >
+      <if test="record.serialno != null" >
+        SerialNo = #{record.serialno,jdbcType=BIGINT},
+      </if>
+      <if test="record.title != null" >
+        Title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contentpath != null" >
+        ContentPath = #{record.contentpath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contentfromtype != null" >
+        ContentFromType = #{record.contentfromtype,jdbcType=SMALLINT},
+      </if>
+      <if test="record.informationfrom != null" >
+        InformationFrom = #{record.informationfrom,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createtime != null" >
+        CreateTime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.releasetime != null" >
+        ReleaseTime = #{record.releasetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.state != null" >
+        State = #{record.state,jdbcType=SMALLINT},
+      </if>
+      <if test="record.operator != null" >
+        Operator = #{record.operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update Info_Information
+    set SerialNo = #{record.serialno,jdbcType=BIGINT},
+      Title = #{record.title,jdbcType=VARCHAR},
+      ContentPath = #{record.contentpath,jdbcType=VARCHAR},
+      ContentFromType = #{record.contentfromtype,jdbcType=SMALLINT},
+      InformationFrom = #{record.informationfrom,jdbcType=VARCHAR},
+      CreateTime = #{record.createtime,jdbcType=TIMESTAMP},
+      ReleaseTime = #{record.releasetime,jdbcType=TIMESTAMP},
+      State = #{record.state,jdbcType=SMALLINT},
+      Operator = #{record.operator,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fx.jyg.sys.entity.InfoInforMation" >
+    update Info_Information
+    set Title = #{title,jdbcType=VARCHAR},
+      ContentPath = #{contentpath,jdbcType=VARCHAR},
+      ContentFromType = #{contentfromtype,jdbcType=SMALLINT},
+      InformationFrom = #{informationfrom,jdbcType=VARCHAR},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      ReleaseTime = #{releasetime,jdbcType=TIMESTAMP},
+      State = #{state,jdbcType=SMALLINT},
+      Operator = #{operator,jdbcType=VARCHAR}
+    where SerialNo = #{serialno,jdbcType=BIGINT}
+  </update> -->
+</mapper>
