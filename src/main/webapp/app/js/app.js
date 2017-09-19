@@ -493,7 +493,7 @@ App
 	  var passwordNum =$('#password').val();
 
   $scope.login = function() {
-	  var url = "/jygbg/login/login"
+	  var url = "/login/login"
 	  var data =  {phone: phoneNum, password: passwordNum};
 	  console.log(data);
 	  
@@ -1088,7 +1088,7 @@ function($rootScope, $scope, $state, $http, $timeout, Utils){
     };
 
     $scope.loadSidebarMenu = function() {
-    	var menuJson =' /jygbg/role/selectByPermission';
+    	var menuJson =' /role/selectByPermission';
           menuURL  = menuJson + '?v=' + (new Date().getTime()); // jumps cache
       $http.get(menuURL)
         .success(function(items) {
@@ -1161,7 +1161,7 @@ function($scope, $filter, $http, editableOptions, editableThemes, $q,$timeout) {
 		 var  dataArr = new Array();
 		  $http({  
 			    method:'post',  
-			    url:'/jygbg/user/selectByUsers',  
+			    url:'/user/selectByUsers',
 			    data:data,
 			    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 			    transformRequest: function(obj) {
@@ -1198,7 +1198,7 @@ function($scope, $filter, $http, editableOptions, editableThemes, $q,$timeout) {
 		var data ={pageSize:$scope.pageSize,pageNum:$scope.pageNumber}
 		 $http({  
 		    method:'post',  
-		    url:'/jygbg/user/selectByUsers',  
+		    url:'/user/selectByUsers',
 		    data:data,
 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 		    transformRequest: function(obj) {
@@ -1246,7 +1246,7 @@ function($scope, $filter, $http, editableOptions, editableThemes, $q,$timeout) {
 	//获取角色列表
 	$http({  
 	    method:'post',  
-	    url:'/jygbg/role/selectByRoleAll',  
+	    url:'/role/selectByRoleAll',
 	    async:false,
 	    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 	    transformRequest: function(obj) {
@@ -1267,7 +1267,7 @@ function($scope, $filter, $http, editableOptions, editableThemes, $q,$timeout) {
 		var selectVal = $('#selectUser').val();
 		$http({  
 		    method:'post',  
-		    url:'/jygbg/user/insertUser',  
+		    url:'/user/insertUser',
 		    data:{phone:userName,password:inputPassword,rids:[selectVal]},
 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 		    transformRequest: function(obj) {
@@ -1298,7 +1298,7 @@ function($scope, $filter, $http, editableOptions, editableThemes, $q,$timeout) {
 		 var dataId = $('#id').val();
 		$http({  
 		    method:'post',  
-		    url:'/jygbg/user/deleteUser',  
+		    url:'/user/deleteUser',
 		    data:{id:dataId},
 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 		    transformRequest: function(obj) {
@@ -1351,7 +1351,7 @@ function($scope, $filter, $http, editableOptions, editableThemes, $q,$timeout) {
 		console.log(dataId);
 		$http({  
 		    method:'post',  
-		    url:'/jygbg/user/updateUser',  
+		    url:'/user/updateUser',
 		    data:{phone:userName,password:inputPassword,rids:[selectVal],id:dataId},
 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 		    transformRequest: function(obj) {
@@ -1395,7 +1395,7 @@ function($scope, $filter, $http, editableOptions, editableThemes, $q,$timeout) {
 	$scope.loadTable = function(){
 		  $http({  
 			    method:'post',  
-			    url:'/jygbg/role/selectByRoleUsers',  
+			    url:'/role/selectByRoleUsers',
 			    data:data,
 			    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 			    transformRequest: function(obj) {
@@ -1430,7 +1430,7 @@ function($scope, $filter, $http, editableOptions, editableThemes, $q,$timeout) {
 			var data ={pageSize:$scope.pageSize,pageNum:$scope.pageNumber}
 			 $http({  
 			    method:'post',  
-			    url:'/jygbg/role/selectByRoleUsers',  
+			    url:'/role/selectByRoleUsers',
 			    data:data,
 			    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 			    transformRequest: function(obj) {
@@ -1479,7 +1479,7 @@ function($scope, $filter, $http, editableOptions, editableThemes, $q,$timeout) {
 	//获取角色列表
 	$http({  
 	    method:'post',  
-	    url:'/jygbg/role/selectByRidPermissionAll',  
+	    url:'/role/selectByRidPermissionAll',
 	    async:false,
 	    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 	    transformRequest: function(obj) {
@@ -1503,7 +1503,7 @@ function($scope, $filter, $http, editableOptions, editableThemes, $q,$timeout) {
 		var namaparam = formData[0].value;
 		$http({  
 		    method:'post',  
-		    url:'/jygbg/role/insertRole',  
+		    url:'/role/insertRole',
 		    data:{name:namaparam,pids:pidsArr},
 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 		    transformRequest: function(obj) {
@@ -1534,7 +1534,7 @@ function($scope, $filter, $http, editableOptions, editableThemes, $q,$timeout) {
 		 var dataId = $('#id').val();
 		$http({  
 		    method:'post',  
-		    url:'/jygbg/role/deleteRole',  
+		    url:'/role/deleteRole',
 		    data:{id:dataId},
 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 		    transformRequest: function(obj) {
@@ -1585,7 +1585,7 @@ function($scope, $filter, $http, editableOptions, editableThemes, $q,$timeout) {
 		var id2 =$scope.idParams;
 		$http({  
 		    method:'post',  
-		    url:'/jygbg/role/updateRole',  
+		    url:'/role/updateRole',
 		    data:{name:namaparam,pids:pidsArr,id:id2},
 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 		    transformRequest: function(obj) {
@@ -1625,7 +1625,7 @@ function($scope, $filter, $http, editableOptions, editableThemes, $q,$timeout) {
 	var datasetting ={pageSize:$scope.pageSizeSetting,pageNum:$scope.pageNumberSetting}
 	$http({  
 	    method:'post',  
-	    url:'/jygbg/role/selectByUserRoleAll',  
+	    url:'/role/selectByUserRoleAll',
 	    async:false,
 	    data:datasetting,
 	    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
@@ -1661,7 +1661,7 @@ function($scope, $filter, $http, editableOptions, editableThemes, $q,$timeout) {
 				console.log(datasetting);
 				 $http({  
 				    method:'post',  
-				    url:'/jygbg/role/selectByUserRoleAll',  
+				    url:'/role/selectByUserRoleAll',
 				    data:datasetting,
 				    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 				    transformRequest: function(obj) {
@@ -1728,7 +1728,7 @@ function($scope, $filter, $http, editableOptions, editableThemes, $q,$timeout) {
 		console.log(userIdArr);
 		$http({  
 		    method:'post',  
-		    url:'/jygbg/role/insertUserRole',  
+		    url:'/role/insertUserRole',
 		    async:false,
 		    data:{uids:userIdArr,rids:$scope.settingId},
 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
@@ -1753,7 +1753,7 @@ App.controller('loginInfoController', ['$scope', '$filter', '$http', 'editableOp
 	   	$scope.pageSize = 10;
 	   	$scope.pageNumber = 1;
 	   	var data ={pageSize:$scope.pageSize,pageNum:$scope.pageNumber}
-	   	$scope.url ="/jygbg/userLoginInfo/selectByAll";
+	   	$scope.url ="/userLoginInfo/selectByAll";
 	   	$scope.loadTable = function(){
 	   		  $http({  
 	   			    method:'post',  
@@ -1864,7 +1864,7 @@ App.controller('accountInfoController', ['$scope', '$filter', '$http', 'editable
    	$scope.pageSize = 10;
    	$scope.pageNumber = 1;
    	$scope.dataJson ={pageSize:$scope.pageSize,pageNum:$scope.pageNumber}
-   	$scope.url ="/jygbg/userInfo/selectByAccountMessage";
+   	$scope.url ="/userInfo/selectByAccountMessage";
    	$scope.loadTable = function(){
    		  $http({  
 		    method:'post',  
@@ -1974,7 +1974,7 @@ $scope.search=function(){
    	   		console.log(data);
 	   	   	 $http({  
 	 		    method:'post',  
-	 		    url:" /jygbg/userLoginInfo/updateLoginStatus",  
+	 		    url:" /userLoginInfo/updateLoginStatus",  
 	 		    data:data,
 	 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 	 		    transformRequest: function(obj) {
@@ -2005,7 +2005,7 @@ App.controller('certificationController', ['$scope', '$filter', '$http', 'editab
  	$scope.pageSize = 10;
  	$scope.pageNumber = 1;
  	$scope.dataJson ={pageSize:$scope.pageSize,pageNum:$scope.pageNumber}
- 	$scope.url ="/jygbg/userInfo/selectByAll";
+ 	$scope.url ="/userInfo/selectByAll";
  	$scope.loadTable = function(){
  		  $http({  
 		    method:'post',  
@@ -2118,7 +2118,7 @@ $scope.search=function(){
  	   		console.log(data);
 	   	   	 $http({  
 	 		    method:'post',  
-	 		    url:" /jygbg/userInfo/certification",  
+	 		    url:" /userInfo/certification",  
 	 		    data:data,
 	 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 	 		    transformRequest: function(obj) {
@@ -2153,7 +2153,7 @@ function($scope, $filter, $http, editableOptions, editableThemes, $q,$timeout) {
 	$scope.pageSize = 10;
 	$scope.pageNumber = 1;
 	$scope.dataJson ={pageSize:$scope.pageSize,pageNum:$scope.pageNumber}
-	$scope.url ="/jygbg/userInfo/selectByAll";
+	$scope.url ="/userInfo/selectByAll";
 	$scope.loadTable = function(){
 		  $http({  
 		    method:'post',  
@@ -2266,7 +2266,7 @@ $scope.search=function(){
 	   		console.log(data);
 	   	   	 $http({  
 	 		    method:'post',  
-	 		    url:" /jygbg/userInfo/certificationYG",  
+	 		    url:" /userInfo/certificationYG",  
 	 		    data:data,
 	 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 	 		    transformRequest: function(obj) {
@@ -2301,7 +2301,7 @@ function($scope, $filter, $http, editableOptions, editableThemes, $q,$timeout) {
 	$scope.pageSize = 10;
 	$scope.pageNumber = 1;
 	$scope.dataJson ={pageSize:$scope.pageSize,pageNum:$scope.pageNumber}
-	$scope.url ="/jygbg/userInfo/selectByAll";
+	$scope.url ="/userInfo/selectByAll";
 	$scope.loadTable = function(){
 		  $http({  
 		    method:'post',  
@@ -2422,7 +2422,7 @@ function($scope, $filter, $http, editableOptions, editableThemes, $q,$timeout) {
 	$scope.pageSize = 10;
 	$scope.pageNumber = 1;
 	$scope.dataJson ={pageSize:$scope.pageSize,pageNum:$scope.pageNumber}
-	$scope.url ="/jygbg/userRecharge/selectAll";
+	$scope.url ="/userRecharge/selectAll";
 	$scope.loadTable = function(){
 		  $http({  
 		    method:'post',  
@@ -2539,7 +2539,7 @@ $scope.search=function(){
 			'username='+pidsArr[0]+'&'+'rechargeid	='+pidsArr[1]+'&'+'merchantordernum='+pidsArr[2]+'&'+
 			'startTime='+pidsArr[3]+'&'+'endTime='+pidsArr[4]+'&'+'rechargechannel='+pidsArr[5]+'&'+
 			'status='+pidsArr[6];
-		$scope.url="/jygbg/userRecharge/excelRecharge?"+$scope.dataJson;
+		$scope.url="/userRecharge/excelRecharge?"+$scope.dataJson;
 		window.location.href=$scope.url;
 	};
 }]);
@@ -2552,7 +2552,7 @@ function($scope, $filter, $http, editableOptions, editableThemes, $q,$timeout) {
 	$scope.pageSize = 10;
 	$scope.pageNumber = 1;
 	$scope.dataJson ={pageSize:$scope.pageSize,pageNum:$scope.pageNumber}
-	$scope.url ="/jygbg/userAccountRecord/selectByAll";
+	$scope.url ="/userAccountRecord/selectByAll";
 	$scope.loadTable = function(){
 		  $http({  
 		    method:'post',  
@@ -2664,7 +2664,7 @@ $scope.search=function(){
 			pidsArr.push(formData[i].value)
 		}
 		$scope.dataJson = 'userName='+pidsArr[0]+'&'+'startTime	='+pidsArr[1]+'&'+'endTime='+pidsArr[2];
-		$scope.url="/jygbg/userAccountRecord/excelAccountRecord?"+$scope.dataJson;
+		$scope.url="/userAccountRecord/excelAccountRecord?"+$scope.dataJson;
 		window.location.href=$scope.url;
 	};
 }]);
@@ -2677,7 +2677,7 @@ function($scope, $filter, $http, editableOptions, editableThemes, $q,$timeout) {
 	$scope.pageSize = 10;
 	$scope.pageNumber = 1;
 	$scope.dataJson ={pageSize:$scope.pageSize,pageNum:$scope.pageNumber}
-	$scope.url ="/jygbg/userWithdrawCash/selectAll";
+	$scope.url ="/userWithdrawCash/selectAll";
 	$scope.loadTable = function(){
 		  $http({  
 		    method:'post',  
@@ -2798,7 +2798,7 @@ $scope.search=function(){
 			pidsArr.push(formData[i].value)
 		}
 		$scope.dataJson = 'userName='+pidsArr[0]+'&'+'startTime	='+pidsArr[1]+'&'+'endTime='+pidsArr[2]+'&'+'status='+pidsArr[3];
-		$scope.url="/jygbg/userWithdrawCash/excelRecharge?"+$scope.dataJson;
+		$scope.url="/userWithdrawCash/excelRecharge?"+$scope.dataJson;
 		window.location.href=$scope.url;
 	};
 	//体现完成 
@@ -2808,7 +2808,7 @@ $scope.search=function(){
 	   		console.log(data);
    	   	 $http({  
  		    method:'post',  
- 		    url:" /jygbg/userWithdrawCash/editStatus",  
+ 		    url:" /userWithdrawCash/editStatus",  
  		    data:data,
  		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
  		    transformRequest: function(obj) {
@@ -2840,7 +2840,7 @@ function($scope, $filter, $http, editableOptions, editableThemes, $q,$timeout) {
 	$scope.pageSize = 10;
 	$scope.pageNumber = 1;
 	$scope.dataJson ={pageSize:$scope.pageSize,pageNum:$scope.pageNumber}
-	$scope.url ="/jygbg/userAccountRecord/selectGameAward";
+	$scope.url ="/userAccountRecord/selectGameAward";
 	$scope.loadTable = function(){
 		  $http({  
 		    method:'post',  
@@ -2938,7 +2938,7 @@ $scope.search=function(){
 		for(var i=0;i<formData.length;i++){
 			pidsArr.push(formData[i].value)
 		}
-		$scope.url ="/jygbg/userAccountRecord/selectGameAward";
+		$scope.url ="/userAccountRecord/selectGameAward";
 		$scope.dataJson ={pageSize:$scope.pageSize,pageNum:$scope.pageNumber,
 				userName:pidsArr[0],startTime:pidsArr[1],endTime:pidsArr[2],
 		};
@@ -2953,7 +2953,7 @@ $scope.search=function(){
 			pidsArr.push(formData[i].value)
 		}
 		$scope.dataJson = 'userName='+pidsArr[0]+'&'+'startTime	='+pidsArr[1]+'&'+'endTime='+pidsArr[2];
-		$scope.url="/jygbg/userAccountRecord/excelGameAward?"+$scope.dataJson;
+		$scope.url="/userAccountRecord/excelGameAward?"+$scope.dataJson;
 		window.location.href=$scope.url;
 	};
 }]);
@@ -2966,7 +2966,7 @@ function($scope, $filter, $http, editableOptions, editableThemes, $q,$timeout) {
 	$scope.pageSize = 10;
 	$scope.pageNumber = 1;
 	$scope.dataJson ={pageSize:$scope.pageSize,pageNum:$scope.pageNumber}
-	$scope.url ="/jygbg/infoInforMation/selectByInfoInforMation";
+	$scope.url ="/infoInforMation/selectByInfoInforMation";
 	$scope.loadTable = function(){
 		  $http({  
 		    method:'post',  
@@ -3064,7 +3064,7 @@ $scope.search=function(){
 		for(var i=0;i<formData.length;i++){
 			pidsArr.push(formData[i].value)
 		}
-		$scope.url ="/jygbg/infoInforMation/selectByInfoInforMation";
+		$scope.url ="/infoInforMation/selectByInfoInforMation";
 		$scope.dataJson ={pageSize:$scope.pageSize,pageNum:$scope.pageNumber,
 				title:pidsArr[0],startTime:pidsArr[1],endTime:pidsArr[2],
 				state:pidsArr[3]
@@ -3087,7 +3087,7 @@ $scope.search=function(){
 	   		console.log(data);
 	   	   	 $http({  
 	 		    method:'post',  
-	 		    url:" /jygbg/infoInforMation/posted",  
+	 		    url:" /infoInforMation/posted",  
 	 		    data:data,
 	 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 	 		    transformRequest: function(obj) {
@@ -3113,7 +3113,7 @@ $scope.search=function(){
 		   		data={serialNo:serialno};
 		   	   	 $http({  
 		 		    method:'post',  
-		 		    url:" /jygbg/infoInforMation/selectBySerialNo",  
+		 		    url:" /infoInforMation/selectBySerialNo",  
 		 		    data:data,
 		 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 		 		    transformRequest: function(obj) {
@@ -3148,7 +3148,7 @@ $scope.search=function(){
 		   		console.log(data);
 		   	   	 $http({  
 		 		    method:'post',  
-		 		    url:" /jygbg/infoInforMation/edit",  
+		 		    url:" /infoInforMation/edit",  
 		 		    data:data,
 		 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 		 		    transformRequest: function(obj) {
@@ -3175,7 +3175,7 @@ $scope.search=function(){
 		   		data={serialNo:serialno};
 		   	   	 $http({  
 		 		    method:'post',  
-		 		    url:" /jygbg/infoInforMation/selectBySerialNo",  
+		 		    url:" /infoInforMation/selectBySerialNo",  
 		 		    data:data,
 		 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 		 		    transformRequest: function(obj) {
@@ -3202,7 +3202,7 @@ $scope.search=function(){
 		   		console.log(data);
 		   	   	 $http({  
 		 		    method:'post',  
-		 		    url:" /jygbg/infoInforMation/deleteById",  
+		 		    url:" /infoInforMation/deleteById",  
 		 		    data:data,
 		 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 		 		    transformRequest: function(obj) {
@@ -3229,7 +3229,7 @@ $scope.search=function(){
 		   		console.log(data);
 		   	   	 $http({  
 		 		    method:'post',  
-		 		    url:" /jygbg/infoInforMation/editTopState",  
+		 		    url:" /infoInforMation/editTopState",  
 		 		    data:data,
 		 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 		 		    transformRequest: function(obj) {
@@ -3258,7 +3258,7 @@ function($scope, $filter, $http, editableOptions, editableThemes, $q,$timeout) {
 	$scope.pageSize = 10;
 	$scope.pageNumber = 1;
 	$scope.dataJson ={pageSize:$scope.pageSize,pageNum:$scope.pageNumber}
-	$scope.url ="/jygbg/infoNotice/seelctAll";
+	$scope.url ="/infoNotice/seelctAll";
 	$scope.loadTable = function(){
 		  $http({  
 		    method:'post',  
@@ -3356,7 +3356,7 @@ $scope.search=function(){
 		for(var i=0;i<formData.length;i++){
 			pidsArr.push(formData[i].value)
 		}
-		$scope.url ="/jygbg/infoInforMation/selectByInfoInforMation";
+		$scope.url ="/infoInforMation/selectByInfoInforMation";
 		$scope.dataJson ={pageSize:$scope.pageSize,pageNum:$scope.pageNumber,
 				title:pidsArr[0],startTime:pidsArr[1],endTime:pidsArr[2],
 				state:pidsArr[3]
@@ -3373,7 +3373,7 @@ $scope.search=function(){
 	   		console.log(data);
 	   	   	 $http({  
 	 		    method:'post',  
-	 		    url:" /jygbg/infoNotice/add",  
+	 		    url:" /infoNotice/add",  
 	 		    data:data,
 	 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 	 		    transformRequest: function(obj) {
@@ -3399,7 +3399,7 @@ $scope.search=function(){
 		   		data={serialNo:serialno};
 		   	   	 $http({  
 		 		    method:'post',  
-		 		    url:" /jygbg/infoNotice/selectAll",  
+		 		    url:" /infoNotice/selectAll",  
 		 		    data:data,
 		 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 		 		    transformRequest: function(obj) {
@@ -3434,7 +3434,7 @@ $scope.search=function(){
 		   		console.log(data);
 		   	   	 $http({  
 		 		    method:'post',  
-		 		    url:" /jygbg/infoInforMation/edit",  
+		 		    url:" /infoInforMation/edit",  
 		 		    data:data,
 		 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 		 		    transformRequest: function(obj) {
@@ -3461,7 +3461,7 @@ $scope.search=function(){
 		   		data={serialNo:serialno};
 		   	   	 $http({  
 		 		    method:'post',  
-		 		    url:" /jygbg/infoInforMation/selectBySerialNo",  
+		 		    url:" /infoInforMation/selectBySerialNo",  
 		 		    data:data,
 		 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 		 		    transformRequest: function(obj) {
@@ -3488,7 +3488,7 @@ $scope.search=function(){
 		   		console.log(data);
 		   	   	 $http({  
 		 		    method:'post',  
-		 		    url:" /jygbg/infoInforMation/editTopState",  
+		 		    url:" /infoInforMation/editTopState",  
 		 		    data:data,
 		 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 		 		    transformRequest: function(obj) {
@@ -3515,7 +3515,7 @@ $scope.search=function(){
 			   		console.log(data);
 			   	   	 $http({  
 			 		    method:'post',  
-			 		    url:" /jygbg/infoNotice/delete",  
+			 		    url:" /infoNotice/delete",  
 			 		    data:data,
 			 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 			 		    transformRequest: function(obj) {
@@ -3544,7 +3544,7 @@ function($scope, $filter, $http, editableOptions, editableThemes, $q,$timeout) {
 	$scope.pageSize = 10;
 	$scope.pageNumber = 1;
 	$scope.dataJson ={pageSize:$scope.pageSize,pageNum:$scope.pageNumber}
-	$scope.url ="/jygbg/userMessage/selectByAll";
+	$scope.url ="/userMessage/selectByAll";
 	$scope.loadTable = function(){
 		  $http({  
 		    method:'post',  
@@ -3638,7 +3638,7 @@ function($scope, $filter, $http, editableOptions, editableThemes, $q,$timeout) {
 	$scope.pageSize = 10;
 	$scope.pageNumber = 1;
 	$scope.dataJson ={pageSize:$scope.pageSize,pageNum:$scope.pageNumber}
-	$scope.url ="/jygbg/infoComment/selectCommentAll";
+	$scope.url ="/infoComment/selectCommentAll";
 	$scope.loadTable = function(){
 		  $http({  
 		    method:'post',  
@@ -3729,7 +3729,7 @@ $scope.paging=function(){
 		   		data={serialNo:serialno};
 		   	   	 $http({  
 		 		    method:'post',  
-		 		    url:" /jygbg/infoInforMation/selectBySerialNo",  
+		 		    url:" /infoInforMation/selectBySerialNo",  
 		 		    data:data,
 		 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 		 		    transformRequest: function(obj) {
@@ -3764,7 +3764,7 @@ $scope.paging=function(){
 		   		console.log(data);
 		   	   	 $http({  
 		 		    method:'post',  
-		 		    url:" /jygbg/infoInforMation/edit",  
+		 		    url:" /infoInforMation/edit",  
 		 		    data:data,
 		 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 		 		    transformRequest: function(obj) {
@@ -3791,7 +3791,7 @@ $scope.paging=function(){
 		   		data={serialNo:serialno};
 		   	   	 $http({  
 		 		    method:'post',  
-		 		    url:" /jygbg/infoInforMation/selectBySerialNo",  
+		 		    url:" /infoInforMation/selectBySerialNo",  
 		 		    data:data,
 		 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 		 		    transformRequest: function(obj) {
@@ -3818,7 +3818,7 @@ $scope.paging=function(){
 		   		console.log(data);
 		   	   	 $http({  
 		 		    method:'post',  
-		 		    url:" /jygbg/infoComment/deleteComment",  
+		 		    url:" /infoComment/deleteComment",  
 		 		    data:data,
 		 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 		 		    transformRequest: function(obj) {
@@ -3845,7 +3845,7 @@ $scope.paging=function(){
 		   		console.log(data);
 		   	   	 $http({  
 		 		    method:'post',  
-		 		    url:" /jygbg/infoInforMation/editTopState",  
+		 		    url:" /infoInforMation/editTopState",  
 		 		    data:data,
 		 		    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
 		 		    transformRequest: function(obj) {
