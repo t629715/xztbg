@@ -527,7 +527,7 @@ App.controller('LoginFormController', ['$scope', '$http', '$state', function($sc
 	  var passwordNum =$('#password').val();
 	  var data =  {phone: phoneNum, password: passwordNum};
 		      $http
-		        .post('/jygbg/login/login', data)
+		        .post('/login/login', data)
 		        .then(function(response) {
 		          	if(response.data.msg=='1'){
 		        		$state.go('app.main');

@@ -16,18 +16,18 @@
     id, user_name, password, email, phone, sex, status, create_time, update_time
   </sql>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from users
   </select>
    <select id="selectByPhone" resultMap="BaseResultMap" parameterType="java.lang.String">
-    select 
+    select
     <include refid="Base_Column_List" />
     from users
     where phone = #{phone,jdbcType=VARCHAR}
   </select>
   <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
-    select 
+    select
     <include refid="Base_Column_List" />
     from users
     where id = #{id,jdbcType=BIGINT}
@@ -52,19 +52,19 @@
 	order by u.create_time desc
   </select>
   <select id="getUserInfoNyName" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from users
     where user_name = #{user_name,jdbcType=BIGINT}
   </select>
   <select id="getUserInfo" resultMap="BaseResultMap" parameterType="java.util.Map" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from users
     where user_name = #{username,jdbcType=BIGINT} and password=#{password,jdbcType=VARCHAR}
   </select>
   <select id="getUserInfoNyPhone" resultMap="BaseResultMap" parameterType="java.util.Map" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from users
     where phone = #{phone,jdbcType=VARCHAR} and password=#{password,jdbcType=VARCHAR}
