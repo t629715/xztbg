@@ -31,7 +31,7 @@
 	</listener>   -->  
 	
 	<listener>  
-	    <listener-class>com.fx.jyg.listener.MyContextLoaderListener</listener-class>  
+	    <listener-class>com.fx.xzt.listener.MyContextLoaderListener</listener-class>
 	</listener>  
   
 	<!-- 防止Spring内存溢出监听器 -->  

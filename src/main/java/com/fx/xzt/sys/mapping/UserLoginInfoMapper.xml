@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fx.xzt.sys.mapper.UserLoginInfoMapper">
+  <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.UserLoginInfo">
+    <id column="SerialID" jdbcType="BIGINT" property="serialid" />
+    <result column="UserID" jdbcType="BIGINT" property="userid" />
+    <result column="UserName" jdbcType="VARCHAR" property="username" />
+    <result column="LoginTime" jdbcType="TIMESTAMP" property="logintime" />
+    <result column="LoginFrom" jdbcType="VARCHAR" property="loginfrom" />
+    <result column="FromIP" jdbcType="VARCHAR" property="fromip" />
+    <result column="LocalIP" jdbcType="VARCHAR" property="localip" />
+    <result column="Instance" jdbcType="VARCHAR" property="instance" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    SerialID, UserID, UserName, LoginTime, LoginFrom, FromIP, LocalIP, Instance
+  </sql>
+	<select id="getFindList" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select 
+		<include refid="Base_Column_List" />
+		from User_LoginInfo
+		<where>
+			<if test="userName != null and userName !='' ">
+				and UserName = #{userName,jdbcType=VARCHAR}
+			</if>
+			<if test="loginFrom != null and loginFrom!='' ">
+				and LoginFrom = #{loginFrom,jdbcType=VARCHAR}
+			</if>
+			<if test="startTime !=null and startTime!='' ">
+				and LoginTime &gt;=#{startTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime !=null and endTime!='' ">
+				and LoginTime &lt;=#{endTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		order by LoginTime desc
+	</select>
+</mapper>

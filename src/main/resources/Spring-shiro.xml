@@ -50,10 +50,10 @@
 	</bean>
 	
     <!-- 自定义的Realm,若有多个Realm,可使用'realms'属性代替 -->  
-    <bean id="myRealm" class="com.fx.jyg.shiro.MyRealm" />
+    <bean id="myRealm" class="com.fx.xzt.shiro.MyRealm" />
     
     <!-- 重写的认证filter-->
-    <bean id="myAuthenticationFilter" class="com.fx.jyg.shiro.MyAuthenticationFilter" />
+    <bean id="myAuthenticationFilter" class="com.fx.xzt.shiro.MyAuthenticationFilter" />
     
     <!-- 使用shiro提供的logout filter -->
     <bean id="logoutFilter" class="org.apache.shiro.web.filter.authc.LogoutFilter">

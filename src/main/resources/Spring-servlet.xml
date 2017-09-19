@@ -13,7 +13,7 @@
     <!-- 设置注解驱动 -->
     <mvc:annotation-driven/>
     <!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器 -->
-	<context:component-scan base-package="com.fx.jyg.**.controller" />
+	<context:component-scan base-package="com.fx.xzt.**.controller" />
 
       <!-- 消息适配器 -->
      <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">  

@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fx.xzt.sys.mapper.UserGoodsExchangeMapper" >
+
+    <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.UserGoodsExchange" >
+        <id column="SerialNo" property="serialNo" jdbcType="BIGINT" />
+        <result column="UserID" property="userID" jdbcType="BIGINT" />
+        <result column="GoodsID" property="goodsID" jdbcType="BIGINT" />
+        <result column="ExchangeNum" property="exchangeNum" jdbcType="INTEGER" />
+        <result column="TotalUAmt" property="totalUAmt" jdbcType="DECIMAL" />
+        <result column="RechargePhone" property="rechargePhone" jdbcType="CHAR" />
+        <result column="ExchangeTime" property="exchangeTime" jdbcType="TIMESTAMP" />
+        <result column="Status" property="status" jdbcType="SMALLINT" />
+    </resultMap>
+    <select id="getByAll" resultType="com.fx.xzt.sys.model.UserGoodsExchangeModel" parameterType="map" >
+    	select ug.*,l.UserName,g.GoodsName,case when GoodsType='00' then '虚拟' 
+										when GoodsType='11' then '实物'
+										else '' end goodsTypeName,u.RealName,u.PhoneNo,u.DeliveryAddress,
+										case 
+										when ug.status=1 then '已发放'
+										else '未发放' end statusName
+		from User_GoodsExchange ug
+		left join Goods g on ug.GoodsID = g.GoodsID
+		left join User_Info u on u.UserID = ug.UserID
+		left join User_Login l on ug.UserID = l.UserID
+		<where>
+			<if test="goodsName != null and goodsName!='' " >
+                and g.GoodsName like concat(concat('%',#{goodsName,jdbcType=VARCHAR}),'%')
+            </if>
+            <if test="userName != null and userName!='' " >
+  			and l.UserName = #{userName,jdbcType=VARCHAR}
+  			</if>
+  			<if test="startTime !=null and startTime!='' ">
+				and ExchangeTime &gt;=#{startTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime !=null and endTime!='' ">
+				and ExchangeTime &lt;=#{endTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="goodsType != null" >
+                and GoodsType = #{goodsType,jdbcType=SMALLINT}
+            </if>
+            <if test="status != null" >
+                and ug.status = #{status,jdbcType=SMALLINT}
+            </if>
+		</where>
+		order by ExchangeTime
+    </select>
+	<update id="edit" parameterType="com.fx.xzt.sys.entity.UserGoodsExchange" >
+        update User_GoodsExchange
+        <set >
+            <if test="userID != null" >
+                UserID = #{userID,jdbcType=BIGINT},
+            </if>
+            <if test="goodsID != null" >
+                GoodsID = #{goodsID,jdbcType=BIGINT},
+            </if>
+            <if test="exchangeNum != null" >
+                ExchangeNum = #{exchangeNum,jdbcType=INTEGER},
+            </if>
+            <if test="totalUAmt != null" >
+                TotalUAmt = #{totalUAmt,jdbcType=DECIMAL},
+            </if>
+            <if test="rechargePhone != null" >
+                RechargePhone = #{rechargePhone,jdbcType=CHAR},
+            </if>
+            <if test="exchangeTime != null" >
+                ExchangeTime = #{exchangeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null" >
+                Status = #{status,jdbcType=SMALLINT},
+            </if>
+        </set>
+        where SerialNo = #{serialNo,jdbcType=BIGINT}
+    </update>
+<!-- 
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List" >
+        SerialNo, UserID, GoodsID, ExchangeNum, TotalUAmt, RechargePhone, ExchangeTime, Status
+    </sql>
+
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fx.xzt.sys.entity.UserGoodsExchangeExample" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        'false' as QUERYID,
+        <include refid="Base_Column_List" />
+        from User_GoodsExchange
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select 
+        <include refid="Base_Column_List" />
+        from User_GoodsExchange
+        where SerialNo = #{serialNo,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from User_GoodsExchange
+        where SerialNo = #{serialNo,jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteByExample" parameterType="com.fx.xzt.sys.entity.UserGoodsExchangeExample" >
+        delete from User_GoodsExchange
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+
+    <insert id="insertSelective" parameterType="com.fx.xzt.sys.entity.UserGoodsExchange" >
+        insert into User_GoodsExchange
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="serialNo != null" >
+                SerialNo,
+            </if>
+            <if test="userID != null" >
+                UserID,
+            </if>
+            <if test="goodsID != null" >
+                GoodsID,
+            </if>
+            <if test="exchangeNum != null" >
+                ExchangeNum,
+            </if>
+            <if test="totalUAmt != null" >
+                TotalUAmt,
+            </if>
+            <if test="rechargePhone != null" >
+                RechargePhone,
+            </if>
+            <if test="exchangeTime != null" >
+                ExchangeTime,
+            </if>
+            <if test="status != null" >
+                Status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="serialNo != null" >
+                #{serialNo,jdbcType=BIGINT},
+            </if>
+            <if test="userID != null" >
+                #{userID,jdbcType=BIGINT},
+            </if>
+            <if test="goodsID != null" >
+                #{goodsID,jdbcType=BIGINT},
+            </if>
+            <if test="exchangeNum != null" >
+                #{exchangeNum,jdbcType=INTEGER},
+            </if>
+            <if test="totalUAmt != null" >
+                #{totalUAmt,jdbcType=DECIMAL},
+            </if>
+            <if test="rechargePhone != null" >
+                #{rechargePhone,jdbcType=CHAR},
+            </if>
+            <if test="exchangeTime != null" >
+                #{exchangeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null" >
+                #{status,jdbcType=SMALLINT},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByExample" parameterType="com.fx.xzt.sys.entity.UserGoodsExchangeExample" resultType="java.lang.Integer" >
+        select count(*) from User_GoodsExchange
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByExampleSelective" parameterType="map" >
+        update User_GoodsExchange
+        <set >
+            <if test="record.serialNo != null" >
+                SerialNo = #{record.serialNo,jdbcType=BIGINT},
+            </if>
+            <if test="record.userID != null" >
+                UserID = #{record.userID,jdbcType=BIGINT},
+            </if>
+            <if test="record.goodsID != null" >
+                GoodsID = #{record.goodsID,jdbcType=BIGINT},
+            </if>
+            <if test="record.exchangeNum != null" >
+                ExchangeNum = #{record.exchangeNum,jdbcType=INTEGER},
+            </if>
+            <if test="record.totalUAmt != null" >
+                TotalUAmt = #{record.totalUAmt,jdbcType=DECIMAL},
+            </if>
+            <if test="record.rechargePhone != null" >
+                RechargePhone = #{record.rechargePhone,jdbcType=CHAR},
+            </if>
+            <if test="record.exchangeTime != null" >
+                ExchangeTime = #{record.exchangeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.status != null" >
+                Status = #{record.status,jdbcType=SMALLINT},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByExample" parameterType="map" >
+        update User_GoodsExchange
+        set SerialNo = #{record.serialNo,jdbcType=BIGINT},
+            UserID = #{record.userID,jdbcType=BIGINT},
+            GoodsID = #{record.goodsID,jdbcType=BIGINT},
+            ExchangeNum = #{record.exchangeNum,jdbcType=INTEGER},
+            TotalUAmt = #{record.totalUAmt,jdbcType=DECIMAL},
+            RechargePhone = #{record.rechargePhone,jdbcType=CHAR},
+            ExchangeTime = #{record.exchangeTime,jdbcType=TIMESTAMP},
+            Status = #{record.status,jdbcType=SMALLINT}
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.fx.xzt.sys.entity.UserGoodsExchange" >
+        update User_GoodsExchange
+        <set >
+            <if test="userID != null" >
+                UserID = #{userID,jdbcType=BIGINT},
+            </if>
+            <if test="goodsID != null" >
+                GoodsID = #{goodsID,jdbcType=BIGINT},
+            </if>
+            <if test="exchangeNum != null" >
+                ExchangeNum = #{exchangeNum,jdbcType=INTEGER},
+            </if>
+            <if test="totalUAmt != null" >
+                TotalUAmt = #{totalUAmt,jdbcType=DECIMAL},
+            </if>
+            <if test="rechargePhone != null" >
+                RechargePhone = #{rechargePhone,jdbcType=CHAR},
+            </if>
+            <if test="exchangeTime != null" >
+                ExchangeTime = #{exchangeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null" >
+                Status = #{status,jdbcType=SMALLINT},
+            </if>
+        </set>
+        where SerialNo = #{serialNo,jdbcType=BIGINT}
+    </update> -->
+</mapper>

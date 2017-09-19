@@ -6,7 +6,7 @@
 
 	<!-- 配置freeMarker的模板路径 -->
 	<bean id="freemarkerConfig"
-		class="com.fx.jyg.template.CustomFreeMarkerConfigurer">
+		class="com.fx.xzt.template.CustomFreeMarkerConfigurer">
 		<!-- 模板页面放置位置 -->
 		<property name="templateLoaderPaths" value="/" />
 		<property name="freemarkerSettings">

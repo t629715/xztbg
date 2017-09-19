@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fx.xzt.sys.mapper.UsersPermissionMapper" >
+  <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.UsersPermission" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="text" property="text" jdbcType="VARCHAR" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="label" property="label" jdbcType="VARCHAR" />
+    <result column="translate" property="translate" jdbcType="VARCHAR" />
+    <result column="sref" property="sref" jdbcType="VARCHAR" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="getByRids" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select p.*
+	from users_permission p
+	inner JOIN (select DISTINCT pid from users_role_permission rp 
+	<where>
+		<if test="rids != null and rids.size > 0">
+			rp.rid in
+			<foreach collection="rids" index="index" item="item" open="(" separator="," close=")">
+               #{item}
+          	</foreach>
+		</if>
+	</where>
+	) a on a.pid = p.id
+  </select>
+   <select id="getByRidsAll" resultMap="BaseResultMap">
+  	select p.*
+	from users_permission p
+  </select>
+  <insert id="insertUsersPermission" parameterType="com.fx.xzt.sys.entity.UsersPermission" useGeneratedKeys="true" keyProperty="id">
+    insert into users_permission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="text != null" >
+        text,
+      </if>
+      <if test="icon != null" >
+        icon,
+      </if>
+      <if test="label != null" >
+        label,
+      </if>
+      <if test="translate != null" >
+        translate,
+      </if>
+      <if test="sref != null" >
+        sref,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="text != null" >
+        #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="label != null" >
+        #{label,jdbcType=VARCHAR},
+      </if>
+      <if test="translate != null" >
+        #{translate,jdbcType=VARCHAR},
+      </if>
+      <if test="sref != null" >
+        #{sref,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByIdSelective" parameterType="com.fx.xzt.sys.entity.UsersPermission" >
+    update users_permission
+    <set >
+      <if test="text != null" >
+        text = #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="label != null" >
+        label = #{label,jdbcType=VARCHAR},
+      </if>
+      <if test="translate != null" >
+        translate = #{translate,jdbcType=VARCHAR},
+      </if>
+      <if test="sref != null" >
+        sref = #{sref,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <delete id="deleteById" parameterType="java.lang.Integer">
+    delete from users_permission
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+</mapper>

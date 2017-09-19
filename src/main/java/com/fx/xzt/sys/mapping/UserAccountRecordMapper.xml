@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fx.xzt.sys.mapper.UserAccountRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.UserAccountRecord" >
+    <id column="SerialNo" property="serialno" jdbcType="BIGINT" />
+    <result column="UserID" property="userid" jdbcType="BIGINT" />
+    <result column="UserName" property="username" jdbcType="VARCHAR" />
+    <result column="Side" property="side" jdbcType="CHAR" />
+    <result column="Action" property="action" jdbcType="CHAR" />
+    <result column="RMBAtm" property="rmbatm" jdbcType="DECIMAL" />
+    <result column="UAmt" property="uamt" jdbcType="DECIMAL" />
+    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" javaType="string" />
+    <result column="Status" property="status" jdbcType="SMALLINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    SerialNo, UserID, UserName, Side, Action, RMBAtm, UAmt, CreateTime, Status
+  </sql>
+  <select id="getAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from User_AccountRecord
+    <where>
+    	<if test="userName != null and userName !='' ">
+			and UserName = #{userName,jdbcType=VARCHAR}
+		</if>
+		<if test="startTime !=null and startTime!='' ">
+			and CreateTime &gt;=#{startTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="endTime !=null and endTime!='' ">
+			and CreateTime &lt;=#{endTime,jdbcType=TIMESTAMP}
+		</if>
+    </where>
+    order by CreateTime desc
+  </select>
+  <select id="getGameAward" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from User_AccountRecord
+    <where>
+    	and Side = 'O'
+    	and Action = '30'
+    	<if test="userName != null and userName!='' ">
+			and UserName = #{userName,jdbcType=VARCHAR}
+		</if>
+		<if test="startTime !=null and startTime!='' ">
+			and CreateTime &gt;=#{startTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="endTime !=null and endTime!='' ">
+			and CreateTime &lt;=#{endTime,jdbcType=TIMESTAMP}
+		</if>
+    </where>
+    order by CreateTime desc
+  </select>
+  <insert id="add" parameterType="com.fx.xzt.sys.entity.UserAccountRecord" >
+    insert into User_AccountRecord
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="serialno != null" >
+        SerialNo,
+      </if>
+      <if test="userid != null" >
+        UserID,
+      </if>
+      <if test="username != null" >
+        UserName,
+      </if>
+      <if test="side != null" >
+        Side,
+      </if>
+      <if test="action != null" >
+        Action,
+      </if>
+      <if test="rmbatm != null" >
+        RMBAtm,
+      </if>
+      <if test="uamt != null" >
+        UAmt,
+      </if>
+      <if test="createtime != null" >
+        CreateTime,
+      </if>
+      <if test="status != null" >
+        Status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="serialno != null" >
+        #{serialno,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="side != null" >
+        #{side,jdbcType=CHAR},
+      </if>
+      <if test="action != null" >
+        #{action,jdbcType=CHAR},
+      </if>
+      <if test="rmbatm != null" >
+        #{rmbatm,jdbcType=DECIMAL},
+      </if>
+      <if test="uamt != null" >
+        #{uamt,jdbcType=DECIMAL},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByIdSelective" parameterType="com.fx.xzt.sys.entity.UserAccountRecord" >
+    update User_AccountRecord
+    <set >
+      <if test="userid != null and serialno != null " >
+        UserID = #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="username != null" >
+        UserName = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="side != null" >
+        Side = #{side,jdbcType=CHAR},
+      </if>
+      <if test="action != null" >
+        Action = #{action,jdbcType=CHAR},
+      </if>
+      <if test="rmbatm != null" >
+        RMBAtm = #{rmbatm,jdbcType=DECIMAL},
+      </if>
+      <if test="uamt != null" >
+        UAmt = #{uamt,jdbcType=DECIMAL},
+      </if>
+      <if test="createtime != null and serialno != null " >
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        Status = #{status,jdbcType=SMALLINT},
+      </if>
+    </set>
+    <where>
+      <if test="serialno != null" >
+        and SerialNo = #{serialno,jdbcType=BIGINT}
+      </if>
+      <if test="userid != null" >
+        and UserID = #{userid,jdbcType=BIGINT}
+      </if>
+      <if test="createtime != null" >
+        and CreateTime = #{createtime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </update>
+  <!-- <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    SerialNo, UserID, UserName, Side, Action, RMBAtm, UAmt, CreateTime, Status
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fx.xzt.sys.entity.UserAccountRecordExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from User_AccountRecord
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from User_AccountRecord
+    where SerialNo = #{serialno,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from User_AccountRecord
+    where SerialNo = #{serialno,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.fx.xzt.sys.entity.UserAccountRecordExample" >
+    delete from User_AccountRecord
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.fx.xzt.sys.entity.UserAccountRecord" >
+    insert into User_AccountRecord (SerialNo, UserID, UserName, 
+      Side, Action, RMBAtm, UAmt, 
+      CreateTime, Status)
+    values (#{serialno,jdbcType=BIGINT}, #{userid,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, 
+      #{side,jdbcType=CHAR}, #{action,jdbcType=CHAR}, #{rmbatm,jdbcType=DECIMAL}, #{uamt,jdbcType=DECIMAL}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{status,jdbcType=SMALLINT})
+  </insert>
+  <select id="countByExample" parameterType="com.fx.xzt.sys.entity.UserAccountRecordExample" resultType="java.lang.Integer" >
+    select count(*) from User_AccountRecord
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update User_AccountRecord
+    <set >
+      <if test="record.serialno != null" >
+        SerialNo = #{record.serialno,jdbcType=BIGINT},
+      </if>
+      <if test="record.userid != null" >
+        UserID = #{record.userid,jdbcType=BIGINT},
+      </if>
+      <if test="record.username != null" >
+        UserName = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.side != null" >
+        Side = #{record.side,jdbcType=CHAR},
+      </if>
+      <if test="record.action != null" >
+        Action = #{record.action,jdbcType=CHAR},
+      </if>
+      <if test="record.rmbatm != null" >
+        RMBAtm = #{record.rmbatm,jdbcType=DECIMAL},
+      </if>
+      <if test="record.uamt != null" >
+        UAmt = #{record.uamt,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createtime != null" >
+        CreateTime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null" >
+        Status = #{record.status,jdbcType=SMALLINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update User_AccountRecord
+    set SerialNo = #{record.serialno,jdbcType=BIGINT},
+      UserID = #{record.userid,jdbcType=BIGINT},
+      UserName = #{record.username,jdbcType=VARCHAR},
+      Side = #{record.side,jdbcType=CHAR},
+      Action = #{record.action,jdbcType=CHAR},
+      RMBAtm = #{record.rmbatm,jdbcType=DECIMAL},
+      UAmt = #{record.uamt,jdbcType=DECIMAL},
+      CreateTime = #{record.createtime,jdbcType=TIMESTAMP},
+      Status = #{record.status,jdbcType=SMALLINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fx.xzt.sys.entity.UserAccountRecord" >
+    update User_AccountRecord
+    set UserID = #{userid,jdbcType=BIGINT},
+      UserName = #{username,jdbcType=VARCHAR},
+      Side = #{side,jdbcType=CHAR},
+      Action = #{action,jdbcType=CHAR},
+      RMBAtm = #{rmbatm,jdbcType=DECIMAL},
+      UAmt = #{uamt,jdbcType=DECIMAL},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      Status = #{status,jdbcType=SMALLINT}
+    where SerialNo = #{serialno,jdbcType=BIGINT}
+  </update> -->
+</mapper>
