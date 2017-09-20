@@ -1,11 +1,20 @@
 package com.fx.xzt.sys.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.fx.xzt.sys.entity.UserAccountRecord;
+import com.fx.xzt.sys.model.UserLoginModel;
+import com.fx.xzt.sys.service.UserLoginService;
+import com.fx.xzt.sys.util.ConstantUtil;
+import com.fx.xzt.util.POIUtils;
+import com.mysql.jdbc.StringUtils;
+import org.apache.poi.util.StringUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,6 +38,8 @@ public class UserInfoController {
 	
 	@Resource
 	UserInfoService userInfoService;
+	@Resource
+	UserLoginService userLoginService;
 	
 	/**
 	 * 获取认证集合
@@ -73,5 +84,41 @@ public class UserInfoController {
 	@ResponseBody
 	public PageInfo<UserInfoModel> selectByAccountMessage(String userName,String status,String realName,String accountNum,String phone,String startTime,String endTime,String registerFrom,Integer pageNum,Integer pageSize){
 		return userInfoService.getByAccountMessage(userName, status, realName, accountNum, phone, startTime, endTime, registerFrom, pageNum, pageSize);
+	}
+
+	/**
+	 * 注册信息
+	 */
+	@RequestMapping(value="/selectByRegisterMessage")
+	@ResponseBody
+	public PageInfo<UserLoginModel> selectByRegisterMessage(String userName, String startTime, String endTime,
+		String registerFrom, String registerIp, String lastStartTime, String lastEndTime, String lastLoginFrom,
+		String agentsName, String brokerName, String attribution, Integer pageNum, Integer pageSize) {
+		return userLoginService.getByRegisterMessage(userName, startTime, endTime, registerFrom, registerIp,
+				lastStartTime, lastEndTime, lastLoginFrom, agentsName, brokerName, attribution, pageNum, pageSize);
+	}
+
+	/**
+	 * 导出excel--注册信息
+	 */
+	@RequestMapping(value="/excelRegisterMessage")
+	@ResponseBody
+	public void excelRegisterMessage(HttpServletRequest request, HttpServletResponse response,String userName, String startTime, String endTime,
+		String registerFrom, String registerIp, String lastStartTime, String lastEndTime, String lastLoginFrom,
+		String agentsName, String brokerName, String attribution){
+		List<UserLoginModel> list = userLoginService.getExcelByRegister(userName,startTime,endTime,registerFrom,registerIp,lastStartTime,
+				lastEndTime,lastLoginFrom,agentsName,brokerName,attribution);
+		if (list != null && !list.isEmpty()) {
+			for (UserLoginModel u : list) {
+				if (u.getStatus() != null) {
+					String statusName = ConstantUtil.userStatus.toMap().get(u.getStatus());
+					u.setStatusName(statusName);
+				}
+			}
+		}
+		POIUtils poi = new POIUtils();
+		String[] heads = {"用户账号","代理商","经纪人","注册时间","注册来源","注册IP","归属地","最后一次登录时间","最后一次登录方式","最后一次登录IP","状态"};
+		String[] colums = {"username","agentsName","brokerName","registerTime","registerFrom","registerIp","attribution","lastLoginTime","lastLoginFrom","lastFromIp","statusName"};
+		poi.doExport(request, response, list, "注册信息", "注册信息", heads, colums);
 	}
 }

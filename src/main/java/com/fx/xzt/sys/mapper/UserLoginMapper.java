@@ -1,9 +1,13 @@
 package com.fx.xzt.sys.mapper;
 
 
+import com.fx.xzt.sys.model.UserLoginModel;
 import org.springframework.stereotype.Repository;
 
 import com.fx.xzt.sys.entity.UserLogin;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -17,4 +21,7 @@ import com.fx.xzt.sys.entity.UserLogin;
 @Repository
 public interface UserLoginMapper extends BaseMapper<UserLogin>{
 	int updateByIdSelective(UserLogin userLogin);
+
+	List<UserLoginModel> getByRegisterMessage(Map<String,Object> map);
+
 }
