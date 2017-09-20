@@ -19,13 +19,14 @@ public class Users implements Serializable{
 
     private String phone;
 
-    private String sex;
+    //private String sex;
 
     private String status;
 
     private Date createTime;
 
     private Date updateTime;
+    private Long pid;
 
     public Long getId() {
         return id;
@@ -67,13 +68,13 @@ public class Users implements Serializable{
         this.phone = phone == null ? null : phone.trim();
     }
 
-    public String getSex() {
+    /*public String getSex() {
         return sex;
     }
 
     public void setSex(String sex) {
         this.sex = sex == null ? null : sex.trim();
-    }
+    }*/
 
     public String getStatus() {
         return status;
@@ -99,7 +100,15 @@ public class Users implements Serializable{
         this.updateTime = updateTime;
     }
 
-	@Override
+    public Long getPid() {
+        return pid;
+    }
+
+    public void setPid(Long pid) {
+        this.pid = pid;
+    }
+
+    @Override
 	public String toString() {
 		return "UserInfo [password=" + password + ", phone=" + phone + "]";
 	}

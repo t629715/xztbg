@@ -7,6 +7,71 @@
     <result column="Password" property="password" jdbcType="VARCHAR" />
     <result column="Status" property="status" jdbcType="SMALLINT" />
   </resultMap>
+    <resultMap id="RegisterResultMap" type="com.fx.xzt.sys.model.UserLoginModel" >
+        <result column="UserID" property="userid" jdbcType="BIGINT" />
+        <result column="UserName" property="username" jdbcType="VARCHAR" />
+        <result column="Status" property="status" jdbcType="SMALLINT" />
+        <result column="RegisterTime" property="registerTime" jdbcType="TIMESTAMP" />
+        <result column="RegisterFrom" property="registerFrom" jdbcType="VARCHAR" />
+        <result column="RegisterIp" property="registerIp" jdbcType="VARCHAR" />
+        <result column="attribution" property="attribution" jdbcType="VARCHAR" />
+        <result column="lastlogintime" property="lastLoginTime"  jdbcType="TIMESTAMP" />
+        <result column="lastloginfrom" property="lastLoginFrom" jdbcType="VARCHAR" />
+        <result column="lastfromip" property="lastFromIp" jdbcType="VARCHAR" />
+        <result column="agent_id" property="agentsId" jdbcType="BIGINT" />
+        <result column="agent_name" property="agentsName" jdbcType="VARCHAR" />
+        <result column="broker_id" property="brokerId" jdbcType="BIGINT" />
+        <result column="broker_name" property="brokerName" jdbcType="VARCHAR" />
+    </resultMap>
+    <!--注册信息查询开始-htt-->
+    <select id="getByRegisterMessage" resultMap="RegisterResultMap" parameterType="java.util.Map" >
+        SELECT l.UserID , l.UserName ,i.agent_id , u.user_name agent_name, i.broker_id, u1.user_name broker_name ,
+        l.Status ,i.RegisterTime, i.RegisterFrom, i.RegisterIp, i.attribution,
+        m.lastlogintime, m.lastloginfrom, m.lastfromip
+        FROM User_Login l LEFT JOIN User_Info i ON l.UserID = i.UserID
+        LEFT JOIN users u ON i.agent_id = u.id
+        LEFT JOIN users u1 ON i.broker_id = u1.id
+        LEFT JOIN (SELECT userid useridm,MAX(loginTime) lastlogintime,loginFrom lastloginfrom,fromIp lastfromip FROM User_LoginInfo GROUP BY  useridm) m
+        ON l.UserID = m.useridm
+        <where>
+            <if test="userName != null and userName != '' ">
+                and l.UserName = #{userName,jdbcType=VARCHAR}
+            </if>
+            <if test="startTime !=null and startTime !='' ">
+                and i.RegisterTime &gt;=#{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime !=null and endTime != '' ">
+                and i.RegisterTime &lt;=#{endTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="registerFrom != null and registerFrom !='' ">
+                and i.RegisterFrom = #{registerFrom,jdbcType=VARCHAR}
+            </if>
+            <if test="registerIp != null and registerIp !='' ">
+                and i.RegisterIP = #{registerIp,jdbcType=VARCHAR}
+            </if>
+            <if test="lastStartTime !=null and lastStartTime !='' ">
+                and m.lastlogintime &gt;=#{lastStartTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="lastEndTime !=null and lastEndTime != '' ">
+                and m.lastlogintime &lt;=#{lastEndTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="lastLoginFrom != null and lastLoginFrom !='' ">
+                and m.lastloginfrom = #{lastLoginFrom,jdbcType=VARCHAR}
+            </if>
+            <if test="agentsName != null and agentsName !='' ">
+                and u.agent_name = #{agentsName,jdbcType=VARCHAR}
+            </if>
+            <if test="brokerName != null and brokerName !='' ">
+                and u1.broker_name = #{brokerName,jdbcType=VARCHAR}
+            </if>
+            <if test="attribution != null and attribution !='' ">
+                and i.attribution = #{attribution,jdbcType=VARCHAR}
+            </if>
+        </where>
+        order by i.RegisterTime DESC
+    </select>
+    <!--注册信息查询结束-->
+
    <update id="updateByIdSelective" parameterType="com.fx.xzt.sys.entity.UserLogin" >
     update User_Login
     <set >
@@ -22,6 +87,7 @@
     </set>
     where UserID = #{userid,jdbcType=BIGINT}
   </update>
+
   <!-- <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >

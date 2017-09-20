@@ -2,21 +2,70 @@ package com.fx.xzt.sys.service.impl;
 
 import javax.annotation.Resource;
 
+import com.fx.xzt.sys.model.UserLoginModel;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import com.fx.xzt.sys.entity.UserLogin;
 import com.fx.xzt.sys.mapper.UserLoginMapper;
 import com.fx.xzt.sys.service.UserLoginService;
 
-@Service
-public class UserLoginServiceImpl extends BaseService<UserLogin> implements UserLoginService{
-	
-	@Resource
-	UserLoginMapper userLoginMapper;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-	public int updateByIdSelective(UserLogin userLogin) {
-		return userLoginMapper.updateByIdSelective(userLogin);
-	}
-	
-	
+
+@Service
+public class UserLoginServiceImpl extends BaseService<UserLogin> implements UserLoginService {
+
+    @Resource
+    UserLoginMapper userLoginMapper;
+
+    public int updateByIdSelective(UserLogin userLogin) {
+        return userLoginMapper.updateByIdSelective(userLogin);
+    }
+
+    public PageInfo<UserLoginModel> getByRegisterMessage(String userName, String startTime, String endTime,
+            String registerFrom, String registerIp, String lastStartTime, String lastEndTime, String lastLoginFrom,
+            String agentsName, String brokerName, String attribution, Integer pageNum, Integer pageSize) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("userName", userName);
+        map.put("startTime", startTime);
+        map.put("endTime", endTime);
+        map.put("registerFrom", registerFrom);
+        map.put("registerIp", registerIp);
+        map.put("lastStartTime", lastStartTime);
+        map.put("lastEndTime", lastEndTime);
+        map.put("lastLoginFrom", lastLoginFrom);
+        map.put("agentsName", agentsName);
+        map.put("brokerName", brokerName);
+        map.put("attribution", attribution);
+        PageHelper.startPage(pageNum, pageSize);
+        List<UserLoginModel> list = userLoginMapper.getByRegisterMessage(map);
+        PageInfo<UserLoginModel> pagehelper = new PageInfo<>(list);
+        return pagehelper;
+    }
+
+    public List<UserLoginModel> getExcelByRegister(String userName, String startTime, String endTime,
+        String registerFrom, String registerIp, String lastStartTime,
+        String lastEndTime, String lastLoginFrom,
+        String agentsName, String brokerName, String attribution){
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("userName", userName);
+        map.put("startTime", startTime);
+        map.put("endTime", endTime);
+        map.put("registerFrom", registerFrom);
+        map.put("registerIp", registerIp);
+        map.put("lastStartTime", lastStartTime);
+        map.put("lastEndTime", lastEndTime);
+        map.put("lastLoginFrom", lastLoginFrom);
+        map.put("agentsName", agentsName);
+        map.put("brokerName", brokerName);
+        map.put("attribution", attribution);
+        List<UserLoginModel> list = userLoginMapper.getByRegisterMessage(map);
+        return list;
+    }
+
+
 }
