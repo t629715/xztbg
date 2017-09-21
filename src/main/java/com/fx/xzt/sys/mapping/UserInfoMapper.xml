@@ -58,7 +58,8 @@
         u.agent_id AS agentId, ua.user_name AS agentName, u.broker_id AS brokerId, ub.user_name AS brokerName ,
         u.IDCard AS idcard,b.BankName AS bankName,ub.AccountNum AS accountNum,
         a.rmb AS rmb,a.finance AS finance,frozen_rmb AS frozenRmb,total_income AS totalIncome,
-        g.gold as gold, a.frozen_gold as frozenGold
+        g.gold as gold
+        <!--, a.frozen_gold as frozenGold
         FROM User_Info u
         RIGHT JOIN User_Login l ON u.UserID = l.UserID
         LEFT JOIN users ua ON u.agent_id = ua.id
