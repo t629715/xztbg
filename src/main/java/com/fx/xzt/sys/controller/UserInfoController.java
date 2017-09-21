@@ -46,12 +46,12 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/selectByAll")
 	@ResponseBody
-	public PageInfo<UserInfoModel> selectByAll(String userName,String realName,Integer authStatic,String iDCard,String applyTimeStart,String applyTimeEnd,String approveTimeStart,String approveTimeEnd,Integer pageNum,Integer pageSize){
-		return userInfoService.getfindAll(userName, realName, authStatic, iDCard, applyTimeStart, applyTimeEnd, approveTimeStart, approveTimeEnd, pageNum, pageSize);
+	public PageInfo<UserInfoModel> selectByAll(String userName,String realName,String applyTimeStart,String applyTimeEnd,Integer pageNum,Integer pageSize){
+		return userInfoService.getfindAll(userName, realName, applyTimeStart, applyTimeEnd, pageNum, pageSize);
 	}
 	/**
 	 * 认证
-	 * @param type 1 通过  2 不通过
+	 * @param type 1 通过  0 不通过
 	 * @param userId
 	 * @return 1成功 0失败
 	 */
@@ -77,15 +77,7 @@ public class UserInfoController {
 		return map;
 	}
 	
-	/**
-	 * 账户信息
-	 */
-	@RequestMapping(value="/selectByAccountMessage")
-	@ResponseBody
-	public PageInfo<UserInfoModel> selectByAccountMessage(String userName,String status,String realName,String accountNum,String phone,String startTime,String endTime,String registerFrom,Integer pageNum,Integer pageSize){
-		return userInfoService.getByAccountMessage(userName, status, realName, accountNum, phone, startTime, endTime, registerFrom, pageNum, pageSize);
-	}
-
+	/*----------htt-----------*/
 	/**
 	 * 注册信息
 	 */
@@ -120,5 +112,55 @@ public class UserInfoController {
 		String[] heads = {"用户账号","代理商","经纪人","注册时间","注册来源","注册IP","归属地","最后一次登录时间","最后一次登录方式","最后一次登录IP","状态"};
 		String[] colums = {"username","agentsName","brokerName","registerTime","registerFrom","registerIp","attribution","lastLoginTime","lastLoginFrom","lastFromIp","statusName"};
 		poi.doExport(request, response, list, "注册信息", "注册信息", heads, colums);
+	}
+
+	/**
+	 * 实名认证查询
+	 * @param userName
+	 * @param realName
+	 * @param applyTimeStart
+	 * @param applyTimeEnd
+	 * @param pageNum
+	 * @param pageSize
+	 * @return
+	 */
+	@RequestMapping(value="/selectByRealNameAuth")
+	@ResponseBody
+	public PageInfo<UserInfoModel> selectByRealNameAuth(String userName,String realName,String applyTimeStart,String applyTimeEnd,Integer pageNum,Integer pageSize){
+		return userInfoService.getByRealNameAuth(userName, realName, applyTimeStart, applyTimeEnd, pageNum, pageSize);
+	}
+
+	/**
+	 * 账户信息
+	 */
+	@RequestMapping(value="/selectByAccountMessage")
+	@ResponseBody
+	public PageInfo<UserInfoModel> selectByAccountMessage(String userName,String agentsName, String brokerName,String startTime,String endTime,Integer pageNum,Integer pageSize){
+		return userInfoService.getByAccountMessage(userName, agentsName, brokerName, startTime, endTime, pageNum, pageSize);
+	}
+
+	/**
+	 * 导出excel--账户信息
+	 */
+	@RequestMapping(value="/excelAccountMessage")
+	@ResponseBody
+	public void excelAccountMessage(HttpServletRequest request, HttpServletResponse response,String userName,String agentName, String brokerName,String startTime,String endTime){
+		List<UserInfoModel> list = userInfoService.getExcelAccount(userName,agentName, brokerName,startTime,endTime);
+		POIUtils poi = new POIUtils();
+		String[] heads = {"用户账号","姓名","注册时间","代理商","经纪人","身份证号","银行卡","人民币余额","人民币冻结","人民币理财","利息","黄金"};
+		String[] colums = {"userName","realname","registertime","agentName","brokerName","idcard","accountNum","rmb","frozenRmb","finance","totalIncome","gold"};
+		poi.doExport(request, response, list, "账户信息", "账户信息", heads, colums);
+	}
+
+	/**
+	 * 获取账户信息列表--金额统计
+	 * @return
+	 */
+	@RequestMapping(value="/selectAccountCount")
+	@ResponseBody
+	public Map<String,Object> selectAccountCount(){
+		Map<String,Object> map = new HashMap<String,Object>();
+		map = userInfoService.getByAccountCount();
+		return map;
 	}
 }

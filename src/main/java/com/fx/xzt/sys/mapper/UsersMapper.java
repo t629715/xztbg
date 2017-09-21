@@ -38,4 +38,17 @@ public interface UsersMapper extends BaseMapper<Users>{
 	
 	Users selectById(Long id);
 
+	/**
+	 *  获取代理商列表
+	 * @return
+	 */
+	List<Map<String,Object>> selectByAgentMessage();
+
+	/**
+	 * 获取经纪人列表
+	 * @param map
+	 * @return
+	 */
+	List<Map<String,Object>> selectByBrokerMessage(Map<String,Object> map);
+
 }

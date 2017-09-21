@@ -1,6 +1,7 @@
 package com.fx.xzt.sys.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.model.UsersModel;
@@ -50,5 +51,18 @@ public interface UsersService extends IService<Users>{
 	int deleteById(Long id);
 	
 	PageInfo<UsersModel> selectByUsersModel(String phone,String startTime,String endTime,Integer pageNum,Integer pageSize);
+
+	/**
+	 *  获取代理商列表
+	 * @return
+	 */
+	List<Map<String,Object>> selectByAgentMessage();
+
+	/**
+	 * 获取经纪人列表
+	 * @param pid
+	 * @return
+	 */
+	List<Map<String,Object>> selectByBrokerMessage(Long pid);
 
 }

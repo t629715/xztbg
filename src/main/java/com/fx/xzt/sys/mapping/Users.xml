@@ -1,168 +1,184 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fx.xzt.sys.mapper.UsersMapper" >
-  <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.Users" >
-    <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="user_name" property="userName" jdbcType="VARCHAR" />
-    <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="email" property="email" jdbcType="VARCHAR" />
-    <result column="phone" property="phone" jdbcType="VARCHAR" />
-    <!--<result column="sex" property="sex" jdbcType="VARCHAR" />-->
-    <result column="status" property="status" jdbcType="VARCHAR" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-    <result column="pid" property="pid" jdbcType="BIGINT" />
-  </resultMap>
-  <sql id="Base_Column_List" >
+<mapper namespace="com.fx.xzt.sys.mapper.UsersMapper">
+    <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.Users">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <!--<result column="sex" property="sex" jdbcType="VARCHAR" />-->
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="pid" property="pid" jdbcType="BIGINT"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     id, user_name, password, email, phone, status, create_time, update_time
   </sql>
-  <select id="selectAll" resultMap="BaseResultMap" >
-    select
-    <include refid="Base_Column_List" />
-    from users
-  </select>
-   <select id="selectByPhone" resultMap="BaseResultMap" parameterType="java.lang.String">
-    select
-    <include refid="Base_Column_List" />
-    from users
-    where phone = #{phone,jdbcType=VARCHAR}
-  </select>
-  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
-    select
-    <include refid="Base_Column_List" />
-    from users
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <select id="selectByUsersModel" resultType="com.fx.xzt.sys.model.UsersModel" parameterType="java.util.Map">
-    select u.id,u.phone,u.password,u.create_time as createTime,GROUP_CONCAT(r.name) as rname,u.user_name as userName
-	from users u
-	left join users_user_role ur on u.id = ur.uid
-	left join users_role r on r.id = ur.rid
-	<where>
-		<if test="phone != null and phone !='' " >
-			and phone = #{phone,jdbcType=VARCHAR}
-		</if>
-		<if test="startTime !=null and startTime !='' ">
-			and create_time &gt;=#{startTime,jdbcType=TIMESTAMP}
-		</if>
-		<if test="endTime !=null and endTime !='' ">
-			and create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
-		</if>
-	</where>
-	GROUP BY u.id,u.phone,u.password,u.create_time
-	order by u.create_time desc
-  </select>
-  <select id="getUserInfoNyName" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select
-    <include refid="Base_Column_List" />
-    from users
-    where user_name = #{user_name,jdbcType=BIGINT}
-  </select>
-  <select id="getUserInfo" resultMap="BaseResultMap" parameterType="java.util.Map" >
-    select
-    <include refid="Base_Column_List" />
-    from users
-    where user_name = #{username,jdbcType=BIGINT} and password=#{password,jdbcType=VARCHAR}
-  </select>
-  <select id="getUserInfoNyPhone" resultMap="BaseResultMap" parameterType="java.util.Map" >
-    select
-    <include refid="Base_Column_List" />
-    from users
-    where phone = #{phone,jdbcType=VARCHAR} and password=#{password,jdbcType=VARCHAR}
-  </select>
-  <insert id="insertUsers" parameterType="com.fx.xzt.sys.entity.Users" useGeneratedKeys="true" keyProperty="id">
-    insert into users
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="userName != null" >
-        user_name,
-      </if>
-      <if test="password != null" >
-        password,
-      </if>
-      <if test="email != null" >
-        email,
-      </if>
-      <if test="phone != null" >
-        phone,
-      </if>
-     <!-- <if test="sex != null" >
-        sex,
-      </if>-->
-      <if test="status != null" >
-        status,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="updateTime != null" >
-        update_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="userName != null" >
-        #{userName,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null" >
-        #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="email != null" >
-        #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="phone != null" >
-        #{phone,jdbcType=VARCHAR},
-      </if>
-     <!-- <if test="sex != null" >
-        #{sex,jdbcType=VARCHAR},
-      </if>-->
-      <if test="status != null" >
-        #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByIdSelective" parameterType="com.fx.xzt.sys.entity.Users" >
-    update users
-    <set >
-      <if test="userName != null" >
-        user_name = #{userName,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null" >
-        password = #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="email != null" >
-        email = #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="phone != null" >
-        phone = #{phone,jdbcType=VARCHAR},
-      </if>
-     <!-- <if test="sex != null" >
-        sex = #{sex,jdbcType=VARCHAR},
-      </if>-->
-      <if test="status != null" >
-        status = #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <delete id="deleteById" parameterType="java.lang.Long" >
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from users
+    </select>
+    <select id="selectByPhone" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from users
+        where phone = #{phone,jdbcType=VARCHAR}
+    </select>
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from users
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectByUsersModel" resultType="com.fx.xzt.sys.model.UsersModel" parameterType="java.util.Map">
+        select u.id,u.phone,u.password,u.create_time as createTime,GROUP_CONCAT(r.name) as rname,u.user_name as userName
+        from users u
+        left join users_user_role ur on u.id = ur.uid
+        left join users_role r on r.id = ur.rid
+        <where>
+            <if test="phone != null and phone !='' ">
+                and phone = #{phone,jdbcType=VARCHAR}
+            </if>
+            <if test="startTime !=null and startTime !='' ">
+                and create_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime !=null and endTime !='' ">
+                and create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        GROUP BY u.id,u.phone,u.password,u.create_time
+        order by u.create_time desc
+    </select>
+    <select id="getUserInfoNyName" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from users
+        where user_name = #{user_name,jdbcType=BIGINT}
+    </select>
+    <select id="getUserInfo" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from users
+        where user_name = #{username,jdbcType=BIGINT} and password=#{password,jdbcType=VARCHAR}
+    </select>
+    <select id="getUserInfoNyPhone" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from users
+        where phone = #{phone,jdbcType=VARCHAR} and password=#{password,jdbcType=VARCHAR}
+    </select>
+    <insert id="insertUsers" parameterType="com.fx.xzt.sys.entity.Users" useGeneratedKeys="true" keyProperty="id">
+        insert into users
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <!-- <if test="sex != null" >
+               sex,
+             </if>-->
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <!-- <if test="sex != null" >
+               #{sex,jdbcType=VARCHAR},
+             </if>-->
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByIdSelective" parameterType="com.fx.xzt.sys.entity.Users">
+        update users
+        <set>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <!-- <if test="sex != null" >
+               sex = #{sex,jdbcType=VARCHAR},
+             </if>-->
+            <if test="status != null">
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <delete id="deleteById" parameterType="java.lang.Long">
     delete from users
     where id = #{id,jdbcType=BIGINT}
   </delete>
+    <!--获取代理商列表开始-->
+    <select id="selectByAgentMessage" resultType="java.util.Map">
+      SELECT id,user_name agentName FROM users WHERE STATUS=1 AND pid=1 ORDER  by create_time desc
+    </select>
+    <!--获取代理商列表结束-->
+    <!--获取经纪人列表开始-->
+    <select id="selectByBrokerMessage" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT id,user_name brokerName,pid FROM users
+        <where>
+            <if test="pid != null and pid!='' ">
+                and pid = #{pid,jdbcType=BIGINT}
+            </if>
+        </where>
+        ORDER  by create_time desc
+    </select>
+    <!--获取经纪人列表结束-->
 </mapper>

@@ -23,18 +23,14 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 	@Resource
 	UserInfoMapper userInfoMapper;
 	
-	public PageInfo<UserInfoModel> getfindAll(String userName, String realName, Integer authStatic, String iDCard,
-			String applyTimeStart, String applyTimeEnd, String approveTimeStart, String approveTimeEnd, Integer pageNum,
+	public PageInfo<UserInfoModel> getfindAll(String userName, String realName, String applyTimeStart, String applyTimeEnd, Integer pageNum,
 			Integer pageSize) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
 		map.put("realName", realName);
-		map.put("authStatic", authStatic);
-		map.put("iDCard", iDCard);
 		map.put("applyTimeStart", applyTimeStart);
 		map.put("applyTimeEnd", applyTimeEnd);
-		map.put("approveTimeStart", approveTimeStart);
-		map.put("approveTimeEnd", approveTimeEnd);
+		//map.put("realNameAuthApproveState", 0);
 		PageHelper.startPage(pageNum,pageSize);
 		List<UserInfoModel> list = userInfoMapper.getByAll(map);
 		PageInfo<UserInfoModel> pagehelper = new PageInfo<UserInfoModel>(list);
@@ -54,17 +50,17 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 			u.setIdcard("");
 			u.setIdcardpath("");
 			u.setRealname("");
-			u.setIDCardBackPath("");
+			u.setIdcardbackpath("");
 		}else{
 			return 0;
 		}
 		return userInfoMapper.editUserInfo(u);
 	}
 	
-	//以下是 优顾认证
+	//以下是 优顾认证----注释htt
 	
 	public int editYGUserInfo(int type, Long userId) {
-		UserInfo u = new UserInfo();
+		/*UserInfo u = new UserInfo();
 		u.setUserid(userId);
 		u.setCertificateauthapprovetime(new Date());
 		if(type==1){
@@ -77,23 +73,70 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		}else{
 			return 0;
 		}
-		return userInfoMapper.editUserInfo(u);
+		return userInfoMapper.editUserInfo(u);*/
+		return -1;
 	}
 
-	public PageInfo<UserInfoModel> getByAccountMessage(String userName, String status, String realName,
-			String accountNum, String phone, String startTime, String endTime, String registerFrom, Integer pageNum,
-			Integer pageSize) {
+	public PageInfo<UserInfoModel> getByAccountMessage(String userName,String agentsName, String brokerName,String startTime,String endTime,Integer pageNum,Integer pageSize) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
-		map.put("status", status);
-		map.put("realName", realName);
-		map.put("accountNum", accountNum);
-		map.put("phone", phone);
+		map.put("agentsName", agentsName);
+		map.put("brokerName", brokerName);
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
-		map.put("registerFrom", registerFrom);
 		PageHelper.startPage(pageNum,pageSize);
 		List<UserInfoModel> list = userInfoMapper.getByAccountMessage(map);
 		return new PageInfo<UserInfoModel>(list);
+	}
+
+	/**
+	 * 实名认证列表
+	 * @param userName 用户账号
+	 * @param realName 用户姓名
+	 * @param applyTimeStart 申请开始时间
+	 * @param applyTimeEnd 申请结束时间
+	 * @param pageNum
+	 * @param pageSize
+	 * @return
+	 */
+	public PageInfo<UserInfoModel> getByRealNameAuth(String userName, String realName, String applyTimeStart, String applyTimeEnd, Integer pageNum,
+											  Integer pageSize) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("userName", userName);
+		map.put("realName", realName);
+		map.put("applyTimeStart", applyTimeStart);
+		map.put("applyTimeEnd", applyTimeEnd);
+		PageHelper.startPage(pageNum,pageSize);
+		List<UserInfoModel> list = userInfoMapper.getByRealNameAuth(map);
+		PageInfo<UserInfoModel> pagehelper = new PageInfo<UserInfoModel>(list);
+		return pagehelper;
+	}
+
+	/**
+	 * 导出账户信息
+	 * @param userName  用户名
+	 * @param agentsName 代理商用户名
+	 * @param brokerName 经纪人用户名
+	 * @param startTime  注册开始时间
+	 * @param endTime  注册结束时间
+	 * @return
+	 */
+	public List<UserInfoModel> getExcelAccount(String userName, String agentName, String brokerName, String startTime, String endTime) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("userName", userName);
+		map.put("agentName", agentName);
+		map.put("brokerName", brokerName);
+		map.put("startTime", startTime);
+		map.put("endTime", endTime);
+		List<UserInfoModel> list = userInfoMapper.getByAccountMessage(map);
+		return list;
+	}
+
+	/**
+	 * 获取账户信息列表金额黄金统计
+	 * @return
+	 */
+	public Map<String,Object> getByAccountCount() {
+		return userInfoMapper.getByAccountCount();
 	}
 }

@@ -1,26 +1,30 @@
 package com.fx.xzt.sys.model;
 
-import java.math.BigDecimal;
-
 import com.fx.xzt.sys.entity.UserInfo;
 
 public class UserInfoModel extends UserInfo{
 	
 	private String userIdString;
-	
 	private String userName;
-	
 	private Integer status;
-
+	private String agentName;
+	private String brokerName;
 	private String bankName;
-	
 	private String accountNum;
-	
-	private  BigDecimal balanceAmt;
-	
-	private  BigDecimal uBalanceAmt;
-	
-	private  BigDecimal uFrozenAmt;
+	private Integer rmb;
+	private Integer finance;
+	private Integer frozenRmb;
+	private Integer totalIncome;
+	private Float gold;
+	private Float frozenGold;
+
+	public String getUserIdString() {
+		return userIdString;
+	}
+
+	public void setUserIdString(String userIdString) {
+		this.userIdString = userIdString;
+	}
 
 	public String getUserName() {
 		return userName;
@@ -38,6 +42,22 @@ public class UserInfoModel extends UserInfo{
 		this.status = status;
 	}
 
+	public String getAgentName() {
+		return agentName;
+	}
+
+	public void setAgentName(String agentName) {
+		this.agentName = agentName;
+	}
+
+	public String getBrokerName() {
+		return brokerName;
+	}
+
+	public void setBrokerName(String brokerName) {
+		this.brokerName = brokerName;
+	}
+
 	public String getBankName() {
 		return bankName;
 	}
@@ -50,42 +70,55 @@ public class UserInfoModel extends UserInfo{
 		return accountNum;
 	}
 
+	public Integer getRmb() {
+		return rmb;
+	}
+
+	public void setRmb(Integer rmb) {
+		this.rmb = rmb;
+	}
+
+	public Integer getFinance() {
+		return finance;
+	}
+
+	public void setFinance(Integer finance) {
+		this.finance = finance;
+	}
+
+	public Integer getFrozenRmb() {
+		return frozenRmb;
+	}
+
+	public void setFrozenRmb(Integer frozenRmb) {
+		this.frozenRmb = frozenRmb;
+	}
+
+	public Integer getTotalIncome() {
+		return totalIncome;
+	}
+
+	public void setTotalIncome(Integer totalIncome) {
+		this.totalIncome = totalIncome;
+	}
+
 	public void setAccountNum(String accountNum) {
 		this.accountNum = accountNum;
 	}
 
-	public BigDecimal getBalanceAmt() {
-		return balanceAmt;
+	public Float getGold() {
+		return gold;
 	}
 
-	public void setBalanceAmt(BigDecimal balanceAmt) {
-		this.balanceAmt = balanceAmt;
+	public void setGold(Float gold) {
+		this.gold = gold;
 	}
 
-	public BigDecimal getuBalanceAmt() {
-		return uBalanceAmt;
+	public Float getFrozenGold() {
+		return frozenGold;
 	}
 
-	public void setuBalanceAmt(BigDecimal uBalanceAmt) {
-		this.uBalanceAmt = uBalanceAmt;
+	public void setFrozenGold(Float frozenGold) {
+		this.frozenGold = frozenGold;
 	}
-
-	public BigDecimal getuFrozenAmt() {
-		return uFrozenAmt;
-	}
-
-	public void setuFrozenAmt(BigDecimal uFrozenAmt) {
-		this.uFrozenAmt = uFrozenAmt;
-	}
-
-	public String getUserIdString() {
-		return userIdString;
-	}
-
-	public void setUserIdString(String userIdString) {
-		this.userIdString = userIdString;
-	}
-	
-	
-	
 }
