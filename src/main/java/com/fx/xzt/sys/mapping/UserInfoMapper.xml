@@ -1,580 +1,600 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fx.xzt.sys.mapper.UserInfoMapper" >
-  <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.UserInfo" >
-    <id column="UserID" property="userid" jdbcType="BIGINT" />
-    <result column="NickName" property="nickname" jdbcType="VARCHAR" />
-    <result column="ProfilePhotoPath" property="profilephotopath" jdbcType="VARCHAR" />
-    <result column="RegisterTime" property="registertime" jdbcType="TIMESTAMP" />
-    <result column="RegisterFrom" property="registerfrom" jdbcType="VARCHAR" />
-    <result column="PhoneNo" property="phoneno" jdbcType="VARCHAR" />
-    <result column="DeliveryAddress" property="deliveryaddress" jdbcType="VARCHAR" />
-    <result column="RealName" property="realname" jdbcType="VARCHAR" />
-    <result column="IDCard" property="idcard" jdbcType="VARCHAR" />
-    <result column="IDCardPath" property="idcardpath" jdbcType="VARCHAR" />
-    <result column="IDCardBackPath" property="IDCardBackPath" jdbcType="VARCHAR" />
-    <result column="RealNameAuthApplyTime" property="realnameauthapplytime" jdbcType="TIMESTAMP" />
-    <result column="RealNameAuthApproveTime" property="realnameauthapprovetime" jdbcType="TIMESTAMP" />
-    <result column="RealNameAuthApproveState" property="realnameauthapprovestate" jdbcType="SMALLINT" />
-    <result column="RealNameAuthStatus" property="realnameauthstatus" jdbcType="SMALLINT" />
-    <result column="CertificatePath" property="certificatepath" jdbcType="VARCHAR" />
-    <result column="CertificateAuthApplyTime" property="certificateauthapplytime" jdbcType="TIMESTAMP" />
-    <result column="CertificateAuthApproveTime" property="certificateauthapprovetime" jdbcType="TIMESTAMP" />
-    <result column="CertificateAuthApproveState" property="certificateauthapprovestate" jdbcType="SMALLINT" />
-    <result column="CertificateAuthStatus" property="certificateauthstatus" jdbcType="SMALLINT" />
-  </resultMap>
-   <sql id="Base_Column_List" >
+<mapper namespace="com.fx.xzt.sys.mapper.UserInfoMapper">
+    <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.UserInfo">
+        <id column="UserID" property="userid" jdbcType="BIGINT"/>
+        <result column="NickName" property="nickname" jdbcType="VARCHAR"/>
+        <result column="ProfilePhotoPath" property="profilephotopath" jdbcType="VARCHAR"/>
+        <result column="RegisterTime" property="registertime" jdbcType="TIMESTAMP"/>
+        <result column="RegisterFrom" property="registerfrom" jdbcType="VARCHAR"/>
+        <result column="PhoneNo" property="phoneno" jdbcType="VARCHAR"/>
+        <result column="DeliveryAddress" property="deliveryaddress" jdbcType="VARCHAR"/>
+        <result column="RealName" property="realname" jdbcType="VARCHAR"/>
+        <result column="IDCard" property="idcard" jdbcType="VARCHAR"/>
+        <result column="IDCardPath" property="idcardpath" jdbcType="VARCHAR"/>
+        <result column="IDCardBackPath" property="idcardbackpath" jdbcType="VARCHAR"/>
+        <result column="RealNameAuthApplyTime" property="realnameauthapplytime" jdbcType="TIMESTAMP"/>
+        <result column="RealNameAuthApproveTime" property="realnameauthapprovetime" jdbcType="TIMESTAMP"/>
+        <result column="RealNameAuthApproveState" property="realnameauthapprovestate" jdbcType="SMALLINT"/>
+        <result column="RealNameAuthStatus" property="realnameauthstatus" jdbcType="SMALLINT"/>
+        <result column="agent_id" property="agentId" jdbcType="BIGINT"/>
+        <result column="broker_id" property="brokerId" jdbcType="BIGINT"/>
+        <result column="RegisterIp" property="registerIp" jdbcType="VARCHAR"/>
+        <result column="Attribution" property="attribution" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     UserID, NickName, ProfilePhotoPath, RegisterTime, RegisterFrom, PhoneNo, DeliveryAddress, 
     RealName, IDCard, IDCardPath, RealNameAuthApplyTime, RealNameAuthApproveTime, RealNameAuthApproveState, 
-    RealNameAuthStatus, CertificatePath, CertificateAuthApplyTime, CertificateAuthApproveTime, 
-    CertificateAuthApproveState, CertificateAuthStatus
+    RealNameAuthStatus, agent_id, broker_id, RegisterIp, Attribution
   </sql>
-  <select id="getByAccountMessage" resultType="com.fx.xzt.sys.model.UserInfoModel" parameterType="java.util.Map" >
-  	select u.UserID as userIdString,l.UserName as userName,l.Status as status,u.NickName,u.RealName,
-  	u.IDCard,b.BankName as bankName,ub.AccountNum as accountNum,u.PhoneNo,u.DeliveryAddress,
-  	u.RegisterFrom,u.RegisterTime,a.BalanceAmt as balanceAmt,a.UBalanceAmt as uBalanceAmt,
-  	a.UFrozenAmt as uFrozenAmt
-	from User_Info u
-	right join User_Login l on u.UserID = l.UserID
-	<!-- left join User_BankCard ub on u.UserID = ub.UserID -->
-	left join (select * from User_BankCard where State=1) ub on u.UserID = ub.UserID
-	left join Bank b on ub.BankNo = b.BankNo
-	left join User_Account a on a.UserID = u.UserID
-	<where>
-		<if test="userName != null and userName != '' ">
-			and l.UserName = #{userName,jdbcType=VARCHAR}
-		</if>
-		<if test="status != null and status != '' ">
-			and l.Status = #{status,jdbcType=SMALLINT}
-		</if>
-		<if test="realName != null and realName != '' ">
-			and u.RealName= #{realName,jdbcType=VARCHAR}
-		</if>
-		<if test="accountNum != null and accountNum !='' ">
-			and ub.AccountNum = #{accountNum,jdbcType=VARCHAR}
-		</if>
-		<if test="phone != null and phone != '' ">
-			and u.PhoneNo = #{phone,jdbcType=VARCHAR}
-		</if>
-		<if test="registerFrom != null and registerFrom !='' ">
-			and u.RegisterFrom = #{registerFrom,jdbcType=VARCHAR}
-		</if>
-		<if test="startTime !=null and startTime !='' ">
-			and u.RegisterTime &gt;=#{startTime,jdbcType=TIMESTAMP}
-		</if>
-		<if test="endTime !=null and endTime != '' ">
-			and u.RegisterTime &lt;=#{endTime,jdbcType=TIMESTAMP}
-		</if>
-	</where>
-	order by RegisterTime DESC
-  </select>
-  <select id="getByAll" resultType="com.fx.xzt.sys.model.UserInfoModel" parameterType="java.util.Map" >
-    select l.userName,u.UserID as userIdString, NickName, ProfilePhotoPath, RegisterTime, RegisterFrom, PhoneNo, DeliveryAddress, 
-    RealName, IDCard, IDCardPath, RealNameAuthApplyTime, RealNameAuthApproveTime, RealNameAuthApproveState, 
-    RealNameAuthStatus, CertificatePath, CertificateAuthApplyTime, CertificateAuthApproveTime, 
-    CertificateAuthApproveState, CertificateAuthStatus
-    from User_Info u
-    inner join User_Login l on u.UserID = l.UserID
-    <where>
-		<if test="userName != null and userName!='' ">
-    		and l.UserName = #{userName,jdbcType=VARCHAR}
-    	</if>
-    	<if test="realName != null and realName!='' ">
-    		and RealName = #{realName,jdbcType=VARCHAR}
-    	</if>
-    	<if test="authStatic != null">
-    		and RealNameAuthApproveState = #{authStatic,jdbcType=SMALLINT}
-    	</if>
-    	<if test="iDCard != null and iDCard != '' ">
-    		and IDCard = #{iDCard,jdbcType=VARCHAR}
-    	</if>
-    	<if test="applyTimeStart !=null and applyTimeStart !='' ">
-			and RealNameAuthApplyTime &gt;=#{applyTimeStart,jdbcType=TIMESTAMP}
-		</if>
-		<if test="applyTimeEnd !=null and applyTimeEnd != '' ">
-			and RealNameAuthApplyTime &lt;=#{applyTimeEnd,jdbcType=TIMESTAMP}
-		</if>
-		<if test="approveTimeStart !=null and approveTimeStart != '' ">
-			and RealNameAuthApproveTime &gt;=#{approveTimeStart,jdbcType=TIMESTAMP}
-		</if>
-		<if test="approveTimeEnd !=null and approveTimeEnd != '' ">
-			and RealNameAuthApproveTime &lt;=#{approveTimeEnd,jdbcType=TIMESTAMP}
-		</if>
-    </where>
-    order by RealNameAuthApplyTime desc
-  </select>
-    <update id="editUserInfo" parameterType="com.fx.xzt.sys.entity.UserInfo" >
-    update User_Info
-    <set >
-      <if test="nickname != null" >
-        NickName = #{nickname,jdbcType=VARCHAR},
-      </if>
-      <if test="profilephotopath != null" >
-        ProfilePhotoPath = #{profilephotopath,jdbcType=VARCHAR},
-      </if>
-      <if test="registertime != null" >
-        RegisterTime = #{registertime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="registerfrom != null" >
-        RegisterFrom = #{registerfrom,jdbcType=VARCHAR},
-      </if>
-      <if test="phoneno != null" >
-        PhoneNo = #{phoneno,jdbcType=VARCHAR},
-      </if>
-      <if test="deliveryaddress != null" >
-        DeliveryAddress = #{deliveryaddress,jdbcType=VARCHAR},
-      </if>
-      <if test="realname != null" >
-        RealName = #{realname,jdbcType=VARCHAR},
-      </if>
-      <if test="idcard != null" >
-        IDCard = #{idcard,jdbcType=VARCHAR},
-      </if>
-      <if test="idcardpath != null" >
-        IDCardPath = #{idcardpath,jdbcType=VARCHAR},
-      </if>
-      <if test="IDCardBackPath != null" >
-                IDCardBackPath = #{IDCardBackPath,jdbcType=VARCHAR},
+    <!--实名认证查询开始-htt-->
+    <select id="getByRealNameAuth" resultType="com.fx.xzt.sys.model.UserInfoModel" parameterType="java.util.Map">
+        SELECT l.userName,u.UserID AS userIdString, RealName, IDCard, IDCardPath,IDCardBackPath, RealNameAuthApplyTime,
+        RealNameAuthApproveTime, RealNameAuthApproveState,RealNameAuthStatus
+        FROM User_Info u
+        INNER JOIN User_Login l ON u.UserID = l.UserID
+        <where>
+            and l.Status = 1
+            and u.RealNameAuthApproveState = 0
+            <if test="userName != null and userName!='' ">
+                and l.UserName = #{userName,jdbcType=VARCHAR}
             </if>
-      <if test="realnameauthapplytime != null" >
-        RealNameAuthApplyTime = #{realnameauthapplytime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="realnameauthapprovetime != null" >
-        RealNameAuthApproveTime = #{realnameauthapprovetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="realnameauthapprovestate != null" >
-        RealNameAuthApproveState = #{realnameauthapprovestate,jdbcType=SMALLINT},
-      </if>
-      <if test="realnameauthstatus != null" >
-        RealNameAuthStatus = #{realnameauthstatus,jdbcType=SMALLINT},
-      </if>
-      <if test="certificatepath != null" >
-        CertificatePath = #{certificatepath,jdbcType=VARCHAR},
-      </if>
-      <if test="certificateauthapplytime != null" >
-        CertificateAuthApplyTime = #{certificateauthapplytime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="certificateauthapprovetime != null" >
-        CertificateAuthApproveTime = #{certificateauthapprovetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="certificateauthapprovestate != null" >
-        CertificateAuthApproveState = #{certificateauthapprovestate,jdbcType=SMALLINT},
-      </if>
-      <if test="certificateauthstatus != null" >
-        CertificateAuthStatus = #{certificateauthstatus,jdbcType=SMALLINT},
-      </if>
-    </set>
-    where UserID = #{userid,jdbcType=BIGINT}
-  </update>
-<!--   <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List" >
-    UserID, NickName, ProfilePhotoPath, RegisterTime, RegisterFrom, PhoneNo, DeliveryAddress, 
-    RealName, IDCard, IDCardPath, RealNameAuthApplyTime, RealNameAuthApproveTime, RealNameAuthApproveState, 
-    RealNameAuthStatus, CertificatePath, CertificateAuthApplyTime, CertificateAuthApproveTime, 
-    CertificateAuthApproveState, CertificateAuthStatus
-  </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fx.xzt.sys.entity.UserInfoExample" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from User_Info
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
-    <include refid="Base_Column_List" />
-    from User_Info
-    where UserID = #{userid,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from User_Info
-    where UserID = #{userid,jdbcType=BIGINT}
-  </delete>
-  <delete id="deleteByExample" parameterType="com.fx.xzt.sys.entity.UserInfoExample" >
-    delete from User_Info
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" parameterType="com.fx.xzt.sys.entity.UserInfo" >
-    insert into User_Info (UserID, NickName, ProfilePhotoPath, 
-      RegisterTime, RegisterFrom, PhoneNo, 
-      DeliveryAddress, RealName, IDCard, 
-      IDCardPath, RealNameAuthApplyTime, RealNameAuthApproveTime, 
-      RealNameAuthApproveState, RealNameAuthStatus, 
-      CertificatePath, CertificateAuthApplyTime, 
-      CertificateAuthApproveTime, CertificateAuthApproveState, 
-      CertificateAuthStatus)
-    values (#{userid,jdbcType=BIGINT}, #{nickname,jdbcType=VARCHAR}, #{profilephotopath,jdbcType=VARCHAR}, 
-      #{registertime,jdbcType=TIMESTAMP}, #{registerfrom,jdbcType=VARCHAR}, #{phoneno,jdbcType=VARCHAR}, 
-      #{deliveryaddress,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, 
-      #{idcardpath,jdbcType=VARCHAR}, #{realnameauthapplytime,jdbcType=TIMESTAMP}, #{realnameauthapprovetime,jdbcType=TIMESTAMP}, 
-      #{realnameauthapprovestate,jdbcType=SMALLINT}, #{realnameauthstatus,jdbcType=SMALLINT}, 
-      #{certificatepath,jdbcType=VARCHAR}, #{certificateauthapplytime,jdbcType=TIMESTAMP}, 
-      #{certificateauthapprovetime,jdbcType=TIMESTAMP}, #{certificateauthapprovestate,jdbcType=TIMESTAMP}, 
-      #{certificateauthstatus,jdbcType=SMALLINT})
-  </insert>
-  <insert id="insertSelective" parameterType="com.fx.xzt.sys.entity.UserInfo" >
-    insert into User_Info
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="userid != null" >
-        UserID,
-      </if>
-      <if test="nickname != null" >
-        NickName,
-      </if>
-      <if test="profilephotopath != null" >
-        ProfilePhotoPath,
-      </if>
-      <if test="registertime != null" >
-        RegisterTime,
-      </if>
-      <if test="registerfrom != null" >
-        RegisterFrom,
-      </if>
-      <if test="phoneno != null" >
-        PhoneNo,
-      </if>
-      <if test="deliveryaddress != null" >
+            <if test="realName != null and realName!='' ">
+                and RealName = #{realName,jdbcType=VARCHAR}
+            </if>
+            <if test="applyTimeStart !=null and applyTimeStart !='' ">
+                and RealNameAuthApplyTime &gt;=#{applyTimeStart,jdbcType=TIMESTAMP}
+            </if>
+            <if test="applyTimeEnd !=null and applyTimeEnd != '' ">
+                and RealNameAuthApplyTime &lt;=#{applyTimeEnd,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        order by RealNameAuthApplyTime desc
+    </select>
+    <!--实名认证查询结束-->
+    <!--账户信息查询-->
+    <select id="getByAccountMessage" resultType="com.fx.xzt.sys.model.UserInfoModel" parameterType="java.util.Map">
+        SELECT u.UserID AS userIdString,l.UserName AS userName,l.Status AS STATUS,u.RealName,
+        u.agent_id AS agentId, ua.user_name AS agentName, u.broker_id AS brokerId, ub.user_name AS brokerName ,
+        u.IDCard AS idcard,b.BankName AS bankName,ub.AccountNum AS accountNum,
+        a.rmb AS rmb,a.finance AS finance,frozen_rmb AS frozenRmb,total_income AS totalIncome,
+        g.gold as gold
+        <!--, a.frozen_gold as frozenGold
+        FROM User_Info u
+        RIGHT JOIN User_Login l ON u.UserID = l.UserID
+        LEFT JOIN users ua ON u.agent_id = ua.id
+        LEFT JOIN users ub ON u.broker_id = ub.id
+        LEFT JOIN (SELECT * FROM User_BankCard WHERE State=1) ub ON u.UserID = ub.UserID
+        LEFT JOIN Bank b ON ub.BankNo = b.BankNo
+        LEFT JOIN user_account a ON a.user_id = u.UserID
+        left join user_gold_account g on g.user_id = u.UserID
+        <where>
+            and l.Status = 1
+            <if test="userName != null and userName != '' ">
+                and l.UserName = #{userName,jdbcType=VARCHAR}
+            </if>
+            <if test="agentName != null and agentName !='' ">
+                and ua.agent_name = #{agentName,jdbcType=VARCHAR}
+            </if>
+            <if test="brokerName != null and brokerName !='' ">
+                and ub.broker_name = #{brokerName,jdbcType=VARCHAR}
+            </if>
+            <if test="startTime !=null and startTime !='' ">
+                and u.RegisterTime &gt;=#{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime !=null and endTime != '' ">
+                and u.RegisterTime &lt;=#{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        order by RegisterTime DESC
+    </select>
+    <!--账户信息查询结束-->
+    <!--账户信息查询金额统计开始-->
+    <select id="getByAccountCount" resultType="java.util.Map" >
+      SELECT SUM(rmb) rmb, SUM(finance) finace, SUM(frozen_rmb) frozenRmb, SUM(total_income) AS totalIncome, SUM(gold) gold
+      FROM User_Login l LEFT JOIN user_account a ON l.UserID = a.user_id
+      LEFT JOIN user_gold_account ga ON ga.user_id = l.UserID
+      WHERE l.Status = 1
+    </select>
+    <!--账户信息查询金额统计结束-->
+
+    <select id="getByAll" resultType="com.fx.xzt.sys.model.UserInfoModel" parameterType="java.util.Map">
+        SELECT l.userName,u.UserID AS userIdString, NickName, ProfilePhotoPath, RegisterTime, RegisterFrom, PhoneNo,
         DeliveryAddress,
-      </if>
-      <if test="realname != null" >
-        RealName,
-      </if>
-      <if test="idcard != null" >
-        IDCard,
-      </if>
-      <if test="idcardpath != null" >
-        IDCardPath,
-      </if>
-      <if test="realnameauthapplytime != null" >
-        RealNameAuthApplyTime,
-      </if>
-      <if test="realnameauthapprovetime != null" >
-        RealNameAuthApproveTime,
-      </if>
-      <if test="realnameauthapprovestate != null" >
+        RealName, IDCard, IDCardPath,IDCardBackPath, RealNameAuthApplyTime, RealNameAuthApproveTime,
         RealNameAuthApproveState,
-      </if>
-      <if test="realnameauthstatus != null" >
-        RealNameAuthStatus,
-      </if>
-      <if test="certificatepath != null" >
-        CertificatePath,
-      </if>
-      <if test="certificateauthapplytime != null" >
-        CertificateAuthApplyTime,
-      </if>
-      <if test="certificateauthapprovetime != null" >
-        CertificateAuthApproveTime,
-      </if>
-      <if test="certificateauthapprovestate != null" >
-        CertificateAuthApproveState,
-      </if>
-      <if test="certificateauthstatus != null" >
-        CertificateAuthStatus,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="userid != null" >
-        #{userid,jdbcType=BIGINT},
-      </if>
-      <if test="nickname != null" >
-        #{nickname,jdbcType=VARCHAR},
-      </if>
-      <if test="profilephotopath != null" >
-        #{profilephotopath,jdbcType=VARCHAR},
-      </if>
-      <if test="registertime != null" >
-        #{registertime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="registerfrom != null" >
-        #{registerfrom,jdbcType=VARCHAR},
-      </if>
-      <if test="phoneno != null" >
-        #{phoneno,jdbcType=VARCHAR},
-      </if>
-      <if test="deliveryaddress != null" >
-        #{deliveryaddress,jdbcType=VARCHAR},
-      </if>
-      <if test="realname != null" >
-        #{realname,jdbcType=VARCHAR},
-      </if>
-      <if test="idcard != null" >
-        #{idcard,jdbcType=VARCHAR},
-      </if>
-      <if test="idcardpath != null" >
-        #{idcardpath,jdbcType=VARCHAR},
-      </if>
-      <if test="realnameauthapplytime != null" >
-        #{realnameauthapplytime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="realnameauthapprovetime != null" >
-        #{realnameauthapprovetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="realnameauthapprovestate != null" >
-        #{realnameauthapprovestate,jdbcType=SMALLINT},
-      </if>
-      <if test="realnameauthstatus != null" >
-        #{realnameauthstatus,jdbcType=SMALLINT},
-      </if>
-      <if test="certificatepath != null" >
-        #{certificatepath,jdbcType=VARCHAR},
-      </if>
-      <if test="certificateauthapplytime != null" >
-        #{certificateauthapplytime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="certificateauthapprovetime != null" >
-        #{certificateauthapprovetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="certificateauthapprovestate != null" >
-        #{certificateauthapprovestate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="certificateauthstatus != null" >
-        #{certificateauthstatus,jdbcType=SMALLINT},
-      </if>
-    </trim>
-  </insert>
-  <select id="countByExample" parameterType="com.fx.xzt.sys.entity.UserInfoExample" resultType="java.lang.Integer" >
-    select count(*) from User_Info
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map" >
-    update User_Info
-    <set >
-      <if test="record.userid != null" >
-        UserID = #{record.userid,jdbcType=BIGINT},
-      </if>
-      <if test="record.nickname != null" >
-        NickName = #{record.nickname,jdbcType=VARCHAR},
-      </if>
-      <if test="record.profilephotopath != null" >
-        ProfilePhotoPath = #{record.profilephotopath,jdbcType=VARCHAR},
-      </if>
-      <if test="record.registertime != null" >
-        RegisterTime = #{record.registertime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.registerfrom != null" >
-        RegisterFrom = #{record.registerfrom,jdbcType=VARCHAR},
-      </if>
-      <if test="record.phoneno != null" >
-        PhoneNo = #{record.phoneno,jdbcType=VARCHAR},
-      </if>
-      <if test="record.deliveryaddress != null" >
-        DeliveryAddress = #{record.deliveryaddress,jdbcType=VARCHAR},
-      </if>
-      <if test="record.realname != null" >
-        RealName = #{record.realname,jdbcType=VARCHAR},
-      </if>
-      <if test="record.idcard != null" >
-        IDCard = #{record.idcard,jdbcType=VARCHAR},
-      </if>
-      <if test="record.idcardpath != null" >
-        IDCardPath = #{record.idcardpath,jdbcType=VARCHAR},
-      </if>
-      <if test="record.realnameauthapplytime != null" >
-        RealNameAuthApplyTime = #{record.realnameauthapplytime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.realnameauthapprovetime != null" >
-        RealNameAuthApproveTime = #{record.realnameauthapprovetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.realnameauthapprovestate != null" >
-        RealNameAuthApproveState = #{record.realnameauthapprovestate,jdbcType=SMALLINT},
-      </if>
-      <if test="record.realnameauthstatus != null" >
-        RealNameAuthStatus = #{record.realnameauthstatus,jdbcType=SMALLINT},
-      </if>
-      <if test="record.certificatepath != null" >
-        CertificatePath = #{record.certificatepath,jdbcType=VARCHAR},
-      </if>
-      <if test="record.certificateauthapplytime != null" >
-        CertificateAuthApplyTime = #{record.certificateauthapplytime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.certificateauthapprovetime != null" >
-        CertificateAuthApproveTime = #{record.certificateauthapprovetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.certificateauthapprovestate != null" >
-        CertificateAuthApproveState = #{record.certificateauthapprovestate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.certificateauthstatus != null" >
-        CertificateAuthStatus = #{record.certificateauthstatus,jdbcType=SMALLINT},
-      </if>
-    </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map" >
-    update User_Info
-    set UserID = #{record.userid,jdbcType=BIGINT},
-      NickName = #{record.nickname,jdbcType=VARCHAR},
-      ProfilePhotoPath = #{record.profilephotopath,jdbcType=VARCHAR},
-      RegisterTime = #{record.registertime,jdbcType=TIMESTAMP},
-      RegisterFrom = #{record.registerfrom,jdbcType=VARCHAR},
-      PhoneNo = #{record.phoneno,jdbcType=VARCHAR},
-      DeliveryAddress = #{record.deliveryaddress,jdbcType=VARCHAR},
-      RealName = #{record.realname,jdbcType=VARCHAR},
-      IDCard = #{record.idcard,jdbcType=VARCHAR},
-      IDCardPath = #{record.idcardpath,jdbcType=VARCHAR},
-      RealNameAuthApplyTime = #{record.realnameauthapplytime,jdbcType=TIMESTAMP},
-      RealNameAuthApproveTime = #{record.realnameauthapprovetime,jdbcType=TIMESTAMP},
-      RealNameAuthApproveState = #{record.realnameauthapprovestate,jdbcType=SMALLINT},
-      RealNameAuthStatus = #{record.realnameauthstatus,jdbcType=SMALLINT},
-      CertificatePath = #{record.certificatepath,jdbcType=VARCHAR},
-      CertificateAuthApplyTime = #{record.certificateauthapplytime,jdbcType=TIMESTAMP},
-      CertificateAuthApproveTime = #{record.certificateauthapprovetime,jdbcType=TIMESTAMP},
-      CertificateAuthApproveState = #{record.certificateauthapprovestate,jdbcType=TIMESTAMP},
-      CertificateAuthStatus = #{record.certificateauthstatus,jdbcType=SMALLINT}
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.fx.xzt.sys.entity.UserInfo" >
-    update User_Info
-    <set >
-      <if test="nickname != null" >
-        NickName = #{nickname,jdbcType=VARCHAR},
-      </if>
-      <if test="profilephotopath != null" >
-        ProfilePhotoPath = #{profilephotopath,jdbcType=VARCHAR},
-      </if>
-      <if test="registertime != null" >
-        RegisterTime = #{registertime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="registerfrom != null" >
-        RegisterFrom = #{registerfrom,jdbcType=VARCHAR},
-      </if>
-      <if test="phoneno != null" >
-        PhoneNo = #{phoneno,jdbcType=VARCHAR},
-      </if>
-      <if test="deliveryaddress != null" >
-        DeliveryAddress = #{deliveryaddress,jdbcType=VARCHAR},
-      </if>
-      <if test="realname != null" >
-        RealName = #{realname,jdbcType=VARCHAR},
-      </if>
-      <if test="idcard != null" >
-        IDCard = #{idcard,jdbcType=VARCHAR},
-      </if>
-      <if test="idcardpath != null" >
-        IDCardPath = #{idcardpath,jdbcType=VARCHAR},
-      </if>
-      <if test="realnameauthapplytime != null" >
-        RealNameAuthApplyTime = #{realnameauthapplytime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="realnameauthapprovetime != null" >
-        RealNameAuthApproveTime = #{realnameauthapprovetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="realnameauthapprovestate != null" >
-        RealNameAuthApproveState = #{realnameauthapprovestate,jdbcType=SMALLINT},
-      </if>
-      <if test="realnameauthstatus != null" >
-        RealNameAuthStatus = #{realnameauthstatus,jdbcType=SMALLINT},
-      </if>
-      <if test="certificatepath != null" >
-        CertificatePath = #{certificatepath,jdbcType=VARCHAR},
-      </if>
-      <if test="certificateauthapplytime != null" >
-        CertificateAuthApplyTime = #{certificateauthapplytime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="certificateauthapprovetime != null" >
-        CertificateAuthApproveTime = #{certificateauthapprovetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="certificateauthapprovestate != null" >
-        CertificateAuthApproveState = #{certificateauthapprovestate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="certificateauthstatus != null" >
-        CertificateAuthStatus = #{certificateauthstatus,jdbcType=SMALLINT},
-      </if>
-    </set>
-    where UserID = #{userid,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.fx.xzt.sys.entity.UserInfo" >
-    update User_Info
-    set NickName = #{nickname,jdbcType=VARCHAR},
-      ProfilePhotoPath = #{profilephotopath,jdbcType=VARCHAR},
-      RegisterTime = #{registertime,jdbcType=TIMESTAMP},
-      RegisterFrom = #{registerfrom,jdbcType=VARCHAR},
-      PhoneNo = #{phoneno,jdbcType=VARCHAR},
-      DeliveryAddress = #{deliveryaddress,jdbcType=VARCHAR},
-      RealName = #{realname,jdbcType=VARCHAR},
-      IDCard = #{idcard,jdbcType=VARCHAR},
-      IDCardPath = #{idcardpath,jdbcType=VARCHAR},
-      RealNameAuthApplyTime = #{realnameauthapplytime,jdbcType=TIMESTAMP},
-      RealNameAuthApproveTime = #{realnameauthapprovetime,jdbcType=TIMESTAMP},
-      RealNameAuthApproveState = #{realnameauthapprovestate,jdbcType=SMALLINT},
-      RealNameAuthStatus = #{realnameauthstatus,jdbcType=SMALLINT},
-      CertificatePath = #{certificatepath,jdbcType=VARCHAR},
-      CertificateAuthApplyTime = #{certificateauthapplytime,jdbcType=TIMESTAMP},
-      CertificateAuthApproveTime = #{certificateauthapprovetime,jdbcType=TIMESTAMP},
-      CertificateAuthApproveState = #{certificateauthapprovestate,jdbcType=TIMESTAMP},
-      CertificateAuthStatus = #{certificateauthstatus,jdbcType=SMALLINT}
-    where UserID = #{userid,jdbcType=BIGINT}
-  </update> -->
+        RealNameAuthStatus
+        FROM User_Info u
+        INNER JOIN User_Login l ON u.UserID = l.UserID
+        <where>
+            <!--<if test="realNameAuthApproveState != null and realNameAuthApproveState!='' ">
+                and u.RealNameAuthApproveState = #{realNameAuthApproveState,jdbcType=VARCHAR}
+            </if>-->
+            and u.RealNameAuthApproveState = 0
+            <if test="userName != null and userName!='' ">
+                and l.UserName = #{userName,jdbcType=VARCHAR}
+            </if>
+            <if test="realName != null and realName!='' ">
+                and RealName = #{realName,jdbcType=VARCHAR}
+            </if>
+            <if test="applyTimeStart !=null and applyTimeStart !='' ">
+                and RealNameAuthApplyTime &gt;=#{applyTimeStart,jdbcType=TIMESTAMP}
+            </if>
+            <if test="applyTimeEnd !=null and applyTimeEnd != '' ">
+                and RealNameAuthApplyTime &lt;=#{applyTimeEnd,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        order by RealNameAuthApplyTime desc
+    </select>
+    <update id="editUserInfo" parameterType="com.fx.xzt.sys.entity.UserInfo">
+        update User_Info
+        <set>
+            <if test="nickname != null">
+                NickName = #{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="profilephotopath != null">
+                ProfilePhotoPath = #{profilephotopath,jdbcType=VARCHAR},
+            </if>
+            <if test="registertime != null">
+                RegisterTime = #{registertime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="registerfrom != null">
+                RegisterFrom = #{registerfrom,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneno != null">
+                PhoneNo = #{phoneno,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryaddress != null">
+                DeliveryAddress = #{deliveryaddress,jdbcType=VARCHAR},
+            </if>
+            <if test="realname != null">
+                RealName = #{realname,jdbcType=VARCHAR},
+            </if>
+            <if test="idcard != null">
+                IDCard = #{idcard,jdbcType=VARCHAR},
+            </if>
+            <if test="idcardpath != null">
+                IDCardPath = #{idcardpath,jdbcType=VARCHAR},
+            </if>
+            <if test="idcardbackpath != null">
+                IDCardBackPath = #{idcardbackpath,jdbcType=VARCHAR},
+            </if>
+            <if test="realnameauthapplytime != null">
+                RealNameAuthApplyTime = #{realnameauthapplytime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="realnameauthapprovetime != null">
+                RealNameAuthApproveTime = #{realnameauthapprovetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="realnameauthapprovestate != null">
+                RealNameAuthApproveState = #{realnameauthapprovestate,jdbcType=SMALLINT},
+            </if>
+            <if test="realnameauthstatus != null">
+                RealNameAuthStatus = #{realnameauthstatus,jdbcType=SMALLINT},
+            </if>
+            <if test="agentId != null">
+                agent_id = #{agentId,jdbcType=VARCHAR},
+            </if>
+            <if test="brokerId != null">
+                broker_id = #{brokerId,jdbcType=TIMESTAMP},
+            </if>
+            <if test="attribution != null">
+                Attribution = #{attribution,jdbcType=TIMESTAMP},
+            </if>
+            <if test="registerIp != null">
+                RegisterIp = #{registerIp,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where UserID = #{userid,jdbcType=BIGINT}
+    </update>
+    <!--   <sql id="Example_Where_Clause" >
+        <where >
+          <foreach collection="oredCriteria" item="criteria" separator="or" >
+            <if test="criteria.valid" >
+              <trim prefix="(" suffix=")" prefixOverrides="and" >
+                <foreach collection="criteria.criteria" item="criterion" >
+                  <choose >
+                    <when test="criterion.noValue" >
+                      and ${criterion.condition}
+                    </when>
+                    <when test="criterion.singleValue" >
+                      and ${criterion.condition} #{criterion.value}
+                    </when>
+                    <when test="criterion.betweenValue" >
+                      and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                    </when>
+                    <when test="criterion.listValue" >
+                      and ${criterion.condition}
+                      <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                        #{listItem}
+                      </foreach>
+                    </when>
+                  </choose>
+                </foreach>
+              </trim>
+            </if>
+          </foreach>
+        </where>
+      </sql>
+      <sql id="Update_By_Example_Where_Clause" >
+        <where >
+          <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+            <if test="criteria.valid" >
+              <trim prefix="(" suffix=")" prefixOverrides="and" >
+                <foreach collection="criteria.criteria" item="criterion" >
+                  <choose >
+                    <when test="criterion.noValue" >
+                      and ${criterion.condition}
+                    </when>
+                    <when test="criterion.singleValue" >
+                      and ${criterion.condition} #{criterion.value}
+                    </when>
+                    <when test="criterion.betweenValue" >
+                      and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                    </when>
+                    <when test="criterion.listValue" >
+                      and ${criterion.condition}
+                      <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                        #{listItem}
+                      </foreach>
+                    </when>
+                  </choose>
+                </foreach>
+              </trim>
+            </if>
+          </foreach>
+        </where>
+      </sql>
+      <sql id="Base_Column_List" >
+        UserID, NickName, ProfilePhotoPath, RegisterTime, RegisterFrom, PhoneNo, DeliveryAddress,
+        RealName, IDCard, IDCardPath, RealNameAuthApplyTime, RealNameAuthApproveTime, RealNameAuthApproveState,
+        RealNameAuthStatus, CertificatePath, CertificateAuthApplyTime, CertificateAuthApproveTime,
+        CertificateAuthApproveState, CertificateAuthStatus
+      </sql>
+      <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fx.xzt.sys.entity.UserInfoExample" >
+        select
+        <if test="distinct" >
+          distinct
+        </if>
+        <include refid="Base_Column_List" />
+        from User_Info
+        <if test="_parameter != null" >
+          <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+          order by ${orderByClause}
+        </if>
+      </select>
+      <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from User_Info
+        where UserID = #{userid,jdbcType=BIGINT}
+      </select>
+      <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from User_Info
+        where UserID = #{userid,jdbcType=BIGINT}
+      </delete>
+      <delete id="deleteByExample" parameterType="com.fx.xzt.sys.entity.UserInfoExample" >
+        delete from User_Info
+        <if test="_parameter != null" >
+          <include refid="Example_Where_Clause" />
+        </if>
+      </delete>
+      <insert id="insert" parameterType="com.fx.xzt.sys.entity.UserInfo" >
+        insert into User_Info (UserID, NickName, ProfilePhotoPath,
+          RegisterTime, RegisterFrom, PhoneNo,
+          DeliveryAddress, RealName, IDCard,
+          IDCardPath, RealNameAuthApplyTime, RealNameAuthApproveTime,
+          RealNameAuthApproveState, RealNameAuthStatus,
+          CertificatePath, CertificateAuthApplyTime,
+          CertificateAuthApproveTime, CertificateAuthApproveState,
+          CertificateAuthStatus)
+        values (#{userid,jdbcType=BIGINT}, #{nickname,jdbcType=VARCHAR}, #{profilephotopath,jdbcType=VARCHAR},
+          #{registertime,jdbcType=TIMESTAMP}, #{registerfrom,jdbcType=VARCHAR}, #{phoneno,jdbcType=VARCHAR},
+          #{deliveryaddress,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR},
+          #{idcardpath,jdbcType=VARCHAR}, #{realnameauthapplytime,jdbcType=TIMESTAMP}, #{realnameauthapprovetime,jdbcType=TIMESTAMP},
+          #{realnameauthapprovestate,jdbcType=SMALLINT}, #{realnameauthstatus,jdbcType=SMALLINT},
+          #{certificatepath,jdbcType=VARCHAR}, #{certificateauthapplytime,jdbcType=TIMESTAMP},
+          #{certificateauthapprovetime,jdbcType=TIMESTAMP}, #{certificateauthapprovestate,jdbcType=TIMESTAMP},
+          #{certificateauthstatus,jdbcType=SMALLINT})
+      </insert>
+      <insert id="insertSelective" parameterType="com.fx.xzt.sys.entity.UserInfo" >
+        insert into User_Info
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+          <if test="userid != null" >
+            UserID,
+          </if>
+          <if test="nickname != null" >
+            NickName,
+          </if>
+          <if test="profilephotopath != null" >
+            ProfilePhotoPath,
+          </if>
+          <if test="registertime != null" >
+            RegisterTime,
+          </if>
+          <if test="registerfrom != null" >
+            RegisterFrom,
+          </if>
+          <if test="phoneno != null" >
+            PhoneNo,
+          </if>
+          <if test="deliveryaddress != null" >
+            DeliveryAddress,
+          </if>
+          <if test="realname != null" >
+            RealName,
+          </if>
+          <if test="idcard != null" >
+            IDCard,
+          </if>
+          <if test="idcardpath != null" >
+            IDCardPath,
+          </if>
+          <if test="realnameauthapplytime != null" >
+            RealNameAuthApplyTime,
+          </if>
+          <if test="realnameauthapprovetime != null" >
+            RealNameAuthApproveTime,
+          </if>
+          <if test="realnameauthapprovestate != null" >
+            RealNameAuthApproveState,
+          </if>
+          <if test="realnameauthstatus != null" >
+            RealNameAuthStatus,
+          </if>
+          <if test="certificatepath != null" >
+            CertificatePath,
+          </if>
+          <if test="certificateauthapplytime != null" >
+            CertificateAuthApplyTime,
+          </if>
+          <if test="certificateauthapprovetime != null" >
+            CertificateAuthApproveTime,
+          </if>
+          <if test="certificateauthapprovestate != null" >
+            CertificateAuthApproveState,
+          </if>
+          <if test="certificateauthstatus != null" >
+            CertificateAuthStatus,
+          </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+          <if test="userid != null" >
+            #{userid,jdbcType=BIGINT},
+          </if>
+          <if test="nickname != null" >
+            #{nickname,jdbcType=VARCHAR},
+          </if>
+          <if test="profilephotopath != null" >
+            #{profilephotopath,jdbcType=VARCHAR},
+          </if>
+          <if test="registertime != null" >
+            #{registertime,jdbcType=TIMESTAMP},
+          </if>
+          <if test="registerfrom != null" >
+            #{registerfrom,jdbcType=VARCHAR},
+          </if>
+          <if test="phoneno != null" >
+            #{phoneno,jdbcType=VARCHAR},
+          </if>
+          <if test="deliveryaddress != null" >
+            #{deliveryaddress,jdbcType=VARCHAR},
+          </if>
+          <if test="realname != null" >
+            #{realname,jdbcType=VARCHAR},
+          </if>
+          <if test="idcard != null" >
+            #{idcard,jdbcType=VARCHAR},
+          </if>
+          <if test="idcardpath != null" >
+            #{idcardpath,jdbcType=VARCHAR},
+          </if>
+          <if test="realnameauthapplytime != null" >
+            #{realnameauthapplytime,jdbcType=TIMESTAMP},
+          </if>
+          <if test="realnameauthapprovetime != null" >
+            #{realnameauthapprovetime,jdbcType=TIMESTAMP},
+          </if>
+          <if test="realnameauthapprovestate != null" >
+            #{realnameauthapprovestate,jdbcType=SMALLINT},
+          </if>
+          <if test="realnameauthstatus != null" >
+            #{realnameauthstatus,jdbcType=SMALLINT},
+          </if>
+          <if test="certificatepath != null" >
+            #{certificatepath,jdbcType=VARCHAR},
+          </if>
+          <if test="certificateauthapplytime != null" >
+            #{certificateauthapplytime,jdbcType=TIMESTAMP},
+          </if>
+          <if test="certificateauthapprovetime != null" >
+            #{certificateauthapprovetime,jdbcType=TIMESTAMP},
+          </if>
+          <if test="certificateauthapprovestate != null" >
+            #{certificateauthapprovestate,jdbcType=TIMESTAMP},
+          </if>
+          <if test="certificateauthstatus != null" >
+            #{certificateauthstatus,jdbcType=SMALLINT},
+          </if>
+        </trim>
+      </insert>
+      <select id="countByExample" parameterType="com.fx.xzt.sys.entity.UserInfoExample" resultType="java.lang.Integer" >
+        select count(*) from User_Info
+        <if test="_parameter != null" >
+          <include refid="Example_Where_Clause" />
+        </if>
+      </select>
+      <update id="updateByExampleSelective" parameterType="map" >
+        update User_Info
+        <set >
+          <if test="record.userid != null" >
+            UserID = #{record.userid,jdbcType=BIGINT},
+          </if>
+          <if test="record.nickname != null" >
+            NickName = #{record.nickname,jdbcType=VARCHAR},
+          </if>
+          <if test="record.profilephotopath != null" >
+            ProfilePhotoPath = #{record.profilephotopath,jdbcType=VARCHAR},
+          </if>
+          <if test="record.registertime != null" >
+            RegisterTime = #{record.registertime,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.registerfrom != null" >
+            RegisterFrom = #{record.registerfrom,jdbcType=VARCHAR},
+          </if>
+          <if test="record.phoneno != null" >
+            PhoneNo = #{record.phoneno,jdbcType=VARCHAR},
+          </if>
+          <if test="record.deliveryaddress != null" >
+            DeliveryAddress = #{record.deliveryaddress,jdbcType=VARCHAR},
+          </if>
+          <if test="record.realname != null" >
+            RealName = #{record.realname,jdbcType=VARCHAR},
+          </if>
+          <if test="record.idcard != null" >
+            IDCard = #{record.idcard,jdbcType=VARCHAR},
+          </if>
+          <if test="record.idcardpath != null" >
+            IDCardPath = #{record.idcardpath,jdbcType=VARCHAR},
+          </if>
+          <if test="record.realnameauthapplytime != null" >
+            RealNameAuthApplyTime = #{record.realnameauthapplytime,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.realnameauthapprovetime != null" >
+            RealNameAuthApproveTime = #{record.realnameauthapprovetime,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.realnameauthapprovestate != null" >
+            RealNameAuthApproveState = #{record.realnameauthapprovestate,jdbcType=SMALLINT},
+          </if>
+          <if test="record.realnameauthstatus != null" >
+            RealNameAuthStatus = #{record.realnameauthstatus,jdbcType=SMALLINT},
+          </if>
+          <if test="record.certificatepath != null" >
+            CertificatePath = #{record.certificatepath,jdbcType=VARCHAR},
+          </if>
+          <if test="record.certificateauthapplytime != null" >
+            CertificateAuthApplyTime = #{record.certificateauthapplytime,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.certificateauthapprovetime != null" >
+            CertificateAuthApproveTime = #{record.certificateauthapprovetime,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.certificateauthapprovestate != null" >
+            CertificateAuthApproveState = #{record.certificateauthapprovestate,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.certificateauthstatus != null" >
+            CertificateAuthStatus = #{record.certificateauthstatus,jdbcType=SMALLINT},
+          </if>
+        </set>
+        <if test="_parameter != null" >
+          <include refid="Update_By_Example_Where_Clause" />
+        </if>
+      </update>
+      <update id="updateByExample" parameterType="map" >
+        update User_Info
+        set UserID = #{record.userid,jdbcType=BIGINT},
+          NickName = #{record.nickname,jdbcType=VARCHAR},
+          ProfilePhotoPath = #{record.profilephotopath,jdbcType=VARCHAR},
+          RegisterTime = #{record.registertime,jdbcType=TIMESTAMP},
+          RegisterFrom = #{record.registerfrom,jdbcType=VARCHAR},
+          PhoneNo = #{record.phoneno,jdbcType=VARCHAR},
+          DeliveryAddress = #{record.deliveryaddress,jdbcType=VARCHAR},
+          RealName = #{record.realname,jdbcType=VARCHAR},
+          IDCard = #{record.idcard,jdbcType=VARCHAR},
+          IDCardPath = #{record.idcardpath,jdbcType=VARCHAR},
+          RealNameAuthApplyTime = #{record.realnameauthapplytime,jdbcType=TIMESTAMP},
+          RealNameAuthApproveTime = #{record.realnameauthapprovetime,jdbcType=TIMESTAMP},
+          RealNameAuthApproveState = #{record.realnameauthapprovestate,jdbcType=SMALLINT},
+          RealNameAuthStatus = #{record.realnameauthstatus,jdbcType=SMALLINT},
+          CertificatePath = #{record.certificatepath,jdbcType=VARCHAR},
+          CertificateAuthApplyTime = #{record.certificateauthapplytime,jdbcType=TIMESTAMP},
+          CertificateAuthApproveTime = #{record.certificateauthapprovetime,jdbcType=TIMESTAMP},
+          CertificateAuthApproveState = #{record.certificateauthapprovestate,jdbcType=TIMESTAMP},
+          CertificateAuthStatus = #{record.certificateauthstatus,jdbcType=SMALLINT}
+        <if test="_parameter != null" >
+          <include refid="Update_By_Example_Where_Clause" />
+        </if>
+      </update>
+      <update id="updateByPrimaryKeySelective" parameterType="com.fx.xzt.sys.entity.UserInfo" >
+        update User_Info
+        <set >
+          <if test="nickname != null" >
+            NickName = #{nickname,jdbcType=VARCHAR},
+          </if>
+          <if test="profilephotopath != null" >
+            ProfilePhotoPath = #{profilephotopath,jdbcType=VARCHAR},
+          </if>
+          <if test="registertime != null" >
+            RegisterTime = #{registertime,jdbcType=TIMESTAMP},
+          </if>
+          <if test="registerfrom != null" >
+            RegisterFrom = #{registerfrom,jdbcType=VARCHAR},
+          </if>
+          <if test="phoneno != null" >
+            PhoneNo = #{phoneno,jdbcType=VARCHAR},
+          </if>
+          <if test="deliveryaddress != null" >
+            DeliveryAddress = #{deliveryaddress,jdbcType=VARCHAR},
+          </if>
+          <if test="realname != null" >
+            RealName = #{realname,jdbcType=VARCHAR},
+          </if>
+          <if test="idcard != null" >
+            IDCard = #{idcard,jdbcType=VARCHAR},
+          </if>
+          <if test="idcardpath != null" >
+            IDCardPath = #{idcardpath,jdbcType=VARCHAR},
+          </if>
+          <if test="realnameauthapplytime != null" >
+            RealNameAuthApplyTime = #{realnameauthapplytime,jdbcType=TIMESTAMP},
+          </if>
+          <if test="realnameauthapprovetime != null" >
+            RealNameAuthApproveTime = #{realnameauthapprovetime,jdbcType=TIMESTAMP},
+          </if>
+          <if test="realnameauthapprovestate != null" >
+            RealNameAuthApproveState = #{realnameauthapprovestate,jdbcType=SMALLINT},
+          </if>
+          <if test="realnameauthstatus != null" >
+            RealNameAuthStatus = #{realnameauthstatus,jdbcType=SMALLINT},
+          </if>
+          <if test="certificatepath != null" >
+            CertificatePath = #{certificatepath,jdbcType=VARCHAR},
+          </if>
+          <if test="certificateauthapplytime != null" >
+            CertificateAuthApplyTime = #{certificateauthapplytime,jdbcType=TIMESTAMP},
+          </if>
+          <if test="certificateauthapprovetime != null" >
+            CertificateAuthApproveTime = #{certificateauthapprovetime,jdbcType=TIMESTAMP},
+          </if>
+          <if test="certificateauthapprovestate != null" >
+            CertificateAuthApproveState = #{certificateauthapprovestate,jdbcType=TIMESTAMP},
+          </if>
+          <if test="certificateauthstatus != null" >
+            CertificateAuthStatus = #{certificateauthstatus,jdbcType=SMALLINT},
+          </if>
+        </set>
+        where UserID = #{userid,jdbcType=BIGINT}
+      </update>
+      <update id="updateByPrimaryKey" parameterType="com.fx.xzt.sys.entity.UserInfo" >
+        update User_Info
+        set NickName = #{nickname,jdbcType=VARCHAR},
+          ProfilePhotoPath = #{profilephotopath,jdbcType=VARCHAR},
+          RegisterTime = #{registertime,jdbcType=TIMESTAMP},
+          RegisterFrom = #{registerfrom,jdbcType=VARCHAR},
+          PhoneNo = #{phoneno,jdbcType=VARCHAR},
+          DeliveryAddress = #{deliveryaddress,jdbcType=VARCHAR},
+          RealName = #{realname,jdbcType=VARCHAR},
+          IDCard = #{idcard,jdbcType=VARCHAR},
+          IDCardPath = #{idcardpath,jdbcType=VARCHAR},
+          RealNameAuthApplyTime = #{realnameauthapplytime,jdbcType=TIMESTAMP},
+          RealNameAuthApproveTime = #{realnameauthapprovetime,jdbcType=TIMESTAMP},
+          RealNameAuthApproveState = #{realnameauthapprovestate,jdbcType=SMALLINT},
+          RealNameAuthStatus = #{realnameauthstatus,jdbcType=SMALLINT},
+          CertificatePath = #{certificatepath,jdbcType=VARCHAR},
+          CertificateAuthApplyTime = #{certificateauthapplytime,jdbcType=TIMESTAMP},
+          CertificateAuthApproveTime = #{certificateauthapprovetime,jdbcType=TIMESTAMP},
+          CertificateAuthApproveState = #{certificateauthapprovestate,jdbcType=TIMESTAMP},
+          CertificateAuthStatus = #{certificateauthstatus,jdbcType=SMALLINT}
+        where UserID = #{userid,jdbcType=BIGINT}
+      </update> -->
 </mapper>

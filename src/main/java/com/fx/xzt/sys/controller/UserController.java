@@ -127,4 +127,25 @@ public class UserController {
 			Integer pageSize){
 		return userService.selectByUsersModel(phone, startTime, endTime, pageNum, pageSize);
 	}
+
+	/**
+	 * 获取代理商列表
+	 * @return
+	 */
+	@RequestMapping(value="/selectByAgentMessage")
+	@ResponseBody
+	public List<Map<String,Object>> selectByAgentMessage(){
+		return userService.selectByAgentMessage();
+	}
+
+	/**
+	 * 根据代理商获取经纪人列表
+	 * @param pid
+	 * @return
+	 */
+	@RequestMapping(value="/selectByBrokerMessage")
+	@ResponseBody
+	public List<Map<String,Object>> selectByBrokerMessage(Long pid){
+		return userService.selectByBrokerMessage(pid);
+	}
 }

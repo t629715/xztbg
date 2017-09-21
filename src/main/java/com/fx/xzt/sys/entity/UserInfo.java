@@ -4,57 +4,34 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 
-* @Title: UserInfo.java 
-* @Package com.fx.xzt.sys.entity
-* @Description: TODO
-* @author SYan  
-* @date 2017年8月14日 下午3:02:31 
-* @version V1.0
+ * @author SYan
+ * @version V1.0
+ * @Title: UserInfo.java
+ * @Package com.fx.xzt.sys.entity
+ * @Description: TODO
+ * @date 2017年8月14日 下午3:02:31
  */
 public class UserInfo implements Serializable {
-	private Long userid;
 
+    private Long userid;
     private String nickname;
-
     private String profilephotopath;
-
     private Date registertime;
-
     private String registerfrom;
-
     private String phoneno;
-
     private String deliveryaddress;
-
     private String realname;
-
     private String idcard;
-
     private String idcardpath;
-
+    private String idcardbackpath;
     private Date realnameauthapplytime;
-
     private Date realnameauthapprovetime;
-
     private Short realnameauthapprovestate;
-
     private Short realnameauthstatus;
-
-    private String certificatepath;
-
-    private Date certificateauthapplytime;
-
-    private Date certificateauthapprovetime;
-
-    private Short certificateauthapprovestate;
-
-    private Short certificateauthstatus;
-    
-    /**
-     * @Fields IDCardBackPath 身份证图片反面路径
-     */
-    private String IDCardBackPath;
+    private String agentId;
+    private String brokerId;
+    private String attribution;
+    private String registerIp;
 
     private static final long serialVersionUID = 1L;
 
@@ -71,7 +48,7 @@ public class UserInfo implements Serializable {
     }
 
     public void setNickname(String nickname) {
-        this.nickname = nickname == null ? null : nickname.trim();
+        this.nickname = nickname;
     }
 
     public String getProfilephotopath() {
@@ -79,16 +56,9 @@ public class UserInfo implements Serializable {
     }
 
     public void setProfilephotopath(String profilephotopath) {
-        this.profilephotopath = profilephotopath == null ? null : profilephotopath.trim();
-    }
-    public String getIDCardBackPath() {
-        return IDCardBackPath;
+        this.profilephotopath = profilephotopath;
     }
 
-    public void setIDCardBackPath(String IDCardBackPath) {
-        this.IDCardBackPath = IDCardBackPath == null ? null : IDCardBackPath.trim();
-    }
-    
     public Date getRegistertime() {
         return registertime;
     }
@@ -102,7 +72,7 @@ public class UserInfo implements Serializable {
     }
 
     public void setRegisterfrom(String registerfrom) {
-        this.registerfrom = registerfrom == null ? null : registerfrom.trim();
+        this.registerfrom = registerfrom;
     }
 
     public String getPhoneno() {
@@ -110,7 +80,7 @@ public class UserInfo implements Serializable {
     }
 
     public void setPhoneno(String phoneno) {
-        this.phoneno = phoneno == null ? null : phoneno.trim();
+        this.phoneno = phoneno;
     }
 
     public String getDeliveryaddress() {
@@ -118,7 +88,7 @@ public class UserInfo implements Serializable {
     }
 
     public void setDeliveryaddress(String deliveryaddress) {
-        this.deliveryaddress = deliveryaddress == null ? null : deliveryaddress.trim();
+        this.deliveryaddress = deliveryaddress;
     }
 
     public String getRealname() {
@@ -126,7 +96,7 @@ public class UserInfo implements Serializable {
     }
 
     public void setRealname(String realname) {
-        this.realname = realname == null ? null : realname.trim();
+        this.realname = realname;
     }
 
     public String getIdcard() {
@@ -134,7 +104,7 @@ public class UserInfo implements Serializable {
     }
 
     public void setIdcard(String idcard) {
-        this.idcard = idcard == null ? null : idcard.trim();
+        this.idcard = idcard;
     }
 
     public String getIdcardpath() {
@@ -142,7 +112,15 @@ public class UserInfo implements Serializable {
     }
 
     public void setIdcardpath(String idcardpath) {
-        this.idcardpath = idcardpath == null ? null : idcardpath.trim();
+        this.idcardpath = idcardpath;
+    }
+
+    public String getIdcardbackpath() {
+        return idcardbackpath;
+    }
+
+    public void setIdcardbackpath(String idcardbackpath) {
+        this.idcardbackpath = idcardbackpath;
     }
 
     public Date getRealnameauthapplytime() {
@@ -177,43 +155,35 @@ public class UserInfo implements Serializable {
         this.realnameauthstatus = realnameauthstatus;
     }
 
-    public String getCertificatepath() {
-        return certificatepath;
+    public String getAgentId() {
+        return agentId;
     }
 
-    public void setCertificatepath(String certificatepath) {
-        this.certificatepath = certificatepath == null ? null : certificatepath.trim();
+    public void setAgentId(String agentId) {
+        this.agentId = agentId;
     }
 
-    public Date getCertificateauthapplytime() {
-        return certificateauthapplytime;
+    public String getBrokerId() {
+        return brokerId;
     }
 
-    public void setCertificateauthapplytime(Date certificateauthapplytime) {
-        this.certificateauthapplytime = certificateauthapplytime;
+    public void setBrokerId(String brokerId) {
+        this.brokerId = brokerId;
     }
 
-    public Date getCertificateauthapprovetime() {
-        return certificateauthapprovetime;
+    public String getAttribution() {
+        return attribution;
     }
 
-    public void setCertificateauthapprovetime(Date certificateauthapprovetime) {
-        this.certificateauthapprovetime = certificateauthapprovetime;
+    public void setAttribution(String attribution) {
+        this.attribution = attribution;
     }
 
-    public Short getCertificateauthapprovestate() {
-        return certificateauthapprovestate;
+    public String getRegisterIp() {
+        return registerIp;
     }
 
-    public void setCertificateauthapprovestate(Short certificateauthapprovestate) {
-        this.certificateauthapprovestate = certificateauthapprovestate;
-    }
-
-    public Short getCertificateauthstatus() {
-        return certificateauthstatus;
-    }
-
-    public void setCertificateauthstatus(Short certificateauthstatus) {
-        this.certificateauthstatus = certificateauthstatus;
+    public void setRegisterIp(String registerIp) {
+        this.registerIp = registerIp;
     }
 }

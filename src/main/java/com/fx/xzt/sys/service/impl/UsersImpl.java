@@ -141,4 +141,23 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		return new PageInfo<UsersModel>(list);
 	}
 
+	/**
+	 *  获取代理商列表
+	 * @return
+	 */
+	public List<Map<String,Object>> selectByAgentMessage(){
+		return usersMapper.selectByAgentMessage();
+	}
+
+	/**
+	 * 获取经纪人列表
+	 * @param pid
+	 * @return
+	 */
+	public List<Map<String,Object>> selectByBrokerMessage(Long pid) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("pid",pid);
+		return usersMapper.selectByBrokerMessage(map);
+	}
+
 }
