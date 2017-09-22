@@ -8,15 +8,19 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.alibaba.fastjson.JSON;
 import com.fx.xzt.sys.entity.UserAccountRecord;
+import com.fx.xzt.sys.entity.UserLogin;
 import com.fx.xzt.sys.model.UserLoginModel;
 import com.fx.xzt.sys.service.UserLoginService;
+import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
 import com.fx.xzt.util.POIUtils;
 import com.mysql.jdbc.StringUtils;
 import org.apache.poi.util.StringUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fx.xzt.sys.model.UserInfoModel;
@@ -51,17 +55,30 @@ public class UserInfoController {
 	}
 	/**
 	 * 认证
-	 * @param type 1 通过  0 不通过
+	 * @param type 1 通过  -1 不通过
 	 * @param userId
 	 * @return 1成功 0失败
 	 */
 	@RequestMapping(value="/certification")
 	@ResponseBody
-	public Map<String,Object> certification(Integer type,Long userId){
-		Map<String,Object> map = new HashMap<String,Object>();
-		int msg = userInfoService.editUserInfo(type, userId);
-		map.put("msg", msg);
-		return map;
+	public String certification(@RequestParam  Integer type,@RequestParam  Long userId){
+		CommonResponse cr = new CommonResponse();
+		cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+		cr.setData("{}");
+		cr.setMsg("操作失败！");
+		try {
+			if (type > 0 && userId > 0) {
+				int flag = userInfoService.editUserInfo(type, userId);
+				if (flag > 0) {
+					cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);
+					cr.setData("{}");
+					cr.setMsg("操作成功！");
+				}
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+		return JSON.toJSONString(cr);
 	}
 	
 	
@@ -83,11 +100,55 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/selectByRegisterMessage")
 	@ResponseBody
-	public PageInfo<UserLoginModel> selectByRegisterMessage(String userName, String startTime, String endTime,
+	public String selectByRegisterMessage(String userName, String startTime, String endTime,
 		String registerFrom, String registerIp, String lastStartTime, String lastEndTime, String lastLoginFrom,
-		String agentsName, String brokerName, String attribution, Integer pageNum, Integer pageSize) {
-		return userLoginService.getByRegisterMessage(userName, startTime, endTime, registerFrom, registerIp,
-				lastStartTime, lastEndTime, lastLoginFrom, agentsName, brokerName, attribution, pageNum, pageSize);
+		String agentsName, String brokerName, String attribution, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+		CommonResponse cr = new CommonResponse();
+		try {
+			PageInfo<Map<String, Object>> pageInfo = userLoginService.getByRegisterMessage(userName, startTime, endTime, registerFrom, registerIp,
+					lastStartTime, lastEndTime, lastLoginFrom, agentsName, brokerName, attribution, pageNum, pageSize);
+			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+			cr.setData(pageInfo);
+			cr.setMsg("操作成功！");
+		} catch (Exception e) {
+			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+			cr.setData("{}");
+			cr.setMsg("操作失败！");
+			throw e;
+			// e.printStackTrace();
+		}
+		return JSON.toJSONString(cr);
+	}
+
+	/**
+	 * 更新注册信息-状态
+	 * @param status
+	 * @param userId
+	 * @return 1成功 0失败
+	 */
+	@RequestMapping(value="/updateRegisterStatusById")
+	@ResponseBody
+	public String updateRegisterStatusById(@RequestParam  Short status,@RequestParam  Long userId){
+		CommonResponse cr = new CommonResponse();
+		cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+		cr.setData("{}");
+		cr.setMsg("操作失败！");
+		try {
+			if (status > 0 && userId > 0) {
+				UserLogin u = new UserLogin();
+				u.setStatus(status);
+				u.setUserid(userId);
+				int flag = userLoginService.updateByIdSelective(u);
+				if (flag > 0) {
+					cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);
+					cr.setData("{}");
+					cr.setMsg("操作成功！");
+				}
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+		return JSON.toJSONString(cr);
 	}
 
 	/**
@@ -98,19 +159,17 @@ public class UserInfoController {
 	public void excelRegisterMessage(HttpServletRequest request, HttpServletResponse response,String userName, String startTime, String endTime,
 		String registerFrom, String registerIp, String lastStartTime, String lastEndTime, String lastLoginFrom,
 		String agentsName, String brokerName, String attribution){
-		List<UserLoginModel> list = userLoginService.getExcelByRegister(userName,startTime,endTime,registerFrom,registerIp,lastStartTime,
+		List<Map<String, Object>> list = userLoginService.getExcelByRegister(userName,startTime,endTime,registerFrom,registerIp,lastStartTime,
 				lastEndTime,lastLoginFrom,agentsName,brokerName,attribution);
 		if (list != null && !list.isEmpty()) {
-			for (UserLoginModel u : list) {
-				if (u.getStatus() != null) {
-					String statusName = ConstantUtil.userStatus.toMap().get(u.getStatus());
-					u.setStatusName(statusName);
-				}
+			for (Map<String, Object> u : list) {
+				String name = ConstantUtil.userStatus.toMap().get(u.get("Status"));
+				u.put("Status", name);
 			}
 		}
 		POIUtils poi = new POIUtils();
 		String[] heads = {"用户账号","代理商","经纪人","注册时间","注册来源","注册IP","归属地","最后一次登录时间","最后一次登录方式","最后一次登录IP","状态"};
-		String[] colums = {"username","agentsName","brokerName","registerTime","registerFrom","registerIp","attribution","lastLoginTime","lastLoginFrom","lastFromIp","statusName"};
+		String[] colums = {"UserName","agentsName","brokerName","RegisterTime","RegisterFrom","RegisterIp","attribution","lastlogintime","lastloginfrom","lastfromIp","Status"};
 		poi.doExport(request, response, list, "注册信息", "注册信息", heads, colums);
 	}
 
@@ -126,8 +185,21 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/selectByRealNameAuth")
 	@ResponseBody
-	public PageInfo<UserInfoModel> selectByRealNameAuth(String userName,String realName,String applyTimeStart,String applyTimeEnd,Integer pageNum,Integer pageSize){
-		return userInfoService.getByRealNameAuth(userName, realName, applyTimeStart, applyTimeEnd, pageNum, pageSize);
+	public String selectByRealNameAuth(String userName, String realName, String applyTimeStart, String applyTimeEnd, @RequestParam Integer pageNum, @RequestParam Integer pageSize){
+		CommonResponse cr = new CommonResponse();
+		try {
+			PageInfo<Map<String, Object>> pageInfo = userInfoService.getByRealNameAuth(userName, realName, applyTimeStart, applyTimeEnd, pageNum, pageSize);
+			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+			cr.setData(pageInfo);
+			cr.setMsg("操作成功！");
+		} catch (Exception e) {
+			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+			cr.setData("{}");
+			cr.setMsg("操作失败！");
+			throw e;
+			// e.printStackTrace();
+		}
+		return JSON.toJSONString(cr);
 	}
 
 	/**
@@ -135,8 +207,21 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/selectByAccountMessage")
 	@ResponseBody
-	public PageInfo<UserInfoModel> selectByAccountMessage(String userName,String agentsName, String brokerName,String startTime,String endTime,Integer pageNum,Integer pageSize){
-		return userInfoService.getByAccountMessage(userName, agentsName, brokerName, startTime, endTime, pageNum, pageSize);
+	public String selectByAccountMessage(String userName,String agentsName, String brokerName,String startTime,String endTime,@RequestParam Integer pageNum,@RequestParam Integer pageSize){
+		CommonResponse cr = new CommonResponse();
+		try {
+			PageInfo<Map<String, Object>> pageInfo = userInfoService.getByAccountMessage(userName, agentsName, brokerName, startTime, endTime, pageNum, pageSize);
+			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+			cr.setData(pageInfo);
+			cr.setMsg("操作成功！");
+		} catch (Exception e) {
+			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+			cr.setData("{}");
+			cr.setMsg("操作失败！");
+			throw e;
+			// e.printStackTrace();
+		}
+		return JSON.toJSONString(cr);
 	}
 
 	/**
@@ -145,7 +230,7 @@ public class UserInfoController {
 	@RequestMapping(value="/excelAccountMessage")
 	@ResponseBody
 	public void excelAccountMessage(HttpServletRequest request, HttpServletResponse response,String userName,String agentName, String brokerName,String startTime,String endTime){
-		List<UserInfoModel> list = userInfoService.getExcelAccount(userName,agentName, brokerName,startTime,endTime);
+		List<Map<String, Object>> list = userInfoService.getExcelAccount(userName,agentName, brokerName,startTime,endTime);
 		POIUtils poi = new POIUtils();
 		String[] heads = {"用户账号","姓名","注册时间","代理商","经纪人","身份证号","银行卡","人民币余额","人民币冻结","人民币理财","利息","黄金"};
 		String[] colums = {"userName","realname","registertime","agentName","brokerName","idcard","accountNum","rmb","frozenRmb","finance","totalIncome","gold"};

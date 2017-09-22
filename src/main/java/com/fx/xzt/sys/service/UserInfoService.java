@@ -44,7 +44,7 @@ public interface UserInfoService extends IService<UserInfo> {
     /**
      * 账户信息列表
      */
-    PageInfo<UserInfoModel> getByAccountMessage(String userName, String agentsName, String brokerName, String startTime, String endTime, Integer pageNum, Integer pageSize);
+    PageInfo<Map<String, Object>> getByAccountMessage(String userName, String agentsName, String brokerName, String startTime, String endTime, Integer pageNum, Integer pageSize);
 
     /**
      * 实名认证
@@ -57,18 +57,18 @@ public interface UserInfoService extends IService<UserInfo> {
      * @param pageSize
      * @return
      */
-    PageInfo<UserInfoModel> getByRealNameAuth(String userName, String realName, String applyTimeStart, String applyTimeEnd, Integer pageNum, Integer pageSize);
+    PageInfo<Map<String, Object>> getByRealNameAuth(String userName, String realName, String applyTimeStart, String applyTimeEnd, Integer pageNum, Integer pageSize);
 
     /**
      *  导出账号信息列表
      * @param userName  用户名
-     * @param agentsName 代理商用户名
+     * @param agentName 代理商用户名
      * @param brokerName 经纪人用户名
      * @param startTime  注册开始时间
      * @param endTime  注册结束时间
      * @return
      */
-    List<UserInfoModel> getExcelAccount(String userName, String agentName, String brokerName, String startTime, String endTime);
+    List<Map<String, Object>> getExcelAccount(String userName, String agentName, String brokerName, String startTime, String endTime);
 
     /**
      * 获取账户信息列表金额黄金统计

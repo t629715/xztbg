@@ -28,8 +28,8 @@
     RealNameAuthStatus, agent_id, broker_id, RegisterIp, Attribution
   </sql>
     <!--实名认证查询开始-htt-->
-    <select id="getByRealNameAuth" resultType="com.fx.xzt.sys.model.UserInfoModel" parameterType="java.util.Map">
-        SELECT l.userName,u.UserID AS userIdString, RealName, IDCard, IDCardPath,IDCardBackPath, RealNameAuthApplyTime,
+    <select id="getByRealNameAuth" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT l.userName ,u.UserID , RealName, IDCard, IDCardPath,IDCardBackPath, RealNameAuthApplyTime,
         RealNameAuthApproveTime, RealNameAuthApproveState,RealNameAuthStatus
         FROM User_Info u
         INNER JOIN User_Login l ON u.UserID = l.UserID
@@ -53,8 +53,8 @@
     </select>
     <!--实名认证查询结束-->
     <!--账户信息查询-->
-    <select id="getByAccountMessage" resultType="com.fx.xzt.sys.model.UserInfoModel" parameterType="java.util.Map">
-        SELECT u.UserID AS userIdString,l.UserName AS userName,l.Status AS STATUS,u.RealName,
+    <select id="getByAccountMessage" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT u.UserID AS userId,l.UserName AS userName,l.Status AS STATUS,u.RealName,
         u.agent_id AS agentId, ua.user_name AS agentName, u.broker_id AS brokerId, ub.user_name AS brokerName ,
         u.IDCard AS idcard,b.BankName AS bankName,ub.AccountNum AS accountNum,
         a.rmb AS rmb,a.finance AS finance,frozen_rmb AS frozenRmb,total_income AS totalIncome,

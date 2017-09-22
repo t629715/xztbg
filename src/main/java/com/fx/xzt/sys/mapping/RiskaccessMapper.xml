@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fx.xzt.sys.mapper.RiskaccessMapper">
+  <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.Riskaccess">
+    <id column="access_id" jdbcType="BIGINT" property="accessId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="access_mark" jdbcType="BIGINT" property="accessMark" />
+    <result column="access_level" jdbcType="VARCHAR" property="accessLevel" />
+    <result column="mark_1" jdbcType="BIGINT" property="mark1" />
+    <result column="mark_2" jdbcType="BIGINT" property="mark2" />
+    <result column="mark_3" jdbcType="BIGINT" property="mark3" />
+    <result column="mark_4" jdbcType="BIGINT" property="mark4" />
+    <result column="mark_5" jdbcType="BIGINT" property="mark5" />
+    <result column="mark_6" jdbcType="BIGINT" property="mark6" />
+    <result column="mark_7" jdbcType="BIGINT" property="mark7" />
+    <result column="mark_8" jdbcType="BIGINT" property="mark8" />
+    <result column="mark_9" jdbcType="BIGINT" property="mark9" />
+    <result column="mark_10" jdbcType="BIGINT" property="mark10" />
+    <result column="access_time" jdbcType="TIMESTAMP" property="accessTime" />
+    <result column="access_state" jdbcType="BIGINT" property="accessState" />
+  </resultMap>
+
+  <!--风险评测查询开始-htt-->
+  <select id="selectByRiskaccessAll" resultType="java.util.Map" parameterType="java.util.Map">
+    SELECT r.access_id accessId, r.user_id userId, l.UserName userName, r.access_level accessLevel, r.access_time accessTime,i.RealName realName
+    FROM riskaccess r LEFT JOIN User_Info i ON r.user_id = i.UserID
+    LEFT JOIN User_Login l ON l.UserID = i.UserID
+    <where>
+      and l.Status = 1
+      and r.access_state = 1
+      <if test="userName != null and userName !=''">
+        and l.UserName = #{userName,jdbcType=VARCHAR}
+      </if>
+      <if test="realName != null and realName !=''">
+        and i.RealName = #{realName,jdbcType=VARCHAR}
+      </if>
+      <if test="startTime !=null and startTime !='' ">
+        and r.access_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="endTime !=null and endTime !='' ">
+        and r.access_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="accessLevel != null and realName !=''">
+        and r.access_level = #{accessLevel,jdbcType=VARCHAR}
+      </if>
+    </where>
+    order by r.access_time desc
+  </select>
+  <!--风险评测查询结束-htt-->
+  <update id="updateById" parameterType="com.fx.xzt.sys.entity.Riskaccess">
+    update riskaccess
+    <set>
+      <if test="accessMark != null and accessMark !=''">
+        access_mark = #{accessMark,jdbcType=BIGINT},
+      </if>
+      <if test="accessLevel != null and accessLevel !=''">
+        access_level = #{accessLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="mark1 != null and mark1 !=''">
+        mark_1 = #{mark1,jdbcType=BIGINT},
+      </if>
+      <if test="mark2 != null and mark2 !=''">
+        mark_2 = #{mark2,jdbcType=BIGINT},
+      </if>
+      <if test="mark3 != null and mark3 !=''">
+        mark_3 = #{mark3,jdbcType=BIGINT},
+      </if>
+      <if test="mark4 != null and mark4 !=''">
+        mark_4 = #{mark4,jdbcType=BIGINT},
+      </if>
+      <if test="mark5 != null and mark5 !=''">
+        mark_5 = #{mark5,jdbcType=BIGINT},
+      </if>
+      <if test="mark6 != null and mark6 !=''">
+        mark_6 = #{mark6,jdbcType=BIGINT},
+      </if>
+      <if test="mark7 != null and mark7 !=''">
+        mark_7 = #{mark7,jdbcType=BIGINT},
+      </if>
+      <if test="mark8 != null and mark8 !=''">
+        mark_8 = #{mark8,jdbcType=BIGINT},
+      </if>
+      <if test="mark9 != null and mark9 !=''">
+        mark_9 = #{mark9,jdbcType=BIGINT},
+      </if>
+      <if test="mark10 != null and mark10 !=''">
+        mark_10 = #{mark10,jdbcType=BIGINT},
+      </if>
+      <if test="accessState != null and accessState !=''">
+        access_state = #{accessState,jdbcType=BIGINT},
+      </if>
+    </set>
+    where access_id = #{accessId,jdbcType=BIGINT}
+  </update>
+</mapper>

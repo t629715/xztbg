@@ -24,8 +24,8 @@
         <result column="broker_name" property="brokerName" jdbcType="VARCHAR" />
     </resultMap>
     <!--注册信息查询开始-htt-->
-    <select id="getByRegisterMessage" resultMap="RegisterResultMap" parameterType="java.util.Map" >
-        SELECT l.UserID , l.UserName ,i.agent_id , u.user_name agent_name, i.broker_id, u1.user_name broker_name ,
+    <select id="getByRegisterMessage" resultType="java.util.Map" parameterType="java.util.Map" >
+        SELECT l.UserID , l.UserName ,i.agent_id agentId, u.user_name agentName, i.broker_id brokerId, u1.user_name brokerName ,
         l.Status ,i.RegisterTime, i.RegisterFrom, i.RegisterIp, i.attribution,
         m.lastlogintime, m.lastloginfrom, m.lastfromip
         FROM User_Login l LEFT JOIN User_Info i ON l.UserID = i.UserID

@@ -12,6 +12,16 @@ public class CommonResponse {
     private String msg;		//返回提示信息
     private Object data;	//返回数据
 
+    public CommonResponse() {
+        super();
+    }
+
+    public CommonResponse(Integer code, String msg, Object data) {
+        this.code = code;
+        this.msg = msg;
+        this.data = data;
+    }
+
     public Integer getCode() {
         return code;
     }

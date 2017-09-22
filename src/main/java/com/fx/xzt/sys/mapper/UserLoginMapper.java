@@ -22,6 +22,6 @@ import java.util.Map;
 public interface UserLoginMapper extends BaseMapper<UserLogin>{
 	int updateByIdSelective(UserLogin userLogin);
 
-	List<UserLoginModel> getByRegisterMessage(Map<String,Object> map);
+	List<Map<String, Object>> getByRegisterMessage(Map<String,Object> map);
 
 }

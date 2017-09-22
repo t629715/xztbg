@@ -11,6 +11,10 @@ import java.util.Map;
  */
 public class ConstantUtil {
 
+    public final static Integer COMMON_RESPONSE_CODE_SUCCESS = 1000;         //成功无数据
+    public final static Integer COMMON_RESPONSE_CODE_SUCCESS_DATA = 1001;    //成功有数据
+    public final static Integer COMMON_RESPONSE_CODE_EXCEPTION = 9999;
+
     /**
      * 客户信息-状态
      */

@@ -17,6 +17,7 @@ import com.fx.xzt.sys.util.UserInfoApproveStateEnum;
 import com.fx.xzt.sys.util.UsersInfoAuthStatus;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserInfoService{
@@ -37,6 +38,7 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		return pagehelper;
 	}
 
+	@Transactional
 	public int editUserInfo(int type,Long userId) {
 		UserInfo u = new UserInfo();
 		u.setUserid(userId);
@@ -44,7 +46,7 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		if(type==1){
 			u.setRealnameauthapprovestate((short)UserInfoApproveStateEnum.AuthApproveStatePass.getIndex());
 			u.setRealnameauthstatus((short)UsersInfoAuthStatus.AuthstatusPass.getIndex());
-		}else if(type==0){
+		}else if(type==-1){
 			u.setRealnameauthapprovestate((short)UserInfoApproveStateEnum.AuthApproveStateNoPass.getIndex());
 			u.setRealnameauthstatus((short)UsersInfoAuthStatus.AuthstatusNoPass.getIndex());
 			u.setIdcard("");
@@ -77,7 +79,7 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		return -1;
 	}
 
-	public PageInfo<UserInfoModel> getByAccountMessage(String userName,String agentsName, String brokerName,String startTime,String endTime,Integer pageNum,Integer pageSize) {
+	public PageInfo<Map<String, Object>> getByAccountMessage(String userName,String agentsName, String brokerName,String startTime,String endTime,Integer pageNum,Integer pageSize) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
 		map.put("agentsName", agentsName);
@@ -85,8 +87,8 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
 		PageHelper.startPage(pageNum,pageSize);
-		List<UserInfoModel> list = userInfoMapper.getByAccountMessage(map);
-		return new PageInfo<UserInfoModel>(list);
+		List<Map<String, Object>> list = userInfoMapper.getByAccountMessage(map);
+		return new PageInfo<Map<String, Object>>(list);
 	}
 
 	/**
@@ -99,7 +101,7 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 	 * @param pageSize
 	 * @return
 	 */
-	public PageInfo<UserInfoModel> getByRealNameAuth(String userName, String realName, String applyTimeStart, String applyTimeEnd, Integer pageNum,
+	public PageInfo<Map<String, Object>> getByRealNameAuth(String userName, String realName, String applyTimeStart, String applyTimeEnd, Integer pageNum,
 											  Integer pageSize) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
@@ -107,28 +109,28 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		map.put("applyTimeStart", applyTimeStart);
 		map.put("applyTimeEnd", applyTimeEnd);
 		PageHelper.startPage(pageNum,pageSize);
-		List<UserInfoModel> list = userInfoMapper.getByRealNameAuth(map);
-		PageInfo<UserInfoModel> pagehelper = new PageInfo<UserInfoModel>(list);
+		List<Map<String, Object>> list = userInfoMapper.getByRealNameAuth(map);
+		PageInfo<Map<String, Object>> pagehelper = new PageInfo<Map<String, Object>>(list);
 		return pagehelper;
 	}
 
 	/**
 	 * 导出账户信息
 	 * @param userName  用户名
-	 * @param agentsName 代理商用户名
+	 * @param agentName 代理商用户名
 	 * @param brokerName 经纪人用户名
 	 * @param startTime  注册开始时间
 	 * @param endTime  注册结束时间
 	 * @return
 	 */
-	public List<UserInfoModel> getExcelAccount(String userName, String agentName, String brokerName, String startTime, String endTime) {
+	public List<Map<String, Object>> getExcelAccount(String userName, String agentName, String brokerName, String startTime, String endTime) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
 		map.put("agentName", agentName);
 		map.put("brokerName", brokerName);
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
-		List<UserInfoModel> list = userInfoMapper.getByAccountMessage(map);
+		List<Map<String, Object>> list = userInfoMapper.getByAccountMessage(map);
 		return list;
 	}
 

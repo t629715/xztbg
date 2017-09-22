@@ -32,14 +32,14 @@ public interface UserInfoMapper extends BaseMapper<UserInfo>{
 	/**
 	 * 账户信息列表
 	 */
-	List<UserInfoModel> getByAccountMessage(Map<String,Object> map);
+	List<Map<String, Object>> getByAccountMessage(Map<String,Object> map);
 
 	/**
 	 * 实名认证列表
 	 * @param map
 	 * @return
 	 */
-	List<UserInfoModel> getByRealNameAuth(Map<String,Object> map);
+	List<Map<String, Object>> getByRealNameAuth(Map<String,Object> map);
 
 	/**
 	 * 获取账户信息列表金额黄金统计

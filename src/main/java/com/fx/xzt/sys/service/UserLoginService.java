@@ -6,6 +6,7 @@ import com.fx.xzt.sys.entity.UserLogin;
 import com.fx.xzt.sys.model.UserLoginModel;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface UserLoginService extends IService<UserLogin>{
@@ -31,11 +32,11 @@ public interface UserLoginService extends IService<UserLogin>{
 	 * @param attribution 归属地
 	 * @return
 	 */
-	PageInfo<UserLoginModel> getByRegisterMessage(String userName, String startTime, String endTime,
-											  String registerFrom, String registerIp, String lastStartTime,
-											  String lastEndTime, String lastLoginFrom, String agentsName,
-											  String brokerName, String attribution, Integer pageNum,
-											  Integer pageSize);
+	PageInfo<Map<String, Object>> getByRegisterMessage(String userName, String startTime, String endTime,
+									   String registerFrom, String registerIp, String lastStartTime,
+									   String lastEndTime, String lastLoginFrom, String agentsName,
+									   String brokerName, String attribution, Integer pageNum,
+									   Integer pageSize);
 
 	/**
 	 * 导出注册信息列表
@@ -52,7 +53,7 @@ public interface UserLoginService extends IService<UserLogin>{
 	 * @param attribution 归属地
 	 * @return
 	 */
-	List<UserLoginModel> getExcelByRegister(String userName, String startTime, String endTime,
+	List<Map<String, Object>> getExcelByRegister(String userName, String startTime, String endTime,
 													String registerFrom, String registerIp, String lastStartTime,
 													String lastEndTime, String lastLoginFrom,
 													String agentsName, String brokerName, String attribution);
