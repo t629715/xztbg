@@ -59,7 +59,7 @@
         u.IDCard AS idcard,b.BankName AS bankName,ub.AccountNum AS accountNum,
         a.rmb AS rmb,a.finance AS finance,frozen_rmb AS frozenRmb,total_income AS totalIncome,
         g.gold as gold
-        <!--, a.frozen_gold as frozenGold
+        <!--, a.frozen_gold as frozenGold-->
         FROM User_Info u
         RIGHT JOIN User_Login l ON u.UserID = l.UserID
         LEFT JOIN users ua ON u.agent_id = ua.id
