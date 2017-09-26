@@ -13,13 +13,13 @@
         <result column="hand_number" jdbcType="INTEGER" property="handNumber"/>
         <result column="order_state" jdbcType="INTEGER" property="orderState"/>
         <result column="end_profit" jdbcType="DOUBLE" property="endProfit"/>
-        <result column="end_profit_number" jdbcType="DOUBLE" property="endProfitNumber"/>
+        <result column="end_profit_number" jdbcType="INTEGER" property="endProfitNumber"/>
         <result column="end_loss" jdbcType="DOUBLE" property="endLoss"/>
-        <result column="end_loss_number" jdbcType="DOUBLE" property="endLossNumber"/>
-        <result column="poundage" jdbcType="DOUBLE" property="poundage"/>
-        <result column="ensure_amount" jdbcType="DOUBLE" property="ensureAmount"/>
+        <result column="end_loss_number" jdbcType="INTEGER" property="endLossNumber"/>
+        <result column="poundage" jdbcType="INTEGER" property="poundage"/>
+        <result column="ensure_amount" jdbcType="INTEGER" property="ensureAmount"/>
         <result column="profit_loss" jdbcType="INTEGER" property="profitLoss"/>
-        <result column="profit_loss_number" jdbcType="DOUBLE" property="profitLossNumber"/>
+        <result column="profit_loss_number" jdbcType="INTEGER" property="profitLossNumber"/>
         <result column="display" jdbcType="INTEGER" property="display"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
@@ -29,8 +29,8 @@
         <result column="voucher_value" jdbcType="INTEGER" property="voucherValue"/>
         <result column="voucher_deductible" jdbcType="DOUBLE" property="voucherDeductible"/>
         <result column="voucher_id" jdbcType="BIGINT" property="voucherId"/>
-        <result column="open_position_before_balance" jdbcType="VARCHAR" property="openPositionBeforeBalance"/>
-        <result column="open_position_after_balance" jdbcType="DOUBLE" property="openPositionAfterBalance"/>
+        <result column="buy_pre_rmb" jdbcType="BIGINT" property="buyPreRmb"/>
+        <result column="buy_after_rmb" jdbcType="BIGINT" property="buyAfterRmb"/>
     </resultMap>
 
     <!--金权交易开始-htt-->
@@ -40,7 +40,7 @@
       o.product_id productId, c.name productName,o.up_or_down upOrDown, o.hand_number handNumber,
       o.ensure_amount ensureAmount, o.point_count pointCount,o.open_position_price openPositionPrice, o.close_position_price closePositionPrice,
       o.create_time createTime, o.end_time endTime, o.profit_loss_number profitLossNumber, o.order_state orderState,
-      o.open_position_before_balanceo openPositionBeforeBalance, o.open_position_after_balance openPositionAfterBalance
+      o.buy_pre_rmb buyPreRmb, o.buy_after_rmb buyAfterRmb
       FROM deal_order o
       LEFT JOIN User_Login u ON o.user_id = u.UserID
       LEFT JOIN User_Info i ON u.UserID = i.UserID
@@ -80,4 +80,11 @@
         order by o.create_time DESC
     </select>
     <!--金权交易结束-htt-->
+    <!--金权交易金额统计开始-htt-->
+    <select id="selectByDealOrderCount" resultType="java.util.Map">
+        SELECT SUM(ensure_amount) enSureAmountCount, SUM(profit_loss_number) profitLossNumberCount FROM deal_order o
+        LEFT JOIN User_Login l on o.user_id = l.UserID
+        WHERE l.Status = 1
+    </select>
+    <!--金权交易金额统计结束-htt-->
 </mapper>

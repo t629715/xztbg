@@ -17,4 +17,6 @@ public interface DealOrderService {
 
     List<Map<String, Object>> excelDealOrderMessage(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName, Integer orderState);
 
+    Map<String, Object> selectByDealOrderCount();
+
 }

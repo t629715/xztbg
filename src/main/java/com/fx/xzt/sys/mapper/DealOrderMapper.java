@@ -21,4 +21,10 @@ public interface DealOrderMapper extends BaseMapper<DealOrder> {
      * @return
      */
     List<Map<String, Object>> selectByDealOrderAll (Map<String,Object> map);
-}
+
+    /**
+     *  金权交易统计
+     * @return
+     */
+    Map<String, Object> selectByDealOrderCount();
+ }

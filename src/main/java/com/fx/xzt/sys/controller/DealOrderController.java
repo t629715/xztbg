@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -92,6 +93,30 @@ public class DealOrderController {
         String[] colums = {"userName","registerTime","agentName","brokerName","orderNo","productName","upOrDown","handNumber","","",
                 "ensureAmount","ensureAmount","ensureAmount","openPositionPrice","closePositionPrice","createTime","endTime", "profitLossNumber"};
         poi.doExport(request, response, list, "金权交易", "金权交易", heads, colums);
+    }
+
+    /**
+     *  金权交易查询-金额统计
+     * @return
+     */
+    @RequestMapping(value="/selectByDealOrderCount")
+    @ResponseBody
+    public String selectByDealOrderCount(){
+        CommonResponse cr = new CommonResponse();
+        try {
+            Map<String,Object> map = new HashMap<String,Object>();
+            map = dealOrderService.selectByDealOrderCount();
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+            cr.setData(map);
+            cr.setMsg("操作成功！");
+        } catch (Exception e) {
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("操作失败！");
+            throw e;
+            // e.printStackTrace();
+        }
+        return JSON.toJSONString(cr);
     }
 
 }

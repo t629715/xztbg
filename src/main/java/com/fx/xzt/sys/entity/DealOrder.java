@@ -24,13 +24,13 @@ public class DealOrder implements Serializable {
     private Integer handNumber;
     private Integer orderState;
     private Double endProfit;
-    private Double endProfitNumber;
+    private Integer endProfitNumber;
     private Double endLoss;
-    private Double endLossNumber;
-    private Double poundage;
-    private Double ensureAmount;
+    private Integer endLossNumber;
+    private Integer poundage;
+    private Integer ensureAmount;
     private Integer profitLoss;
-    private Double profitLossNumber;
+    private Integer profitLossNumber;
     private Integer display;
     private Date createTime;
     private Date endTime;
@@ -41,8 +41,8 @@ public class DealOrder implements Serializable {
     private Double voucherDeductible;
     private Long voucherId;
     private String serverId;
-    private Double openPositionBeforeBalance;
-    private Double openPositionAfterBalance;
+    private Double buyPreRmb;
+    private Double buyAfterRmb;
 
     public Long getId() {
         return id;
@@ -132,11 +132,11 @@ public class DealOrder implements Serializable {
         this.endProfit = endProfit;
     }
 
-    public Double getEndProfitNumber() {
+    public Integer getEndProfitNumber() {
         return endProfitNumber;
     }
 
-    public void setEndProfitNumber(Double endProfitNumber) {
+    public void setEndProfitNumber(Integer endProfitNumber) {
         this.endProfitNumber = endProfitNumber;
     }
 
@@ -148,27 +148,27 @@ public class DealOrder implements Serializable {
         this.endLoss = endLoss;
     }
 
-    public Double getEndLossNumber() {
+    public Integer getEndLossNumber() {
         return endLossNumber;
     }
 
-    public void setEndLossNumber(Double endLossNumber) {
+    public void setEndLossNumber(Integer endLossNumber) {
         this.endLossNumber = endLossNumber;
     }
 
-    public Double getPoundage() {
+    public Integer getPoundage() {
         return poundage;
     }
 
-    public void setPoundage(Double poundage) {
+    public void setPoundage(Integer poundage) {
         this.poundage = poundage;
     }
 
-    public Double getEnsureAmount() {
+    public Integer getEnsureAmount() {
         return ensureAmount;
     }
 
-    public void setEnsureAmount(Double ensureAmount) {
+    public void setEnsureAmount(Integer ensureAmount) {
         this.ensureAmount = ensureAmount;
     }
 
@@ -180,11 +180,11 @@ public class DealOrder implements Serializable {
         this.profitLoss = profitLoss;
     }
 
-    public Double getProfitLossNumber() {
+    public Integer getProfitLossNumber() {
         return profitLossNumber;
     }
 
-    public void setProfitLossNumber(Double profitLossNumber) {
+    public void setProfitLossNumber(Integer profitLossNumber) {
         this.profitLossNumber = profitLossNumber;
     }
 
@@ -268,19 +268,19 @@ public class DealOrder implements Serializable {
         this.serverId = serverId;
     }
 
-    public Double getOpenPositionBeforeBalance() {
-        return openPositionBeforeBalance;
+    public Double getBuyPreRmb() {
+        return buyPreRmb;
     }
 
-    public void setOpenPositionBeforeBalance(Double openPositionBeforeBalance) {
-        this.openPositionBeforeBalance = openPositionBeforeBalance;
+    public void setBuyPreRmb(Double buyPreRmb) {
+        this.buyPreRmb = buyPreRmb;
     }
 
-    public Double getOpenPositionAfterBalance() {
-        return openPositionAfterBalance;
+    public Double getBuyAfterRmb() {
+        return buyAfterRmb;
     }
 
-    public void setOpenPositionAfterBalance(Double openPositionAfterBalance) {
-        this.openPositionAfterBalance = openPositionAfterBalance;
+    public void setBuyAfterRmb(Double buyAfterRmb) {
+        this.buyAfterRmb = buyAfterRmb;
     }
 }

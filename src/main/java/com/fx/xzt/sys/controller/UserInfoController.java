@@ -243,9 +243,21 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/selectAccountCount")
 	@ResponseBody
-	public Map<String,Object> selectAccountCount(){
-		Map<String,Object> map = new HashMap<String,Object>();
-		map = userInfoService.getByAccountCount();
-		return map;
+	public String selectAccountCount(){
+		CommonResponse cr = new CommonResponse();
+		try {
+			Map<String,Object> map = new HashMap<String,Object>();
+			map = userInfoService.getByAccountCount();
+			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+			cr.setData(map);
+			cr.setMsg("操作成功！");
+		} catch (Exception e) {
+			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+			cr.setData("{}");
+			cr.setMsg("操作失败！");
+			throw e;
+			// e.printStackTrace();
+		}
+		return JSON.toJSONString(cr);
 	}
 }
