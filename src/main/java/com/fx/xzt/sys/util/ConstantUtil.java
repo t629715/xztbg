@@ -39,4 +39,29 @@ public class ConstantUtil {
             return rlt;
         }
     }
+
+    /**
+     * 金权交易-买涨买跌
+     */
+    public static enum dealOrderUpOrDown {
+        UP("买涨","0"),
+        DOWN("买跌","1");
+        private String name;
+        private String index;
+        private dealOrderUpOrDown(String name,String index){
+            this.name = name;
+            this.index = index;
+        }
+        public String toString() {
+            return this.index;
+        }
+        public static Map<String, String> toMap() {
+            userStatus[] ds = userStatus.values();
+            Map<String, String> rlt = new Hashtable<String, String>();
+            for (userStatus d : ds) {
+                rlt.put(d.index, d.name);
+            }
+            return rlt;
+        }
+    }
 }
