@@ -20,11 +20,11 @@ public interface RealGoldOrderMapper extends BaseMapper<RealGoldOrder> {
      * @param map
      * @return
      */
-    List<Map<String, Object>> selectByRealGoldOrderAll(Map<String,Object> map);
+    List<Map<String, Object>> selectByRealGoldOrder(Map<String,Object> map);
 
     /**
      *  是金交易订单-统计
      * @return
      */
-    Map<String, Object> selectByRealGoldCount();
+    Map<String, Object> selectByRealGoldCount(Map<String,Object> map);
 };

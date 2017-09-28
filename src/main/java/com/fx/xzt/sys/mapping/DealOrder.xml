@@ -34,12 +34,12 @@
     </resultMap>
 
     <!--金权交易开始-htt-->
-    <select id="selectByDealOrderAll" resultType="java.util.Map" parameterType="java.util.Map">
-      SELECT o.id id, o.order_no orderNo, o.user_id userID, u.UserName userName,i.RegisterTime registerTime,
+    <select id="selectByDealOrder" resultType="java.util.Map" parameterType="java.util.Map">
+      SELECT o.id id, o.order_no orderNo, o.user_id userID, u.UserName userName,DATE_FORMAT(i.RegisterTime, '%Y-%m-%d %h:%i:%s')  registerTime,
       i.agent_id AS agentId, ua.user_name AS agentName, i.broker_id AS brokerId, ub.user_name AS brokerName ,
       o.product_id productId, c.name productName,o.up_or_down upOrDown, o.hand_number handNumber,
       o.ensure_amount ensureAmount, o.point_count pointCount,o.open_position_price openPositionPrice, o.close_position_price closePositionPrice,
-      o.create_time createTime, o.end_time endTime, o.profit_loss_number profitLossNumber, o.order_state orderState,
+      DATE_FORMAT(o.create_time, '%Y-%m-%d %h:%i:%s')  createTime, DATE_FORMAT(o.end_time, '%Y-%m-%d %h:%i:%s') endTime, o.profit_loss_number profitLossNumber, o.order_state orderState,
       o.buy_pre_rmb buyPreRmb, o.buy_after_rmb buyAfterRmb
       FROM deal_order o
       LEFT JOIN User_Login u ON o.user_id = u.UserID
@@ -81,10 +81,43 @@
     </select>
     <!--金权交易结束-htt-->
     <!--金权交易金额统计开始-htt-->
-    <select id="selectByDealOrderCount" resultType="java.util.Map">
-        SELECT SUM(ensure_amount) enSureAmountCount, SUM(profit_loss_number) profitLossNumberCount FROM deal_order o
-        LEFT JOIN User_Login l on o.user_id = l.UserID
-        WHERE l.Status = 1
+    <select id="selectByDealOrderCount" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT SUM(ensure_amount) enSureAmountSum, SUM(profit_loss_number) profitLossNumberCount
+        FROM deal_order o
+        LEFT JOIN User_Login u ON o.user_id = u.UserID
+        LEFT JOIN User_Info i ON u.UserID = i.UserID
+        LEFT JOIN users ua ON i.agent_id = ua.id
+        LEFT JOIN users ub ON i.broker_id = ub.id
+        <where>
+            and u.Status = 1
+            <if test="userName != null and userName != '' ">
+                and i.userName = #{userName,jdbcType=VARCHAR}
+            </if>
+            <if test="orderNo != null and orderNo != '' ">
+                and o.order_no = #{orderNo,jdbcType=VARCHAR}
+            </if>
+            <if test="startTime !=null and startTime !='' ">
+                and o.create_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime !=null and endTime != '' ">
+                and o.create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="regStartTime !=null and regStartTime !='' ">
+                and i.RegisterTime &gt;=#{regStartTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="regEndTime !=null and regEndTime != '' ">
+                and i.RegisterTime &lt;=#{regEndTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="agentName != null and agentName !='' ">
+                and ua.agent_name = #{agentName,jdbcType=VARCHAR}
+            </if>
+            <if test="brokerName != null and brokerName !='' ">
+                and ub.broker_name = #{brokerName,jdbcType=VARCHAR}
+            </if>
+            <if test="orderState != null and orderState !='' ">
+                and o.order_state = #{orderState,jdbcType=INTEGER}
+            </if>
+        </where>
     </select>
     <!--金权交易金额统计结束-htt-->
 </mapper>

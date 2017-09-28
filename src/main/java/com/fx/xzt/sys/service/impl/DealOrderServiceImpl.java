@@ -39,7 +39,7 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
      * @param pageSize
      * @return
      */
-    public PageInfo<Map<String, Object>> selectByDealOrderAll(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName, Integer orderState, Integer pageNum, Integer pageSize) {
+    public PageInfo<Map<String, Object>> selectByDealOrder(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName, Integer orderState, Integer pageNum, Integer pageSize) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("orderNo", orderNo);
@@ -51,7 +51,7 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
         map.put("brokerName", brokerName);
         map.put("orderState", orderState);
         PageHelper.startPage(pageNum,pageSize);
-        List<Map<String, Object>> list = dealOrderMapper.selectByDealOrderAll(map);
+        List<Map<String, Object>> list = dealOrderMapper.selectByDealOrder(map);
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
         return pagehelper;
     }
@@ -78,16 +78,33 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         map.put("orderState", orderState);
-        List<Map<String, Object>> list = dealOrderMapper.selectByDealOrderAll(map);
+        List<Map<String, Object>> list = dealOrderMapper.selectByDealOrder(map);
         return list;
     }
 
     /**
      *  金权交易金额统计
+     * @param userName   用户名
+     * @param orderNo   订单号
+     * @param startTime  建仓开始时间
+     * @param endTime  建仓结束是时间
+     * @param regStartTime  注册开始时间
+     * @param regEndTime  注册结束时间
+     * @param agentName  运营商用户名
+     * @param brokerName  经纪人用户名
+     * @param orderState 订单状态
      * @return
      */
-    public Map<String, Object> selectByDealOrderCount() {
-        return dealOrderMapper.selectByDealOrderCount();
+    public Map<String, Object> selectByDealOrderCount(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName, Integer orderState) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("userName", userName);
+        map.put("orderNo", orderNo);
+        map.put("startTime", startTime);
+        map.put("endTime", endTime);
+        map.put("agentName", agentName);
+        map.put("brokerName", brokerName);
+        map.put("orderState", orderState);
+        return dealOrderMapper.selectByDealOrderCount(map);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.fx.xzt.sys.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.service.RealGoldOrderService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,15 +46,29 @@ public class RealGoldOrderController {
      * @param pageSize
      * @return
      */
-    @RequestMapping(value="/selectByRealGoldOrderAll")
+    @RequestMapping(value="/selectByRealGoldOrder")
     @ResponseBody
-    public String selectByRealGoldOrderAll(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName, Integer pageNum, Integer pageSize) {
+    public Object selectByRealGoldOrder(HttpServletRequest request, String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime,
+                                           String agentName, String brokerName, Integer pageNum, Integer pageSize) {
         CommonResponse cr = new CommonResponse();
         try {
-            PageInfo<Map<String, Object>> pageInfo = realGoldOrderService.selectByRealGoldOrderAll(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentName, brokerName, pageNum, pageSize);
-            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
-            cr.setData(pageInfo);
-            cr.setMsg("操作成功！");
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            if (users != null) {
+                String agentNameStr = agentName;
+                if (users.getPid() != null &&  users.getPid() == 1) {
+                    agentNameStr = users.getUserName();
+                }
+                PageInfo<Map<String, Object>> pageInfo = realGoldOrderService.selectByRealGoldOrder(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName, pageNum, pageSize);
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+                cr.setData(pageInfo);
+                cr.setMsg("操作成功！");
+            } else {
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("操作失败！");
+            }
+
         } catch (Exception e) {
             cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
             cr.setData("{}");
@@ -60,7 +76,7 @@ public class RealGoldOrderController {
             throw e;
             // e.printStackTrace();
         }
-        return JSON.toJSONString(cr);
+        return cr;
     }
 
     /**
@@ -79,12 +95,34 @@ public class RealGoldOrderController {
      */
     @RequestMapping(value="/excelRealGoldOrder")
     @ResponseBody
-    public void excelRealGoldOrder(HttpServletRequest request, HttpServletResponse response, String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName) {
-        List<Map<String, Object>> list = realGoldOrderService.excelRealGoldOrder(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentName, brokerName);
-        POIUtils poi = new POIUtils();
-        String[] heads = {"用户账号","注册时间","代理商","经纪人","交易订单号","合约类型","买入价","黄金克数","买入金额","手续费", "买入时间"};
-        String[] colums = {"userName","registerTime","agentName","brokerName","orderNo","productName","buyPrice","gram","rmbAmount","fee", "buyTime"};
-        poi.doExport(request, response, list, "实金交易", "实金交易", heads, colums);
+    public void excelRealGoldOrder(HttpServletRequest request, HttpServletResponse response, String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime,
+                                   String agentName, String brokerName) {
+        try {
+            String tieleName = "实金交易";
+            String excelName = "实金交易";
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            if (users != null) {
+                String agentNameStr = agentName;
+                if (users.getPid() != null &&  users.getPid() == 1) {
+                    agentNameStr = users.getUserName();
+                }
+                List<Map<String, Object>> list = realGoldOrderService.excelRealGoldOrder(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName);
+                POIUtils poi = new POIUtils();
+                //判断是否为代理商账户
+                if (users.getPid() != null &&  users.getPid() == 1) {
+                    String[] heads = {"用户账号","注册时间","经纪人","交易订单号","合约类型","买入价","黄金克数","买入金额","手续费", "买入时间"};
+                    String[] colums = {"userName","registerTime","brokerName","orderNo","productName","buyPrice","gram","rmbAmount","fee", "buyTime"};
+                    poi.doExport(request, response, list, tieleName, excelName, heads, colums);
+                } else if (users.getPid() == null || users.getPid() == 0){
+                    String[] heads = {"用户账号","注册时间","代理商","经纪人","交易订单号","合约类型","买入价","黄金克数","买入金额","手续费", "买入时间"};
+                    String[] colums = {"userName","registerTime","agentName","brokerName","orderNo","productName","buyPrice","gram","rmbAmount","fee", "buyTime"};
+                    poi.doExport(request, response, list, tieleName, excelName, heads, colums);
+                }
+            }
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     /**
@@ -93,11 +131,11 @@ public class RealGoldOrderController {
      */
     @RequestMapping(value="/selectByRealGoldCount")
     @ResponseBody
-    public String selectByRealGoldCount() {
+    public Object selectByRealGoldCount(HttpServletRequest request, String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName) {
         CommonResponse cr = new CommonResponse();
         try {
             Map<String,Object> map = new HashMap<String,Object>();
-            map = realGoldOrderService.selectByRealGoldCount();
+            map = realGoldOrderService.selectByRealGoldCount(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentName, brokerName);
             cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
             cr.setData(map);
             cr.setMsg("操作成功！");
@@ -108,7 +146,7 @@ public class RealGoldOrderController {
             throw e;
             // e.printStackTrace();
         }
-        return JSON.toJSONString(cr);
+        return cr;
     }
 
 }

@@ -38,7 +38,7 @@ public class RealGoldOrderServiceImpl extends BaseService<RealGoldOrder> impleme
      * @param pageSize
      * @return
      */
-    public PageInfo<Map<String, Object>> selectByRealGoldOrderAll(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName, Integer pageNum, Integer pageSize) {
+    public PageInfo<Map<String, Object>> selectByRealGoldOrder(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName, Integer pageNum, Integer pageSize) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("orderNo", orderNo);
@@ -49,7 +49,7 @@ public class RealGoldOrderServiceImpl extends BaseService<RealGoldOrder> impleme
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         PageHelper.startPage(pageNum,pageSize);
-        List<Map<String, Object>> list = realGoldOrderMapper.selectByRealGoldOrderAll(map);
+        List<Map<String, Object>> list = realGoldOrderMapper.selectByRealGoldOrder(map);
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
         return pagehelper;
     }
@@ -76,15 +76,32 @@ public class RealGoldOrderServiceImpl extends BaseService<RealGoldOrder> impleme
         map.put("regEndTime", regEndTime);
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
-        List<Map<String, Object>> list = realGoldOrderMapper.selectByRealGoldOrderAll(map);
+        List<Map<String, Object>> list = realGoldOrderMapper.selectByRealGoldOrder(map);
         return list;
     }
 
     /**
      * 实金交易统计
+     * @param userName  用户名
+     * @param orderNo  订单号
+     * @param startTime  买入开始时间
+     * @param endTime  买入结束是时间
+     * @param regStartTime 注册开始时间
+     * @param regEndTime 注册结束是时间
+     * @param agentName  代理商用户名
+     * @param brokerName 经纪人用户名
      * @return
      */
-    public Map<String, Object> selectByRealGoldCount() {
-        return realGoldOrderMapper.selectByRealGoldCount();
+    public Map<String, Object> selectByRealGoldCount(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("userName", userName);
+        map.put("orderNo", orderNo);
+        map.put("startTime", startTime);
+        map.put("endTime", endTime);
+        map.put("regStartTime", regStartTime);
+        map.put("regEndTime", regEndTime);
+        map.put("agentName", agentName);
+        map.put("brokerName", brokerName);
+        return realGoldOrderMapper.selectByRealGoldCount(map);
     }
 }

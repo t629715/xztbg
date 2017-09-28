@@ -13,10 +13,10 @@ import java.util.Map;
  */
 public interface RealGoldOrderService {
 
-    PageInfo<Map<String, Object>> selectByRealGoldOrderAll(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName, Integer pageNum, Integer pageSize);
+    PageInfo<Map<String, Object>> selectByRealGoldOrder(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName, Integer pageNum, Integer pageSize);
 
     List<Map<String, Object>> excelRealGoldOrder(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName);
 
-    Map<String, Object> selectByRealGoldCount();
+    Map<String, Object> selectByRealGoldCount(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName);
 
 }
