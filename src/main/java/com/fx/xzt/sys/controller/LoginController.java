@@ -89,7 +89,7 @@ public class LoginController {
      */  
     @RequestMapping("/logout")  
     public String logout(){  
-         SecurityUtils.getSubject().logout();  
-         return "login";  
+         SecurityUtils.getSubject().logout();
+         return "login";
     } 
 }

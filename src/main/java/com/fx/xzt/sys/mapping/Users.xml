@@ -14,7 +14,7 @@
         <result column="pid" property="pid" jdbcType="BIGINT"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, user_name, password, email, phone, status, create_time, update_time
+    id, user_name, password, email, phone, status, create_time, update_time,pid
   </sql>
     <select id="selectAll" resultMap="BaseResultMap">
         select

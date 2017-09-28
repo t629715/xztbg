@@ -13,9 +13,9 @@ import java.util.Map;
  */
 public interface DealOrderService {
 
-    PageInfo<Map<String, Object>> selectByDealOrderAll(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName, Integer orderState, Integer pageNum, Integer pageSize);
+    PageInfo<Map<String, Object>> selectByDealOrderAll(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName, Integer status, Integer pageNum, Integer pageSize);
 
-    List<Map<String, Object>> excelDealOrderMessage(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName, Integer orderState);
+    List<Map<String, Object>> excelDealOrderMessage(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName, Integer status);
 
     Map<String, Object> selectByDealOrderCount();
 

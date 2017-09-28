@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fx.xzt.sys.mapper.FinanceOrderMapper">
+  <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.FinanceOrder">
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="product_id" jdbcType="BIGINT" property="productId" />
+    <result column="product_no" jdbcType="VARCHAR" property="productNo" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="buy_amount" jdbcType="INTEGER" property="buyAmount" />
+    <result column="buy_time" jdbcType="TIMESTAMP" property="buyTime" />
+    <result column="redeem_time" jdbcType="TIMESTAMP" property="redeemTime" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <result column="income" jdbcType="INTEGER" property="income" />
+    <result column="initial_price" jdbcType="INTEGER" property="initialPrice" />
+    <result column="clear_price" jdbcType="INTEGER" property="clearPrice" />
+  </resultMap>
+
+  <!--理财交易订单查询开始-htt-->
+  <select id="selectByFinanceOrder" resultType="java.util.Map" parameterType="java.util.Map">
+    SELECT o.id id, o.order_no orderNo, o.user_id userID, u.UserName userName, DATE_FORMAT(i.RegisterTime, '%Y-%m-%d %h:%i:%s')  registerTime,
+    i.agent_id AS agentId, ua.user_name AS agentName, i.broker_id AS brokerId, ub.user_name AS brokerName ,
+    o.product_id productId, c.product_name productName,c.product_no productNo,c.cycle,c.year_incom_percent yearIncomPercent,
+    c.float_percent floatPercent, c.nper nper, c.type type,
+    o.buy_amount buyAmount,DATE_FORMAT(o.buy_time, '%Y-%m-%d %h:%i:%s') buyTime,DATE_FORMAT(o.redeem_time, '%Y-%m-%d %h:%i:%s') redeemTime,o.status,o.income,
+    o.initial_price initialPrice, o.clear_price clearPrice
+    FROM finance_order o
+    LEFT JOIN User_Login u ON o.user_id = u.UserID
+    LEFT JOIN User_Info i ON u.UserID = i.UserID
+    LEFT JOIN users ua ON i.agent_id = ua.id
+    LEFT JOIN users ub ON i.broker_id = ub.id
+    LEFT JOIN finance_conf c ON o.product_id = c.id
+    <where>
+      and u.Status = 1
+      <if test="userName != null and userName != '' ">
+        and i.userName = #{userName,jdbcType=VARCHAR}
+      </if>
+      <if test="orderNo != null and orderNo != '' ">
+        and o.order_no = #{orderNo,jdbcType=VARCHAR}
+      </if>
+      <if test="startTime !=null and startTime !='' ">
+        and o.buy_time &gt;=#{startTime,jdbcType=VARCHAR}
+      </if>
+      <if test="endTime !=null and endTime != '' ">
+        and o.buy_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="regStartTime !=null and regStartTime !='' ">
+        and i.RegisterTime &gt;=#{regStartTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="regEndTime !=null and regEndTime != '' ">
+        and i.RegisterTime &lt;=#{regEndTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="agentName != null and agentName !='' ">
+        and ua.agent_name = #{agentName,jdbcType=VARCHAR}
+      </if>
+      <if test="brokerName != null and brokerName !='' ">
+        and ub.broker_name = #{brokerName,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null and status !='' ">
+        and o.status = #{status,jdbcType=INTEGER}
+      </if>
+      <if test="nper != null and nper !='' ">
+        and c.nper = #{nper,jdbcType=VARCHAR}
+      </if>
+      <if test="type != null and type !='' ">
+        and c.type = #{type,jdbcType=INTEGER}
+      </if>
+    </where>
+    order by o.buy_time DESC
+  </select>
+  <!--理财交易订单查询结束-htt-->
+
+  <!--理财交易金额统计开始-htt-->
+  <select id="selectByFinanceOrderCount" resultType="java.util.Map" parameterType="java.util.Map">
+    SELECT SUM(buy_amount) buyAmountSum, Sum(income) incomeSum FROM finance_order o
+    LEFT JOIN User_Login l on o.user_id = l.UserID
+    LEFT JOIN finance_conf c ON o.product_id = c.id
+    LEFT JOIN User_Info i ON l.UserID = i.UserID
+    LEFT JOIN users ua ON i.agent_id = ua.id
+    <where>
+      and l.Status = 1
+      <if test="type != null and type !='' ">
+        and c.type = #{type,jdbcType=INTEGER}
+      </if>
+      <if test="agentName != null and agentName !='' ">
+        and ua.agent_name = #{agentName,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+  <!--理财交易金额统计结束-htt-->
+</mapper>
