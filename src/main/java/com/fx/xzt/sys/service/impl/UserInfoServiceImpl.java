@@ -138,7 +138,13 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 	 * 获取账户信息列表金额黄金统计
 	 * @return
 	 */
-	public Map<String,Object> getByAccountCount() {
-		return userInfoMapper.getByAccountCount();
+	public Map<String,Object> getByAccountCount(String userName, String agentName, String brokerName, String startTime, String endTime) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("userName", userName);
+		map.put("agentName", agentName);
+		map.put("brokerName", brokerName);
+		map.put("startTime", startTime);
+		map.put("endTime", endTime);
+		return userInfoMapper.getByAccountCount(map);
 	}
 }

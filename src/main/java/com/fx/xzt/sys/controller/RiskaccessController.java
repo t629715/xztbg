@@ -1,17 +1,18 @@
 package com.fx.xzt.sys.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.fx.xzt.sys.service.RiskaccessService;
-import com.fx.xzt.sys.util.CommonResponse;
-import com.fx.xzt.sys.util.ConstantUtil;
-import com.github.pagehelper.PageInfo;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Resource;
-import java.util.Map;
+import com.fx.xzt.sys.service.RiskaccessService;
+import com.fx.xzt.sys.util.CommonResponse;
+import com.fx.xzt.sys.util.ConstantUtil;
+import com.github.pagehelper.PageInfo;
 
 /**
  * @author htt
@@ -39,7 +40,7 @@ public class RiskaccessController {
      */
     @RequestMapping(value="/selectByRiskaccessAll")
     @ResponseBody
-    public String selectByRiskaccessAll(String userName, String realName, String startTime, String endTime, String accessLevel, @RequestParam Integer pageNum, @RequestParam  Integer pageSize) {
+    public Object selectByRiskaccessAll(String userName, String realName, String startTime, String endTime, String accessLevel, @RequestParam Integer pageNum, @RequestParam  Integer pageSize) {
         CommonResponse cr = new CommonResponse();
         try {
             PageInfo<Map<String, Object>> pageInfo = riskaccessService.getByRiskaccessAll(userName, realName, startTime, endTime, accessLevel, pageNum, pageSize);
@@ -53,7 +54,7 @@ public class RiskaccessController {
             throw e;
            // e.printStackTrace();
         }
-        return JSON.toJSONString(cr);
+        return cr;
     }
 
     /**
@@ -64,23 +65,21 @@ public class RiskaccessController {
      */
     @RequestMapping(value="/updateLevelById")
     @ResponseBody
-    public String updateLevelById(@RequestParam String level, @RequestParam Integer accessId) {
+    public Object updateLevelById(@RequestParam String level, @RequestParam Integer accessId) {
         CommonResponse cr = new CommonResponse();
         cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
-        cr.setData("{}");
         cr.setMsg("操作失败！");
         try {
             if (level != null && !level.equals("") && level.length() > 0 && accessId > 0) {
                 int flag = riskaccessService.updateLevelById(level, accessId);
                 if (flag > 0) {
                     cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);
-                    cr.setData("{}");
                     cr.setMsg("操作成功！");
                 }
             }
         } catch (Exception e) {
             throw e;
         }
-        return JSON.toJSONString(cr);
+        return cr;
     }
 }

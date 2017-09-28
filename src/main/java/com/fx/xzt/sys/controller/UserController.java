@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.model.UsersModel;
 import com.fx.xzt.sys.service.UsersService;
+import com.fx.xzt.sys.util.CommonResponse;
+import com.fx.xzt.sys.util.ConstantUtil;
 import com.github.pagehelper.PageInfo;
 
 /**
@@ -134,8 +137,21 @@ public class UserController {
 	 */
 	@RequestMapping(value="/selectByAgentMessage")
 	@ResponseBody
-	public List<Map<String,Object>> selectByAgentMessage(){
-		return userService.selectByAgentMessage();
+	public Object selectByAgentMessage(){
+		CommonResponse cr = new CommonResponse();
+        try {
+        	List<Map<String, Object>> list = userService.selectByAgentMessage();
+        	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+            cr.setData(list);
+            cr.setMsg("操作成功！");
+        } catch (Exception e) {
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("操作失败！");
+            throw e;
+            // e.printStackTrace();
+        }
+        return cr;
 	}
 
 	/**
@@ -145,7 +161,20 @@ public class UserController {
 	 */
 	@RequestMapping(value="/selectByBrokerMessage")
 	@ResponseBody
-	public List<Map<String,Object>> selectByBrokerMessage(Long pid){
-		return userService.selectByBrokerMessage(pid);
+	public Object selectByBrokerMessage(@RequestParam Long pid){
+		CommonResponse cr = new CommonResponse();
+        try {
+        	List<Map<String, Object>> list = userService.selectByBrokerMessage(pid);
+        	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+            cr.setData(list);
+            cr.setMsg("操作成功！");
+        } catch (Exception e) {
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("操作失败！");
+            throw e;
+            // e.printStackTrace();
+        }
+        return cr;
 	}
 }

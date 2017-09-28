@@ -153,15 +153,9 @@ public class DealOrderController {
                 }
                 Map<String, Object> map = new HashMap<String, Object>();
                 map = dealOrderService.selectByDealOrderCount(userName, orderNo, startTime, endTime, regStartTime, regEndTime,agentNameStr, brokerName, orderState);
-                if (map != null && !map.isEmpty() && map.size() > 0) {
-                    cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
-                    cr.setData(map);
-                    cr.setMsg("操作成功！");
-                } else {
-                    cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
-                    cr.setData("{}");
-                    cr.setMsg("操作成功！");
-                }
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+                cr.setData(map);
+                cr.setMsg("操作成功！");
             } else {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 cr.setData("{}");

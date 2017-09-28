@@ -8,23 +8,19 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.alibaba.fastjson.JSON;
-import com.fx.xzt.sys.entity.UserAccountRecord;
-import com.fx.xzt.sys.entity.UserLogin;
-import com.fx.xzt.sys.model.UserLoginModel;
-import com.fx.xzt.sys.service.UserLoginService;
-import com.fx.xzt.sys.util.CommonResponse;
-import com.fx.xzt.sys.util.ConstantUtil;
-import com.fx.xzt.util.POIUtils;
-import com.mysql.jdbc.StringUtils;
-import org.apache.poi.util.StringUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
+import com.fx.xzt.sys.entity.UserLogin;
 import com.fx.xzt.sys.model.UserInfoModel;
 import com.fx.xzt.sys.service.UserInfoService;
+import com.fx.xzt.sys.service.UserLoginService;
+import com.fx.xzt.sys.util.CommonResponse;
+import com.fx.xzt.sys.util.ConstantUtil;
+import com.fx.xzt.util.POIUtils;
 import com.github.pagehelper.PageInfo;
 
 
@@ -54,31 +50,29 @@ public class UserInfoController {
 		return userInfoService.getfindAll(userName, realName, applyTimeStart, applyTimeEnd, pageNum, pageSize);
 	}
 	/**
-	 * 认证
+	 * 实名认证操作
 	 * @param type 1 通过  -1 不通过
 	 * @param userId
 	 * @return 1成功 0失败
 	 */
 	@RequestMapping(value="/certification")
 	@ResponseBody
-	public String certification(@RequestParam  Integer type,@RequestParam  Long userId){
+	public Object certification(@RequestParam  Integer type,@RequestParam  Long userId){
 		CommonResponse cr = new CommonResponse();
 		cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
-		cr.setData("{}");
 		cr.setMsg("操作失败！");
 		try {
 			if (type > 0 && userId > 0) {
 				int flag = userInfoService.editUserInfo(type, userId);
 				if (flag > 0) {
 					cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);
-					cr.setData("{}");
 					cr.setMsg("操作成功！");
 				}
 			}
 		} catch (Exception e) {
 			throw e;
 		}
-		return JSON.toJSONString(cr);
+		return cr;
 	}
 	
 	
@@ -100,7 +94,7 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/selectByRegisterMessage")
 	@ResponseBody
-	public String selectByRegisterMessage(String userName, String startTime, String endTime,
+	public Object selectByRegisterMessage(String userName, String startTime, String endTime,
 		String registerFrom, String registerIp, String lastStartTime, String lastEndTime, String lastLoginFrom,
 		String agentsName, String brokerName, String attribution, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
 		CommonResponse cr = new CommonResponse();
@@ -117,7 +111,7 @@ public class UserInfoController {
 			throw e;
 			// e.printStackTrace();
 		}
-		return JSON.toJSONString(cr);
+		return cr;
 	}
 
 	/**
@@ -128,10 +122,9 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/updateRegisterStatusById")
 	@ResponseBody
-	public String updateRegisterStatusById(@RequestParam  Short status,@RequestParam  Long userId){
+	public Object updateRegisterStatusById(@RequestParam  Short status,@RequestParam  Long userId){
 		CommonResponse cr = new CommonResponse();
 		cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
-		cr.setData("{}");
 		cr.setMsg("操作失败！");
 		try {
 			if (status > 0 && userId > 0) {
@@ -141,14 +134,13 @@ public class UserInfoController {
 				int flag = userLoginService.updateByIdSelective(u);
 				if (flag > 0) {
 					cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);
-					cr.setData("{}");
 					cr.setMsg("操作成功！");
 				}
 			}
 		} catch (Exception e) {
 			throw e;
 		}
-		return JSON.toJSONString(cr);
+		return cr;
 	}
 
 	/**
@@ -163,7 +155,7 @@ public class UserInfoController {
 				lastEndTime,lastLoginFrom,agentsName,brokerName,attribution);
 		if (list != null && !list.isEmpty()) {
 			for (Map<String, Object> u : list) {
-				String name = ConstantUtil.userStatus.toMap().get(u.get("Status"));
+				String name = ConstantUtil.userStatus.toMap().get(u.get("Status").toString());
 				u.put("Status", name);
 			}
 		}
@@ -185,7 +177,7 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/selectByRealNameAuth")
 	@ResponseBody
-	public String selectByRealNameAuth(String userName, String realName, String applyTimeStart, String applyTimeEnd, @RequestParam Integer pageNum, @RequestParam Integer pageSize){
+	public Object selectByRealNameAuth(String userName, String realName, String applyTimeStart, String applyTimeEnd, @RequestParam Integer pageNum, @RequestParam Integer pageSize){
 		CommonResponse cr = new CommonResponse();
 		try {
 			PageInfo<Map<String, Object>> pageInfo = userInfoService.getByRealNameAuth(userName, realName, applyTimeStart, applyTimeEnd, pageNum, pageSize);
@@ -199,7 +191,7 @@ public class UserInfoController {
 			throw e;
 			// e.printStackTrace();
 		}
-		return JSON.toJSONString(cr);
+		return cr;
 	}
 
 	/**
@@ -207,7 +199,7 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/selectByAccountMessage")
 	@ResponseBody
-	public String selectByAccountMessage(String userName,String agentsName, String brokerName,String startTime,String endTime,@RequestParam Integer pageNum,@RequestParam Integer pageSize){
+	public Object selectByAccountMessage(String userName,String agentsName, String brokerName,String startTime,String endTime,@RequestParam Integer pageNum,@RequestParam Integer pageSize){
 		CommonResponse cr = new CommonResponse();
 		try {
 			PageInfo<Map<String, Object>> pageInfo = userInfoService.getByAccountMessage(userName, agentsName, brokerName, startTime, endTime, pageNum, pageSize);
@@ -221,7 +213,7 @@ public class UserInfoController {
 			throw e;
 			// e.printStackTrace();
 		}
-		return JSON.toJSONString(cr);
+		return cr;
 	}
 
 	/**
@@ -243,11 +235,11 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/selectAccountCount")
 	@ResponseBody
-	public String selectAccountCount(){
+	public String selectAccountCount(String userName,String agentName, String brokerName,String startTime,String endTime){
 		CommonResponse cr = new CommonResponse();
 		try {
 			Map<String,Object> map = new HashMap<String,Object>();
-			map = userInfoService.getByAccountCount();
+			map = userInfoService.getByAccountCount(userName,agentName, brokerName,startTime,endTime);
 			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 			cr.setData(map);
 			cr.setMsg("操作成功！");

@@ -9,14 +9,42 @@
                         http://www.springframework.org/schema/context/spring-context-4.2.xsd
                         http://www.springframework.org/schema/mvc
                         http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd">
+                        
+                        
+     <mvc:annotation-driven>  
+	   <mvc:message-converters register-defaults="true">  
+	        <bean class="org.springframework.http.converter.StringHttpMessageConverter">  
+	            <constructor-arg value="UTF-8" />          
+	        </bean>  
+	   
+	        <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">  
+	            <property name="supportedMediaTypes">  
+	            	<list>  
+	               		 <value>text/html;charset=UTF-8</value>
+	               		 <value>text/plain;charset=UTF-8</value>  
+	                     <value>application/json;charset=UTF-8</value>   
+	            	</list>  
+	        	</property> 
+	        	<property name="objectMapper">  
+                    <bean class="com.fasterxml.jackson.databind.ObjectMapper">  
+                        <property name="dateFormat">  
+                            <bean class="java.text.SimpleDateFormat">  
+                                <constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss" />  
+                            </bean>  
+                        </property>  
+                    </bean>  
+                </property>
+	         </bean>  
+	     </mvc:message-converters>  
+	  </mvc:annotation-driven>
 
 	<!-- 设置注解驱动 -->
-	<mvc:annotation-driven/>
+	<!-- <mvc:annotation-driven/> -->
 	<!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器 -->
 	<context:component-scan base-package="com.fx.xzt.**.controller" />
 
 	<!-- 消息适配器 -->
-	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+	<!-- <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
 		<property name="messageConverters">
 			<list>
 				<ref bean="stringHttpMessageConverter" />
@@ -32,9 +60,9 @@
 				<value>application/json;charset=UTF-8</value>
 			</list>
 		</property>
-	</bean>
+	</bean> -->
 
-	<bean id="jsonHttpMessageConverter" class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+	<!-- <bean id="jsonHttpMessageConverter" class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
 		<description>JSON转换器</description>
 		<property name="supportedMediaTypes">
 			<list>
@@ -42,14 +70,14 @@
 				<value>text/html;charset=UTF-8</value>
 			</list>
 		</property>
-		<!-- 使用FastJson替代JackSon避免循环嵌套异常 -->
+		 使用FastJson替代JackSon避免循环嵌套异常 
 		<property name="features">
 			<array>
 				<value>QuoteFieldNames</value>
 				<value>WriteDateUseDateFormat</value>
 			</array>
 		</property>
-	</bean>
+	</bean> -->
 
 	<!-- 静态资源访问，不被DispatcherServlet处理 -->
 	<mvc:resources mapping="template/**" location="/WEB-INF/template/" />

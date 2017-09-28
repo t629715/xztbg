@@ -45,6 +45,6 @@ public interface UserInfoMapper extends BaseMapper<UserInfo>{
 	 * 获取账户信息列表金额黄金统计
 	 * @return
 	 */
-	Map<String,Object> getByAccountCount();
+	Map<String,Object> getByAccountCount(Map<String,Object> map);
 	
 }

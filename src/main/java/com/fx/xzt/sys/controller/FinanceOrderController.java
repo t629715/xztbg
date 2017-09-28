@@ -195,15 +195,9 @@ public class FinanceOrderController {
                 }
                 Map<String, Object> map = new HashMap<String, Object>();
                 map = financeOrderService.selectByFinanceOrderCount(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName, status, type, nper);
-                if (map != null && !map.isEmpty() && map.size() > 0) {
-                    cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
-                    cr.setData(map);
-                    cr.setMsg("操作成功！");
-                } else {
-                    cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
-                    cr.setData("{}");
-                    cr.setMsg("操作成功！");
-                }
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+                cr.setData(map);
+                cr.setMsg("操作成功！");
             } else {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 cr.setData("{}");

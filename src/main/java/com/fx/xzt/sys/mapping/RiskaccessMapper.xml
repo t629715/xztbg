@@ -22,8 +22,10 @@
 
   <!--风险评测查询开始-htt-->
   <select id="selectByRiskaccessAll" resultType="java.util.Map" parameterType="java.util.Map">
-    SELECT r.access_id accessId, r.user_id userId, l.UserName userName, r.access_level accessLevel, r.access_time accessTime,i.RealName realName
-    FROM riskaccess r LEFT JOIN User_Info i ON r.user_id = i.UserID
+    SELECT r.access_id accessId, r.user_id userId, l.UserName userName, 
+    r.access_level accessLevel, DATE_FORMAT(r.access_time, '%Y-%m-%d %h:%i:%s') accessTime,i.RealName realName
+    FROM riskaccess r 
+    LEFT JOIN User_Info i ON r.user_id = i.UserID
     LEFT JOIN User_Login l ON l.UserID = i.UserID
     <where>
       and l.Status = 1
