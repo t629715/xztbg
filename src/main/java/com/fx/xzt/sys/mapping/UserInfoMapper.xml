@@ -90,10 +90,10 @@
 				and l.UserName = #{userName,jdbcType=VARCHAR}
 			</if>
 			<if test="agentName != null and agentName !='' ">
-				and ua.agent_name = #{agentName,jdbcType=VARCHAR}
+				and ua.user_name = #{agentName,jdbcType=VARCHAR}
 			</if>
 			<if test="brokerName != null and brokerName !='' ">
-				and u.broker_name = #{brokerName,jdbcType=VARCHAR}
+				and u.user_name = #{brokerName,jdbcType=VARCHAR}
 			</if>
 			<if test="startTime !=null and startTime !='' ">
 				and u.RegisterTime &gt;=#{startTime,jdbcType=TIMESTAMP}
@@ -123,10 +123,10 @@
 				and l.UserName = #{userName,jdbcType=VARCHAR}
 			</if>
 			<if test="agentName != null and agentName !='' ">
-				and ua.agent_name = #{agentName,jdbcType=VARCHAR}
+				and ua.user_name = #{agentName,jdbcType=VARCHAR}
 			</if>
 			<if test="brokerName != null and brokerName !='' ">
-				and ub.broker_name = #{brokerName,jdbcType=VARCHAR}
+				and ub.user_name = #{brokerName,jdbcType=VARCHAR}
 			</if>
 			<if test="startTime !=null and startTime !='' ">
 				and u.RegisterTime &gt;=#{startTime,jdbcType=TIMESTAMP}

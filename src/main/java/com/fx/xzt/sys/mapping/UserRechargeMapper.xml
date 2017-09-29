@@ -5,8 +5,7 @@
 		<id column="RechargeID" property="rechargeid" jdbcType="CHAR" />
 		<result column="UserID" property="userid" jdbcType="BIGINT" />
 		<result column="UserName" property="username" jdbcType="VARCHAR" />
-		<result column="RMBAmt" property="rmbamt" jdbcType="DECIMAL" />
-		<result column="UAmt" property="uamt" jdbcType="DECIMAL" />
+		<result column="RMBAmt" property="rmbamt" jdbcType="INTEGER" />
 		<result column="RechargeTime" property="rechargetime" jdbcType="TIMESTAMP" />
 		<result column="RechargeChannel" property="rechargechannel"
 			jdbcType="CHAR" />
@@ -16,7 +15,7 @@
 		<result column="Status" property="status" jdbcType="SMALLINT" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		RechargeID, UserID, UserName, RMBAmt, UAmt, RechargeTime,
+		RechargeID, UserID, UserName, RMBAmt, RechargeTime,
 		RechargeChannel,
 		PlatformName,
 		MerchantOrderNum, Status
@@ -41,16 +40,16 @@
 				and r.userName = #{userName,jdbcType=VARCHAR}
 			</if>
 			<if test="startTime !=null and startTime !='' ">
-				and o.RechargeTime &gt;=#{startTime,jdbcType=TIMESTAMP}
+				and r.RechargeTime &gt;=#{startTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="endTime !=null and endTime != '' ">
-				and o.RechargeTime &lt;=#{endTime,jdbcType=TIMESTAMP}
+				and r.RechargeTime &lt;=#{endTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="agentName != null and agentName !='' ">
-				and ua.agent_name = #{agentName,jdbcType=VARCHAR}
+				and ua.user_name = #{agentName,jdbcType=VARCHAR}
 			</if>
 			<if test="brokerName != null and brokerName !='' ">
-				and ub.broker_name = #{brokerName,jdbcType=VARCHAR}
+				and ub.user_name = #{brokerName,jdbcType=VARCHAR}
 			</if>
 			<if test="rechargechannel != null and rechargechannel!='' ">
 				and r.RechargeChannel =

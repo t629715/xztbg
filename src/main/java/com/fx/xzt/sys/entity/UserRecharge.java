@@ -19,7 +19,7 @@ public class UserRecharge implements Serializable {
 
     private String username;
 
-    private BigDecimal rmbamt;
+    private Integer rmbamt;
 
     private BigDecimal uamt;
 
@@ -59,11 +59,11 @@ public class UserRecharge implements Serializable {
         this.username = username == null ? null : username.trim();
     }
 
-    public BigDecimal getRmbamt() {
+    public Integer getRmbamt() {
         return rmbamt;
     }
 
-    public void setRmbamt(BigDecimal rmbamt) {
+    public void setRmbamt(Integer rmbamt) {
         this.rmbamt = rmbamt;
     }
 

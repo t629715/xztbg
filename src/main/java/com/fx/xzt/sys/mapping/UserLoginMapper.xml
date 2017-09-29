@@ -59,10 +59,10 @@
                 and m.lastloginfrom = #{lastLoginFrom,jdbcType=VARCHAR}
             </if>
             <if test="agentsName != null and agentsName !='' ">
-                and u.agent_name = #{agentsName,jdbcType=VARCHAR}
+                and u.user_name = #{agentsName,jdbcType=VARCHAR}
             </if>
             <if test="brokerName != null and brokerName !='' ">
-                and u1.broker_name = #{brokerName,jdbcType=VARCHAR}
+                and u1.user_name = #{brokerName,jdbcType=VARCHAR}
             </if>
             <if test="attribution != null and attribution !='' ">
                 and i.attribution = #{attribution,jdbcType=VARCHAR}

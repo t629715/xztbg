@@ -46,10 +46,10 @@
               and i.RegisterTime &lt;=#{regEndTime,jdbcType=TIMESTAMP}
           </if>
           <if test="agentName != null and agentName !='' ">
-              and ua.agent_name = #{agentName,jdbcType=VARCHAR}
+              and ua.user_name = #{agentName,jdbcType=VARCHAR}
           </if>
           <if test="brokerName != null and brokerName !='' ">
-              and ub.broker_name = #{brokerName,jdbcType=VARCHAR}
+              and ub.user_name = #{brokerName,jdbcType=VARCHAR}
           </if>
       </where>
         order by o.buy_time DESC
@@ -84,10 +84,10 @@
                 and i.RegisterTime &lt;=#{regEndTime,jdbcType=TIMESTAMP}
             </if>
             <if test="agentName != null and agentName !='' ">
-                and ua.agent_name = #{agentName,jdbcType=VARCHAR}
+                and ua.user_name = #{agentName,jdbcType=VARCHAR}
             </if>
             <if test="brokerName != null and brokerName !='' ">
-                and ub.broker_name = #{brokerName,jdbcType=VARCHAR}
+                and ub.user_name = #{brokerName,jdbcType=VARCHAR}
             </if>
         </where>
     </select>

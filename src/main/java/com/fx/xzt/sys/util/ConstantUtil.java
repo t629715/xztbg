@@ -160,5 +160,35 @@ public class ConstantUtil {
             return rlt;
         }
     }
+    
+    /**
+     * 
+    * @ClassName: withdrawCashStatus 
+    * @Description: 现金提取状态
+    * @author htt
+    * @date 2017-9-29 下午4:31:50 
+    *
+     */
+    public static enum withdrawCashStatus {
+        SHZ("审核中","0"),
+        YWC("已完成","1");
+        private String name;
+        private String index;
+        private withdrawCashStatus(String name,String index){
+            this.name = name;
+            this.index = index;
+        }
+        public String toString() {
+            return this.index;
+        }
+        public static Map<String, String> toMap() {
+        	withdrawCashStatus[] ds = withdrawCashStatus.values();
+            Map<String, String> rlt = new Hashtable<String, String>();
+            for (withdrawCashStatus d : ds) {
+                rlt.put(d.index, d.name);
+            }
+            return rlt;
+        }
+    }
 
 }

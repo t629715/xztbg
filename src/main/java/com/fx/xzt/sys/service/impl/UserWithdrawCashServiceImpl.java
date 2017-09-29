@@ -110,5 +110,57 @@ public class UserWithdrawCashServiceImpl extends BaseService<UserWithdrawCash> i
 	public UserWithdrawCash selectByIdKey(String withdrawid) {
 		return userWithdrawCashMapper.selectByIdKey(withdrawid);
 	}
+
+	/**
+	 * 现金提取查询
+	 */
+	public PageInfo<Map<String, Object>> selectByWithdrawCash(String userName,
+			String startTime, String endTime, String agentName,
+			String brokerName, Integer status, Integer pageNum, Integer pageSize) {
+		Map<String, Object> map = new HashMap<String, Object>();
+        map.put("userName", userName);
+        map.put("startTime", startTime);
+        map.put("endTime", endTime);
+        map.put("agentName", agentName);
+        map.put("brokerName", brokerName);
+        map.put("status", status);
+        PageHelper.startPage(pageNum,pageSize);
+        List<Map<String, Object>> list = userWithdrawCashMapper.selectByWithdrawCash(map);
+        PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
+        return pagehelper;
+	}
+
+	/**
+	 * 现金提取--导出
+	 */
+	public List<Map<String, Object>> excelWithdrawCash(String userName,
+			String startTime, String endTime, String agentName,
+			String brokerName, Integer status) {
+		Map<String, Object> map = new HashMap<String, Object>();
+        map.put("userName", userName);
+        map.put("startTime", startTime);
+        map.put("endTime", endTime);
+        map.put("agentName", agentName);
+        map.put("brokerName", brokerName);
+        map.put("status", status);
+        List<Map<String, Object>> list = userWithdrawCashMapper.selectByWithdrawCash(map);
+        return list;
+	}
+
+	/**
+	 * 现金提取查询--金额统计
+	 */
+	public Map<String, Object> selectByWithdrawCashCount(String userName,
+			String startTime, String endTime, String agentName,
+			String brokerName, Integer status) {
+		Map<String, Object> map = new HashMap<String, Object>();
+        map.put("userName", userName);
+        map.put("startTime", startTime);
+        map.put("endTime", endTime);
+        map.put("agentName", agentName);
+        map.put("brokerName", brokerName);
+        map.put("status", status);
+		return userWithdrawCashMapper.selectByWithdrawCashCount(map);
+	}
 	
 }

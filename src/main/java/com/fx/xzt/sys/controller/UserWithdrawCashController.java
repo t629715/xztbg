@@ -7,13 +7,18 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.model.UserWithdrawCashModel;
 import com.fx.xzt.sys.service.UserWithdrawCashService;
+import com.fx.xzt.sys.util.CommonResponse;
+import com.fx.xzt.sys.util.ConstantUtil;
 import com.fx.xzt.sys.util.UserWithdrawCashStatusEnum;
 import com.fx.xzt.util.POIUtils;
 import com.github.pagehelper.PageInfo;
@@ -65,4 +70,150 @@ public class UserWithdrawCashController {
 		map.put("msg", msg);
 		return map;
 	}
+	
+	/**
+	 * 
+	* @Title: selectByWithdrawCash 
+	* @Description: 现金提取查询
+	* @param request
+	* @param userName   用户账号
+	* @param startTime  申请开始时间
+	* @param endTime    申请结束时间
+	* @param agentName  代理商用户名
+	* @param brokerName 经纪人用户名
+	* @param status 状态 0：审核中 1：已完成
+	* @param pageNum
+	* @param pageSize
+	* @return    设定文件 
+	* @return Object    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	@RequestMapping(value="/selectByWithdrawCash")
+    @ResponseBody
+    public Object selectByWithdrawCash(HttpServletRequest request, String userName, String startTime, String endTime, 
+			String agentName, String brokerName, Integer status, 
+			@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+        CommonResponse cr = new CommonResponse();
+        try {
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            if (users != null) {
+                PageInfo<Map<String, Object>> pageInfo = userWithdrawCashService.selectByWithdrawCash(userName, startTime, endTime, 
+                		agentName, brokerName, status, pageNum, pageSize);
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+                cr.setData(pageInfo);
+                cr.setMsg("操作成功！");
+            } else {
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("操作失败！");
+            }
+        } catch (Exception e) {
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("操作失败！");
+            throw e;
+            // e.printStackTrace();
+        }
+        return cr;
+    }
+	
+	/**
+	 * 
+	* @Title: excelWithdrawCash 
+	* @Description: 现金提取-导出
+	* @param request  
+	* @param response
+	* @param userName  用户账号
+	* @param startTime 申请开始键
+	* @param endTime  申请结束时间
+	* @param agentName 代理商用户名
+	* @param brokerName 经纪人用户名
+	* @param status    状态 0：审核中 1：已完成
+	* @return void    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	@RequestMapping(value="/excelWithdrawCash")
+    @ResponseBody
+    public void excelWithdrawCash(HttpServletRequest request, HttpServletResponse response, String userName, String startTime, String endTime, 
+			String agentName, String brokerName, Integer status){
+        try {
+            String tieleName = "现金提取";
+            String excelName = "现金提取";
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            if (users != null) {
+                String agentNameStr = agentName;
+                List<Map<String, Object>> list = userWithdrawCashService.excelWithdrawCash(userName, startTime, endTime, agentNameStr, brokerName, status);
+                if (list != null && list.size() > 0) {
+                    for (Map<String, Object> map : list) {
+                        map.put("status", ConstantUtil.withdrawCashStatus.toMap().get(map.get("status").toString()));
+                        Object amtObj =  map.get("withdrawAmt");
+                        Object poundageObj = map.get("poundage");
+                        if (amtObj != null && amtObj != "") {
+                        	Double amt = Double.valueOf(amtObj.toString());
+                        	map.put("withdrawAmt", amt/100);
+                        }
+                        if (poundageObj != null && poundageObj != "") {
+                        	Double poundage = Double.valueOf(poundageObj.toString());
+                        	map.put("poundage", poundage/100);
+                        }
+                    }
+                    POIUtils poi = new POIUtils();
+                    String[] heads = {"用户账号","代理商","经纪人","提取金额","手续费","银行卡号","申请提取时间", "审核时间",  "状态"};
+                    String[] colums = {"userName", "agentName", "brokerName", "withdrawAmt", "poundage", "accountNum", "withdrawTime", "finishTime", "status"};
+                    poi.doExport(request, response, list, tieleName, excelName, heads, colums);
+                }
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+	
+	/**
+	 * 
+	* @Title: selectByWithdrawCashCount 
+	* @Description: 现金提取查询-统计
+	* @param request
+	* @param userName    用户账号
+	* @param startTime   申请开始时间
+	* @param endTime     申请结束时间
+	* @param agentName   代理商用户名
+	* @param brokerName  经纪人用户名
+	* @param status 状态 0：审核中 1：已完成
+	* @return    设定文件 
+	* @return Object    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	@RequestMapping(value="/selectByWithdrawCashCount")
+    @ResponseBody
+    public Object selectByWithdrawCashCount(HttpServletRequest request, String userName, String startTime, String endTime, String agentName,
+			String brokerName, Integer status){
+        CommonResponse cr = new CommonResponse();
+        try {
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            if (users != null) {
+                Map<String, Object> map = new HashMap<String, Object>();
+                map = userWithdrawCashService.selectByWithdrawCashCount(userName, startTime, endTime, agentName, brokerName, status);
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+                cr.setData(map);
+                cr.setMsg("操作成功！");
+            } else {
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("操作失败！");
+            }
+        } catch (Exception e) {
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("操作失败！");
+            throw e;
+            // e.printStackTrace();
+        }
+        return cr;
+    }
 }

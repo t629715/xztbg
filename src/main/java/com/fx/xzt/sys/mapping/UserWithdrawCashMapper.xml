@@ -5,16 +5,90 @@
     <id column="WithdrawID" property="withdrawid" jdbcType="CHAR" />
     <result column="UserID" property="userid" jdbcType="BIGINT" />
     <result column="UserName" property="username" jdbcType="VARCHAR" />
-    <result column="WithdrawAmt" property="withdrawamt" jdbcType="DECIMAL" />
+    <result column="WithdrawAmt" property="withdrawamt" jdbcType="INTEGER" />
     <result column="AccountNum" property="accountnum" jdbcType="VARCHAR" />
     <result column="WithdrawTime" property="withdrawtime" jdbcType="TIMESTAMP" />
     <result column="FinishTime" property="finishtime" jdbcType="TIMESTAMP" />
     <result column="Status" property="status" jdbcType="SMALLINT" />
+    <result column="poundage" property="poundage" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
     WithdrawID, w.UserID, w.UserName, w.WithdrawAmt, w.AccountNum, w.WithdrawTime, w.FinishTime, 
     w.Status
   </sql>
+  
+	<!-- 现金提取查询开始-htt -->
+	<select id="selectByWithdrawCash" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT w.WithdrawID withdrawID,w.UserID userID,w.UserName userName,w.WithdrawAmt withdrawAmt,
+		w.AccountNum accountNum,w.WithdrawTime withdrawTime,w.FinishTime finishTime,w.Status status,w.type,w.poundage,
+		i.agent_id AS agentId, ua.user_name AS agentName, i.broker_id AS
+		brokerId,
+		ub.user_name AS brokerName
+		FROM User_WithdrawCash w
+		LEFT JOIN User_Login u ON w.UserID = u.UserID
+		LEFT JOIN User_Info i ON w.UserID = i.UserID
+		LEFT JOIN users ua ON i.agent_id = ua.id
+		LEFT JOIN users ub ON i.broker_id = ub.id
+		<where>
+			and u.Status = 1
+			<if test="userName != null and userName != '' ">
+				and r.userName = #{userName,jdbcType=VARCHAR}
+			</if>
+			<if test="startTime !=null and startTime !='' ">
+				and r.WithdrawAmt &gt;=#{startTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime !=null and endTime != '' ">
+				and r.WithdrawAmt &lt;=#{endTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="agentName != null and agentName !='' ">
+				and ua.user_name = #{agentName,jdbcType=VARCHAR}
+			</if>
+			<if test="brokerName != null and brokerName !='' ">
+				and ub.user_name = #{brokerName,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+				and w.Status = #{status,jdbcType=SMALLINT}
+			</if>
+		</where>
+		order by w.WithdrawTime DESC
+	</select>
+	<!-- 现金提取查询结束-htt -->
+	
+	<!-- 现金提取查询统计开始-htt -->
+	<select id="selectByWithdrawCashCount" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT Sum(WithdrawAmt) withdrawAmtSum, Sum(poundage) poundageSum
+		FROM User_WithdrawCash w
+		LEFT JOIN User_Login u ON w.UserID = u.UserID
+		LEFT JOIN User_Info i ON w.UserID = i.UserID
+		LEFT JOIN users ua ON i.agent_id = ua.id
+		LEFT JOIN users ub ON i.broker_id = ub.id
+		<where>
+			and u.Status = 1
+			<if test="userName != null and userName != '' ">
+				and r.userName = #{userName,jdbcType=VARCHAR}
+			</if>
+			<if test="startTime !=null and startTime !='' ">
+				and r.WithdrawAmt &gt;=#{startTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime !=null and endTime != '' ">
+				and r.WithdrawAmt &lt;=#{endTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="agentName != null and agentName !='' ">
+				and ua.user_name = #{agentName,jdbcType=VARCHAR}
+			</if>
+			<if test="brokerName != null and brokerName !='' ">
+				and ub.user_name = #{brokerName,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+				and w.Status = #{status,jdbcType=SMALLINT}
+			</if>
+		</where>
+		order by w.WithdrawTime DESC
+	</select>
+	<!-- 现金提取查询统计结束-htt -->
+  
+  
+  
   <select id="selectByIdKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />

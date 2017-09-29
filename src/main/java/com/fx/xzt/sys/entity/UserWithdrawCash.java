@@ -1,7 +1,6 @@
 package com.fx.xzt.sys.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -20,7 +19,7 @@ public class UserWithdrawCash implements Serializable {
 
     private String username;
 
-    private BigDecimal withdrawamt;
+    private Integer withdrawamt;
 
     private String accountnum;
 
@@ -29,6 +28,8 @@ public class UserWithdrawCash implements Serializable {
     private Date finishtime;
 
     private Short status;
+    
+    private Integer poundage;
 
     private static final long serialVersionUID = 1L;
 
@@ -56,11 +57,11 @@ public class UserWithdrawCash implements Serializable {
         this.username = username == null ? null : username.trim();
     }
 
-    public BigDecimal getWithdrawamt() {
+    public Integer getWithdrawamt() {
         return withdrawamt;
     }
 
-    public void setWithdrawamt(BigDecimal withdrawamt) {
+    public void setWithdrawamt(Integer withdrawamt) {
         this.withdrawamt = withdrawamt;
     }
 
@@ -95,4 +96,14 @@ public class UserWithdrawCash implements Serializable {
     public void setStatus(Short status) {
         this.status = status;
     }
+
+	public Integer getPoundage() {
+		return poundage;
+	}
+
+	public void setPoundage(Integer poundage) {
+		this.poundage = poundage;
+	}
+    
+    
 }
