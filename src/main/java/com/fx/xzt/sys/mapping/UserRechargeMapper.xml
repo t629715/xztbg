@@ -1,324 +1,232 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fx.xzt.sys.mapper.UserRechargeMapper" >
-  <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.UserRecharge" >
-    <id column="RechargeID" property="rechargeid" jdbcType="CHAR" />
-    <result column="UserID" property="userid" jdbcType="BIGINT" />
-    <result column="UserName" property="username" jdbcType="VARCHAR" />
-    <result column="RMBAmt" property="rmbamt" jdbcType="DECIMAL" />
-    <result column="UAmt" property="uamt" jdbcType="DECIMAL" />
-    <result column="RechargeTime" property="rechargetime" jdbcType="TIMESTAMP" />
-    <result column="RechargeChannel" property="rechargechannel" jdbcType="CHAR" />
-    <result column="PlatformName" property="platformname" jdbcType="VARCHAR" />
-    <result column="MerchantOrderNum" property="merchantordernum" jdbcType="VARCHAR" />
-    <result column="Status" property="status" jdbcType="SMALLINT" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    RechargeID, UserID, UserName, RMBAmt, UAmt, RechargeTime, RechargeChannel, PlatformName, 
-    MerchantOrderNum, Status
-  </sql>
-  <select id="getByAll" resultType="com.fx.xzt.sys.model.UserRechargeModel" parameterType="java.util.Map" >
-  	select 
-  	<include refid="Base_Column_List" />
-  	from User_Recharge
-  	<where>
-  		<if test="username != null and username!='' " >
-  			and UserName = #{username,jdbcType=VARCHAR}
-  		</if>
-  		<if test="rechargeid != null and rechargeid !='' " >
-  			and RechargeID = #{rechargeid,jdbcType=CHAR}
-  		</if>
-  		<if test="merchantordernum != null and merchantordernum!='' " >
-  			and MerchantOrderNum = #{merchantordernum,jdbcType=VARCHAR}
-  		</if>
-  		<if test="startTime !=null and startTime!='' ">
-			and RechargeTime &gt;=#{startTime,jdbcType=TIMESTAMP}
-		</if>
-		<if test="endTime !=null and endTime!='' ">
-			and RechargeTime &lt;=#{endTime,jdbcType=TIMESTAMP}
-		</if>
-		<if test="rechargechannel != null and rechargechannel!='' " >
-  			and RechargeChannel = #{rechargechannel,jdbcType=VARCHAR}
-  		</if>
-  		<if test="status != null" >
-  			and Status = #{status,jdbcType=SMALLINT}
-  		</if>
-  	</where>
-  	order by RechargeTime desc
-  </select>
-  <!-- <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List" >
-    RechargeID, UserID, UserName, RMBAmt, UAmt, RechargeTime, RechargeChannel, PlatformName, 
-    MerchantOrderNum, Status
-  </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fx.xzt.sys.entity.UserRechargeExample" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from User_Recharge
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from User_Recharge
-    where RechargeID = #{rechargeid,jdbcType=CHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from User_Recharge
-    where RechargeID = #{rechargeid,jdbcType=CHAR}
-  </delete>
-  <delete id="deleteByExample" parameterType="com.fx.xzt.sys.entity.UserRechargeExample" >
-    delete from User_Recharge
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" parameterType="com.fx.xzt.sys.entity.UserRecharge" >
-    insert into User_Recharge (RechargeID, UserID, UserName, 
-      RMBAmt, UAmt, RechargeTime, 
-      RechargeChannel, PlatformName, MerchantOrderNum, 
-      Status)
-    values (#{rechargeid,jdbcType=CHAR}, #{userid,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, 
-      #{rmbamt,jdbcType=DECIMAL}, #{uamt,jdbcType=DECIMAL}, #{rechargetime,jdbcType=TIMESTAMP}, 
-      #{rechargechannel,jdbcType=CHAR}, #{platformname,jdbcType=VARCHAR}, #{merchantordernum,jdbcType=VARCHAR}, 
-      #{status,jdbcType=SMALLINT})
-  </insert>
-  <insert id="insertSelective" parameterType="com.fx.xzt.sys.entity.UserRecharge" >
-    insert into User_Recharge
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="rechargeid != null" >
-        RechargeID,
-      </if>
-      <if test="userid != null" >
-        UserID,
-      </if>
-      <if test="username != null" >
-        UserName,
-      </if>
-      <if test="rmbamt != null" >
-        RMBAmt,
-      </if>
-      <if test="uamt != null" >
-        UAmt,
-      </if>
-      <if test="rechargetime != null" >
-        RechargeTime,
-      </if>
-      <if test="rechargechannel != null" >
-        RechargeChannel,
-      </if>
-      <if test="platformname != null" >
-        PlatformName,
-      </if>
-      <if test="merchantordernum != null" >
-        MerchantOrderNum,
-      </if>
-      <if test="status != null" >
-        Status,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="rechargeid != null" >
-        #{rechargeid,jdbcType=CHAR},
-      </if>
-      <if test="userid != null" >
-        #{userid,jdbcType=BIGINT},
-      </if>
-      <if test="username != null" >
-        #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="rmbamt != null" >
-        #{rmbamt,jdbcType=DECIMAL},
-      </if>
-      <if test="uamt != null" >
-        #{uamt,jdbcType=DECIMAL},
-      </if>
-      <if test="rechargetime != null" >
-        #{rechargetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="rechargechannel != null" >
-        #{rechargechannel,jdbcType=CHAR},
-      </if>
-      <if test="platformname != null" >
-        #{platformname,jdbcType=VARCHAR},
-      </if>
-      <if test="merchantordernum != null" >
-        #{merchantordernum,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=SMALLINT},
-      </if>
-    </trim>
-  </insert>
-  <select id="countByExample" parameterType="com.fx.xzt.sys.entity.UserRechargeExample" resultType="java.lang.Integer" >
-    select count(*) from User_Recharge
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map" >
-    update User_Recharge
-    <set >
-      <if test="record.rechargeid != null" >
-        RechargeID = #{record.rechargeid,jdbcType=CHAR},
-      </if>
-      <if test="record.userid != null" >
-        UserID = #{record.userid,jdbcType=BIGINT},
-      </if>
-      <if test="record.username != null" >
-        UserName = #{record.username,jdbcType=VARCHAR},
-      </if>
-      <if test="record.rmbamt != null" >
-        RMBAmt = #{record.rmbamt,jdbcType=DECIMAL},
-      </if>
-      <if test="record.uamt != null" >
-        UAmt = #{record.uamt,jdbcType=DECIMAL},
-      </if>
-      <if test="record.rechargetime != null" >
-        RechargeTime = #{record.rechargetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.rechargechannel != null" >
-        RechargeChannel = #{record.rechargechannel,jdbcType=CHAR},
-      </if>
-      <if test="record.platformname != null" >
-        PlatformName = #{record.platformname,jdbcType=VARCHAR},
-      </if>
-      <if test="record.merchantordernum != null" >
-        MerchantOrderNum = #{record.merchantordernum,jdbcType=VARCHAR},
-      </if>
-      <if test="record.status != null" >
-        Status = #{record.status,jdbcType=SMALLINT},
-      </if>
-    </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map" >
-    update User_Recharge
-    set RechargeID = #{record.rechargeid,jdbcType=CHAR},
-      UserID = #{record.userid,jdbcType=BIGINT},
-      UserName = #{record.username,jdbcType=VARCHAR},
-      RMBAmt = #{record.rmbamt,jdbcType=DECIMAL},
-      UAmt = #{record.uamt,jdbcType=DECIMAL},
-      RechargeTime = #{record.rechargetime,jdbcType=TIMESTAMP},
-      RechargeChannel = #{record.rechargechannel,jdbcType=CHAR},
-      PlatformName = #{record.platformname,jdbcType=VARCHAR},
-      MerchantOrderNum = #{record.merchantordernum,jdbcType=VARCHAR},
-      Status = #{record.status,jdbcType=SMALLINT}
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.fx.xzt.sys.entity.UserRecharge" >
-    update User_Recharge
-    <set >
-      <if test="userid != null" >
-        UserID = #{userid,jdbcType=BIGINT},
-      </if>
-      <if test="username != null" >
-        UserName = #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="rmbamt != null" >
-        RMBAmt = #{rmbamt,jdbcType=DECIMAL},
-      </if>
-      <if test="uamt != null" >
-        UAmt = #{uamt,jdbcType=DECIMAL},
-      </if>
-      <if test="rechargetime != null" >
-        RechargeTime = #{rechargetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="rechargechannel != null" >
-        RechargeChannel = #{rechargechannel,jdbcType=CHAR},
-      </if>
-      <if test="platformname != null" >
-        PlatformName = #{platformname,jdbcType=VARCHAR},
-      </if>
-      <if test="merchantordernum != null" >
-        MerchantOrderNum = #{merchantordernum,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
-        Status = #{status,jdbcType=SMALLINT},
-      </if>
-    </set>
-    where RechargeID = #{rechargeid,jdbcType=CHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.fx.xzt.sys.entity.UserRecharge" >
-    update User_Recharge
-    set UserID = #{userid,jdbcType=BIGINT},
-      UserName = #{username,jdbcType=VARCHAR},
-      RMBAmt = #{rmbamt,jdbcType=DECIMAL},
-      UAmt = #{uamt,jdbcType=DECIMAL},
-      RechargeTime = #{rechargetime,jdbcType=TIMESTAMP},
-      RechargeChannel = #{rechargechannel,jdbcType=CHAR},
-      PlatformName = #{platformname,jdbcType=VARCHAR},
-      MerchantOrderNum = #{merchantordernum,jdbcType=VARCHAR},
-      Status = #{status,jdbcType=SMALLINT}
-    where RechargeID = #{rechargeid,jdbcType=CHAR}
-  </update> -->
+<mapper namespace="com.fx.xzt.sys.mapper.UserRechargeMapper">
+	<resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.UserRecharge">
+		<id column="RechargeID" property="rechargeid" jdbcType="CHAR" />
+		<result column="UserID" property="userid" jdbcType="BIGINT" />
+		<result column="UserName" property="username" jdbcType="VARCHAR" />
+		<result column="RMBAmt" property="rmbamt" jdbcType="DECIMAL" />
+		<result column="UAmt" property="uamt" jdbcType="DECIMAL" />
+		<result column="RechargeTime" property="rechargetime" jdbcType="TIMESTAMP" />
+		<result column="RechargeChannel" property="rechargechannel"
+			jdbcType="CHAR" />
+		<result column="PlatformName" property="platformname" jdbcType="VARCHAR" />
+		<result column="MerchantOrderNum" property="merchantordernum"
+			jdbcType="VARCHAR" />
+		<result column="Status" property="status" jdbcType="SMALLINT" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		RechargeID, UserID, UserName, RMBAmt, UAmt, RechargeTime,
+		RechargeChannel,
+		PlatformName,
+		MerchantOrderNum, Status
+	</sql>
+
+	<!-- 现金充值查询开始-htt -->
+	<select id="selectByRecharge" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT r.RechargeID, r.UserID, r.UserName, r.RMBAmt, r.RechargeTime,
+		r.RechargeChannel, r.PlatformName,
+		r.MerchantOrderNum, r.Status,
+		i.agent_id AS agentId, ua.user_name AS agentName, i.broker_id AS
+		brokerId,
+		ub.user_name AS brokerName
+		FROM User_Recharge r
+		LEFT JOIN User_Login u ON r.UserID = u.UserID
+		LEFT JOIN User_Info i ON r.UserID = i.UserID
+		LEFT JOIN users ua ON i.agent_id = ua.id
+		LEFT JOIN users ub ON i.broker_id = ub.id
+		<where>
+			and u.Status = 1
+			<if test="userName != null and userName != '' ">
+				and r.userName = #{userName,jdbcType=VARCHAR}
+			</if>
+			<if test="startTime !=null and startTime !='' ">
+				and o.RechargeTime &gt;=#{startTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime !=null and endTime != '' ">
+				and o.RechargeTime &lt;=#{endTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="agentName != null and agentName !='' ">
+				and ua.agent_name = #{agentName,jdbcType=VARCHAR}
+			</if>
+			<if test="brokerName != null and brokerName !='' ">
+				and ub.broker_name = #{brokerName,jdbcType=VARCHAR}
+			</if>
+			<if test="rechargechannel != null and rechargechannel!='' ">
+				and r.RechargeChannel =
+				#{rechargechannel,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+				and r.Status = #{status,jdbcType=SMALLINT}
+			</if>
+		</where>
+		order by r.RechargeTime DESC
+	</select>
+	<!-- 现金充值查询结束-htt -->
+	
+	<!-- 现金充值查询统计开始-htt -->
+	<select id="selectByRechargeCount" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT Sum(r.RMBAmt) rmbAmtSum 
+		FROM User_Recharge r
+		LEFT JOIN User_Login u ON r.UserID = u.UserID
+		LEFT JOIN User_Info i ON r.UserID = i.UserID
+		LEFT JOIN users ua ON i.agent_id = ua.id
+		LEFT JOIN users ub ON i.broker_id = ub.id
+		<where>
+			and u.Status = 1
+			<if test="userName != null and userName != '' ">
+				and r.userName = #{userName,jdbcType=VARCHAR}
+			</if>
+			<if test="startTime !=null and startTime !='' ">
+				and o.RechargeTime &gt;=#{startTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime !=null and endTime != '' ">
+				and o.RechargeTime &lt;=#{endTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="agentName != null and agentName !='' ">
+				and ua.agent_name = #{agentName,jdbcType=VARCHAR}
+			</if>
+			<if test="brokerName != null and brokerName !='' ">
+				and ub.broker_name = #{brokerName,jdbcType=VARCHAR}
+			</if>
+			<if test="rechargechannel != null and rechargechannel!='' ">
+				and r.RechargeChannel =
+				#{rechargechannel,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+				and r.Status = #{status,jdbcType=SMALLINT}
+			</if>
+		</where>
+	</select>
+	<!-- 现金充值查询统计结束-htt -->
+
+
+	<select id="getByAll" resultType="com.fx.xzt.sys.model.UserRechargeModel"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from User_Recharge
+		<where>
+			<if test="username != null and username!='' ">
+				and UserName = #{username,jdbcType=VARCHAR}
+			</if>
+			<if test="rechargeid != null and rechargeid !='' ">
+				and RechargeID = #{rechargeid,jdbcType=CHAR}
+			</if>
+			<if test="merchantordernum != null and merchantordernum!='' ">
+				and MerchantOrderNum =
+				#{merchantordernum,jdbcType=VARCHAR}
+			</if>
+			<if test="startTime !=null and startTime!='' ">
+				and RechargeTime &gt;=#{startTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime !=null and endTime!='' ">
+				and RechargeTime &lt;=#{endTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="rechargechannel != null and rechargechannel!='' ">
+				and RechargeChannel = #{rechargechannel,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+				and Status = #{status,jdbcType=SMALLINT}
+			</if>
+		</where>
+		order by RechargeTime desc
+	</select>
+	<!-- <sql id="Example_Where_Clause" > <where > <foreach collection="oredCriteria" 
+		item="criteria" separator="or" > <if test="criteria.valid" > <trim prefix="(" 
+		suffix=")" prefixOverrides="and" > <foreach collection="criteria.criteria" 
+		item="criterion" > <choose > <when test="criterion.noValue" > and ${criterion.condition} 
+		</when> <when test="criterion.singleValue" > and ${criterion.condition} #{criterion.value} 
+		</when> <when test="criterion.betweenValue" > and ${criterion.condition} 
+		#{criterion.value} and #{criterion.secondValue} </when> <when test="criterion.listValue" 
+		> and ${criterion.condition} <foreach collection="criterion.value" item="listItem" 
+		open="(" close=")" separator="," > #{listItem} </foreach> </when> </choose> 
+		</foreach> </trim> </if> </foreach> </where> </sql> <sql id="Update_By_Example_Where_Clause" 
+		> <where > <foreach collection="example.oredCriteria" item="criteria" separator="or" 
+		> <if test="criteria.valid" > <trim prefix="(" suffix=")" prefixOverrides="and" 
+		> <foreach collection="criteria.criteria" item="criterion" > <choose > <when 
+		test="criterion.noValue" > and ${criterion.condition} </when> <when test="criterion.singleValue" 
+		> and ${criterion.condition} #{criterion.value} </when> <when test="criterion.betweenValue" 
+		> and ${criterion.condition} #{criterion.value} and #{criterion.secondValue} 
+		</when> <when test="criterion.listValue" > and ${criterion.condition} <foreach 
+		collection="criterion.value" item="listItem" open="(" close=")" separator="," 
+		> #{listItem} </foreach> </when> </choose> </foreach> </trim> </if> </foreach> 
+		</where> </sql> <sql id="Base_Column_List" > RechargeID, UserID, UserName, 
+		RMBAmt, UAmt, RechargeTime, RechargeChannel, PlatformName, MerchantOrderNum, 
+		Status </sql> <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fx.xzt.sys.entity.UserRechargeExample" 
+		> select <if test="distinct" > distinct </if> <include refid="Base_Column_List" 
+		/> from User_Recharge <if test="_parameter != null" > <include refid="Example_Where_Clause" 
+		/> </if> <if test="orderByClause != null" > order by ${orderByClause} </if> 
+		</select> <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" 
+		> select <include refid="Base_Column_List" /> from User_Recharge where RechargeID 
+		= #{rechargeid,jdbcType=CHAR} </select> <delete id="deleteByPrimaryKey" parameterType="java.lang.String" 
+		> delete from User_Recharge where RechargeID = #{rechargeid,jdbcType=CHAR} 
+		</delete> <delete id="deleteByExample" parameterType="com.fx.xzt.sys.entity.UserRechargeExample" 
+		> delete from User_Recharge <if test="_parameter != null" > <include refid="Example_Where_Clause" 
+		/> </if> </delete> <insert id="insert" parameterType="com.fx.xzt.sys.entity.UserRecharge" 
+		> insert into User_Recharge (RechargeID, UserID, UserName, RMBAmt, UAmt, 
+		RechargeTime, RechargeChannel, PlatformName, MerchantOrderNum, Status) values 
+		(#{rechargeid,jdbcType=CHAR}, #{userid,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, 
+		#{rmbamt,jdbcType=DECIMAL}, #{uamt,jdbcType=DECIMAL}, #{rechargetime,jdbcType=TIMESTAMP}, 
+		#{rechargechannel,jdbcType=CHAR}, #{platformname,jdbcType=VARCHAR}, #{merchantordernum,jdbcType=VARCHAR}, 
+		#{status,jdbcType=SMALLINT}) </insert> <insert id="insertSelective" parameterType="com.fx.xzt.sys.entity.UserRecharge" 
+		> insert into User_Recharge <trim prefix="(" suffix=")" suffixOverrides="," 
+		> <if test="rechargeid != null" > RechargeID, </if> <if test="userid != null" 
+		> UserID, </if> <if test="username != null" > UserName, </if> <if test="rmbamt 
+		!= null" > RMBAmt, </if> <if test="uamt != null" > UAmt, </if> <if test="rechargetime 
+		!= null" > RechargeTime, </if> <if test="rechargechannel != null" > RechargeChannel, 
+		</if> <if test="platformname != null" > PlatformName, </if> <if test="merchantordernum 
+		!= null" > MerchantOrderNum, </if> <if test="status != null" > Status, </if> 
+		</trim> <trim prefix="values (" suffix=")" suffixOverrides="," > <if test="rechargeid 
+		!= null" > #{rechargeid,jdbcType=CHAR}, </if> <if test="userid != null" > 
+		#{userid,jdbcType=BIGINT}, </if> <if test="username != null" > #{username,jdbcType=VARCHAR}, 
+		</if> <if test="rmbamt != null" > #{rmbamt,jdbcType=DECIMAL}, </if> <if test="uamt 
+		!= null" > #{uamt,jdbcType=DECIMAL}, </if> <if test="rechargetime != null" 
+		> #{rechargetime,jdbcType=TIMESTAMP}, </if> <if test="rechargechannel != 
+		null" > #{rechargechannel,jdbcType=CHAR}, </if> <if test="platformname != 
+		null" > #{platformname,jdbcType=VARCHAR}, </if> <if test="merchantordernum 
+		!= null" > #{merchantordernum,jdbcType=VARCHAR}, </if> <if test="status != 
+		null" > #{status,jdbcType=SMALLINT}, </if> </trim> </insert> <select id="countByExample" 
+		parameterType="com.fx.xzt.sys.entity.UserRechargeExample" resultType="java.lang.Integer" 
+		> select count(*) from User_Recharge <if test="_parameter != null" > <include 
+		refid="Example_Where_Clause" /> </if> </select> <update id="updateByExampleSelective" 
+		parameterType="map" > update User_Recharge <set > <if test="record.rechargeid 
+		!= null" > RechargeID = #{record.rechargeid,jdbcType=CHAR}, </if> <if test="record.userid 
+		!= null" > UserID = #{record.userid,jdbcType=BIGINT}, </if> <if test="record.username 
+		!= null" > UserName = #{record.username,jdbcType=VARCHAR}, </if> <if test="record.rmbamt 
+		!= null" > RMBAmt = #{record.rmbamt,jdbcType=DECIMAL}, </if> <if test="record.uamt 
+		!= null" > UAmt = #{record.uamt,jdbcType=DECIMAL}, </if> <if test="record.rechargetime 
+		!= null" > RechargeTime = #{record.rechargetime,jdbcType=TIMESTAMP}, </if> 
+		<if test="record.rechargechannel != null" > RechargeChannel = #{record.rechargechannel,jdbcType=CHAR}, 
+		</if> <if test="record.platformname != null" > PlatformName = #{record.platformname,jdbcType=VARCHAR}, 
+		</if> <if test="record.merchantordernum != null" > MerchantOrderNum = #{record.merchantordernum,jdbcType=VARCHAR}, 
+		</if> <if test="record.status != null" > Status = #{record.status,jdbcType=SMALLINT}, 
+		</if> </set> <if test="_parameter != null" > <include refid="Update_By_Example_Where_Clause" 
+		/> </if> </update> <update id="updateByExample" parameterType="map" > update 
+		User_Recharge set RechargeID = #{record.rechargeid,jdbcType=CHAR}, UserID 
+		= #{record.userid,jdbcType=BIGINT}, UserName = #{record.username,jdbcType=VARCHAR}, 
+		RMBAmt = #{record.rmbamt,jdbcType=DECIMAL}, UAmt = #{record.uamt,jdbcType=DECIMAL}, 
+		RechargeTime = #{record.rechargetime,jdbcType=TIMESTAMP}, RechargeChannel 
+		= #{record.rechargechannel,jdbcType=CHAR}, PlatformName = #{record.platformname,jdbcType=VARCHAR}, 
+		MerchantOrderNum = #{record.merchantordernum,jdbcType=VARCHAR}, Status = 
+		#{record.status,jdbcType=SMALLINT} <if test="_parameter != null" > <include 
+		refid="Update_By_Example_Where_Clause" /> </if> </update> <update id="updateByPrimaryKeySelective" 
+		parameterType="com.fx.xzt.sys.entity.UserRecharge" > update User_Recharge 
+		<set > <if test="userid != null" > UserID = #{userid,jdbcType=BIGINT}, </if> 
+		<if test="username != null" > UserName = #{username,jdbcType=VARCHAR}, </if> 
+		<if test="rmbamt != null" > RMBAmt = #{rmbamt,jdbcType=DECIMAL}, </if> <if 
+		test="uamt != null" > UAmt = #{uamt,jdbcType=DECIMAL}, </if> <if test="rechargetime 
+		!= null" > RechargeTime = #{rechargetime,jdbcType=TIMESTAMP}, </if> <if test="rechargechannel 
+		!= null" > RechargeChannel = #{rechargechannel,jdbcType=CHAR}, </if> <if 
+		test="platformname != null" > PlatformName = #{platformname,jdbcType=VARCHAR}, 
+		</if> <if test="merchantordernum != null" > MerchantOrderNum = #{merchantordernum,jdbcType=VARCHAR}, 
+		</if> <if test="status != null" > Status = #{status,jdbcType=SMALLINT}, </if> 
+		</set> where RechargeID = #{rechargeid,jdbcType=CHAR} </update> <update id="updateByPrimaryKey" 
+		parameterType="com.fx.xzt.sys.entity.UserRecharge" > update User_Recharge 
+		set UserID = #{userid,jdbcType=BIGINT}, UserName = #{username,jdbcType=VARCHAR}, 
+		RMBAmt = #{rmbamt,jdbcType=DECIMAL}, UAmt = #{uamt,jdbcType=DECIMAL}, RechargeTime 
+		= #{rechargetime,jdbcType=TIMESTAMP}, RechargeChannel = #{rechargechannel,jdbcType=CHAR}, 
+		PlatformName = #{platformname,jdbcType=VARCHAR}, MerchantOrderNum = #{merchantordernum,jdbcType=VARCHAR}, 
+		Status = #{status,jdbcType=SMALLINT} where RechargeID = #{rechargeid,jdbcType=CHAR} 
+		</update> -->
 </mapper>

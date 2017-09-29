@@ -1,17 +1,24 @@
 package com.fx.xzt.sys.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.model.UserRechargeModel;
 import com.fx.xzt.sys.service.UserRechargeService;
+import com.fx.xzt.sys.util.CommonResponse;
+import com.fx.xzt.sys.util.ConstantUtil;
 import com.fx.xzt.util.POIUtils;
 import com.github.pagehelper.PageInfo;
 
@@ -29,6 +36,147 @@ import com.github.pagehelper.PageInfo;
 public class UserRechargeController {
 	@Resource
 	UserRechargeService userRechargeService;
+	
+	/**
+	 * 
+	* @Title: selectByUserRecharge 
+	* @Description: 现金充值记录查询
+	* @param request
+	* @param userName   用户账号
+	* @param startTime  开始时间
+	* @param endTime    结束时间
+	* @param agentName  代理商用户名
+	* @param brokerName 经纪人用户名
+	* @param rechargechannel  充值渠道
+	* @param status  充值状态  0：失败 1：成功
+	* @param pageNum
+	* @param pageSize
+	* @return    设定文件 
+	* @return Object    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	@RequestMapping(value="/selectByUserRecharge")
+    @ResponseBody
+    public Object selectByUserRecharge(HttpServletRequest request, String userName,
+			String startTime, String endTime, String agentName,
+			String brokerName, String rechargechannel, Integer status,
+			@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+        CommonResponse cr = new CommonResponse();
+        try {
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            if (users != null) {
+                PageInfo<Map<String, Object>> pageInfo = userRechargeService.selectByRecharge(userName, startTime, endTime, 
+                		agentName, brokerName, rechargechannel, status, pageNum, pageSize);
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+                cr.setData(pageInfo);
+                cr.setMsg("操作成功！");
+            } else {
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("操作失败！");
+            }
+        } catch (Exception e) {
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("操作失败！");
+            throw e;
+            // e.printStackTrace();
+        }
+        return cr;
+    }
+	
+	/**
+	 * 
+	* @Title: excelUserRecharge 
+	* @Description: 现金充值记录-导出
+	* @param request
+	* @param response
+	* @param userName   用户账号
+	* @param startTime  开始时间
+	* @param endTime   结束是时间
+	* @param agentName  代理商用户名
+	* @param brokerName  经纪人用户名
+	* @param rechargechannel 渠道
+	* @param status    设定文件 
+	* @return void    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	@RequestMapping(value="/excelUserRecharge")
+    @ResponseBody
+    public void excelUserRecharge(HttpServletRequest request, HttpServletResponse response, String userName, String startTime, String endTime, String agentName,
+			String brokerName, String rechargechannel, Integer status){
+        try {
+            String tieleName = "现金充值";
+            String excelName = "现金充值";
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            if (users != null) {
+                String agentNameStr = agentName;
+                List<Map<String, Object>> list = userRechargeService.excelRecharge(userName, startTime, endTime, agentNameStr, brokerName, rechargechannel, status);
+                if (list != null && list.size() > 0) {
+                    for (Map<String, Object> map : list) {
+                        map.put("Status", ConstantUtil.rechargeStatus.toMap().get(map.get("Status").toString()));
+                        map.put("RechargeChannel", ConstantUtil.rechargeChannel.toMap().get(map.get("RechargeChannel").toString()));
+                    }
+                    POIUtils poi = new POIUtils();
+                    String[] heads = {"用户账号", "充值金额",  "充值渠道", "充值时间"};
+                    String[] colums = {"userName", "RMBAmt", "RechargeChannel", "RechargeTime"};
+                    poi.doExport(request, response, list, tieleName, excelName, heads, colums);
+                }
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+	
+	/**
+	 * 
+	* @Title: selectByUserRechargeCount 
+	* @Description: 现金充值记录-统计
+	* @param request
+	* @param userName
+	* @param startTime
+	* @param endTime
+	* @param agentName
+	* @param brokerName
+	* @param rechargechannel
+	* @param status
+	* @return    设定文件 
+	* @return Object    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	@RequestMapping(value="/selectByUserRechargeCount")
+    @ResponseBody
+    public Object selectByUserRechargeCount(HttpServletRequest request, String userName, String startTime, String endTime, String agentName,
+			String brokerName, String rechargechannel, Integer status){
+        CommonResponse cr = new CommonResponse();
+        try {
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            if (users != null) {
+                Map<String, Object> map = new HashMap<String, Object>();
+                map = userRechargeService.selectByRechargeCount(userName, startTime, endTime, agentName, brokerName, rechargechannel, status);
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+                cr.setData(map);
+                cr.setMsg("操作成功！");
+            } else {
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("操作失败！");
+            }
+        } catch (Exception e) {
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("操作失败！");
+            throw e;
+            // e.printStackTrace();
+        }
+        return cr;
+    }
 	
 	/**
 	 * 获取充值记录 集合 

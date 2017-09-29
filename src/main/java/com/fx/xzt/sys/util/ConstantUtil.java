@@ -99,5 +99,66 @@ public class ConstantUtil {
             return rlt;
         }
     }
+    
+    /**
+     * 
+    * @ClassName: rechargeStatus 
+    * @Description: 现金充值状态
+    * @author htt
+    * @date 2017-9-29 下午2:45:48 
+    *
+     */
+    public static enum rechargeStatus {
+        SB("失败","0"),
+        CG("成功","1");
+        private String name;
+        private String index;
+        private rechargeStatus(String name,String index){
+            this.name = name;
+            this.index = index;
+        }
+        public String toString() {
+            return this.index;
+        }
+        public static Map<String, String> toMap() {
+        	rechargeStatus[] ds = rechargeStatus.values();
+            Map<String, String> rlt = new Hashtable<String, String>();
+            for (rechargeStatus d : ds) {
+                rlt.put(d.index, d.name);
+            }
+            return rlt;
+        }
+    }
+    
+    /**
+     * 
+    * @ClassName: rechargeChannel 
+    * @Description: 现金充值渠道
+    * @author htt
+    * @date 2017-9-29 下午2:51:19 
+    *
+     */
+    public static enum rechargeChannel {
+        YL("银联","01"),
+        WX("微信","02"),
+        ZFB("支付宝","03");
+        private String name;
+        private String index;
+        private rechargeChannel(String name,String index){
+            this.name = name;
+            this.index = index;
+        }
+        public String toString() {
+            return this.index;
+        }
+        public static Map<String, String> toMap() {
+        	rechargeChannel[] ds = rechargeChannel.values();
+            Map<String, String> rlt = new Hashtable<String, String>();
+            for (rechargeChannel d : ds) {
+                rlt.put(d.index, d.name);
+            }
+            return rlt;
+        }
+    }
 
 }

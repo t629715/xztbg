@@ -68,5 +68,61 @@ public class UserRechargeServiceImpl extends BaseService<UserRecharge> implement
 		return list;
 	}
 
+	/**
+	 * 现金充值记录查询
+	 */
+	public PageInfo<Map<String, Object>> selectByRecharge(String userName,
+			String startTime, String endTime, String agentName,
+			String brokerName, String rechargechannel, Integer status,
+			Integer pageNum, Integer pageSize) {
+		Map<String, Object> map = new HashMap<String, Object>();
+        map.put("userName", userName);
+        map.put("startTime", startTime);
+        map.put("endTime", endTime);
+        map.put("agentName", agentName);
+        map.put("brokerName", brokerName);
+        map.put("rechargechannel", rechargechannel);
+        map.put("status", status);
+        PageHelper.startPage(pageNum,pageSize);
+        List<Map<String, Object>> list = userRechargeMapper.selectByRecharge(map);
+        PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
+        return pagehelper;
+	}
+
+	/**
+	 * 现金充值记录导出
+	 */
+	public List<Map<String, Object>> excelRecharge(String userName,
+			String startTime, String endTime, String agentName,
+			String brokerName, String rechargechannel, Integer status) {
+		Map<String, Object> map = new HashMap<String, Object>();
+        map.put("userName", userName);
+        map.put("startTime", startTime);
+        map.put("endTime", endTime);
+        map.put("agentName", agentName);
+        map.put("brokerName", brokerName);
+        map.put("rechargechannel", rechargechannel);
+        map.put("status", status);
+        List<Map<String, Object>> list = userRechargeMapper.selectByRecharge(map);
+        return list;
+	}
+
+	/**
+	 * 现金充值查询-统计
+	 */
+	public Map<String, Object> selectByRechargeCount(String userName,
+			String startTime, String endTime, String agentName,
+			String brokerName, String rechargechannel, Integer status) {
+		Map<String, Object> map = new HashMap<String, Object>();
+        map.put("userName", userName);
+        map.put("startTime", startTime);
+        map.put("endTime", endTime);
+        map.put("agentName", agentName);
+        map.put("brokerName", brokerName);
+        map.put("rechargechannel", rechargechannel);
+        map.put("status", status);
+        return userRechargeMapper.selectByRechargeCount(map);
+	}
+
 	
 }

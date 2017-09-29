@@ -20,4 +20,26 @@ import com.fx.xzt.sys.model.UserRechargeModel;
 @Repository
 public interface UserRechargeMapper extends BaseMapper<UserRecharge>{
 	List<UserRechargeModel> getByAll(Map<String,Object> map);
+	
+	/**
+	 * 
+	* @Title: selectByRecharge 
+	* @Description: 查询现金充值记录
+	* @param @param map
+	* @return List<Map<String,Object>>    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	List<Map<String, Object>> selectByRecharge (Map<String,Object> map);
+
+	/**
+	 * 
+	* @Title: selectByRechargeCount 
+	* @Description: 查询现金充值-总计
+	* @param @param map
+	* @return Map<String,Object>    返回类型 
+	* @throws 
+	* @author htt
+	 */
+    Map<String, Object> selectByRechargeCount(Map<String,Object> map);
 }
