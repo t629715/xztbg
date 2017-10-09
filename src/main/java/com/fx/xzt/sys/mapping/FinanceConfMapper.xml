@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fx.xzt.sys.mapper.FinanceConfMapper" >
+  <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.FinanceConf" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="product_no" property="productNo" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="year_incom_percent" property="yearIncomPercent" jdbcType="REAL" />
+    <result column="cycle" property="cycle" jdbcType="INTEGER" />
+    <result column="min_money" property="minMoney" jdbcType="REAL" />
+    <result column="calc_method" property="calcMethod" jdbcType="INTEGER" />
+    <result column="redeem_method" property="redeemMethod" jdbcType="SMALLINT" />
+    <result column="settle_method" property="settleMethod" jdbcType="SMALLINT" />
+    <result column="float_percent" property="floatPercent" jdbcType="REAL" />
+    <result column="nper" property="nper" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+  </resultMap>
+
+  <!--获取所有的理财产品-->
+  <select id="selectFinanceConfs" resultMap="BaseResultMap">
+    SELECT * FROM finance_conf
+    ORDER BY id
+  </select>
+  <select id="deleteFinanceConfByProductNo">
+    DELETE FROM finance_conf
+    WHERE product_no = #{productNo,jdbcType=VARCHAR}
+  </select>
+</mapper>
