@@ -39,14 +39,48 @@ public class FinanceConfServiceImpl extends BaseService<FinanceConf> implements 
 
     /**
      * 根据产品编号删除理财产品
-     * @param productNo 产品编号
+     * @param id 产品主键
      * @return
      */
     @Override
-    public Boolean removeFinanceConfByProductNo(Integer productNo) {
+    public Boolean removeFinanceConfById(Long id) {
         logger.debug("根据产品编号删除理财产品");
-        Integer i = financeConfMapper.deleteFinanceConfByProductNo(productNo);
+        Integer i = financeConfMapper.deleteFinanceConfById(id);
         if (i != null){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 根据id修改产品信息
+     * @param id
+     * @param productNo
+     * @param productName
+     * @param yearIncomPercent
+     * @param cycle
+     * @param minMoney
+     * @param calcMethod
+     * @param redeemMethod
+     * @param settleMethod
+     * @return
+     */
+    @Override
+    public Boolean modifyFinanceConf(Integer id, String productNo, String productName,
+                                     Float yearIncomPercent, Integer cycle, Float minMoney,
+                                     Integer calcMethod, Short redeemMethod, Short settleMethod) {
+        Map map = new HashMap();
+        map.put("id",id);
+        map.put("productNo",productNo);
+        map.put("productName",productName);
+        map.put("yearIncomPercent",yearIncomPercent);
+        map.put("cycle",cycle);
+        map.put("minMoney",minMoney);
+        map.put("calcMethod",calcMethod);
+        map.put("redeemMethod",redeemMethod);
+        map.put("settleMethod",settleMethod);
+        int i = financeConfMapper.modifyFinanceConf(map);
+        if (i != 0){
             return true;
         }
         return false;

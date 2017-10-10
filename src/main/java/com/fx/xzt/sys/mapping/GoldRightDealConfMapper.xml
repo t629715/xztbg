@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fx.xzt.sys.mapper.GoldRightDealConfMapper" >
+  <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.GoldRightDealConf" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="contract" property="contract" jdbcType="INTEGER" />
+    <result column="buy_percent" property="buyPercent" jdbcType="INTEGER" />
+    <result column="point_count" property="pointCount" jdbcType="DOUBLE" />
+    <result column="volatility" property="volatility" jdbcType="INTEGER" />
+    <result column="min_gram_per_order" property="minGramPerOrder" jdbcType="INTEGER" />
+    <result column="max_gram_per_order" property="maxGramPerOrder" jdbcType="INTEGER" />
+    <result column="max_hand_count" property="maxHandCount" jdbcType="INTEGER" />
+    <result column="max_buy_count_per_day" property="maxBuyCountPerDay" jdbcType="INTEGER" />
+    <result column="max_position_count" property="maxPositionCount" jdbcType="INTEGER" />
+    <result column="poundage" property="poundage" jdbcType="DOUBLE" />
+    <result column="volatility_profit_loss" property="volatilityProfitLoss" jdbcType="DOUBLE" />
+    <result column="stop_profit_set" property="stopProfitSet" jdbcType="DOUBLE" />
+    <result column="stop_loss_set" property="stopLossSet" jdbcType="DOUBLE" />
+    <result column="blowing_up_set" property="blowingUpSet" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="deal_time" property="dealTime" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <!--获取金权规则信息-start-->
+  <select id="selectAll" resultMap="BaseResultMap">
+    SELECT * FROM gold_right_deal_conf ORDER BY id
+  </select>
+  <!--获取金权规则信息-end-->
+
+  <!--根据id修改金权规则信息：start-->
+  <update id="modifyByPrimaryKey">
+    update gold_right_deal_conf
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="contract != null" >
+        contract = #{contract,jdbcType=INTEGER},
+      </if>
+      <if test="buyPercent != null" >
+        buy_percent = #{buyPercent,jdbcType=INTEGER},
+      </if>
+      <if test="pointCount != null" >
+        point_count = #{pointCount,jdbcType=DOUBLE},
+      </if>
+      <if test="volatility != null" >
+        volatility = #{volatility,jdbcType=INTEGER},
+      </if>
+      <if test="minGramPerOrder != null" >
+        min_gram_per_order = #{minGramPerOrder,jdbcType=INTEGER},
+      </if>
+      <if test="maxGramPerOrder != null" >
+        max_gram_per_order = #{maxGramPerOrder,jdbcType=INTEGER},
+      </if>
+      <if test="maxHandCount != null" >
+        max_hand_count = #{maxHandCount,jdbcType=INTEGER},
+      </if>
+      <if test="maxBuyCountPerDay != null" >
+        max_buy_count_per_day = #{maxBuyCountPerDay,jdbcType=INTEGER},
+      </if>
+      <if test="maxPositionCount != null" >
+        max_position_count = #{maxPositionCount,jdbcType=INTEGER},
+      </if>
+      <if test="poundage != null" >
+        poundage = #{poundage,jdbcType=DOUBLE},
+      </if>
+      <if test="volatilityProfitLoss != null" >
+        volatility_profit_loss = #{volatilityProfitLoss,jdbcType=DOUBLE},
+      </if>
+      <if test="stopProfitSet != null" >
+        stop_profit_set = #{stopProfitSet,jdbcType=DOUBLE},
+      </if>
+      <if test="stopLossSet != null" >
+        stop_loss_set = #{stopLossSet,jdbcType=DOUBLE},
+      </if>
+      <if test="blowingUpSet != null" >
+        blowing_up_set = #{blowingUpSet,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="dealTime != null" >
+        deal_time = #{dealTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <!--根据id修改金权规则信息：end-->
+
+</mapper>

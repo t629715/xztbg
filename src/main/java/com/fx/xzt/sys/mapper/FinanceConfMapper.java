@@ -23,8 +23,15 @@ public interface FinanceConfMapper extends BaseMapper<FinanceConf>{
 
     /**
      * 根据产品编号删除产品
-     * @param productNo
+     * @param id
      * @return int
      */
-    int deleteFinanceConfByProductNo(Integer productNo);
+    int deleteFinanceConfById(Long id);
+
+    /**
+     * 根据id修改理财产品
+     * @param map
+     * @return
+     */
+    int modifyFinanceConf(Map map);
 }

@@ -7,6 +7,7 @@ import com.fx.xzt.sys.entity.UserAccountRecord;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
+import java.util.Map;
 
 public interface FinanceConfService extends IService<FinanceConf> {
     /**
@@ -19,8 +20,25 @@ public interface FinanceConfService extends IService<FinanceConf> {
 
     /**
      * 根据产品编号删除产品
-     * @param productNo 产品编号
+     * @param id 产品主键
      * @return Boolean
      */
-    Boolean removeFinanceConfByProductNo(Integer productNo);
+    Boolean removeFinanceConfById(Long id);
+
+    /**
+     * 根据id修改产品信息
+     * @param id
+     * @param productNo
+     * @param productName
+     * @param yearIncomPercent
+     * @param cycle
+     * @param minMoney
+     * @param calcMethod
+     * @param redeemMethod
+     * @param settleMethod
+     * @return
+     */
+    Boolean modifyFinanceConf(Integer id, String productNo, String productName,
+                              Float yearIncomPercent, Integer cycle, Float minMoney,
+                              Integer calcMethod, Short redeemMethod, Short settleMethod);
 }
