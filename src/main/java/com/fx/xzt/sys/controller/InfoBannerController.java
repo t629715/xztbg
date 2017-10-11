@@ -19,11 +19,10 @@ public class InfoBannerController {
 	
 	@Resource
 	InfoBannerService infoBannerService;
-	
+
 	/**
 	 * 添加
-	 * @param infoInforMation
-	 * @param httpSession
+	 * @param infoBanner
 	 * @return
 	 */
 	@RequestMapping(value="/insertBanner")
@@ -34,10 +33,10 @@ public class InfoBannerController {
 		map.put("msg", msg);
 		return map;
 	}
+
 	/**
 	 * 编辑
-	 * @param infoInforMation
-	 * @param httpSession
+	 * @param infoBanner
 	 * @return
 	 */
 	@RequestMapping(value="/edit")
@@ -48,10 +47,10 @@ public class InfoBannerController {
 		map.put("msg", msg);
 		return map;
 	}
+
 	/**
 	 * 删除
-	 * @param infoInforMation
-	 * @param httpSession
+	 * @param serialNo
 	 * @return
 	 */
 	@RequestMapping(value="/delete")
@@ -81,4 +80,7 @@ public class InfoBannerController {
 	public PageInfo<InfoBanner> selectByPageAll(Integer page,Integer pageNum,Integer pageSize){
 		return infoBannerService.getByPageAll(page, pageNum, pageSize);
 	}
+
+
+
 }

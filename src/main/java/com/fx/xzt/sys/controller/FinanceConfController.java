@@ -37,6 +37,14 @@ public class FinanceConfController {
 
     @Resource
     FinanceConfService financeConfService;
+
+    /**
+     * 获取所有的理财产品信息
+     * @param request
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @RequestMapping(value = "/getAllFinanceConf")
     @ResponseBody
     public Object getAllFinanceConf(HttpServletRequest request, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
@@ -66,6 +74,12 @@ public class FinanceConfController {
         return response;
     }
 
+    /**
+     * 根据id删除理财产品
+     * @param request
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/removeFinanceConfById")
     @ResponseBody
     public Object removeFinanceConfByProductNo(HttpServletRequest request, Long id) {
@@ -100,6 +114,20 @@ public class FinanceConfController {
         return response;
     }
 
+    /**
+     * 修改选中的理财产品
+     * @param request
+     * @param id
+     * @param productNo
+     * @param productName
+     * @param yearIncomPercent
+     * @param cycle
+     * @param minMoney
+     * @param calcMethod
+     * @param redeemMethod
+     * @param settleMethod
+     * @return
+     */
     @RequestMapping(value = "/modifyFinanceConf")
     @ResponseBody
     public Object modifyFinanceConf(HttpServletRequest request, Integer id, String productNo, String productName,

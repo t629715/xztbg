@@ -149,11 +149,11 @@
         set SortNo = @@IDENTITY
         where SerialNo = @@IDENTITY;
     </insert>
-    <delete id="deleteById" parameterType="java.lang.Long" >
+    <delete id="deleteBySeriaNo" parameterType="java.lang.Long" >
         delete from Info_Banner
         where SerialNo = #{serialNo,jdbcType=BIGINT}
     </delete>
-    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    <select id="selectBySeriaNo" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select 
         <include refid="Base_Column_List" />
         from Info_Banner

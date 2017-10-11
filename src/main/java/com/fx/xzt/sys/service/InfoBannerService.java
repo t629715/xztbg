@@ -1,7 +1,5 @@
 package com.fx.xzt.sys.service;
 
-import java.util.List;
-import java.util.Map;
 
 import com.fx.xzt.sys.entity.InfoBanner;
 import com.github.pagehelper.PageInfo;
@@ -9,7 +7,7 @@ import com.github.pagehelper.PageInfo;
 public interface InfoBannerService extends IService<InfoBanner>{
 	/**
 	 * 查询列表
-	 * @param map
+	 * @param
 	 * @return
 	 */
 	PageInfo<InfoBanner> getByPageAll(Integer page,Integer pageNum,
@@ -20,6 +18,8 @@ public interface InfoBannerService extends IService<InfoBanner>{
 	int add(InfoBanner infoBanner);
 	//删除
 	int deleteById(Long serialNo);
+
+
 	/**
 	 * 向上向下
 	 * @param upSerialNo   上一个
@@ -27,6 +27,19 @@ public interface InfoBannerService extends IService<InfoBanner>{
 	 * @return
 	 */
 	int up(Long upSerialNo,Long downSerialNo);
-	
+
+	/**
+	 * 根据序号获取图片
+	 * @param serialNo
+	 * @return
+	 */
 	InfoBanner selectById(Long serialNo);
+
+	/**
+	 * 修改图片的显示顺序
+	 * @param sortNo1
+	 * @param sortNo2
+	 * @return
+	 */
+	int modifySeriaNo(Integer  sortNo1, Long sortNo2);
 }
