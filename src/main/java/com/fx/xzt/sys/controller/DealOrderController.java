@@ -171,4 +171,37 @@ public class DealOrderController {
         return cr;
     }
 
+    /**
+     * 获取对冲套利信息 -- tianliya
+     * @param request
+     * @return
+     * @date 2017-10-12 14:02
+     */
+    @RequestMapping(value="/getHedgeArbitrage")
+    @ResponseBody
+    public Object getHedgeArbitrage(HttpServletRequest request){
+        CommonResponse cr = new CommonResponse();
+        try {
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            if (users != null) {
+                Map<String, Object> map = new HashMap<String, Object>();
+                map = dealOrderService.selectHandNumBuyAmount();
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+                cr.setData(map);
+                cr.setMsg("操作成功！");
+            } else {
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("操作失败！");
+            }
+        } catch (Exception e) {
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("操作失败！");
+            throw e;
+        }
+        return cr;
+    }
+
 }
