@@ -97,18 +97,4 @@ public class InfoBannerServiceImpl extends BaseService<InfoBanner> implements In
 	public InfoBanner selectById(Long serialNo) {
 		return infoBannerMapper.selectBySeriaNo(serialNo);
 	}
-
-	/**
-	 * 修改图片的显示顺序
-	 * @param sortNo1
-	 * @param sortNo2
-	 * @return
-	 */
-	@Override
-	public int modifySeriaNo(Integer sortNo1, Long sortNo2) {
-		InfoBanner infoBanner = new InfoBanner();
-		infoBanner.setSortNo(sortNo1);
-		return 0;
-	}
-
 }

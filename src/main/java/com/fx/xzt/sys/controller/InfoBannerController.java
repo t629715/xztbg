@@ -61,8 +61,12 @@ public class InfoBannerController {
 		map.put("msg", msg);
 		return map;
 	}
+
 	/**
-	 * 向上向下
+	 * 修改图片显示的顺序
+	 * @param upSerialNo 交换的上一条
+	 * @param downSerialNo 交换的另一条
+	 * @return
 	 */
 	@RequestMapping(value="/upDown")
 	@ResponseBody

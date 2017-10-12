@@ -35,11 +35,4 @@ public interface InfoBannerService extends IService<InfoBanner>{
 	 */
 	InfoBanner selectById(Long serialNo);
 
-	/**
-	 * 修改图片的显示顺序
-	 * @param sortNo1
-	 * @param sortNo2
-	 * @return
-	 */
-	int modifySeriaNo(Integer  sortNo1, Long sortNo2);
 }
