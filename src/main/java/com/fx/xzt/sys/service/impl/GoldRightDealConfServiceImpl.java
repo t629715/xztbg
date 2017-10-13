@@ -60,18 +60,18 @@ public class GoldRightDealConfServiceImpl extends BaseService<GoldRightDealConf>
                                       Integer minGramPerOrder, Integer maxGramPerOrder, Integer maxPositionCount,
                                       Integer maxBuyCountPerDay, Double stopProfitSet, Integer blowingUpSet) {
         Map map = new HashMap();
-        map.put("id",id);
-        map.put("name",name);
-        map.put("contract",contract);
-        map.put("buyPercent",buyPercent);
-        map.put("pointCount",pointCount);
-        map.put("volatility",volatility);
-        map.put("minGramPerOrder",minGramPerOrder);
-        map.put("maxGramPerOrder",maxGramPerOrder);
-        map.put("maxPositionCount",maxPositionCount);
-        map.put("maxBuyCountPerDay",maxBuyCountPerDay);
-        map.put("stopProfitSet",stopProfitSet);
-        map.put("blowingUpSet",blowingUpSet);
+        map.put("id",id);//产品id
+        map.put("name",name);//产品名字
+        map.put("contract",contract);//产品合约
+        map.put("buyPercent",buyPercent);//买入金额
+        map.put("pointCount",pointCount);//点差
+        map.put("volatility",volatility);//最下小数波动
+        map.put("minGramPerOrder",minGramPerOrder);//最小持仓克数
+        map.put("maxGramPerOrder",maxGramPerOrder);//最大持仓克数
+        map.put("maxPositionCount",maxPositionCount);//最大建仓次数
+        map.put("maxBuyCountPerDay",maxBuyCountPerDay);//
+        map.put("stopProfitSet",stopProfitSet);//止盈设置
+        map.put("blowingUpSet",blowingUpSet);//止损设置
         int i = goldRightDealConfMapper.modifyByPrimaryKey(map);
         if (i != 0){
             return true;

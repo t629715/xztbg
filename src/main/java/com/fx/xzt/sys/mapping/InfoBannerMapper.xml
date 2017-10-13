@@ -34,6 +34,16 @@
         </where>
         order by SortNo
     </select>
+
+    <!--获取用于广告的图片-start-tianliya-->
+    <select id="selectAdPic" resultType="java.util.Map" parameterType="java.lang.Short" >
+        SET @rownum=0;
+        select @rownum:=@rownum+1 as rowNum,SerialNo,Page,PicturePath,SkipPath
+        from Info_Banner
+        WHERE Page = #{page,jdbcType=SMALLINT} AND valid = 1
+        order by SortNo
+    </select>
+    <!--获取用于广告的图片-end-tianliya-->
 	<update id="edit" parameterType="com.fx.xzt.sys.entity.InfoBanner" >
         update Info_Banner
         <set >

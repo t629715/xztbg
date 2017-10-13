@@ -1,6 +1,7 @@
 package com.fx.xzt.sys.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -83,6 +84,17 @@ public class InfoBannerController {
 	@ResponseBody
 	public PageInfo<InfoBanner> selectByPageAll(Integer page,Integer pageNum,Integer pageSize){
 		return infoBannerService.getByPageAll(page, pageNum, pageSize);
+	}
+
+	/**
+	 * 获取广告图片  tianliya
+	 * @param page
+	 * @return
+	 */
+	@RequestMapping(value="/getAdPic")
+	@ResponseBody
+	public List<Map<String, Object>> getAdPic(Short page){
+		return infoBannerService.getAdPic(page);
 	}
 
 

@@ -115,6 +115,7 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
     /**
      * 获取对冲套利的数据信息 均价，持仓克重、净值、获利
      * @return
+     * @author tianliya
      */
     @Override
     public Map<String, Object> selectHandNumBuyAmount() {

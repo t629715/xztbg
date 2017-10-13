@@ -49,4 +49,13 @@ public interface InfoBannerMapper extends BaseMapper<InfoBanner>{
 	 * @return
 	 */
 	InfoBanner selectBySeriaNo(Long serialNo);
+
+	/**
+	 * 获取用于广告的图片的信息
+	 * @param page
+	 * @return
+	 * @author  tianliya
+	 */
+	List<Map<String,Object>> selectAdPic(Short page);
+
 }

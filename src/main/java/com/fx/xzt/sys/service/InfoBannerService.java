@@ -4,6 +4,9 @@ package com.fx.xzt.sys.service;
 import com.fx.xzt.sys.entity.InfoBanner;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+import java.util.Map;
+
 public interface InfoBannerService extends IService<InfoBanner>{
 	/**
 	 * 查询列表
@@ -34,5 +37,12 @@ public interface InfoBannerService extends IService<InfoBanner>{
 	 * @return
 	 */
 	InfoBanner selectById(Long serialNo);
+
+	/**
+	 * 获取用于广告位的图片 -- tianilya
+	 * @param page
+	 * @return
+	 */
+	List<Map<String, Object>> getAdPic(Short page);
 
 }

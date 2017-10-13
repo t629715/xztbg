@@ -97,4 +97,14 @@ public class InfoBannerServiceImpl extends BaseService<InfoBanner> implements In
 	public InfoBanner selectById(Long serialNo) {
 		return infoBannerMapper.selectBySeriaNo(serialNo);
 	}
+
+	/**
+	 * 获取广告图片
+	 * @param page
+	 * @return
+	 */
+	@Override
+	public List<Map<String, Object>> getAdPic(Short page) {
+		return infoBannerMapper.selectAdPic(page);
+	}
 }
