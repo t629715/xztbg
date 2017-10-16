@@ -48,14 +48,8 @@
       <if test="title != null" >
         title = #{title,jdbcType=VARCHAR},
       </if>
-      <!--<if test="contentpath != null" >
+      <if test="contentpath != null" >
         contentpath = #{contentpath,jdbcType=VARCHAR},
-      </if>
-      <if test="createtime != null" >
-        createtime = #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="releasetime != null" >
-        releasetime = #{releasetime,jdbcType=TIMESTAMP},
       </if>
       <if test="imagepath != null" >
         imagepath = #{imagepath,jdbcType=VARCHAR},
@@ -65,13 +59,17 @@
       </if>
       <if test="operator != null" >
         operator = #{operator,jdbcType=VARCHAR},
-      </if>-->
+      </if>
     </set>
     where info_id = #{infoId,jdbcType=BIGINT}
   </update>
   <!--编辑希欧德详情-tianliya-end-->
 
   <!--获取一条希欧德中心数据-tianliya-start-->
-
+  <select id="selectOneByInfoId" resultType="java.util.Map" parameterType="java.lang.Long">
+    SELECT info_id as infoId, title, createtime, releasetime, state, operator, contentpath, imagepath
+    FROM info_xioude
+    WHERE info_id=#{infoId,jdbcType=BIGINT}
+  </select>
   <!--获取一条希欧德中心数据-tianliya-end-->
 </mapper>
