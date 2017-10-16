@@ -1,8 +1,8 @@
 package com.fx.xzt.sys.service.impl;
 
-import com.fx.xzt.sys.entity.InfoGoldlesson;
-import com.fx.xzt.sys.mapper.InfoGoldlessonMapper;
-import com.fx.xzt.sys.service.InfoGoldlessonService;
+import com.fx.xzt.sys.entity.InfoXioude;
+import com.fx.xzt.sys.mapper.InfoXioudeMapper;
+import com.fx.xzt.sys.service.InfoXioudeService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -21,39 +21,42 @@ import java.util.Map;
  * @date 15:50 2017/10/13
  */
 @Service
-public class InfoGoldlessonServiceImpl extends BaseService<InfoGoldlesson> implements InfoGoldlessonService {
+public class InfoXioudeServiceImpl extends BaseService<InfoXioude> implements InfoXioudeService {
     @Resource
-    private InfoGoldlessonMapper infoGoldlessonMapper;
+    private InfoXioudeMapper infoXioudeMapper;
     /**
     * @Author:  tianliya
-    * @Description:获取黄金课堂信息
+    * @Description:获取西欧的数据
     * @Date:17:11 2017/10/13
     */
     @Override
-    public PageInfo<Map<String, Object>> getGoldLesson(String title, String releasesettimeStart,
-                                  String releasesettimeEnd, Short state, String operator,
+    public PageInfo<Map<String, Object>> getInfoXioude(String title, String releasetimeStart,
+                                  String releasetimeEnd, Short state, String operator,
                                   Integer pageNum, Integer pageSize) {
         Map map1 = new HashMap();
         PageHelper.startPage(pageNum, pageSize);
         map1.put("title",title);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date startTime = null;
         try{
-            startTime = simpleDateFormat.parse(releasesettimeStart);
+            if (releasetimeStart != null)
+            startTime = dateFormat.parse(releasetimeStart);
         }catch (ParseException e){
             e.printStackTrace();
         }
+
+        map1.put("releasetimeStart",startTime);
         Date endTime = null;
         try{
-            endTime = simpleDateFormat.parse(releasesettimeEnd);
+            if (releasetimeEnd != null)
+            endTime = dateFormat.parse(releasetimeEnd);
         }catch (ParseException e){
             e.printStackTrace();
         }
-        map1.put("releasetimeStart",startTime);
         map1.put("releasetimeEnd",endTime);
         map1.put("state",state);
         map1.put("operator",operator);
-        List list = infoGoldlessonMapper.selectByInfoGoldlesson(map1);
+        List list = infoXioudeMapper.selectByInfoXioude(map1);
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
         return pagehelper;
     }
@@ -62,12 +65,12 @@ public class InfoGoldlessonServiceImpl extends BaseService<InfoGoldlesson> imple
      * @param infoId
      * @return
      * @Author: tianliya
-     * @Decription:根据infoID删除黄金课堂信息
+     * @Decription:根据infoID删除西欧的数据
      * @Date 2017/10/15 21:53
     */
     @Override
-    public int deleteGoldLessonById(Long infoId) {
-       int i = infoGoldlessonMapper.deleteGoldLesson(infoId);
+    public int deleteXioudeById(Long infoId) {
+       int i = infoXioudeMapper.deleteXioude(infoId);
         return i;
     }
 
@@ -78,43 +81,43 @@ public class InfoGoldlessonServiceImpl extends BaseService<InfoGoldlesson> imple
      * @param infoId 主键
      * @return
      * @Author: tianliya
-     * @Decription:  修改黄金课堂的信息
+     * @Decription:  修改西欧的的信息
      * @Date 2017/10/15 22:08
     */
     @Override
-    public int modifyGoldLesson(String title, Short state, String operator, Long infoId) {
+    public int modifyXioude(String title, Short state, String operator, Long infoId) {
         Map map = new HashMap();
         map.put("title",title);
         map.put("state",state);
         map.put("operator",operator);
         map.put("infoId",infoId);
-        return infoGoldlessonMapper.edit(map);
+        return infoXioudeMapper.edit(map);
     }
 
     /**
-     * @param infoId 黄金课堂主键
+     * @param infoId 西欧的中心数据主键
      * @return
      * @Author: tianliya
-     * @Decription:根据infoId预览黄金课堂信息
+     * @Decription:
      * @Date 2017/10/15 22:29
     */
     @Override
     public Map<String, Object> getOneByInfoId(Long infoId) {
-        Map map = infoGoldlessonMapper.selectOneByInfoId(infoId);
+        Map map = infoXioudeMapper.selectOneByInfoId(infoId);
         return map;
     }
 
     /**
-     * 发布黄金课堂  tianliya
+     * 发布xioude  tianliya
      * @param infoId
      * @return
      */
     @Override
-    public int releaseGoldLesson(Long infoId, String operator) {
+    public int releaseXioude(Long infoId, String operator) {
         Map map = new HashMap();
         map.put("infoId",infoId);
         map.put("operator",operator);
-        return infoGoldlessonMapper.releaseGoldLesson(map);
+        return infoXioudeMapper.releaseXioude(map);
     }
 
     /**
@@ -124,7 +127,7 @@ public class InfoGoldlessonServiceImpl extends BaseService<InfoGoldlesson> imple
      */
     @Override
     public Map<String, Object> getOne(Long infoId) {
-        Map map = infoGoldlessonMapper.selectOneByInfoId(infoId);
+        Map map = infoXioudeMapper.selectOneByInfoId(infoId);
         return map;
     }
 }
