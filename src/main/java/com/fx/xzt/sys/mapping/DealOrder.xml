@@ -35,11 +35,11 @@
 
     <!--金权交易开始-htt-->
     <select id="selectByDealOrder" resultType="java.util.Map" parameterType="java.util.Map">
-      SELECT o.id id, o.order_no orderNo, o.user_id userID, u.UserName userName,DATE_FORMAT(i.RegisterTime, '%Y-%m-%d %h:%i:%s')  registerTime,
+      SELECT o.id id, o.order_no orderNo, o.user_id userID, u.UserName userName,i.RegisterTime registerTime,
       i.agent_id AS agentId, ua.user_name AS agentName, i.broker_id AS brokerId, ub.user_name AS brokerName ,
       o.product_id productId, c.name productName,o.up_or_down upOrDown, o.hand_number handNumber,
       o.ensure_amount ensureAmount, o.point_count pointCount,o.open_position_price openPositionPrice, o.close_position_price closePositionPrice,
-      DATE_FORMAT(o.create_time, '%Y-%m-%d %h:%i:%s')  createTime, DATE_FORMAT(o.end_time, '%Y-%m-%d %h:%i:%s') endTime, o.profit_loss_number profitLossNumber, o.order_state orderState,
+      o.create_time  createTime, o.end_time endTime, o.profit_loss_number profitLossNumber, o.order_state orderState,
       o.buy_pre_rmb buyPreRmb, o.buy_after_rmb buyAfterRmb
       FROM deal_order o
       LEFT JOIN User_Login u ON o.user_id = u.UserID

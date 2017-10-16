@@ -24,6 +24,11 @@ public class ConstantUtil {
      */
     public final static Integer FINANCE_TYPE_LCCP = 1;    //理财产品
     public final static Integer FINANCE_TYPE_HJWZ = 2;    //黄金稳赚
+    
+    public final static Integer GOLD_INCOME_RECORD_TYPE_ZT = 1;  //黄金收益记录统计类型-昨天
+    public final static Integer GOLD_INCOME_RECORD_TYPE_JQT = 2; //黄金收益记录统计类型-近7天
+    public final static Integer GOLD_INCOME_RECORD_TYPE_BY = 3;  //黄金收益记录统计类型-本月
+    public final static Integer GOLD_INCOME_RECORD_TYPE_SGY = 4;  //黄金收益记录统计类型-上个月
 
     /**
      * 客户信息-状态
