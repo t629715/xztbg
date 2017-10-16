@@ -85,12 +85,14 @@ public class InfoXioudeServiceImpl extends BaseService<InfoXioude> implements In
      * @Date 2017/10/15 22:08
     */
     @Override
-    public int modifyXioude(String title, Short state, String operator, Long infoId) {
+    public int modifyXioude(String title, Short state, String operator, Long infoId, String contentpath, String imagepath) {
         Map map = new HashMap();
         map.put("title",title);
         map.put("state",state);
         map.put("operator",operator);
         map.put("infoId",infoId);
+        map.put("contentpath",contentpath);
+        map.put("imagepath",imagepath);
         return infoXioudeMapper.edit(map);
     }
 

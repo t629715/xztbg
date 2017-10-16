@@ -11,7 +11,7 @@
     <result column="state" property="state" jdbcType="SMALLINT" />
     <result column="operator" property="operator" jdbcType="VARCHAR" />
   </resultMap>
-
+  <!--获取希欧德详情-tianliya-start-->
   <select id="selectByInfoXioude" resultType="java.util.Map" parameterType="java.util.Map" >
     select info_id as infoId, title, createtime, releasetime, state, operator
     from info_xioude
@@ -32,7 +32,46 @@
         and operator = #{operator,jdbcType=VARCHAR}
       </if>
     </where>
-
   </select>
+  <!--获取希欧德详情-tianliya-end-->
 
+  <!--删除一条希欧德详情 - tianliya -start-->
+  <delete id="deleteXioude" >
+    delete from info_xioude where info_id = #{infoId,jdbcType=BIGINT}
+  </delete>
+  <!--删除一条希欧德详情 - tianliya -end-->
+
+  <!--编辑希欧德详情-tianliya-start-->
+  <update id="edit" parameterType="java.util.Map" >
+    update info_xioude
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <!--<if test="contentpath != null" >
+        contentpath = #{contentpath,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="releasetime != null" >
+        releasetime = #{releasetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="imagepath != null" >
+        imagepath = #{imagepath,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=SMALLINT},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>-->
+    </set>
+    where info_id = #{infoId,jdbcType=BIGINT}
+  </update>
+  <!--编辑希欧德详情-tianliya-end-->
+
+  <!--获取一条希欧德中心数据-tianliya-start-->
+
+  <!--获取一条希欧德中心数据-tianliya-end-->
 </mapper>

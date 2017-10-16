@@ -13,12 +13,10 @@ import java.util.Map;
  */
 public interface InfoXioudeService extends IService<InfoXioude>{
     /**
-     * @Author tianliya
-     * @Decription
-     * @Date 2017/10/15 21:46
+     * @Author:  tianliya
+     * @Description:
+     * @Date:16:35 2017/10/16
      * @param title
-     * @param releasesettimeStart
-     * @param releasesettimeEnd
      * @param state
      * @param operator
      * @param pageNum
@@ -32,10 +30,10 @@ public interface InfoXioudeService extends IService<InfoXioude>{
     /**
      * @param infoId
      * @return int
-     * @Author: tianliya
-     * @Decription:根据infoId删除黄金课堂
-     * @Date 2017/10/15 21:48
-    */
+     * @Author:  tianliya
+     * @Description:
+     * @Date:16:34 2017/10/16
+     * */
     int deleteXioudeById(Long infoId);
 
     /**
@@ -48,15 +46,14 @@ public interface InfoXioudeService extends IService<InfoXioude>{
      * @Decription:
      * @Date 2017/10/15 22:04
     */
-    int modifyXioude(String title, Short state, String operator, Long infoId);
+    int modifyXioude(String title, Short state, String operator, Long infoId, String contentpath, String imagepath);
 
     /**
      * @param infoId xioude主键
-     * @return
-     * @Author: tianliya
-     * @Decription:获取选中的黄金课堂的数据
-     * @Date 2017/10/15 22:27
-    */
+      * @Author:  tianliya
+      * @Description:
+      * @Date:16:35 2017/10/16
+     */
     Map<String, Object> getOneByInfoId(Long infoId);
 
     /**

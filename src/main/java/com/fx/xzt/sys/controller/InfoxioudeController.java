@@ -119,13 +119,13 @@ public class InfoxioudeController {
     */
     @RequestMapping(value="/modifyInfoXioude")
     @ResponseBody
-    public CommonResponse modifyInfoXioude(HttpServletRequest request, Long infoId, String title, String operator, Short state){
+    public CommonResponse modifyInfoXioude(HttpServletRequest request, String title, Short state, String operator, Long infoId, String contentpath, String imagepath){
         CommonResponse response = new CommonResponse();
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
-                int i = xioudeService.modifyXioude(title, state, operator, infoId);
+                int i = xioudeService.modifyXioude(title, state, operator, infoId,contentpath, imagepath);
                 if (i != 0){
                     response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                     response.setData(i);
