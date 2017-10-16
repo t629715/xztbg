@@ -21,7 +21,14 @@ public class InfoBannerServiceImpl extends BaseService<InfoBanner> implements In
 
 	@Resource
 	InfoBannerMapper infoBannerMapper;
-	
+
+	/**
+	 * 根据page类型获取图片
+	 * @param page
+	 * @param pageNum
+	 * @param pageSize
+	 * @return
+	 */
 	public PageInfo<InfoBanner> getByPageAll(Integer page,Integer pageNum,Integer pageSize) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("page", page);
@@ -30,20 +37,41 @@ public class InfoBannerServiceImpl extends BaseService<InfoBanner> implements In
 		return new PageInfo<InfoBanner>(list);
 	}
 
+	/**
+	 * 修改图片
+	 * @param infoBanner
+	 * @return
+	 */
 	public int edit(InfoBanner infoBanner) {
 		infoBanner.setModifyTime(new Date());
 		return infoBannerMapper.edit(infoBanner);
 	}
 
+	/**
+	 * 添加图片
+	 * @param infoBanner
+	 * @return
+	 */
 	public int add(InfoBanner infoBanner) {
 		infoBanner.setCreateTime(new Date());
 		return infoBannerMapper.add(infoBanner);
 	}
 
+	/**
+	 * 根据编号删除图片
+	 * @param serialNo
+	 * @return
+	 */
 	public int deleteById(Long serialNo) {
-		return infoBannerMapper.deleteById(serialNo);
+		return infoBannerMapper.deleteBySeriaNo(serialNo);
 	}
 
+	/**
+	 * 向上  乡下
+	 * @param upSerialNo   上一个
+	 * @param downSerialNo 下一个
+	 * @return
+	 */
 	public int up(Long upSerialNo, Long downSerialNo) {
 		InfoBanner upib = selectById(upSerialNo);
 		InfoBanner downib = selectById(downSerialNo);
@@ -61,8 +89,22 @@ public class InfoBannerServiceImpl extends BaseService<InfoBanner> implements In
 		return msg;
 	}
 
+	/**
+	 * 根据编号查询图片
+	 * @param serialNo
+	 * @return
+	 */
 	public InfoBanner selectById(Long serialNo) {
-		return infoBannerMapper.selectById(serialNo);
+		return infoBannerMapper.selectBySeriaNo(serialNo);
 	}
-	
+
+	/**
+	 * 获取广告图片
+	 * @param page
+	 * @return
+	 */
+	@Override
+	public List<Map<String, Object>> getAdPic(Short page) {
+		return infoBannerMapper.selectAdPic(page);
+	}
 }

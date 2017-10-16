@@ -27,4 +27,16 @@ public interface DealOrderMapper extends BaseMapper<DealOrder> {
      * @return
      */
     Map<String, Object> selectByDealOrderCount(Map<String,Object> map);
+
+    /**
+     * 获取买涨手数、买入价
+     * @return
+     */
+    Map<String, Object> selectHandNumberAndOpenPositionForUp();
+
+    /**
+     * 获取买跌得手数、买入价
+     * @return
+     */
+    Map<String, Object> selectHandNumberAndOpenPositionForDown();
  }

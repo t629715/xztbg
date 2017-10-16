@@ -1,6 +1,7 @@
 package com.fx.xzt.sys.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -19,11 +20,10 @@ public class InfoBannerController {
 	
 	@Resource
 	InfoBannerService infoBannerService;
-	
+
 	/**
 	 * 添加
-	 * @param infoInforMation
-	 * @param httpSession
+	 * @param infoBanner
 	 * @return
 	 */
 	@RequestMapping(value="/insertBanner")
@@ -34,10 +34,10 @@ public class InfoBannerController {
 		map.put("msg", msg);
 		return map;
 	}
+
 	/**
 	 * 编辑
-	 * @param infoInforMation
-	 * @param httpSession
+	 * @param infoBanner
 	 * @return
 	 */
 	@RequestMapping(value="/edit")
@@ -48,10 +48,10 @@ public class InfoBannerController {
 		map.put("msg", msg);
 		return map;
 	}
+
 	/**
 	 * 删除
-	 * @param infoInforMation
-	 * @param httpSession
+	 * @param serialNo
 	 * @return
 	 */
 	@RequestMapping(value="/delete")
@@ -62,8 +62,12 @@ public class InfoBannerController {
 		map.put("msg", msg);
 		return map;
 	}
+
 	/**
-	 * 向上向下
+	 * 修改图片显示的顺序
+	 * @param upSerialNo 交换的上一条
+	 * @param downSerialNo 交换的另一条
+	 * @return
 	 */
 	@RequestMapping(value="/upDown")
 	@ResponseBody
@@ -81,4 +85,18 @@ public class InfoBannerController {
 	public PageInfo<InfoBanner> selectByPageAll(Integer page,Integer pageNum,Integer pageSize){
 		return infoBannerService.getByPageAll(page, pageNum, pageSize);
 	}
+
+	/**
+	 * 获取广告图片  tianliya
+	 * @param page
+	 * @return
+	 */
+	@RequestMapping(value="/getAdPic")
+	@ResponseBody
+	public List<Map<String, Object>> getAdPic(Short page){
+		return infoBannerService.getAdPic(page);
+	}
+
+
+
 }

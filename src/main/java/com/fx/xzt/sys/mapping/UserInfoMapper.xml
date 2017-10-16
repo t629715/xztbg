@@ -68,7 +68,7 @@
 		parameterType="java.util.Map">
 		SELECT u.UserID AS userId,l.UserName AS userName,l.Status AS
 		STATUS,u.RealName,
-		u.agent_id AS agentId, ua.user_name AS agentName, u1.broker_id AS brokerId,
+		u.agent_id AS agentId, ua.user_name AS agentName, u.broker_id AS brokerId,
 		u1.user_name AS brokerName ,
 		u.IDCard AS idcard,b.BankName AS bankName,ub.AccountNum AS accountNum,
 		a.rmb AS rmb,a.finance AS finance,frozen_rmb AS frozenRmb,total_income AS

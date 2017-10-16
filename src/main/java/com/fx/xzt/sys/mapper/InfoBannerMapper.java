@@ -21,12 +21,41 @@ public interface InfoBannerMapper extends BaseMapper<InfoBanner>{
 	 * @return
 	 */
 	List<InfoBanner> getByPageAll(Map<String,Object> map);
-	
+
+	/**
+	 * 修改图片信息
+	 * @param infoBanner
+	 * @return
+	 */
 	int edit(InfoBanner infoBanner);
-	
+
+	/**
+	 * 添加图片
+	 * @param infoBanner
+	 * @return
+	 */
 	int add(InfoBanner infoBanner);
-	
-	int deleteById(Long serialNo);
-	
-	InfoBanner selectById(Long serialNo);
+
+	/**
+	 * 根据序号删除图片
+	 * @param serialNo
+	 * @return
+	 */
+	int deleteBySeriaNo(Long serialNo);
+
+	/**
+	 * 根据序号获取图片
+	 * @param serialNo
+	 * @return
+	 */
+	InfoBanner selectBySeriaNo(Long serialNo);
+
+	/**
+	 * 获取用于广告的图片的信息
+	 * @param page
+	 * @return
+	 * @author  tianliya
+	 */
+	List<Map<String,Object>> selectAdPic(Short page);
+
 }
