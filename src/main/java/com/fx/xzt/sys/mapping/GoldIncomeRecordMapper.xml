@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fx.xzt.sys.mapper.GoldIncomeRecordMapper">
+	<resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.GoldIncomeRecord">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="user_id" jdbcType="BIGINT" property="userId" />
+		<result column="income" jdbcType="INTEGER" property="income" />
+		<result column="total_incom" jdbcType="INTEGER" property="totalIncom" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="gram" jdbcType="REAL" property="gram" />
+		<result column="price" jdbcType="INTEGER" property="price" />
+		<result column="income_percent" jdbcType="REAL" property="incomePercent" />
+	</resultMap>
+
+	<!-- 黄金收益结算查询开始-htt -->
+	<select id="selectByGoldIncome" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT r.id, r.user_id userId,r.income,r.total_incom totalIncom,r.create_time createTime,
+		r.gram gram,r.price price,r.income_percent incomePercent ,
+		i.agent_id AS agentId, ua.user_name AS agentName, i.broker_id AS brokerId, ub.user_name AS brokerName
+		FROM gold_income_record r
+		LEFT JOIN User_Login u ON r.user_id = u.UserID
+		LEFT JOIN User_Info i ON u.UserID = i.UserID
+		LEFT JOIN users ua ON i.agent_id = ua.id
+		LEFT JOIN users ub ON i.broker_id = ub.id
+		<where>
+			and u.Status = 1
+			<if test="userName != null and userName != '' ">
+				and i.userName = #{userName,jdbcType=VARCHAR}
+			</if>
+			<if test="orderNo != null and orderNo != '' ">
+				and o.order_no = #{orderNo,jdbcType=VARCHAR}
+			</if>
+			<if test="startTime !=null and startTime !='' ">
+				and r.create_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime !=null and endTime != '' ">
+				and r.create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="startTypeTime !=null and startTypeTime !='' ">
+				and r.create_time &gt;=#{startTypeTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTypeTime !=null and endTypeTime != '' ">
+				and r.create_time &lt;#{endTypeTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="agentName != null and agentName !='' ">
+				and ua.user_name = #{agentName,jdbcType=VARCHAR}
+			</if>
+			<if test="brokerName != null and brokerName !='' ">
+				and ub.user_name = #{brokerName,jdbcType=VARCHAR}
+			</if>
+		</where>
+		order by r.create_time DESC
+	</select>
+	<!-- 黄金收益结算查询结束-htt -->
+
+	<!-- 黄金收益结算查询统计开始-htt -->
+	<select id="selectByGoldIncomeCount" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT SUM(r.income) incomeSum 
+		FROM gold_income_record r
+		LEFT JOIN User_Login u ON r.user_id = u.UserID
+		LEFT JOIN User_Info i ON u.UserID = i.UserID
+		LEFT JOIN users ua ON i.agent_id = ua.id
+		LEFT JOIN users ub ON i.broker_id = ub.id
+		<where>
+			and u.Status = 1
+			<if test="userName != null and userName != '' ">
+				and i.userName = #{userName,jdbcType=VARCHAR}
+			</if>
+			<if test="orderNo != null and orderNo != '' ">
+				and o.order_no = #{orderNo,jdbcType=VARCHAR}
+			</if>
+			<if test="startTime !=null and startTime !='' ">
+				and r.create_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime !=null and endTime != '' ">
+				and r.create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="agentName != null and agentName !='' ">
+				and ua.user_name = #{agentName,jdbcType=VARCHAR}
+			</if>
+			<if test="brokerName != null and brokerName !='' ">
+				and ub.user_name = #{brokerName,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+	<!-- 黄金收益结算查询统计结束-htt -->
+</mapper>
