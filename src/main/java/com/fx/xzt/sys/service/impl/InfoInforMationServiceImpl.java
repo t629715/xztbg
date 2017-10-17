@@ -7,10 +7,10 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.fx.xzt.sys.entity.InfoInformation;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fx.xzt.sys.entity.InfoInforMation;
 import com.fx.xzt.sys.mapper.InfoInforMationMapper;
 import com.fx.xzt.sys.service.InfoInforMationService;
 import com.github.pagehelper.PageHelper;
@@ -25,15 +25,15 @@ import com.github.pagehelper.PageInfo;
 * @version V1.0
  */
 @Service
-public class InfoInforMationServiceImpl extends BaseService<InfoInforMation> implements InfoInforMationService{
+public class InfoInforMationServiceImpl extends BaseService<InfoInformation> implements InfoInforMationService{
 	
 	@Resource
 	InfoInforMationMapper infoInforMationMapper;
 	/**
 	 * 获取信息发布列表
 	 */
-	public PageInfo<InfoInforMation> getByAll(String title, String startTime, String endTime,
-			Integer state, String operator, Integer pageNum, Integer pageSize) {
+	public PageInfo<Map<String, Object>> getByAll(String title, String startTime, String endTime,
+											  Integer state, String operator, Integer pageNum, Integer pageSize) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("title", title);
 		map.put("startTime", startTime);
@@ -41,8 +41,8 @@ public class InfoInforMationServiceImpl extends BaseService<InfoInforMation> imp
 		map.put("state", state);
 		map.put("operator", operator);
 		PageHelper.startPage(pageNum,pageSize);
-		List<InfoInforMation> list = infoInforMationMapper.getByAll(map);
-		PageInfo<InfoInforMation> pagehelper = new PageInfo<InfoInforMation>(list);
+		List<Map<String, Object>> list = infoInforMationMapper.getByAll(map);
+		PageInfo<Map<String, Object>> pagehelper = new PageInfo<Map<String, Object>>(list);
 		return pagehelper;
 	}
 	/**
@@ -51,18 +51,19 @@ public class InfoInforMationServiceImpl extends BaseService<InfoInforMation> imp
 	 *  
 	 */
 	@Transactional
-	public int posted(InfoInforMation i) {
+	public int posted(InfoInformation i) {
 		i.setReleasetime(new Date());
 		i.setCreatetime(new Date());
 		i.setState((short)1);
-		i.setTopState((short)0);
+		//i.setTopState((short)0);
 		return infoInforMationMapper.posted(i);
 	}
-	public InfoInforMation getById(Long serialNo) {
+	public Map<String, Object> getById(Long serialNo) {
 		return infoInforMationMapper.getById(serialNo);
 	}
 	@Transactional
-	public int edit(InfoInforMation i) {
+	public int edit(InfoInformation i) {
+
 		return infoInforMationMapper.edit(i);
 	}
 	@Transactional
@@ -70,15 +71,15 @@ public class InfoInforMationServiceImpl extends BaseService<InfoInforMation> imp
 		return infoInforMationMapper.deleteById(serialNo);
 	}
 	@Transactional
-	public int editTopState(InfoInforMation i) {
+	public int editTopState(InfoInformation i) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("off", 0);
 		map.put("stick", 1);
 		int msg = infoInforMationMapper.editTopState(map);
-		if(i.getTopState()!=1){
+		/*if(i.getTopState()!=1){
 			i.setTopState((short)1);
 			msg = edit(i);
-		}
+		}*/
 		return msg;
 	}
 	

@@ -28,8 +28,8 @@ public class InfoxioudeController {
      * 获取黄金课堂信息  tianliya
      * @param request
      * @param title
-     * @param releasetimeStart
-     * @param releasetimeEnd
+     * @param startTime
+     * @param endTime
      * @param state
      * @param operator
      * @param pageNum
@@ -38,15 +38,15 @@ public class InfoxioudeController {
      */
     @RequestMapping(value="/getXioude")
     @ResponseBody
-    public CommonResponse getXioude(HttpServletRequest request, String title, String releasetimeStart,
-                                            String releasetimeEnd, Short state, String operator,
+    public CommonResponse getXioude(HttpServletRequest request, String title, String startTime,
+                                            String endTime, Short state, String operator,
                                             Integer pageNum, Integer pageSize){
         CommonResponse response = new CommonResponse();
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
-                PageInfo<Map<String, Object>> pageInfo = xioudeService.getInfoXioude(title, releasetimeStart, releasetimeEnd,
+                PageInfo<Map<String, Object>> pageInfo = xioudeService.getInfoXioude(title, startTime, endTime,
                                                                         state,operator, pageNum, pageSize);
                 response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 response.setData(pageInfo);

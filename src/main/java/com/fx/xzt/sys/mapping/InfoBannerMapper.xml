@@ -44,6 +44,8 @@
         order by SortNo
     </select>
     <!--获取用于广告的图片-end-tianliya-->
+
+
 	<update id="edit" parameterType="com.fx.xzt.sys.entity.InfoBanner" >
         update Info_Banner
         <set >

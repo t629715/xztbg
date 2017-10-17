@@ -2,17 +2,13 @@ package com.fx.xzt.sys.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-/**
- * @Author:  tianliya
- * @Description:黄金课堂实体类
- * @Date:10:14 2017/10/17
-*/
-public class InfoGoldlesson implements Serializable{
+
+public class InfoInformation implements Serializable{
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 序号
+     *序号
      */
     private Long infoId;
 
@@ -25,6 +21,16 @@ public class InfoGoldlesson implements Serializable{
      *内容路径
      */
     private String contentpath;
+
+    /**
+     *内容来源类型   1：站内，2：站外，不能编辑'
+     */
+    private Short contentFromType;
+
+    /**
+     *咨询来源
+     */
+    private String informationFrom;
 
     /**
      *创建时间
@@ -75,6 +81,22 @@ public class InfoGoldlesson implements Serializable{
         this.contentpath = contentpath == null ? null : contentpath.trim();
     }
 
+    public Short getContentFromType() {
+        return contentFromType;
+    }
+
+    public void setContentFromType(Short contentFromType) {
+        this.contentFromType = contentFromType;
+    }
+
+    public String getInformationFrom() {
+        return informationFrom;
+    }
+
+    public void setInformationFrom(String informationFrom) {
+        this.informationFrom = informationFrom == null ? null : informationFrom.trim();
+    }
+
     public Date getCreatetime() {
         return createtime;
     }
@@ -96,7 +118,7 @@ public class InfoGoldlesson implements Serializable{
     }
 
     public void setImagepath(String imagepath) {
-        this.imagepath = imagepath;
+        this.imagepath = imagepath == null ? null : imagepath.trim();
     }
 
     public Short getState() {
@@ -112,6 +134,6 @@ public class InfoGoldlesson implements Serializable{
     }
 
     public void setOperator(String operator) {
-        this.operator = operator;
+        this.operator = operator == null ? null : operator.trim();
     }
 }

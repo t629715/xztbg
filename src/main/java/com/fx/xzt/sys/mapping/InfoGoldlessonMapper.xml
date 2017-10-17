@@ -13,30 +13,26 @@
   </resultMap>
   <!--获取所有的黄金课堂-tianliya-start-->
   <select id="selectByInfoGoldlesson" resultType="java.util.Map" parameterType="java.util.Map" >
-    /*SET @rownum=0;*/
-    select /*@rownum:=@rownum+1 as rowNum,*/info_id AS infoId,title,state,createtime,releasetime,imagepath,operator
-    from info_goldlesson
+    select @rownum:=@rownum+1 as rowNum,info_id AS infoId,title,state,createtime,releasetime,imagepath,operator
+    from (select @rownum:=0)r, info_goldlesson
     <where>
-
-      <if test="title != null">
-        AND title=#{title}
+      <if test="title != null and title !='' ">
+        and title like concat(concat('%',#{title,jdbcType=VARCHAR}),'%')
       </if>
-
-      <if test="releasetimeStart != null">
-        AND releasetime >=#{ releasetimeStart}
+      <if test="startTime !=null and startTime !='' ">
+        and releasetime &gt;=#{startTime,jdbcType=TIMESTAMP}
       </if>
-      <if test="releasetimeEnd != null">
-        AND releasetime &lt;= #{ releasetimeEnd}
+      <if test="endTime !=null and endTime !='' ">
+        and releasetime &lt;=#{endTime,jdbcType=TIMESTAMP}
       </if>
-
       <if test="state != null">
-        AND state=#{state}
+        and state = #{state,jdbcType=SMALLINT}
       </if>
-      <if test="operator != null">
-        AND operator=#{operator}
+      <if test="operator != null and operator !='' ">
+        and operator = #{operator,jdbcType=VARCHAR}
       </if>
     </where>
-    ORDER BY createtime
+    ORDER BY releasetime desc
   </select>
   <!--获取所有的黄金课堂-tianliya-end-->
 
@@ -58,7 +54,7 @@
   <!--根据infoId改变状态-start-tianliya-->
   <update id="releaseGoldLesson" parameterType="java.util.Map">
     UPDATE info_goldlesson
-    SET state = 1, operator = #{operator,jdbcType=VARCHAR}
+    SET state = 1, operator = #{operator,jdbcType=VARCHAR}, releasetime = now()
     where info_id = #{infoId,jdbcType=BIGINT}
   </update>
   <!--根据infoId改变状态-start-tianliya-->

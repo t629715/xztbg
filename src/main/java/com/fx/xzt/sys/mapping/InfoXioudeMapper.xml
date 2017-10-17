@@ -16,22 +16,23 @@
     select info_id as infoId, title, createtime, releasetime, state, operator
     from info_xioude
     <where>
-      <if test="title != null">
-        and title = #{title,jdbcType=VARCHAR}
+      <if test="title != null and title !='' ">
+        and title like concat(concat('%',#{title,jdbcType=VARCHAR}),'%')
       </if>
-      <if test="releasetimeStart != null">
-        and releasetime &gt;= #{releasetimeStart,jdbcType=TIMESTAMP}
+      <if test="startTime !=null and startTime !='' ">
+        and releasetime &gt;=#{startTime,jdbcType=TIMESTAMP}
       </if>
-      <if test="releasetimeEnd != null">
-        and releasetime &lt;= #{releasetimeEnd,jdbcType=TIMESTAMP}
+      <if test="endTime !=null and endTime !='' ">
+        and releasetime &lt;=#{endTime,jdbcType=TIMESTAMP}
       </if>
       <if test="state != null">
         and state = #{state,jdbcType=SMALLINT}
       </if>
-      <if test="operator != null">
+      <if test="operator != null and operator !='' ">
         and operator = #{operator,jdbcType=VARCHAR}
       </if>
     </where>
+    order by releasetime desc
   </select>
   <!--获取希欧德详情-tianliya-end-->
 

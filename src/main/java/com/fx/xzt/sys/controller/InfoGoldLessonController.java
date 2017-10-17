@@ -27,8 +27,8 @@ public class InfoGoldLessonController {
      * 获取黄金课堂信息  tianliya
      * @param request
      * @param title
-     * @param releasesettimeStart
-     * @param releasesettimeEnd
+     * @param startTime
+     * @param endTime
      * @param state
      * @param operator
      * @param pageNum
@@ -37,15 +37,15 @@ public class InfoGoldLessonController {
      */
     @RequestMapping(value="/getGoldLesson")
     @ResponseBody
-    public CommonResponse getInfoGoldLesson(HttpServletRequest request, String title, String releasesettimeStart,
-                                            String releasesettimeEnd, Short state, String operator,
+    public CommonResponse getInfoGoldLesson(HttpServletRequest request, String title, String startTime,
+                                            String endTime, Short state, String operator,
                                             Integer pageNum, Integer pageSize){
         CommonResponse response = new CommonResponse();
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
-                PageInfo<Map<String, Object>> pageInfo = infoGoldlessonService.getGoldLesson(title, releasesettimeStart, releasesettimeEnd,
+                PageInfo<Map<String, Object>> pageInfo = infoGoldlessonService.getGoldLesson(title, startTime, endTime,
                                                                         state,operator, pageNum, pageSize);
                 response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 response.setData(pageInfo);

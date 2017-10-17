@@ -1,9 +1,11 @@
 package com.fx.xzt.sys.service;
 
-import com.fx.xzt.sys.entity.InfoInforMation;
+import com.fx.xzt.sys.entity.InfoInformation;
 import com.github.pagehelper.PageInfo;
 
-public interface InfoInforMationService extends IService<InfoInforMation>{
+import java.util.Map;
+
+public interface InfoInforMationService extends IService<InfoInformation>{
 	/**
 	 * 列表查询
 	 * @param title
@@ -15,19 +17,19 @@ public interface InfoInforMationService extends IService<InfoInforMation>{
 	 * @param pageSize
 	 * @return
 	 */
-	PageInfo<InfoInforMation> getByAll(String title,String startTime,String endTime,Integer state,String operator,Integer pageNum,Integer pageSize);
+	PageInfo<Map<String, Object>> getByAll(String title,String startTime,String endTime,Integer state,String operator,Integer pageNum,Integer pageSize);
 	/**
 	 * 发布
 	 */
-	int posted(InfoInforMation i);
+	int posted(InfoInformation i);
 	/**
 	 * 查看
 	 */
-	InfoInforMation getById(Long serialNo);
+	Map<String, Object> getById(Long serialNo);
 	/**
 	 * 修改
 	 */
-	int edit(InfoInforMation i);
+	int edit(InfoInformation i);
 	/**
 	 * 删除
 	 */
@@ -35,5 +37,5 @@ public interface InfoInforMationService extends IService<InfoInforMation>{
 	/**
 	 * 置顶 / 取消置顶
 	 */
-	int editTopState(InfoInforMation i);
+	/*int editTopState(Map<String, Object> map);*/
 }

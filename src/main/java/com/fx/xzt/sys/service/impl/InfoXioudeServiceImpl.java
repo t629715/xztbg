@@ -18,7 +18,6 @@ import java.util.Map;
 /**
  * @author tianliya
  * @Description:
- * @date 15:50 2017/10/13
  */
 @Service
 public class InfoXioudeServiceImpl extends BaseService<InfoXioude> implements InfoXioudeService {
@@ -30,16 +29,16 @@ public class InfoXioudeServiceImpl extends BaseService<InfoXioude> implements In
     * @Date:17:11 2017/10/13
     */
     @Override
-    public PageInfo<Map<String, Object>> getInfoXioude(String title, String releasetimeStart,
-                                  String releasetimeEnd, Short state, String operator,
+    public PageInfo<Map<String, Object>> getInfoXioude(String title, String startTime,
+                                  String endTime, Short state, String operator,
                                   Integer pageNum, Integer pageSize) {
         Map map1 = new HashMap();
         PageHelper.startPage(pageNum, pageSize);
         map1.put("title",title);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        /*SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date startTime = null;
         try{
-            if (releasetimeStart != null)
+            if (releasetimeStart != null && releasetimeStart != "")
             startTime = dateFormat.parse(releasetimeStart);
         }catch (ParseException e){
             e.printStackTrace();
@@ -48,12 +47,13 @@ public class InfoXioudeServiceImpl extends BaseService<InfoXioude> implements In
         map1.put("releasetimeStart",startTime);
         Date endTime = null;
         try{
-            if (releasetimeEnd != null)
+            if (releasetimeEnd != null && releasetimeEnd != "")
             endTime = dateFormat.parse(releasetimeEnd);
         }catch (ParseException e){
             e.printStackTrace();
-        }
-        map1.put("releasetimeEnd",endTime);
+        }*/
+        map1.put("startTime",startTime);
+        map1.put("endTime",endTime);
         map1.put("state",state);
         map1.put("operator",operator);
         List list = infoXioudeMapper.selectByInfoXioude(map1);

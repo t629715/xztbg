@@ -18,7 +18,6 @@ import java.util.Map;
 /**
  * @author tianliya
  * @Description:
- * @date 15:50 2017/10/13
  */
 @Service
 public class InfoGoldlessonServiceImpl extends BaseService<InfoGoldlesson> implements InfoGoldlessonService {
@@ -30,27 +29,29 @@ public class InfoGoldlessonServiceImpl extends BaseService<InfoGoldlesson> imple
     * @Date:17:11 2017/10/13
     */
     @Override
-    public PageInfo<Map<String, Object>> getGoldLesson(String title, String releasesettimeStart,
-                                  String releasesettimeEnd, Short state, String operator,
+    public PageInfo<Map<String, Object>> getGoldLesson(String title, String startTime,
+                                  String endTime, Short state, String operator,
                                   Integer pageNum, Integer pageSize) {
         Map map1 = new HashMap();
         PageHelper.startPage(pageNum, pageSize);
         map1.put("title",title);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        /*SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date startTime = null;
         try{
-            startTime = simpleDateFormat.parse(releasesettimeStart);
+            if (releasesettimeStart != null && releasesettimeStart != "")
+                startTime = simpleDateFormat.parse(releasesettimeStart);
         }catch (ParseException e){
             e.printStackTrace();
         }
         Date endTime = null;
         try{
+            if (releasesettimeEnd != null && releasesettimeEnd != "")
             endTime = simpleDateFormat.parse(releasesettimeEnd);
         }catch (ParseException e){
             e.printStackTrace();
-        }
-        map1.put("releasetimeStart",startTime);
-        map1.put("releasetimeEnd",endTime);
+        }*/
+        map1.put("startTime",startTime);
+        map1.put("endTime",endTime);
         map1.put("state",state);
         map1.put("operator",operator);
         List list = infoGoldlessonMapper.selectByInfoGoldlesson(map1);

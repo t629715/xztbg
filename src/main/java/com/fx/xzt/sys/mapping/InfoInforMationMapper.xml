@@ -1,49 +1,46 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.fx.xzt.sys.mapper.InfoInforMationMapper" >
-  <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.InfoInforMation" >
-    <id column="SerialNo" property="serialno" jdbcType="BIGINT" />
-    <result column="Title" property="title" jdbcType="VARCHAR" />
-    <result column="ContentPath" property="contentpath" jdbcType="VARCHAR" />
-    <result column="ContentFromType" property="contentfromtype" jdbcType="SMALLINT" />
-    <result column="InformationFrom" property="informationfrom" jdbcType="VARCHAR" />
-    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
-    <result column="ReleaseTime" property="releasetime" jdbcType="TIMESTAMP" />
+  <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.InfoInformation" >
+    <id column="info_id" property="infoId" jdbcType="BIGINT" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="contentpath" property="contentPath" jdbcType="VARCHAR" />
+    <result column="content_from_type" property="contentFromType" jdbcType="SMALLINT" />
+    <result column="information_from" property="informationFrom" jdbcType="VARCHAR" />
+    <result column="createtime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="releasetime" property="releaseTime" jdbcType="TIMESTAMP" />
     <result column="State" property="state" jdbcType="SMALLINT" />
-    <result column="Operator" property="operator" jdbcType="VARCHAR" />
-    <result column="Image1Path" property="image1Path" jdbcType="VARCHAR" />
-    <result column="Image2Path" property="image2Path" jdbcType="VARCHAR" />
-    <result column="Image3Path" property="image3Path" jdbcType="VARCHAR" />
-    <result column="TopState" property="topState" jdbcType="SMALLINT" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="image_path" property="imagePath" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="SMALLINT" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <!--<result column="TopState" property="topState" jdbcType="SMALLINT" />-->
   </resultMap>
-  <sql id="Base_Column_List" >
-    SerialNo, Title, ContentPath, ContentFromType, InformationFrom, CreateTime, ReleaseTime, 
-    State, Operator,TopState
-  </sql>
-  <select id="getByAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
-  	select 
-    <include refid="Base_Column_List" />
-    from Info_Information
+  <!--获取满足条件的咨询信息 -tianliya-start-->
+  <select id="getByAll" resultType="java.util.Map" parameterType="java.util.Map" >
+  	select @rownum:=@rownum+1 as rowNum,info_id as infoId, title, state, createtime, releasetime, operator
+    from (select @rownum:=0)r,info_information
     <where>
 	    <if test="title != null and title !='' ">
-	    	and Title like concat(concat('%',#{title,jdbcType=VARCHAR}),'%')
+	    	and title like concat(concat('%',#{title,jdbcType=VARCHAR}),'%')
 	    </if>
 	    <if test="startTime !=null and startTime !='' ">
-			and ReleaseTime &gt;=#{startTime,jdbcType=TIMESTAMP}
+			and releasetime &gt;=#{startTime,jdbcType=TIMESTAMP}
 		</if>
 		<if test="endTime !=null and endTime !='' ">
-			and ReleaseTime &lt;=#{endTime,jdbcType=TIMESTAMP}
+			and releasetime &lt;=#{endTime,jdbcType=TIMESTAMP}
 		</if>
 		<if test="state != null">
-			and State = #{state,jdbcType=SMALLINT}
+			and state = #{state,jdbcType=SMALLINT}
 		</if>
 		<if test="operator != null and operator !='' ">
-			and Operator = #{operator,jdbcType=VARCHAR}
+			and operator = #{operator,jdbcType=VARCHAR}
 		</if>
     </where>
-    order by topState desc, ReleaseTime desc
+    order by  releasetime desc
   </select>
-  <insert id="posted" parameterType="com.fx.xzt.sys.entity.InfoInforMation" useGeneratedKeys="true" keyProperty="SerialNo">
+  <!--获取满足条件的咨询信息 -tianliya-end-->
+  <!--<insert id="posted" parameterType="com.fx.xzt.sys.entity.InfoInforMation" useGeneratedKeys="true" keyProperty="SerialNo">
     insert into Info_Information
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="title != null" >
@@ -151,7 +148,7 @@
   	update Info_Information
 	set TopState = #{off,jdbcType=INTEGER}
 	where TopState = #{stick,jdbcType=INTEGER}
-  </update>
+  </update>-->
 <!--   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
