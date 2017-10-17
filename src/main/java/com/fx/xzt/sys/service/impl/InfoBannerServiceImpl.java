@@ -10,7 +10,6 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.fx.xzt.sys.entity.InfoBanner;
-import com.fx.xzt.sys.entity.UserAccountRecord;
 import com.fx.xzt.sys.mapper.InfoBannerMapper;
 import com.fx.xzt.sys.service.InfoBannerService;
 import com.github.pagehelper.PageHelper;

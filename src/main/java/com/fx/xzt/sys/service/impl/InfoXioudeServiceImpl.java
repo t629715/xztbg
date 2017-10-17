@@ -6,11 +6,9 @@ import com.fx.xzt.sys.service.InfoXioudeService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,23 +33,7 @@ public class InfoXioudeServiceImpl extends BaseService<InfoXioude> implements In
         Map map1 = new HashMap();
         PageHelper.startPage(pageNum, pageSize);
         map1.put("title",title);
-        /*SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        Date startTime = null;
-        try{
-            if (releasetimeStart != null && releasetimeStart != "")
-            startTime = dateFormat.parse(releasetimeStart);
-        }catch (ParseException e){
-            e.printStackTrace();
-        }
 
-        map1.put("releasetimeStart",startTime);
-        Date endTime = null;
-        try{
-            if (releasetimeEnd != null && releasetimeEnd != "")
-            endTime = dateFormat.parse(releasetimeEnd);
-        }catch (ParseException e){
-            e.printStackTrace();
-        }*/
         map1.put("startTime",startTime);
         map1.put("endTime",endTime);
         map1.put("state",state);
@@ -68,7 +50,7 @@ public class InfoXioudeServiceImpl extends BaseService<InfoXioude> implements In
      * @Decription:根据infoID删除西欧的数据
      * @Date 2017/10/15 21:53
     */
-    @Override
+    @Transactional
     public int deleteXioudeById(Long infoId) {
        int i = infoXioudeMapper.deleteXioude(infoId);
         return i;
@@ -84,7 +66,7 @@ public class InfoXioudeServiceImpl extends BaseService<InfoXioude> implements In
      * @Decription:  修改西欧的的信息
      * @Date 2017/10/15 22:08
     */
-    @Override
+    @Transactional
     public int modifyXioude(String title, Short state, String operator, Long infoId, String contentpath, String imagepath) {
         Map map = new HashMap();
         map.put("title",title);

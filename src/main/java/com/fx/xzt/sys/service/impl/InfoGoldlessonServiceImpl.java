@@ -6,6 +6,7 @@ import com.fx.xzt.sys.service.InfoGoldlessonService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
@@ -35,21 +36,6 @@ public class InfoGoldlessonServiceImpl extends BaseService<InfoGoldlesson> imple
         Map map1 = new HashMap();
         PageHelper.startPage(pageNum, pageSize);
         map1.put("title",title);
-        /*SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        Date startTime = null;
-        try{
-            if (releasesettimeStart != null && releasesettimeStart != "")
-                startTime = simpleDateFormat.parse(releasesettimeStart);
-        }catch (ParseException e){
-            e.printStackTrace();
-        }
-        Date endTime = null;
-        try{
-            if (releasesettimeEnd != null && releasesettimeEnd != "")
-            endTime = simpleDateFormat.parse(releasesettimeEnd);
-        }catch (ParseException e){
-            e.printStackTrace();
-        }*/
         map1.put("startTime",startTime);
         map1.put("endTime",endTime);
         map1.put("state",state);
@@ -66,7 +52,7 @@ public class InfoGoldlessonServiceImpl extends BaseService<InfoGoldlesson> imple
      * @Decription:根据infoID删除黄金课堂信息
      * @Date 2017/10/15 21:53
     */
-    @Override
+    @Transactional
     public int deleteGoldLessonById(Long infoId) {
        int i = infoGoldlessonMapper.deleteGoldLesson(infoId);
         return i;
@@ -82,7 +68,7 @@ public class InfoGoldlessonServiceImpl extends BaseService<InfoGoldlesson> imple
      * @Decription:  修改黄金课堂的信息
      * @Date 2017/10/15 22:08
     */
-    @Override
+    @Transactional
     public int modifyGoldLesson(String title, Short state, String operator, Long infoId) {
         Map map = new HashMap();
         map.put("title",title);
@@ -110,7 +96,7 @@ public class InfoGoldlessonServiceImpl extends BaseService<InfoGoldlesson> imple
      * @param infoId
      * @return
      */
-    @Override
+    @Transactional
     public int releaseGoldLesson(Long infoId, String operator) {
         Map map = new HashMap();
         map.put("infoId",infoId);

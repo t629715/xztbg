@@ -8,6 +8,7 @@ import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -54,7 +55,7 @@ public class GoldRightDealConfServiceImpl extends BaseService<GoldRightDealConf>
      * @param blowingUpSet
      * @return
      */
-    @Override
+    @Transactional
     public Boolean updateByPrimaryKey(Integer id, String name, Integer contract,
                                       Integer buyPercent, Double pointCount, Integer volatility,
                                       Integer minGramPerOrder, Integer maxGramPerOrder, Integer maxPositionCount,

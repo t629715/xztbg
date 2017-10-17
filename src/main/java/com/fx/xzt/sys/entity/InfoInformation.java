@@ -94,7 +94,7 @@ public class InfoInformation implements Serializable{
     }
 
     public void setInformationFrom(String informationFrom) {
-        this.informationFrom = informationFrom == null ? null : informationFrom.trim();
+        this.informationFrom = informationFrom;
     }
 
     public Date getCreatetime() {
@@ -118,7 +118,7 @@ public class InfoInformation implements Serializable{
     }
 
     public void setImagepath(String imagepath) {
-        this.imagepath = imagepath == null ? null : imagepath.trim();
+        this.imagepath = imagepath;
     }
 
     public Short getState() {
@@ -134,6 +134,6 @@ public class InfoInformation implements Serializable{
     }
 
     public void setOperator(String operator) {
-        this.operator = operator == null ? null : operator.trim();
+        this.operator = operator;
     }
 }

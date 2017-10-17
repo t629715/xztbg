@@ -1,7 +1,6 @@
 package com.fx.xzt.sys.service.impl;
 
 import com.fx.xzt.sys.entity.FinanceConf;
-import com.fx.xzt.sys.entity.UserAccountRecord;
 import com.fx.xzt.sys.mapper.FinanceConfMapper;
 import com.fx.xzt.sys.service.FinanceConfService;
 import com.github.pagehelper.PageHelper;
@@ -9,6 +8,8 @@ import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
@@ -42,7 +43,7 @@ public class FinanceConfServiceImpl extends BaseService<FinanceConf> implements 
      * @param id 产品主键
      * @return
      */
-    @Override
+    @Transactional
     public Boolean removeFinanceConfById(Long id) {
         logger.debug("根据产品编号删除理财产品");
         Integer i = financeConfMapper.deleteFinanceConfById(id);
@@ -65,7 +66,7 @@ public class FinanceConfServiceImpl extends BaseService<FinanceConf> implements 
      * @param settleMethod
      * @return
      */
-    @Override
+    @Transactional
     public Boolean modifyFinanceConf(Integer id, String productNo, String productName,
                                      Float yearIncomPercent, Integer cycle, Float minMoney,
                                      Integer calcMethod, Short redeemMethod, Short settleMethod) {

@@ -9,9 +9,9 @@
     <result column="information_from" property="informationFrom" jdbcType="VARCHAR" />
     <result column="createtime" property="createTime" jdbcType="TIMESTAMP" />
     <result column="releasetime" property="releaseTime" jdbcType="TIMESTAMP" />
-    <result column="State" property="state" jdbcType="SMALLINT" />
+    <result column="state" property="state" jdbcType="SMALLINT" />
     <result column="operator" property="operator" jdbcType="VARCHAR" />
-    <result column="image_path" property="imagePath" jdbcType="VARCHAR" />
+    <result column="imagepath" property="imagePath" jdbcType="VARCHAR" />
     <result column="state" property="state" jdbcType="SMALLINT" />
     <result column="operator" property="operator" jdbcType="VARCHAR" />
     <!--<result column="TopState" property="topState" jdbcType="SMALLINT" />-->
@@ -40,7 +40,8 @@
     order by  releasetime desc
   </select>
   <!--获取满足条件的咨询信息 -tianliya-end-->
-  <!--<insert id="posted" parameterType="com.fx.xzt.sys.entity.InfoInforMation" useGeneratedKeys="true" keyProperty="SerialNo">
+
+    <!--<insert id="posted" parameterType="com.fx.xzt.sys.entity.InfoInforMation" useGeneratedKeys="true" keyProperty="SerialNo">
     insert into Info_Information
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="title != null" >
@@ -101,50 +102,61 @@
       </if>
     </trim>
   </insert>
-  <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
-    <include refid="Base_Column_List" />
-    from Info_Information
-    where SerialNo = #{serialno,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteById" parameterType="java.lang.Long" >
-    delete from Info_Information
-    where SerialNo = #{serialno,jdbcType=BIGINT}
-  </delete>
-  <update id="edit" parameterType="com.fx.xzt.sys.entity.InfoInforMation" >
-    update Info_Information
+  -->
+
+    <!--根据主键查询一条数据-tianliya-start-->
+    <select id="getById" resultType="java.util.Map" parameterType="java.lang.Long" >
+        select info_id as infoId, title, contentpath as contentPath, content_from_type as contentFromType,
+                information_from as informationFrom,
+                createTime, releaseTime, state, operator, imagepath as imagePath
+        from info_information
+        where info_id = #{infoId,jdbcType=BIGINT}
+    </select>
+    <!--根据主键查询一条数据-tianliya-end-->
+
+    <!--根据主键删除数据-tianliya-start-->
+    <delete id="deleteById" parameterType="java.lang.Long" >
+        delete from info_information
+        where info_id = #{infoId,jdbcType=BIGINT}
+    </delete>
+    <!--根据主键删除数据-tianliya-end-->
+
+    <!--编辑咨询-tianiya-start-->
+    <update id="edit" parameterType="com.fx.xzt.sys.entity.InfoInformation" >
+    update info_information
     <set >
       <if test="title != null" >
-        Title = #{title,jdbcType=VARCHAR},
+          title = #{title,jdbcType=VARCHAR},
       </if>
       <if test="contentpath != null" >
-        ContentPath = #{contentpath,jdbcType=VARCHAR},
+          contentpath = #{contentpath,jdbcType=VARCHAR},
       </if>
-      <if test="contentfromtype != null" >
-        ContentFromType = #{contentfromtype,jdbcType=SMALLINT},
+      <if test="contentFromType != null" >
+        content_from_type = #{contentFromType,jdbcType=SMALLINT},
       </if>
-      <if test="informationfrom != null" >
-        InformationFrom = #{informationfrom,jdbcType=VARCHAR},
+      <if test="informationFrom != null" >
+        information_from = #{informationFrom,jdbcType=VARCHAR},
       </if>
       <if test="createtime != null" >
-        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+        createtime = #{createtime,jdbcType=TIMESTAMP},
       </if>
       <if test="releasetime != null" >
-        ReleaseTime = #{releasetime,jdbcType=TIMESTAMP},
+        releasetime = #{releasetime,jdbcType=TIMESTAMP},
       </if>
       <if test="state != null" >
-        State = #{state,jdbcType=SMALLINT},
+        state = #{state,jdbcType=SMALLINT},
       </if>
       <if test="operator != null" >
-        Operator = #{operator,jdbcType=VARCHAR},
+        operator = #{operator,jdbcType=VARCHAR},
       </if>
-      <if test="topState != null" >
-         TopState = #{topState,jdbcType=SMALLINT},
-      </if>
+      <!--<if test="topState != null" >
+        TopState = #{topState,jdbcType=SMALLINT},
+      </if>-->
     </set>
-    where SerialNo = #{serialno,jdbcType=BIGINT}
+    where info_id = #{infoId,jdbcType=BIGINT}
   </update>
-  <update id="editTopState" parameterType="map" >
+    <!--编辑咨询-tianiya-end-->
+  <!--<update id="editTopState" parameterType="map" >
   	update Info_Information
 	set TopState = #{off,jdbcType=INTEGER}
 	where TopState = #{stick,jdbcType=INTEGER}
