@@ -61,10 +61,10 @@ public interface InfoGoldlessonService extends IService<InfoGoldlesson>{
 
     /**
      * 发布黄金课堂  tianliya
-     * @param infoId
+     * @param infoGoldlesson
      * @return
      */
-    int releaseGoldLesson(Long infoId, String operator);
+    int posted(InfoGoldlesson infoGoldlesson);
 
     /**
      * 获取一条数据

@@ -93,15 +93,12 @@ public class InfoGoldlessonServiceImpl extends BaseService<InfoGoldlesson> imple
 
     /**
      * 发布黄金课堂  tianliya
-     * @param infoId
+     * @param infoGoldlesson
      * @return
      */
     @Transactional
-    public int releaseGoldLesson(Long infoId, String operator) {
-        Map map = new HashMap();
-        map.put("infoId",infoId);
-        map.put("operator",operator);
-        return infoGoldlessonMapper.releaseGoldLesson(map);
+    public int posted(InfoGoldlesson infoGoldlesson) {
+        return infoGoldlessonMapper.posted(infoGoldlesson);
     }
 
     /**

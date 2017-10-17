@@ -1,5 +1,6 @@
 package com.fx.xzt.sys.controller;
 
+import com.fx.xzt.sys.entity.InfoGoldlesson;
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.service.InfoGoldlessonService;
 import com.fx.xzt.sys.util.CommonResponse;
@@ -194,18 +195,19 @@ public class InfoGoldLessonController {
     /**
      * 发布
      * @param request
-     * @param infoId
+     * @param infoGoldlesson
      * @return
      */
     @RequestMapping(value="/releaseGoldLesson",method=RequestMethod.POST)
     @ResponseBody
-    public CommonResponse releaseGoldLesson(HttpServletRequest request, Long infoId){
+    public CommonResponse releaseGoldLesson(HttpServletRequest request, InfoGoldlesson infoGoldlesson){
         CommonResponse response = new CommonResponse();
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
-                int i  = infoGoldlessonService.releaseGoldLesson(infoId,users.getUserName());
+                infoGoldlesson.setOperator(users.getUserName());
+                int i  = infoGoldlessonService.posted(infoGoldlesson);
                 if (i != 0){
                     response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                     response.setData(i);

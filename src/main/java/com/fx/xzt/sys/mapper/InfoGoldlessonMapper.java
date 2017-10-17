@@ -56,5 +56,5 @@ public interface InfoGoldlessonMapper extends BaseMapper<InfoGoldlesson>{
      * @param
      * @return
      */
-    int releaseGoldLesson(Map<String, Object> map);
+    int posted(InfoGoldlesson infoGoldlesson);
 }
