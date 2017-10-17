@@ -195,5 +195,64 @@ public class ConstantUtil {
             return rlt;
         }
     }
+    
+    /**
+     * 
+    * @ClassName: goldWithdrawtype 
+    * @Description: 黄金提取类型
+    * @author htt
+    * @date 2017-10-17 下午2:40:15 
+    *
+     */
+    public static enum goldWithdrawType {
+        SWTJ("实物提金","1");
+        private String name;
+        private String index;
+        private goldWithdrawType(String name,String index){
+            this.name = name;
+            this.index = index;
+        }
+        public String toString() {
+            return this.index;
+        }
+        public static Map<String, String> toMap() {
+        	goldWithdrawType[] ds = goldWithdrawType.values();
+            Map<String, String> rlt = new Hashtable<String, String>();
+            for (goldWithdrawType d : ds) {
+                rlt.put(d.index, d.name);
+            }
+            return rlt;
+        }
+    }
+    
+    /**
+     * 
+    * @ClassName: goldWithdrawStatus 
+    * @Description: 黄金提取状态
+    * @author htt
+    * @date 2017-10-17 下午2:42:15 
+    *
+     */
+    public static enum goldWithdrawStatus {
+        WFH("未发货","1"),
+        YFH("已发货","2");
+        private String name;
+        private String index;
+        private goldWithdrawStatus(String name,String index){
+            this.name = name;
+            this.index = index;
+        }
+        public String toString() {
+            return this.index;
+        }
+        public static Map<String, String> toMap() {
+        	goldWithdrawStatus[] ds = goldWithdrawStatus.values();
+            Map<String, String> rlt = new Hashtable<String, String>();
+            for (goldWithdrawStatus d : ds) {
+                rlt.put(d.index, d.name);
+            }
+            return rlt;
+        }
+    }
 
 }
