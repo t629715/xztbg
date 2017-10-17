@@ -10,6 +10,7 @@ import com.fx.xzt.util.POIUtils;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -39,7 +40,7 @@ public class RealGoldConfController {
      * @param request
      * @return
      */
-    @RequestMapping(value="/getRealGoldConf")
+    @RequestMapping(value="/getRealGoldConf",method= RequestMethod.POST)
     @ResponseBody
     public Object getRealGoldConf(HttpServletRequest request) {
         CommonResponse cr = new CommonResponse();
@@ -85,7 +86,7 @@ public class RealGoldConfController {
      * @param maxBuyCount
      * @return
      */
-    @RequestMapping(value="/editRealGoldConf")
+    @RequestMapping(value="/editRealGoldConf",method=RequestMethod.POST)
     @ResponseBody
     public Object eidtRealGoldConf(HttpServletRequest request, Long id, String name, Integer buyPoundage,
                                    Integer insurance, Integer logisticsFee,

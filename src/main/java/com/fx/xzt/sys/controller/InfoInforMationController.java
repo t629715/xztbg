@@ -12,6 +12,7 @@ import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fx.xzt.sys.entity.Users;
@@ -43,7 +44,7 @@ public class InfoInforMationController {
 	 * @param pageSize
 	 * @return
 	 */
-	@RequestMapping(value="/selectByInfoInforMation")
+	@RequestMapping(value="/selectByInfoInforMation",method=RequestMethod.POST)
 	@ResponseBody
 	public CommonResponse selectByInfoInforMation(HttpServletRequest request, String title, String startTime, String endTime, Integer state, String operator, Integer pageNum, Integer pageSize){
 		CommonResponse response = new CommonResponse();
@@ -74,20 +75,43 @@ public class InfoInforMationController {
 	 * @param infoInforMation
 	 * @return
 	 */
-	@RequestMapping(value="/posted")
+	@RequestMapping(value="/posted",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,Object> posted(InfoInformation infoInforMation, HttpSession httpSession){
-		Map<String,Object> map = new HashMap<String,Object>();
-		Users u=(Users) httpSession.getAttribute("currentUser");
-		infoInforMation.setOperator(u.getPhone()+"");
-		int msg = infoInforMationService.posted(infoInforMation);
-		map.put("msg", msg);
-		return map;
+	public CommonResponse posted(HttpServletRequest request, InfoInformation infoInforMation){
+		CommonResponse response = new CommonResponse();
+		try {
+			HttpSession httpSession = request.getSession();
+			Users users = (Users) httpSession.getAttribute("currentUser");
+			if (users != null) {
+				infoInforMation.setOperator(users.getPhone()+"");
+				int i = infoInforMationService.posted(infoInforMation);
+				if (i != 0){
+					response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+					response.setData(i);
+					response.setMsg("操作成功！");
+				}else {
+					response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+					response.setData(i);
+					response.setMsg("操作失败！");
+				}
+
+			} else {
+				response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+				response.setData("{}");
+				response.setMsg("操作失败！");
+			}
+		} catch (Exception e) {
+			response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+			response.setData("{}");
+			response.setMsg("操作失败！");
+			throw e;
+		}
+		return response;
 	}
 	/**
 	 * 查看
 	 */
-	@RequestMapping(value="/selectBySerialNo")
+	@RequestMapping(value="/selectBySerialNo",method=RequestMethod.POST)
 	@ResponseBody
 	public CommonResponse selectBySerialNo(HttpServletRequest request, Long infoId){
 		CommonResponse response = new CommonResponse();
@@ -115,7 +139,7 @@ public class InfoInforMationController {
 	/**
 	 * 修改
 	 */
-	@RequestMapping(value="/edit")
+	@RequestMapping(value="/edit",method= RequestMethod.POST)
 	@ResponseBody
 	public CommonResponse edit(HttpServletRequest request, InfoInformation infoInforMation){
 		CommonResponse response = new CommonResponse();
@@ -150,7 +174,7 @@ public class InfoInforMationController {
 	/**
 	 * 删除
 	 */
-	@RequestMapping(value="/deleteById")
+	@RequestMapping(value="/deleteById",method=RequestMethod.POST)
 	@ResponseBody
 	public CommonResponse deleteById(HttpServletRequest request, Long infoId){
 

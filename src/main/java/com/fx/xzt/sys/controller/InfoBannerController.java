@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fx.xzt.sys.entity.InfoBanner;
@@ -26,7 +27,7 @@ public class InfoBannerController {
 	 * @param infoBanner
 	 * @return
 	 */
-	@RequestMapping(value="/insertBanner")
+	@RequestMapping(value="/insertBanner",method= RequestMethod.POST)
 	@ResponseBody
 	public Map<String,Object> insertBanner(InfoBanner infoBanner){
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -40,7 +41,7 @@ public class InfoBannerController {
 	 * @param infoBanner
 	 * @return
 	 */
-	@RequestMapping(value="/edit")
+	@RequestMapping(value="/edit",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String,Object> edit(InfoBanner infoBanner){
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -54,7 +55,7 @@ public class InfoBannerController {
 	 * @param serialNo
 	 * @return
 	 */
-	@RequestMapping(value="/delete")
+	@RequestMapping(value="/delete",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String,Object> delete(Long serialNo){
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -69,7 +70,7 @@ public class InfoBannerController {
 	 * @param downSerialNo 交换的另一条
 	 * @return
 	 */
-	@RequestMapping(value="/upDown")
+	@RequestMapping(value="/upDown",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String,Object> upDown(Long upSerialNo,Long downSerialNo){
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -80,7 +81,7 @@ public class InfoBannerController {
 	/**
 	 * 根据page查询列表
 	 */
-	@RequestMapping(value="/selectByPageAll")
+	@RequestMapping(value="/selectByPageAll",method=RequestMethod.POST)
 	@ResponseBody
 	public PageInfo<InfoBanner> selectByPageAll(Integer page,Integer pageNum,Integer pageSize){
 		return infoBannerService.getByPageAll(page, pageNum, pageSize);
@@ -91,7 +92,7 @@ public class InfoBannerController {
 	 * @param page
 	 * @return
 	 */
-	@RequestMapping(value="/getAdPic")
+	@RequestMapping(value="/getAdPic",method=RequestMethod.POST)
 	@ResponseBody
 	public List<Map<String, Object>> getAdPic(Short page){
 		return infoBannerService.getAdPic(page);

@@ -8,6 +8,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,25 +28,25 @@ public class InfoGoldLessonController {
      * 获取黄金课堂信息  tianliya
      * @param request
      * @param title
-     * @param startTime
-     * @param endTime
+     * @param releasesettimeStart
+     * @param releasesettimeEnd
      * @param state
      * @param operator
      * @param pageNum
      * @param pageSize
      * @return
      */
-    @RequestMapping(value="/getGoldLesson")
+    @RequestMapping(value="/getGoldLesson",method= RequestMethod.POST)
     @ResponseBody
-    public CommonResponse getInfoGoldLesson(HttpServletRequest request, String title, String startTime,
-                                            String endTime, Short state, String operator,
+    public CommonResponse getInfoGoldLesson(HttpServletRequest request, String title, String releasesettimeStart,
+                                            String releasesettimeEnd, Short state, String operator,
                                             Integer pageNum, Integer pageSize){
         CommonResponse response = new CommonResponse();
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
-                PageInfo<Map<String, Object>> pageInfo = infoGoldlessonService.getGoldLesson(title, startTime, endTime,
+                PageInfo<Map<String, Object>> pageInfo = infoGoldlessonService.getGoldLesson(title, releasesettimeStart, releasesettimeEnd,
                                                                         state,operator, pageNum, pageSize);
                 response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 response.setData(pageInfo);
@@ -72,7 +73,7 @@ public class InfoGoldLessonController {
      * @Decription:删除选中的黄金课堂
      * @Date 2017/10/15 22:13
     */
-    @RequestMapping(value="/deleteGoldLesson")
+    @RequestMapping(value="/deleteGoldLesson",method=RequestMethod.POST)
     @ResponseBody
     public CommonResponse deleteInfoGoldLesson(HttpServletRequest request, Long infoId){
         CommonResponse response = new CommonResponse();
@@ -116,7 +117,7 @@ public class InfoGoldLessonController {
      * @Decription:修改选中的数据
      * @Date 2017/10/15 22:31
     */
-    @RequestMapping(value="/modifyGoldLesson")
+    @RequestMapping(value="/modifyGoldLesson",method=RequestMethod.POST)
     @ResponseBody
     public CommonResponse modifyInfoGoldLesson(HttpServletRequest request, Long infoId, String title, String operator, Short state){
         CommonResponse response = new CommonResponse();
@@ -157,7 +158,7 @@ public class InfoGoldLessonController {
      * @Decription:  预览选中的黄金课堂信息
      * @Date 2017/10/15 22:34
     */
-    @RequestMapping(value="/getOneGoldLesson")
+    @RequestMapping(value="/getOneGoldLesson",method=RequestMethod.POST)
     @ResponseBody
     public CommonResponse getOneGoldLesson(HttpServletRequest request, Long infoId){
         CommonResponse response = new CommonResponse();
@@ -196,7 +197,7 @@ public class InfoGoldLessonController {
      * @param infoId
      * @return
      */
-    @RequestMapping(value="/releaseGoldLesson")
+    @RequestMapping(value="/releaseGoldLesson",method=RequestMethod.POST)
     @ResponseBody
     public CommonResponse releaseGoldLesson(HttpServletRequest request, Long infoId){
         CommonResponse response = new CommonResponse();

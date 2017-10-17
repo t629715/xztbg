@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -45,7 +46,7 @@ public class FinanceConfController {
      * @param pageSize
      * @return
      */
-    @RequestMapping(value = "/getAllFinanceConf")
+    @RequestMapping(value = "/getAllFinanceConf",method= RequestMethod.POST)
     @ResponseBody
     public Object getAllFinanceConf(HttpServletRequest request, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
         logger.debug("获取理财产品信息接口");
@@ -80,7 +81,7 @@ public class FinanceConfController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/removeFinanceConfById")
+    @RequestMapping(value = "/removeFinanceConfById",method=RequestMethod.POST)
     @ResponseBody
     public Object removeFinanceConfByProductNo(HttpServletRequest request, Long id) {
         logger.debug("获取删除理财产品信息接口");
@@ -128,7 +129,7 @@ public class FinanceConfController {
      * @param settleMethod
      * @return
      */
-    @RequestMapping(value = "/modifyFinanceConf")
+    @RequestMapping(value = "/modifyFinanceConf",method=RequestMethod.POST)
     @ResponseBody
     public Object modifyFinanceConf(HttpServletRequest request, Integer id, String productNo, String productName,
                                     Float yearIncomPercent, Integer cycle, Float minMoney,

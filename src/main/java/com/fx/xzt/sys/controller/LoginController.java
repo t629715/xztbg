@@ -57,7 +57,7 @@ public class LoginController {
 	 */
 	@RequestMapping(value="/login",method=RequestMethod.POST)
 	@ResponseBody
-	public Map checkLogin( Users userInfo,Model model,HttpServletRequest request){
+	public Map checkLogin(@RequestBody Users userInfo,Model model,HttpServletRequest request){
 		Map<String,Object> map = new HashMap<String,Object>();
 		logger.debug("userInfo", userInfo);
 		String password = MD5Utils.encrypt(userInfo.getPassword());
@@ -89,7 +89,7 @@ public class LoginController {
 	 /** 
      * 用户登出 
      */
-	 @RequestMapping("/logout")
+	 @RequestMapping(value="/logout",method=RequestMethod.POST)
 	 @ResponseBody
 	 public CommonResponse logout(){
 		 CommonResponse response = new CommonResponse();

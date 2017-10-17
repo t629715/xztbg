@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import com.fx.xzt.sys.entity.InfoInformation;
+import com.fx.xzt.util.IdUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,6 +53,7 @@ public class InfoInforMationServiceImpl extends BaseService<InfoInformation> imp
 	 */
 	@Transactional
 	public int posted(InfoInformation i) {
+		i.setInfoId(IdUtil.generateyymmddhhMMssSSSAnd4Random());
 		i.setReleasetime(new Date());
 		i.setCreatetime(new Date());
 		i.setState((short)1);

@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -32,7 +33,7 @@ public class GoldRightDealConfController {
 
     @Resource
     GoldRightDealConfService goldRightDealConfService;
-    @RequestMapping(value = "/getAllGoldRight")
+    @RequestMapping(value = "/getAllGoldRight",method= RequestMethod.POST)
     @ResponseBody
     public Object getAllGoldRight(HttpServletRequest request, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
         logger.debug("获取理财产品信息接口");
@@ -63,7 +64,7 @@ public class GoldRightDealConfController {
 
 
 
-    @RequestMapping(value = "/modifyGoldRightDealConf")
+    @RequestMapping(value = "/modifyGoldRightDealConf",method=RequestMethod.POST)
     @ResponseBody
     public Object modifyGoldRightDealConf(HttpServletRequest request, Integer id, String name, Integer contract,
                                     Integer buyPercent, Double pointCount, Integer volatility,
