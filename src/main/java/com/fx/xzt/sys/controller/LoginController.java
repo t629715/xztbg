@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.fx.xzt.sys.util.CommonResponse;
+import com.fx.xzt.sys.util.ConstantUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
@@ -86,10 +88,21 @@ public class LoginController {
 	
 	 /** 
      * 用户登出 
-     */  
-    @RequestMapping("/logout")  
-    public String logout(){  
-         SecurityUtils.getSubject().logout();
-         return "login";
-    } 
+     */
+	 @RequestMapping("/logout")
+	 @ResponseBody
+	 public CommonResponse logout(){
+		 CommonResponse response = new CommonResponse();
+		 try {
+			 SecurityUtils.getSubject().logout();
+			 response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+			 response.setData(1);
+			 response.setMsg("退出成功");
+		 }catch (Exception e){
+			 response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+			 response.setData(0);
+			 response.setMsg("退出失败");
+		 }
+		 return response;
+	 }
 }
