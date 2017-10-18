@@ -1,11 +1,15 @@
 package com.fx.xzt.sys.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import com.fx.xzt.sys.entity.Users;
+import com.fx.xzt.sys.util.CommonResponse;
+import com.fx.xzt.sys.util.ConstantUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,11 +33,29 @@ public class InfoBannerController {
 	 */
 	@RequestMapping(value="/insertBanner",method= RequestMethod.POST)
 	@ResponseBody
-	public Map<String,Object> insertBanner(InfoBanner infoBanner){
-		Map<String,Object> map = new HashMap<String,Object>();
-		int msg = infoBannerService.add(infoBanner);
-		map.put("msg", msg);
-		return map;
+	public CommonResponse insertBanner(HttpServletRequest request, InfoBanner infoBanner){
+
+		CommonResponse response = new CommonResponse();
+		try {
+			HttpSession httpSession = request.getSession();
+			Users users = (Users) httpSession.getAttribute("currentUser");
+			if (users != null) {
+				int msg = infoBannerService.add(infoBanner);
+				response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+				response.setData(msg);
+				response.setMsg("操作成功！");
+			} else {
+				response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+				response.setData("{}");
+				response.setMsg("操作失败-没有权限");
+			}
+		} catch (Exception e) {
+			response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+			response.setData("{}");
+			response.setMsg("操作失败-请求异常！");
+			throw e;
+		}
+		return response;
 	}
 
 	/**
@@ -43,11 +65,29 @@ public class InfoBannerController {
 	 */
 	@RequestMapping(value="/edit",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,Object> edit(InfoBanner infoBanner){
-		Map<String,Object> map = new HashMap<String,Object>();
-		int msg = infoBannerService.edit(infoBanner);
-		map.put("msg", msg);
-		return map;
+	public CommonResponse edit(HttpServletRequest request, InfoBanner infoBanner){
+
+		CommonResponse response = new CommonResponse();
+		try {
+			HttpSession httpSession = request.getSession();
+			Users users = (Users) httpSession.getAttribute("currentUser");
+			if (users != null) {
+				int msg = infoBannerService.edit(infoBanner);
+				response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+				response.setData(msg);
+				response.setMsg("操作成功！");
+			} else {
+				response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+				response.setData("{}");
+				response.setMsg("操作失败-没有权限");
+			}
+		} catch (Exception e) {
+			response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+			response.setData("{}");
+			response.setMsg("操作失败-请求异常！");
+			throw e;
+		}
+		return response;
 	}
 
 	/**
@@ -57,11 +97,29 @@ public class InfoBannerController {
 	 */
 	@RequestMapping(value="/delete",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,Object> delete(Long serialNo){
-		Map<String,Object> map = new HashMap<String,Object>();
-		int msg = infoBannerService.deleteById(serialNo);
-		map.put("msg", msg);
-		return map;
+	public CommonResponse delete(HttpServletRequest request, Long serialNo){
+
+		CommonResponse response = new CommonResponse();
+		try {
+			HttpSession httpSession = request.getSession();
+			Users users = (Users) httpSession.getAttribute("currentUser");
+			if (users != null) {
+				int msg = infoBannerService.deleteById(serialNo);
+				response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+				response.setData(msg);
+				response.setMsg("操作成功！");
+			} else {
+				response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+				response.setData("{}");
+				response.setMsg("操作失败-没有权限");
+			}
+		} catch (Exception e) {
+			response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+			response.setData("{}");
+			response.setMsg("操作失败-请求异常！");
+			throw e;
+		}
+		return response;
 	}
 
 	/**
@@ -72,19 +130,58 @@ public class InfoBannerController {
 	 */
 	@RequestMapping(value="/upDown",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,Object> upDown(Long upSerialNo,Long downSerialNo){
-		Map<String,Object> map = new HashMap<String,Object>();
-		int msg = infoBannerService.up(upSerialNo, downSerialNo);
-		map.put("msg", msg);
-		return map;
+	public CommonResponse upDown(HttpServletRequest request, Long upSerialNo,Long downSerialNo){
+
+		CommonResponse response = new CommonResponse();
+		try {
+			HttpSession httpSession = request.getSession();
+			Users users = (Users) httpSession.getAttribute("currentUser");
+			if (users != null) {
+				int msg = infoBannerService.up(upSerialNo, downSerialNo);
+				response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+				response.setData(msg);
+				response.setMsg("操作成功！");
+			} else {
+				response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+				response.setData("{}");
+				response.setMsg("操作失败-没有权限");
+			}
+		} catch (Exception e) {
+			response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+			response.setData("{}");
+			response.setMsg("操作失败-请求异常！");
+			throw e;
+		}
+		return response;
 	}
 	/**
 	 * 根据page查询列表
 	 */
 	@RequestMapping(value="/selectByPageAll",method=RequestMethod.POST)
 	@ResponseBody
-	public PageInfo<InfoBanner> selectByPageAll(Integer page,Integer pageNum,Integer pageSize){
-		return infoBannerService.getByPageAll(page, pageNum, pageSize);
+	public CommonResponse selectByPageAll(HttpServletRequest request, Integer page,Integer pageNum,Integer pageSize){
+
+		CommonResponse response = new CommonResponse();
+		try {
+			HttpSession httpSession = request.getSession();
+			Users users = (Users) httpSession.getAttribute("currentUser");
+			if (users != null) {
+				PageInfo<InfoBanner> pageInfo = infoBannerService.getByPageAll(page, pageNum, pageSize);
+				response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+				response.setData(pageInfo);
+				response.setMsg("操作成功！");
+			} else {
+				response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+				response.setData("{}");
+				response.setMsg("操作失败-没有权限");
+			}
+		} catch (Exception e) {
+			response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+			response.setData("{}");
+			response.setMsg("操作失败-请求异常！");
+			throw e;
+		}
+		return response;
 	}
 
 	/**
@@ -97,7 +194,4 @@ public class InfoBannerController {
 	public List<Map<String, Object>> getAdPic(Short page){
 		return infoBannerService.getAdPic(page);
 	}
-
-
-
 }

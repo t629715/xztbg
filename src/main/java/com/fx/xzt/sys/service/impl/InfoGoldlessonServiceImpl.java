@@ -3,6 +3,7 @@ package com.fx.xzt.sys.service.impl;
 import com.fx.xzt.sys.entity.InfoGoldlesson;
 import com.fx.xzt.sys.mapper.InfoGoldlessonMapper;
 import com.fx.xzt.sys.service.InfoGoldlessonService;
+import com.fx.xzt.util.IdUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -98,6 +99,7 @@ public class InfoGoldlessonServiceImpl extends BaseService<InfoGoldlesson> imple
      */
     @Transactional
     public int posted(InfoGoldlesson infoGoldlesson) {
+        infoGoldlesson.setInfoId(IdUtil.generateyymmddhhMMssSSSAnd4Random());
         return infoGoldlessonMapper.posted(infoGoldlesson);
     }
 

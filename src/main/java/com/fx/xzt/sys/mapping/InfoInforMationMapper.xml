@@ -238,6 +238,17 @@
     </insert>
     <!--发布资讯-tianliya-end-->
 
+    <!--获取所有的状态-tianliya-start-->
+    <select id="selectStates" resultType="java.lang.Integer">
+        SELECT  DISTINCT(state)  FROM info_information
+    </select>
+    <!--获取所有的状态-tianliya-end-->
+
+    <!--获取所有的发布人-tianliya-start-->
+    <select id="selectOperators" resultType="java.lang.String">
+        SELECT  DISTINCT(operator)  FROM info_information
+    </select>
+    <!--获取所有的发布人-tianliya-end-->
   <!--<update id="editTopState" parameterType="map" >
   	update Info_Information
 	set TopState = #{off,jdbcType=INTEGER}

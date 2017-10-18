@@ -34,4 +34,12 @@ public interface InfoInforMationMapper extends BaseMapper<InfoInformation>{
 	 * 取消置顶
 	 */
 	int editTopState(Map<String,Object> map);
+
+	/**
+	 * 获取资讯中的各种状态的集合
+	 * @return
+	 */
+	List<Integer> selecctStates();
+
+	List<String> selectOperators();
 }
