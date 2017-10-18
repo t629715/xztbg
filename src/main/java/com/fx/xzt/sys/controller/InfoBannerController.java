@@ -31,7 +31,7 @@ public class InfoBannerController {
 	 * @param infoBanner
 	 * @return
 	 */
-	@RequestMapping(value="/insertBanner",method= RequestMethod.POST)
+	@RequestMapping(value="/insertBanner",method=RequestMethod.POST)
 	@ResponseBody
 	public CommonResponse insertBanner(HttpServletRequest request, InfoBanner infoBanner){
 
@@ -98,7 +98,6 @@ public class InfoBannerController {
 	@RequestMapping(value="/delete",method=RequestMethod.POST)
 	@ResponseBody
 	public CommonResponse delete(HttpServletRequest request, Long serialNo){
-
 		CommonResponse response = new CommonResponse();
 		try {
 			HttpSession httpSession = request.getSession();
@@ -160,7 +159,6 @@ public class InfoBannerController {
 	@RequestMapping(value="/selectByPageAll",method=RequestMethod.POST)
 	@ResponseBody
 	public CommonResponse selectByPageAll(HttpServletRequest request, Integer page,Integer pageNum,Integer pageSize){
-
 		CommonResponse response = new CommonResponse();
 		try {
 			HttpSession httpSession = request.getSession();
@@ -193,5 +191,11 @@ public class InfoBannerController {
 	@ResponseBody
 	public List<Map<String, Object>> getAdPic(Short page){
 		return infoBannerService.getAdPic(page);
+	}
+
+	@RequestMapping(value="/getOneBySerialNo",method=RequestMethod.POST)
+	@ResponseBody
+	public InfoBanner getOneBySerialNo(Long serialNo){
+		return infoBannerService.selectById(serialNo);
 	}
 }
