@@ -121,7 +121,7 @@
     </delete>
     <!--根据主键删除数据-tianliya-end-->
 
-    <!--编辑咨询-tianiya-start-->
+    <!--编辑-tianiya-start-->
     <update id="edit" parameterType="com.fx.xzt.sys.entity.InfoInformation" >
     update info_information
     <set >
@@ -155,156 +155,93 @@
     </set>
     where info_id = #{infoId,jdbcType=BIGINT}
   </update>
-    <!--编辑咨询-tianiya-end-->
+    <!--编辑-tianiya-end-->
+
+    <!--发布资讯-tianliya-start-->
+    <!--<insert id="posted" parameterType="com.fx.xzt.sys.entity.InfoInformation">
+      insert into info_information (info_id, title, contentpath,
+                                      content_from_type, information_from, createtime,
+                                      releasetime, imagepath, state,
+                                      operator)
+      values (#{infoId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{contentpath,jdbcType=VARCHAR},
+              #{contentFromType,jdbcType=SMALLINT}, #{informationFrom,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP},
+              #{releasetime,jdbcType=TIMESTAMP}, #{imagepath,jdbcType=VARCHAR}, #{state,jdbcType=SMALLINT},
+              #{operator,jdbcType=VARCHAR})
+    </insert>-->
+
+    <insert id="posted" parameterType="com.fx.xzt.sys.entity.InfoInformation" >
+        insert into info_information
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="infoId != null" >
+                info_id,
+            </if>
+            <if test="title != null" >
+                title,
+            </if>
+            <if test="contentpath != null" >
+                contentpath,
+            </if>
+            <if test="contentFromType != null" >
+                content_from_type,
+            </if>
+            <if test="informationFrom != null" >
+                information_from,
+            </if>
+            <if test="createtime != null" >
+                createtime,
+            </if>
+            <if test="releasetime != null" >
+                releasetime,
+            </if>
+            <if test="imagepath != null" >
+                imagepath,
+            </if>
+            <if test="state != null" >
+                state,
+            </if>
+            <if test="operator != null" >
+                operator,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="infoId != null" >
+                #{infoId,jdbcType=BIGINT},
+            </if>
+            <if test="title != null" >
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="contentpath != null" >
+                #{contentpath,jdbcType=VARCHAR},
+            </if>
+            <if test="contentFromType != null" >
+                #{contentFromType,jdbcType=SMALLINT},
+            </if>
+            <if test="informationFrom != null" >
+                #{informationFrom,jdbcType=VARCHAR},
+            </if>
+            <if test="createtime != null" >
+                #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="releasetime != null" >
+                #{releasetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="imagepath != null" >
+                #{imagepath,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null" >
+                #{state,jdbcType=SMALLINT},
+            </if>
+            <if test="operator != null" >
+                #{operator,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <!--发布资讯-tianliya-end-->
+
   <!--<update id="editTopState" parameterType="map" >
   	update Info_Information
 	set TopState = #{off,jdbcType=INTEGER}
 	where TopState = #{stick,jdbcType=INTEGER}
   </update>-->
-<!--   <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fx.xzt.sys.entity.InfoInforMationExample" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from Info_Information
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
-  <delete id="deleteByExample" parameterType="com.fx.xzt.sys.entity.InfoInforMationExample" >
-    delete from Info_Information
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <select id="countByExample" parameterType="com.fx.xzt.sys.entity.InfoInforMationExample" resultType="java.lang.Integer" >
-    select count(*) from Info_Information
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map" >
-    update Info_Information
-    <set >
-      <if test="record.serialno != null" >
-        SerialNo = #{record.serialno,jdbcType=BIGINT},
-      </if>
-      <if test="record.title != null" >
-        Title = #{record.title,jdbcType=VARCHAR},
-      </if>
-      <if test="record.contentpath != null" >
-        ContentPath = #{record.contentpath,jdbcType=VARCHAR},
-      </if>
-      <if test="record.contentfromtype != null" >
-        ContentFromType = #{record.contentfromtype,jdbcType=SMALLINT},
-      </if>
-      <if test="record.informationfrom != null" >
-        InformationFrom = #{record.informationfrom,jdbcType=VARCHAR},
-      </if>
-      <if test="record.createtime != null" >
-        CreateTime = #{record.createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.releasetime != null" >
-        ReleaseTime = #{record.releasetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.state != null" >
-        State = #{record.state,jdbcType=SMALLINT},
-      </if>
-      <if test="record.operator != null" >
-        Operator = #{record.operator,jdbcType=VARCHAR},
-      </if>
-    </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map" >
-    update Info_Information
-    set SerialNo = #{record.serialno,jdbcType=BIGINT},
-      Title = #{record.title,jdbcType=VARCHAR},
-      ContentPath = #{record.contentpath,jdbcType=VARCHAR},
-      ContentFromType = #{record.contentfromtype,jdbcType=SMALLINT},
-      InformationFrom = #{record.informationfrom,jdbcType=VARCHAR},
-      CreateTime = #{record.createtime,jdbcType=TIMESTAMP},
-      ReleaseTime = #{record.releasetime,jdbcType=TIMESTAMP},
-      State = #{record.state,jdbcType=SMALLINT},
-      Operator = #{record.operator,jdbcType=VARCHAR}
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.fx.xzt.sys.entity.InfoInforMation" >
-    update Info_Information
-    set Title = #{title,jdbcType=VARCHAR},
-      ContentPath = #{contentpath,jdbcType=VARCHAR},
-      ContentFromType = #{contentfromtype,jdbcType=SMALLINT},
-      InformationFrom = #{informationfrom,jdbcType=VARCHAR},
-      CreateTime = #{createtime,jdbcType=TIMESTAMP},
-      ReleaseTime = #{releasetime,jdbcType=TIMESTAMP},
-      State = #{state,jdbcType=SMALLINT},
-      Operator = #{operator,jdbcType=VARCHAR}
-    where SerialNo = #{serialno,jdbcType=BIGINT}
-  </update> -->
+
 </mapper>

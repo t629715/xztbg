@@ -9,6 +9,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +37,7 @@ public class InfoxioudeController {
      * @param pageSize
      * @return
      */
-    @RequestMapping(value="/getXioude")
+    @RequestMapping(value="/getXioude",method= RequestMethod.POST)
     @ResponseBody
     public CommonResponse getXioude(HttpServletRequest request, String title, String startTime,
                                             String endTime, Short state, String operator,
@@ -73,7 +74,7 @@ public class InfoxioudeController {
      * @Decription:删除选中的黄金课堂
      * @Date 2017/10/15 22:13
     */
-    @RequestMapping(value="/deleteXioude")
+    @RequestMapping(value="/deleteXioude",method=RequestMethod.POST)
     @ResponseBody
     public CommonResponse deleteXioude(HttpServletRequest request, Long infoId){
         CommonResponse response = new CommonResponse();
@@ -117,7 +118,7 @@ public class InfoxioudeController {
      * @Decription:修改选中的数据
      * @Date 2017/10/15 22:31
     */
-    @RequestMapping(value="/modifyInfoXioude")
+    @RequestMapping(value="/modifyInfoXioude",method=RequestMethod.POST)
     @ResponseBody
     public CommonResponse modifyInfoXioude(HttpServletRequest request, String title, Short state, String operator, Long infoId, String contentpath, String imagepath){
         CommonResponse response = new CommonResponse();
