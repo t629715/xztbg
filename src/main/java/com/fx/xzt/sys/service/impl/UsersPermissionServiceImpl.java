@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.fx.xzt.sys.entity.UsersPermission;
 import com.fx.xzt.sys.mapper.UsersPermissionMapper;
 import com.fx.xzt.sys.model.TreeModel;
+import com.fx.xzt.sys.model.UsersMenuModel;
 import com.fx.xzt.sys.service.UsersPermissionService;
 
 @Service
@@ -84,6 +85,67 @@ public class UsersPermissionServiceImpl extends BaseService<UsersPermission> imp
         tree.setTranslate("聚优顾后台");
         getTree(tree,data);
 		return tree;
+	}
+	
+	/**
+	 * 
+	* @Title: getMenu 
+	* @Description: 子菜单处理
+	* @param model
+	* @param data    设定文件 
+	* @return void    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	public void getMenu(UsersMenuModel model, List<UsersPermission> data) {
+        List<UsersMenuModel> list = new ArrayList<UsersMenuModel>();
+        for (UsersPermission p : data) {
+            if (p.getPid().equals(model.getId())) {
+            	UsersMenuModel m = new UsersMenuModel();
+            	m.setIcon(p.getIcon());
+            	m.setPid(p.getPid());
+            	m.setId(p.getId());
+            	m.setIndex(p.getSref());
+            	m.setTitle(p.getText());
+            	getMenu(m, data);
+                list.add(m);
+            }
+        }
+        model.setSubs(list);
+    }
+
+	/**
+	 * 获取用户菜单--全部
+	 */
+	public UsersMenuModel getByUsersPermissionAll() {
+		List<UsersPermission> data = usersPermissionMapper.getByRidsAll();
+		UsersMenuModel m = new UsersMenuModel();
+    	m.setIcon("");
+    	m.setPid(-1);
+    	m.setId(0);
+    	m.setIndex("0");
+    	m.setTitle("象智投后台");
+    	getMenu(m, data);
+		return m;
+	}
+
+	/**
+	 * 根据用户角色获取菜单
+	 */
+	public UsersMenuModel getByUsersPermissionRids(List<Integer> rids) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		if(rids != null && rids.size() > 0){
+			map.put("rids", rids);
+		}
+		List<UsersPermission> data = usersPermissionMapper.getByRids(map);
+		UsersMenuModel m = new UsersMenuModel();
+    	m.setIcon("");
+    	m.setPid(-1);
+    	m.setId(0);
+    	m.setIndex("0");
+    	m.setTitle("象智投后台");
+    	getMenu(m, data);
+    	return m;
 	}
 
 }

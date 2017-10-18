@@ -18,10 +18,13 @@ import com.fx.xzt.sys.entity.UsersPermission;
 import com.fx.xzt.sys.entity.UsersRole;
 import com.fx.xzt.sys.entity.UsersUserRole;
 import com.fx.xzt.sys.model.TreeModel;
+import com.fx.xzt.sys.model.UsersMenuModel;
 import com.fx.xzt.sys.model.UsersUserRoleModel;
 import com.fx.xzt.sys.service.UsersPermissionService;
 import com.fx.xzt.sys.service.UsersRoleService;
 import com.fx.xzt.sys.service.UsersUserRoleService;
+import com.fx.xzt.sys.util.CommonResponse;
+import com.fx.xzt.sys.util.ConstantUtil;
 import com.github.pagehelper.PageInfo;
 
 @Controller
@@ -37,13 +40,80 @@ public class RoleController {
 	UsersRoleService usersRoleService;
 	
 	/**
-	 * 获取等路人权限菜单集合 1 成功 -2菜单获取失败 0登陆出错
+	 * 
+	* @Title: selectByPermissionAll 
+	* @Description: 获取后台全部菜单
+	* @return    设定文件 
+	* @return UsersMenuModel    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	@ResponseBody
+	@RequestMapping(value="/selectByPermissionAll")
+	public Object selectByPermissionAll(){
+		Map<String, Object> map = new HashMap<>();
+		List<UsersMenuModel> list = new ArrayList<>();
+		UsersMenuModel model = usersPermissionService.getByUsersPermissionAll();
+		list.add(model);
+		map.put("items", list);
+		return map;
+	}
+	
+	/**
+	 * 
+	* @Title: selectByPermission 
+	* @Description: 根据登录用户获取菜单信息
+	* @param httpSession
+	* @return    设定文件 
+	* @return Map<String,Object>    msg：1 成功 -2菜单获取失败 0登陆出错
+	* @throws 
+	* @author htt
+	 */
+	@ResponseBody
+	@RequestMapping(value="/selectByPermission")
+	public Object selectByPermission(HttpSession httpSession){
+		CommonResponse cr = new CommonResponse();
+		try {
+			Users u = (Users) httpSession.getAttribute("currentUser");
+			if (u != null) {
+				List<Integer> rids = usersUserRoleService.selectByUserId(u.getId().intValue());
+				if(rids != null && !rids.isEmpty()){
+					Map<String, Object> map = new HashMap<>();
+					UsersMenuModel model = usersPermissionService.getByUsersPermissionRids(rids);
+					List<UsersMenuModel> list = new ArrayList<>();
+					list.add(model);
+					map.put("items", list);
+					
+					cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+		            cr.setData(map);
+		            cr.setMsg("操作成功！");
+				} else {
+					cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+	                cr.setData("{}");
+	                cr.setMsg("操作失败！");
+				}
+            } else {
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("操作失败！");
+            }
+		} catch (Exception e) {
+			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("登录失败！");
+			e.printStackTrace();
+		}
+		return cr;
+	}
+	
+	/**
+	 * 获取等路人权限菜单集合 1 成功 -2菜单获取失败 0登陆出错------废弃不用--htt
 	 * @param rids
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value="/selectByPermission")
-	public Map<String,Object> selectByPermission(HttpSession httpSession){
+	@RequestMapping(value="/selectByPermissionOld")
+	public Map<String,Object> selectByPermissionOld(HttpSession httpSession){
 		Map<String, Object> map = new HashMap<String,Object>();
 		try {
 			Users u=(Users) httpSession.getAttribute("currentUser");
