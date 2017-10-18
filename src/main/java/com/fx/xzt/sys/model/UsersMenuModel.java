@@ -30,6 +30,9 @@ public class UsersMenuModel {
 	}
 	
 	public String getIndex() {
+		if (!StringUtil.isNotEmpty(index)) {
+			index = id + "";
+		}
 		return StringUtil.convertNullToEmpty(index);
 	}
 	
