@@ -63,7 +63,7 @@ public class GoldRightDealConf implements Serializable{
     /**
      *手续费
      */
-    private Double poundage;
+    private Integer poundage;
 
     /**
      *最小波动盈亏
@@ -183,11 +183,11 @@ public class GoldRightDealConf implements Serializable{
         this.maxPositionCount = maxPositionCount;
     }
 
-    public Double getPoundage() {
+    public Integer getPoundage() {
         return poundage;
     }
 
-    public void setPoundage(Double poundage) {
+    public void setPoundage(Integer poundage) {
         this.poundage = poundage;
     }
 

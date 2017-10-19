@@ -92,4 +92,28 @@
         </where>
     </select>
     <!--实金交易金额统计结束-htt-->
+
+    <!--实金交易分析-tainliya-start-->
+    <select id="realGoldOrderAnalysis" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT DATE_FORMAT(rgo.buy_time,'%y-%m-%d') AS realGoldTime, COUNT(rgo.id) AS realGoldCount, SUM(rmb_amount) AS realGoldAmount
+        FROM real_gold_order rgo
+        LEFT JOIN User_Info ui
+        ON rgo.user_id=ui.UserID
+        LEFT JOIN users us
+        ON ui.agent_id=us.id
+        <where>
+            <if test="startTime != null and startTime != ''">
+                AND rgo.buy_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND rgo.buy_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="agentName != null">
+                AND us.user_name =#{agentName,jdbcType=VARCHAR}
+            </if>
+        </where>
+        GROUP BY DATE_FORMAT(rgo.buy_time,'%m-%d-%Y')
+        ORDER BY DATE_FORMAT(rgo.buy_time,'%m-%d-%Y') DESC
+    </select>
+    <!--实金交易分析-tianliya-end-->
 </mapper>

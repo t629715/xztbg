@@ -13,7 +13,7 @@
     <result column="max_hand_count" property="maxHandCount" jdbcType="INTEGER" />
     <result column="max_buy_count_per_day" property="maxBuyCountPerDay" jdbcType="INTEGER" />
     <result column="max_position_count" property="maxPositionCount" jdbcType="INTEGER" />
-    <result column="poundage" property="poundage" jdbcType="DOUBLE" />
+    <result column="poundage" property="poundage" jdbcType="INTEGER" />
     <result column="volatility_profit_loss" property="volatilityProfitLoss" jdbcType="DOUBLE" />
     <result column="stop_profit_set" property="stopProfitSet" jdbcType="DOUBLE" />
     <result column="stop_loss_set" property="stopLossSet" jdbcType="DOUBLE" />
@@ -66,7 +66,7 @@
         max_position_count = #{maxPositionCount,jdbcType=INTEGER},
       </if>
       <if test="poundage != null" >
-        poundage = #{poundage,jdbcType=DOUBLE},
+        poundage = #{poundage,jdbcType=INTEGER},
       </if>
       <if test="volatilityProfitLoss != null" >
         volatility_profit_loss = #{volatilityProfitLoss,jdbcType=DOUBLE},

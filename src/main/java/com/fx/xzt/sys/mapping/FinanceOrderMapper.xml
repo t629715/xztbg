@@ -89,4 +89,54 @@
     </where>
   </select>
   <!--理财交易金额统计结束-htt-->
+
+  <!--随意存交易分析-tainliya-start-->
+  <select id="randomAnalysis" resultType="java.util.Map" parameterType="java.util.Map">
+    SELECT DATE_FORMAT(fo.buy_time,'%y-%m-%d') randomTime, COUNT(fo.id) AS randomCount, SUM(fo.buy_amount) AS randomAmount
+    FROM finance_order fo
+    LEFT JOIN finance_conf fc
+    ON fo.product_id=fc.id
+    LEFT JOIN User_Info ui
+    ON fo.user_id=ui.UserID
+    <where>
+        fc.type=1
+      <if test="startTime != null and startTime != ''">
+        AND fo.buy_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        AND fo.buy_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="agentName != null">
+        AND us.user_name =#{agentName,jdbcType=VARCHAR}
+      </if>
+    </where>
+    GROUP BY DATE_FORMAT(fo.buy_time,'%m-%d-%Y')
+    ORDER BY DATE_FORMAT(fo.buy_time,'%m-%d-%Y') DESC
+  </select>
+  <!--随意存交易分析-tianliya-end-->
+
+  <!--黄金看涨交易分析-tainliya-start-->
+  <select id="goldUpAnalysis" resultType="java.util.Map" parameterType="java.util.Map">
+    SELECT DATE_FORMAT(fo.buy_time,'%y-%m-%d') goldUpTime, COUNT(fo.id) AS goldUpCount, SUM(fo.buy_amount) AS goldUpAmount
+    FROM finance_order fo
+    LEFT JOIN finance_conf fc
+    ON fo.product_id=fc.id
+    LEFT JOIN User_Info ui
+    ON fo.user_id=ui.UserID
+    <where>
+      fc.type=2
+      <if test="startTime != null and startTime != ''">
+        AND fo.buy_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        AND fo.buy_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="agentName != null">
+        AND us.user_name =#{agentName,jdbcType=VARCHAR}
+      </if>
+    </where>
+    GROUP BY DATE_FORMAT(fo.buy_time,'%m-%d-%Y')
+    ORDER BY DATE_FORMAT(fo.buy_time,'%m-%d-%Y') DESC
+  </select>
+  <!--黄金看涨交易分析-tianliya-end-->
 </mapper>

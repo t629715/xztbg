@@ -28,4 +28,21 @@ public interface FinanceOrderMapper extends BaseMapper<FinanceOrder> {
      * @return
      */
     Map<String, Object> selectByFinanceOrderCount(Map<String, Object> map);
+
+    /**
+     * 随意存 交易记录分析
+     * @param map
+     * @return
+     * @Author:  tianliya
+     * @Date:11:54 2017/10/19
+    */
+    List<Map<String, Object>> randomAnalysis(Map<String, Object> map);
+    /**
+     * 黄金看涨 交易记录分析
+     * @param map
+     * @return
+     * @Author:  tianliya
+     * @Date:11:54 2017/10/19
+     */
+    List<Map<String, Object>> goldUpAnalysis(Map<String, Object> map);
 }
