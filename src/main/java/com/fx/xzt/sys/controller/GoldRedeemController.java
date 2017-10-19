@@ -72,6 +72,7 @@ public class GoldRedeemController {
                 cr.setMsg("操作失败！");
             }
         } catch (Exception e) {
+        	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
             cr.setData("{}");
             cr.setMsg("操作失败！");
             throw e;

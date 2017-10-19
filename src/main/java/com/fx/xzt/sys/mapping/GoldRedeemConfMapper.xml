@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fx.xzt.sys.mapper.GoldRedeemConfMapper">
+	<resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.GoldRedeemConf">
+		<id column="id" jdbcType="BIGINT" property="id" />
+    	<result column="price" jdbcType="INTEGER" property="price" />
+    	<result column="poundage_percent" jdbcType="DOUBLE" property="poundagePercent" />
+    	<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    	<result column="is_enable" jdbcType="INTEGER" property="isEnable" />
+	</resultMap>
+
+	<!--黄金赎回配置查询开始-htt-->
+	<select id="selectByGoldRedeemConf" resultType="java.util.Map" parameterType="java.util.Map">
+	    SELECT  id, price, poundage_percent poundagePercent, create_time createTime, is_enable isEnable 
+	    from gold_redeem_conf
+	    <where>
+	      <if test="isEnable != null">
+	        and is_enable = #{isEnable,jdbcType=INTEGER}
+	      </if>
+	    </where>
+	    order by create_time desc
+  	</select>
+	<!--黄金赎回配置查询结束-htt-->
+	
+</mapper>

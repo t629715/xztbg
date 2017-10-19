@@ -29,6 +29,12 @@ public class ConstantUtil {
     public final static Integer GOLD_INCOME_RECORD_TYPE_JQT = 2; //黄金收益记录统计类型-近7天
     public final static Integer GOLD_INCOME_RECORD_TYPE_BY = 3;  //黄金收益记录统计类型-本月
     public final static Integer GOLD_INCOME_RECORD_TYPE_SGY = 4;  //黄金收益记录统计类型-上个月
+    
+    /**
+     * 黄金赎回配置--是否启用
+     */
+    public final static Integer GOLD_REDEEM_CONF_ISENABLE_QY = 1; //启用
+    public final static Integer GOLD_REDEEM_CONF_ISENABLE_JY = 0; //禁用
 
     /**
      * 客户信息-状态
