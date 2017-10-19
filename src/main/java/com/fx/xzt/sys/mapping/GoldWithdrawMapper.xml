@@ -82,7 +82,6 @@
 	        and w.status = #{status,jdbcType=INTEGER}
 	      </if>
 	    </where>
-	    order by w.apply_time desc
   	</select>
 	<!--黄金提取查询统计结束-htt-->
 	<!-- 黄金提取修改开始-htt -->

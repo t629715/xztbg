@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fx.xzt.sys.mapper.GoldRedeemMapper">
+	<resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.GoldRedeem">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="user_id" jdbcType="BIGINT" property="userId" />
+		<result column="gram" jdbcType="REAL" property="gram" />
+		<result column="price" jdbcType="INTEGER" property="price" />
+		<result column="amount" jdbcType="INTEGER" property="amount" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="poundage" jdbcType="BIGINT" property="poundage" />
+	</resultMap>
+
+	<!--黄金赎回查询开始-htt-->
+	<select id="selectByGoldRedeem" resultType="java.util.Map" parameterType="java.util.Map">
+	    SELECT  r.id id, r.user_id userId,r.gram,r.price,r.amount,r.create_time createTme,r.poundage,
+		u.UserName userName, i.channel_id AS channelId, ua.user_name AS channeName 
+		FROM gold_redeem r 
+		LEFT JOIN User_Login u ON r.user_id = u.UserID
+		LEFT JOIN User_Info i ON u.UserID = i.UserID
+		LEFT JOIN users ua ON i.channel_id = ua.id
+	    <where>
+	      and u.Status = 1
+	      <if test="userName != null and userName !=''">
+	        and u.UserName = #{userName,jdbcType=VARCHAR}
+	      </if>
+	      <if test="startTime !=null and startTime !='' ">
+	        and r.create_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+	      </if>
+	      <if test="endTime !=null and endTime !='' ">
+	        and r.create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+	      </if>
+	       <if test="agentName != null and agentName !='' ">
+	        and ua.user_name = #{agentName,jdbcType=VARCHAR}
+	      </if>
+	    </where>
+	    order by r.create_time desc
+  	</select>
+	<!--黄金赎回查询结束-htt-->
+	
+	<!--黄金赎回查询统计开始-htt-->
+	<select id="selectByGoldRedeemCount" resultType="java.util.Map" parameterType="java.util.Map">
+	    SELECT  IFNULL(SUM(r.gram),0) gramSum
+		FROM gold_redeem r 
+		LEFT JOIN User_Login u ON r.user_id = u.UserID
+		LEFT JOIN User_Info i ON u.UserID = i.UserID
+		LEFT JOIN users ua ON i.agent_id = ua.id
+	    <where>
+	      and u.Status = 1
+	      <if test="userName != null and userName !=''">
+	        and u.UserName = #{userName,jdbcType=VARCHAR}
+	      </if>
+	      <if test="startTime !=null and startTime !='' ">
+	        and r.create_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+	      </if>
+	      <if test="endTime !=null and endTime !='' ">
+	        and r.create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+	      </if>
+	       <if test="agentName != null and agentName !='' ">
+	        and ua.user_name = #{agentName,jdbcType=VARCHAR}
+	      </if>
+	    </where>
+  	</select>
+	<!--黄金赎回查询统计结束-htt-->
+	
+</mapper>
