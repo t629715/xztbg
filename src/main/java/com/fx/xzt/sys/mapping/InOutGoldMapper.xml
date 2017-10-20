@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fx.xzt.sys.mapper.InOutGoldMapper">
+	<!--出入金查询开始-htt -->
+	<select id="selectByInOutGold" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT a.user_id userId,l.UserName userName,i.RealName realName,
+		i.agent_id AS agentId, ua.user_name AS agentName, i.broker_id AS brokerId, ub.user_name AS brokerName,
+		a.finance,a.total_income totalIncome,r.rj,c.cj,sj.sjAmount,cb.cbf
+		FROM User_Login l
+		LEFT JOIN user_account a ON a.user_id = l.UserID
+		LEFT JOIN User_Info i ON l.UserID = i.UserID
+		LEFT JOIN users ua ON i.agent_id = ua.id
+		LEFT JOIN users ub ON i.broker_id = ub.id
+		LEFT JOIN (SELECT user_id, SUM(rmb) rj FROM user_account_record WHERE ACTION = '10' GROUP BY user_id) r ON r.user_id = a.user_id
+		LEFT JOIN (SELECT user_id, SUM(rmb) cj FROM user_account_record WHERE ACTION = '20' GROUP BY user_id) c ON c.user_id = a.user_id
+		LEFT JOIN (SELECT user_id,SUM(rmb_amount) sjAmount FROM real_gold_order GROUP BY user_id) sj ON sj.user_id = a.user_id
+		LEFT JOIN (
+		SELECT cbf.user_id,SUM(cbf.cbf) cbf FROM (SELECT user_id, fee cbf FROM real_gold_order 
+		UNION
+		SELECT user_id, poundage cbf FROM gold_redeem
+		UNION
+		SELECT user_id,fee+insurance cbf FROM gold_withdraw) cbf GROUP BY cbf.user_id) cb ON cb.user_id = a.user_id
+		<where>
+			and l.Status = 1
+			<if test="userName != null and userName!='' ">
+				and l.UserName = #{userName,jdbcType=VARCHAR}
+			</if>
+			<if test="agentName != null and agentName !='' ">
+				and ua.user_name = #{agentName,jdbcType=VARCHAR}
+			</if>
+			<if test="brokerName != null and brokerName !='' ">
+				and ub.user_name = #{brokerName,jdbcType=VARCHAR}
+			</if>
+		</where>
+		order by i.RegisterTime desc
+	</select>
+	<!--出入金查询结束 -->
+
+</mapper>

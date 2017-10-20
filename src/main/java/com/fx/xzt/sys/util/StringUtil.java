@@ -43,4 +43,22 @@ public class StringUtil {
 		}
 		return b;
 	}
+	
+	/**
+	 * 
+	* @Title: fundsHandle 
+	* @Description: 金额处理（分转为圆，为空处理为0）
+	* @param object
+	* @return    设定文件 
+	* @return Double    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	public static Double fundsHandle(Object object) {
+		Double d = 0.0;
+		if (object != null && object != "") {
+			d = Double.valueOf(object.toString())/100;
+		}
+		return d;
+	}
 }

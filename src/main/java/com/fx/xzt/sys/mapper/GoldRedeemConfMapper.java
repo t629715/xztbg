@@ -3,6 +3,8 @@ package com.fx.xzt.sys.mapper;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Repository;
+
 import com.fx.xzt.sys.entity.GoldRedeemConf;
 
 /**
@@ -13,6 +15,7 @@ import com.fx.xzt.sys.entity.GoldRedeemConf;
 * @date 2017-10-19 下午2:37:24 
 *
  */
+@Repository
 public interface GoldRedeemConfMapper extends BaseMapper<GoldRedeemConf> {
 	
 	/**

@@ -3,6 +3,8 @@ package com.fx.xzt.sys.mapper;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Repository;
+
 import com.fx.xzt.sys.entity.GoldWithdraw;
 
 /**
@@ -13,6 +15,7 @@ import com.fx.xzt.sys.entity.GoldWithdraw;
 * @date 2017-10-17 下午1:46:39 
 *
  */
+@Repository
 public interface GoldWithdrawMapper extends BaseMapper<GoldWithdraw> {
 	
 	/**
