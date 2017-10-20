@@ -172,13 +172,29 @@
     <!--获取代理商列表结束-->
     <!--获取经纪人列表开始-->
     <select id="selectByBrokerMessage" resultType="java.util.Map" parameterType="java.util.Map">
-        SELECT id,user_name brokerName,pid FROM users
+        SELECT id,user_name brokerName,pid,phone,create_time createTime FROM users
         <where>
             <if test="pid != null and pid!='' ">
                 and pid = #{pid,jdbcType=BIGINT}
             </if>
+            <!--<if test="startTime != null and startTime!='' ">
+                and create_time &gt; = #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null and endTime!='' ">
+                and create_time &lt; = #{endTime,jdbcType=TIMESTAMP}
+            </if>-->
         </where>
         ORDER  by create_time desc
     </select>
     <!--获取经纪人列表结束-->
+
+    <!--获取当前用户 tianliya start-->
+    <select id="getOneByUserId" resultType="java.util.Map" parameterType="java.lang.Long">
+        SELECT id,user_name brokerName,pid,phone,create_time createTime FROM users
+        WHERE id = #{userId,jdbcType=BIGINT}
+        ORDER  by create_time desc
+    </select>
+    <!--获取当前用户 tianliya end结束-->
+
+
 </mapper>

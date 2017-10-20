@@ -160,4 +160,34 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		return usersMapper.selectByBrokerMessage(map);
 	}
 
+	/**
+	 * 获取归属于代理商的经纪人列表
+	 * @param pid
+	 * @param startTime
+	 * @param endTime
+	 * @param pageNum
+	 * @param pageSize
+	 * @return
+ 	* @Author:  tianliya
+ 	* @Description:
+ 	* @Date:16:16 2017/10/20
+	*/
+	@Override
+	public PageInfo<Map<String, Object>> sightOfCarrieroperator(Long pid, String startTime, String endTime,
+																Integer pageNum,
+																Integer pageSize) {
+		Map map = new HashMap();
+		map.put("pid",pid);
+		map.put("startTime",startTime);
+		map.put("endTime",endTime);
+		Users users = usersMapper.selectById(pid);
+		Map mo = usersMapper.getOneByUserId(pid);
+		List<Map<String, Object>> list = new ArrayList<>();
+		list.add(mo);
+		list.addAll(1,usersMapper.selectByBrokerMessage(map));
+		PageHelper.startPage(pageNum,pageSize);
+		PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(list);
+		return pageInfo;
+	}
+
 }

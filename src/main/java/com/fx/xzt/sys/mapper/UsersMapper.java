@@ -51,4 +51,11 @@ public interface UsersMapper extends BaseMapper<Users>{
 	 */
 	List<Map<String,Object>> selectByBrokerMessage(Map<String,Object> map);
 
+	/**
+	 * 根据id获取数据
+	 * @param userId
+	 * @return
+	 */
+	Map<String, Object> getOneByUserId(Long userId);
+
 }

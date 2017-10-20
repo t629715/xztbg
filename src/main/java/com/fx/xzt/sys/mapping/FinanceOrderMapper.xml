@@ -98,6 +98,8 @@
     ON fo.product_id=fc.id
     LEFT JOIN User_Info ui
     ON fo.user_id=ui.UserID
+    LEFT JOIN users us
+    ON ui.agent_id = us.id
     <where>
         fc.type=1
       <if test="startTime != null and startTime != ''">

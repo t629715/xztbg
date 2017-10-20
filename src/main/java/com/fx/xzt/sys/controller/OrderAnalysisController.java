@@ -38,14 +38,16 @@ public class OrderAnalysisController {
     @RequestMapping(value="/orderAnalysis",method= RequestMethod.POST)
     @ResponseBody
     public CommonResponse getXioude(HttpServletRequest request, String startTime,
-                                            String endTime,  String agentName,
+                                            String endTime,  String agentName,Short upOrDown,
+                                            Short orderState, Short profitLoss,
                                             Integer pageNum, Integer pageSize){
         CommonResponse response = new CommonResponse();
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
-                PageInfo<Map<String, Object>> pageInfo = orderAnalysisService.orderAnalysis(startTime,endTime,agentName,
+                PageInfo<Map<String, Object>> pageInfo = orderAnalysisService.orderAnalysis(startTime,endTime,
+                                                                        agentName,upOrDown,orderState,profitLoss,
                                                                         pageNum, pageSize);
                 response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 response.setData(pageInfo);

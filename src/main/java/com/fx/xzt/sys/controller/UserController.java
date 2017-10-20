@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
@@ -176,5 +177,30 @@ public class UserController {
             // e.printStackTrace();
         }
         return cr;
+	}
+
+	@RequestMapping(value="/sightOfCarrieroperator")
+	@ResponseBody
+	public Object sightOfCarrieroperator(HttpServletRequest request, Long pid, String startTime, String endTime, Integer pageNum, Integer pageSize){
+		CommonResponse cr = new CommonResponse();
+		try {
+			HttpSession httpSession = request.getSession();
+			Users users = (Users) httpSession.getAttribute("currentUser");
+			if (users != null){
+				//pid = users.getId();
+				PageInfo<Map<String, Object>> list = userService.sightOfCarrieroperator(pid,startTime,endTime,pageNum,pageSize);
+				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+				cr.setData(list);
+				cr.setMsg("操作成功！");
+			}
+
+		} catch (Exception e) {
+			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+			cr.setData("{}");
+			cr.setMsg("操作失败！");
+			throw e;
+			// e.printStackTrace();
+		}
+		return cr;
 	}
 }

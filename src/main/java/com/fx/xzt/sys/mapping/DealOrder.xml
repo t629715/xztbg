@@ -146,7 +146,7 @@
                 AND dor.create_time>=#{startTime,jdbcType=TIMESTAMP}
             </if>
             <if test="endTime != null and endTime != ''">
-                AND dor.create_time &gt;=#{endTime,jdbcType=TIMESTAMP}
+                AND dor.create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
             </if>
             <if test="upOrDown != null">
                 AND dor.up_or_down =#{upOrDown,jdbcType=SMALLINT}
