@@ -1,5 +1,6 @@
 package com.fx.xzt.sys.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,13 +10,13 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 
+import com.fx.xzt.sys.util.MethodUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fx.xzt.redis.RedisService;
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.mapper.UsersMapper;
-import com.fx.xzt.sys.model.UserInfoModel;
 import com.fx.xzt.sys.model.UsersModel;
 import com.fx.xzt.sys.service.UsersService;
 import com.fx.xzt.sys.service.UsersUserRoleService;
@@ -132,13 +133,18 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 
 	public PageInfo<UsersModel> selectByUsersModel(String phone, String startTime, String endTime, Integer pageNum,
 			Integer pageSize) {
-		Map<String,Object> map = new HashMap<String,Object>();
+		Map map = MethodUtil.formatTime(startTime, endTime);
 		map.put("phone", phone);
-		map.put("startTime", startTime);
-		map.put("endTime", endTime);
 		PageHelper.startPage(pageNum,pageSize);
 		List<UsersModel> list = usersMapper.selectByUsersModel(map);
-		return new PageInfo<UsersModel>(list);
+		PageInfo<UsersModel> pageInfo = new PageInfo<UsersModel>(list);
+		if (list.size() == 0){
+			pageInfo.setPageNum(1);
+			return pageInfo;
+		}
+		else {
+			return  pageInfo;
+		}
 	}
 
 	/**
@@ -161,7 +167,7 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 	}
 
 	/**
-	 * 获取归属于代理商的经纪人列表
+	 * 运营商视角 - 查询
 	 * @param pid
 	 * @param startTime
 	 * @param endTime
@@ -176,10 +182,8 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 	public PageInfo<Map<String, Object>> sightOfCarrieroperator(Long pid, String startTime, String endTime,
 																Integer pageNum,
 																Integer pageSize) {
-		Map map = new HashMap();
+		Map map = MethodUtil.formatTime(startTime, endTime);
 		map.put("pid",pid);
-		map.put("startTime",startTime);
-		map.put("endTime",endTime);
 		Users users = usersMapper.selectById(pid);
 		Map mo = usersMapper.getOneByUserId(pid);
 		List<Map<String, Object>> list = new ArrayList<>();
@@ -187,7 +191,24 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		list.addAll(1,usersMapper.selectByBrokerMessage(map));
 		PageHelper.startPage(pageNum,pageSize);
 		PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(list);
+		if (list.size()==0){
+			pageInfo.setPageNum(1);
+		}
 		return pageInfo;
 	}
+
+	/**
+	 * @param usersInfo
+	 * @return
+	 * @Author:  tianliya
+	 * @Description: 运营商视角-新建经纪人
+	 * @Date:11:18 2017/10/21
+	*/
+	@Transactional
+	public int insertAgent(Users usersInfo) {
+		int msg = usersMapper.insertUsers(usersInfo);
+		return msg;
+	}
+
 
 }

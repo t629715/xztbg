@@ -43,10 +43,10 @@
                 and phone = #{phone,jdbcType=VARCHAR}
             </if>
             <if test="startTime !=null and startTime !='' ">
-                and create_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+                and u.create_time &gt;=#{startTime,jdbcType=TIMESTAMP}
             </if>
             <if test="endTime !=null and endTime !='' ">
-                and create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+                and u.create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
             </if>
         </where>
         GROUP BY u.id,u.phone,u.password,u.create_time
@@ -195,6 +195,8 @@
         ORDER  by create_time desc
     </select>
     <!--获取当前用户 tianliya end结束-->
+
+
 
 
 </mapper>

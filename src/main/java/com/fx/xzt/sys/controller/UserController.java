@@ -179,6 +179,16 @@ public class UserController {
         return cr;
 	}
 
+	/**
+	 * 运营商视角 - 查询  tianliya
+	 * @param request
+	 * @param pid
+	 * @param startTime
+	 * @param endTime
+	 * @param pageNum
+	 * @param pageSize
+	 * @return
+	 */
 	@RequestMapping(value="/sightOfCarrieroperator")
 	@ResponseBody
 	public Object sightOfCarrieroperator(HttpServletRequest request, Long pid, String startTime, String endTime, Integer pageNum, Integer pageSize){
@@ -200,6 +210,55 @@ public class UserController {
 			cr.setMsg("操作失败！");
 			throw e;
 			// e.printStackTrace();
+		}
+		return cr;
+	}
+
+	/**
+	 * @param request
+	 * @param usersInfo
+	 * @return
+	 * @Author:  tianliya
+	 * @Description:新建代理商
+	 * @Date:11:03 2017/10/21
+	 */
+	@RequestMapping(value="/insertAgent",method = RequestMethod.POST)
+	@ResponseBody
+	public Object insertAgent(HttpServletRequest request, @RequestBody Users usersInfo){
+		CommonResponse cr = new CommonResponse();
+		try {
+			HttpSession httpSession = request.getSession();
+			Users users = (Users) httpSession.getAttribute("currentUser");
+			if (users != null){
+				Long pid = users.getId();
+				usersInfo.setPid(pid);
+				int i = userService.insertAgent(usersInfo);
+				if (i != 0){
+					cr.setData(i);
+					cr.setMsg("操作成功！");
+				}
+				else{
+					cr.setData(i);
+					cr.setMsg("操作失败！");
+				}
+				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+			}
+			/*int i = userService.insertAgent(usersInfo);
+			if (i != 0){
+				cr.setData(i);
+				cr.setMsg("操作成功！");
+			}
+			else{
+				cr.setData(i);
+				cr.setMsg("操作失败！");
+			}
+			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+			*/
+		} catch (Exception e) {
+			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+			cr.setData("{}");
+			cr.setMsg("操作失败！");
+			throw e;
 		}
 		return cr;
 	}
