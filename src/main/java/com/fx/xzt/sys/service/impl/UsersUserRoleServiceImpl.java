@@ -6,6 +6,9 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.fx.xzt.sys.entity.UsersRole;
+import com.fx.xzt.sys.mapper.UsersMapper;
+import com.fx.xzt.sys.mapper.UsersRoleMapper;
 import org.springframework.stereotype.Service;
 
 import com.fx.xzt.sys.entity.UsersUserRole;
@@ -20,6 +23,10 @@ public class UsersUserRoleServiceImpl extends BaseService<UsersUserRole> impleme
 
 	@Resource
 	UsersUserRoleMapper usersUserRoleMapper;
+	@Resource
+	UsersRoleMapper usersRoleMapper;
+	@Resource
+	UsersMapper usersMapper;
 	
 	public int insertSelective(List<Integer> rids,List<Integer> uids) {
 		int msg = -1;
@@ -75,6 +82,35 @@ public class UsersUserRoleServiceImpl extends BaseService<UsersUserRole> impleme
 		PageHelper.startPage(pageNum,pageSize);
 		List<UsersUserRoleModel> list = usersUserRoleMapper.selectByRoleUsers(map);
 		return new PageInfo<UsersUserRoleModel>(list);
+	}
+
+	@Override
+	public PageInfo selectRoleUsers(String userName, String startTime, String endTime, Integer pageNum, Integer pageSize) {
+		Map<String, Object> map = new HashMap();
+		map.put("userName",userName);
+		map.put("startTime",startTime);
+		map.put("endTime",endTime);
+		PageHelper.startPage(pageNum,pageSize);
+		//获取所有的角色
+		List<Map<String, Object>> usersRoles = usersRoleMapper.getRoles(map);
+		for (Map m:usersRoles){
+			List<UsersUserRole> list = usersUserRoleMapper.selectByRoleId(new Integer(m.get("id").toString()));
+			String sb = "";
+			String  uName = null;
+			for (UsersUserRole uur:list){
+				if (uur.getUid()!= null){
+					if (usersMapper.selectById(new Long(uur.getUid())) != null)
+					uName = usersMapper.selectById(new Long(uur.getUid())).getUserName();
+				}
+				if (!sb.equals(""))
+					sb += "、";
+				sb += uName;
+			}
+			m.put("userNames",sb);
+		}
+		//获取角色对应的用户集合
+		PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(usersRoles);
+		return pageInfo;
 	}
 
 	public int deleteByUserRole(UsersUserRole usersUserRole) {

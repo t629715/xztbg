@@ -19,8 +19,8 @@ public class MethodUtil {
      * @Description: 将前端返回的时间  转换成yyyy-MM-ss hh:mm:ss
      * @Date:13:16 2017/10/21
     */
-    public static Map<String, Object> formatTime(String startTime,String endTime){
-        Map map = new HashMap();
+    public static Map<String, String> formatTime(String startTime,String endTime){
+        Map<String, String> map = new HashMap<String, String>();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-ss hh:mm:ss");
         if (startTime != "" && !"NaN".equals(startTime) && startTime != null){
             Long start = new Long(startTime);

@@ -60,6 +60,24 @@
     delete from users_role
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
+  <!--tianliya-->
+  <select id="getRoles" resultType="java.util.Map" parameterType="java.util.Map" >
+    select ur.id id,ur.name rname, ur.create_time rCreateTime
+    from users_role ur
+    <where>
+      <if test="userName != null">
+        ur.name = #{userName,jdbcType=VARCHAR}
+      </if>
+      <if test="startTime != null">
+        ur.createTime = #{startTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="endTime != null">
+        ur.createTime = #{endTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+
 <!--   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >

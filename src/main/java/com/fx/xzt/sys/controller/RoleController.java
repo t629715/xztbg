@@ -174,11 +174,13 @@ public class RoleController {
 	/**
 	 * 查询每个角色的用户集合 列表
 	 */
-	@ResponseBody
+	/*@ResponseBody
 	@RequestMapping(value="/selectByRoleUsers")
-	public PageInfo<UsersUserRoleModel> selectByRoleUsers(String phone,String startTime,String endTime,Integer pageNum,Integer pageSize){
+	public PageInfo<List<UsersUserRoleModel>> selectByRoleUsers(String phone,String startTime,String endTime,Integer pageNum,Integer pageSize){
 		return usersUserRoleService.selectByRoleUsers(phone, startTime, endTime, pageNum, pageSize);
 	}
+*/
+
 	/**
 	 * 添加功能
 	 * @param type
@@ -280,5 +282,8 @@ public class RoleController {
 		map.put("msg", msg);
 		return map;
 	}
+
 	
+
+
 }

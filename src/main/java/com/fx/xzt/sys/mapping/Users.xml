@@ -34,7 +34,7 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
     <select id="selectByUsersModel" resultType="com.fx.xzt.sys.model.UsersModel" parameterType="java.util.Map">
-        select u.id,u.phone,u.password,u.create_time as createTime,GROUP_CONCAT(r.name) as rname,u.user_name as userName
+        select u.id,u.phone,u.password,u.create_time as createTime,GROUP_CONCAT(r.name) as rname,GROUP_CONCAT(r.id) as rid,u.user_name as userName
         from users u
         left join users_user_role ur on u.id = ur.uid
         left join users_role r on r.id = ur.rid
