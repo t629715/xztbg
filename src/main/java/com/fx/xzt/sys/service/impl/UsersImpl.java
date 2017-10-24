@@ -91,6 +91,7 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		if(selectUser==null){
 			List<Integer> uids = new ArrayList<Integer>();
 			users.setPassword(MD5Utils.encrypt(users.getPassword()));
+			users.setUserName(phone);
 			users.setCreateTime(new Date());
 			users.setUpdateTime(new Date());
 			users.setStatus("0");
