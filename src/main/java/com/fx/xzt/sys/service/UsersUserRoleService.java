@@ -47,7 +47,18 @@ public interface UsersUserRoleService extends IService<UsersUserRole>{
 	 * 查询每个角色的用户集合 列表
 	 */
 	PageInfo<UsersUserRoleModel> selectByRoleUsers(String phone,String startTime,String endTime,Integer pageNum,Integer pageSize);
+
+	/**
+	 * 角色管理-查询  tianliya 10月23日
+	 * @param roleName
+	 * @param startTime
+	 * @param endTime
+	 * @param pageNum
+	 * @param pageSize
+	 * @return
+	 */
+	PageInfo selectRoleUsers(String roleName,String startTime,String endTime,Integer pageNum,Integer pageSize);
 	
-	List<UsersUserRole> selectByRoleId(Integer rid);
+	List<UsersUserRole> selectByRoleId(Integer roleId);
 	
 }

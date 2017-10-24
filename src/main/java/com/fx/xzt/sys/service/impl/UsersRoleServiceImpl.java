@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.fx.xzt.sys.entity.UsersUserRole;
+import com.fx.xzt.sys.mapper.UsersUserRoleMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,8 @@ public class UsersRoleServiceImpl extends BaseService<UsersRole> implements User
 	UsersRoleMapper usersRoleMapper;
 	@Resource
 	UsersRolePermissionService usersRolePermissionService;
+	@Resource
+	UsersUserRoleMapper usersUserRoleMapper;
 	
 	@Transactional
 	public int insertRole(UsersRole usersRole,List<Integer> pids) {
@@ -40,9 +44,17 @@ public class UsersRoleServiceImpl extends BaseService<UsersRole> implements User
 		}
 		return msg;
 	}
-	
+
+	/**
+	 * 角色管理-编辑
+	 * @param usersRole
+	 * @param pids
+	 * @return
+	 */
 	@Transactional
 	public int updateByIdSelective(UsersRole usersRole,List<Integer> pids) {
+		Date updateTime = new Date();
+		usersRole.setCreateTime(updateTime);
 		int msg = usersRoleMapper.updateByIdSelective(usersRole);
 		if(msg>0){
 			Integer rid = usersRole.getId();
@@ -60,10 +72,21 @@ public class UsersRoleServiceImpl extends BaseService<UsersRole> implements User
 		}
 		return msg;
 	}
-	
+
+	/**
+	 * 角色管理-删除  tianliya  10月23修改
+	 * @param roleId
+	 * @return
+	 */
 	@Transactional
-	public int deleteById(Integer id) {
-		return usersRoleMapper.deleteById(id);
+	public int deleteById(Integer roleId) {
+		int msg = usersRoleMapper.deleteById(roleId);
+		if (msg > 0){
+			UsersUserRole usersUserRole = new UsersUserRole();
+			usersUserRole.setRid(roleId);
+			msg = usersUserRoleMapper.deleteByUserRole(usersUserRole);
+		}
+		return msg;
 	}
 
 	public List<UsersRole> getByAll(UsersRole usersRole) {

@@ -84,6 +84,15 @@ public class UsersUserRoleServiceImpl extends BaseService<UsersUserRole> impleme
 		return new PageInfo<UsersUserRoleModel>(list);
 	}
 
+	/**
+	 * 角色管理-查询  tianliya 10月23日
+	 * @param userName
+	 * @param startTime
+	 * @param endTime
+	 * @param pageNum
+	 * @param pageSize
+	 * @return
+	 */
 	@Override
 	public PageInfo selectRoleUsers(String userName, String startTime, String endTime, Integer pageNum, Integer pageSize) {
 		Map<String, Object> map = new HashMap();

@@ -44,6 +44,8 @@
       </if>
     </trim>
   </insert>
+
+
    <update id="updateByIdSelective" parameterType="com.fx.xzt.sys.entity.UsersRole" >
     update users_role
     <set >
@@ -56,6 +58,8 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
   <delete id="deleteById" parameterType="java.lang.Integer" >
     delete from users_role
     where id = #{id,jdbcType=INTEGER}

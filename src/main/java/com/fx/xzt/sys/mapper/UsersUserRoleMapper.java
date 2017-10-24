@@ -21,7 +21,7 @@ public interface UsersUserRoleMapper extends BaseMapper<UsersUserRole>{
 	/**
 	 * 删除
 	 */
-	int deleteById(Integer id);
+	int deleteById(Integer roleId);
 	/**
 	 * 根据 用户和角色删除
 	 */
