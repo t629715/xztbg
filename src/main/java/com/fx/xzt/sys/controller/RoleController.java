@@ -108,7 +108,7 @@ public class RoleController {
 	
 	/**
 	 * 获取等路人权限菜单集合 1 成功 -2菜单获取失败 0登陆出错------废弃不用--htt
-	 * @param rids
+	 * @param
 	 * @return
 	 */
 	@ResponseBody
@@ -174,15 +174,20 @@ public class RoleController {
 	/**
 	 * 查询每个角色的用户集合 列表
 	 */
-	@ResponseBody
+	/*@ResponseBody
 	@RequestMapping(value="/selectByRoleUsers")
-	public PageInfo<UsersUserRoleModel> selectByRoleUsers(String phone,String startTime,String endTime,Integer pageNum,Integer pageSize){
+	public PageInfo<List<UsersUserRoleModel>> selectByRoleUsers(String phone,String startTime,String endTime,Integer pageNum,Integer pageSize){
 		return usersUserRoleService.selectByRoleUsers(phone, startTime, endTime, pageNum, pageSize);
+	}*/
+
+	@ResponseBody
+	@RequestMapping(value="/selectRoleUsers")
+	public PageInfo selectRoleUsers(String roleName,String startTime,String endTime,Integer pageNum,Integer pageSize){
+		return usersUserRoleService.selectRoleUsers(roleName, startTime, endTime, pageNum, pageSize);
 	}
+
 	/**
 	 * 添加功能
-	 * @param type
-	 * @param userId
 	 * @return
 	 */
 	@RequestMapping(value="/insertPermission")
@@ -195,8 +200,6 @@ public class RoleController {
 	}
 	/**
 	 * 修改功能
-	 * @param type
-	 * @param userId
 	 * @return
 	 */
 	@RequestMapping(value="/updatePermission")
@@ -209,8 +212,6 @@ public class RoleController {
 	}
 	/**
 	 * 删除功能
-	 * @param type
-	 * @param userId
 	 * @return
 	 */
 	@RequestMapping(value="/deletePermission")
@@ -237,8 +238,7 @@ public class RoleController {
 	}
 	/**
 	 * 修改角色
-	 * @param type
-	 * @param userId
+	 * @param
 	 * @return
 	 */
 	@RequestMapping(value="/updateRole")
@@ -251,21 +251,20 @@ public class RoleController {
 	}
 	/**
 	 * 删除角色
-	 * @param type
-	 * @param userId
+	 * @param roleId
 	 * @return
 	 */
 	@RequestMapping(value="/deleteRole")
 	@ResponseBody
-	public Map<String,Object> deleteRole(Integer id){
+	public Map<String,Object> deleteRole(Integer roleId){
 		Map<String,Object> map = new HashMap<String,Object>();
-		List<UsersUserRole> list = usersUserRoleService.selectByRoleId(id);
+		List<UsersUserRole> list = usersUserRoleService.selectByRoleId(roleId);
 		if(list==null||list.isEmpty()){
 			map.put("msg", -1);
 			map.put("explain", "该权限下面有用户无法删除");
 			return map;
 		}
-		int msg = usersRoleService.deleteById(id);
+		int msg = usersRoleService.deleteById(roleId);
 		map.put("msg", msg);
 		return map;
 	}
@@ -280,5 +279,8 @@ public class RoleController {
 		map.put("msg", msg);
 		return map;
 	}
+
 	
+
+
 }

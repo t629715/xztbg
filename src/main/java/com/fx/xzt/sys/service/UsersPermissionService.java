@@ -1,6 +1,7 @@
 package com.fx.xzt.sys.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.fx.xzt.sys.entity.UsersPermission;
 import com.fx.xzt.sys.model.TreeModel;
@@ -55,4 +56,6 @@ public interface UsersPermissionService extends IService<UsersPermission>{
 	* @author htt
 	 */
 	UsersMenuModel getByUsersPermissionAll();
+
+	List<Map<String, Object>> getPermissions();
 }

@@ -13,7 +13,9 @@ import java.util.Map;
  */
 public interface OrderAnalysisService {
 
-    PageInfo<Map<String, Object>> orderAnalysis(String startTime, String endTime, String agentName,Integer pageNum, Integer pageSize);
+    PageInfo<Map<String, Object>> orderAnalysis(String startTime, String endTime, String agentName,
+                                                Short upOrDown,Short orderState, Short profitLoss,
+                                                Integer pageNum, Integer pageSize);
 
 
 

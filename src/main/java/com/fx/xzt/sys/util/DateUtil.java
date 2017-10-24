@@ -247,6 +247,7 @@ public class DateUtil {
 	 */
 	public static Date convertStringToDate(String dateStr, String format) throws ParseException {
 		return new SimpleDateFormat(format).parse(dateStr);
+
 	}
 
 	/**

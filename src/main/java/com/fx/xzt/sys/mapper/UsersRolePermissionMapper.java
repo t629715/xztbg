@@ -4,6 +4,9 @@ import org.springframework.stereotype.Repository;
 
 import com.fx.xzt.sys.entity.UsersRolePermission;
 
+import java.util.List;
+import java.util.Map;
+
 @Repository
 public interface UsersRolePermissionMapper extends BaseMapper<UsersRolePermission>{
 	/**
@@ -22,4 +25,6 @@ public interface UsersRolePermissionMapper extends BaseMapper<UsersRolePermissio
 	 * 根据 rid 删除
 	 */
 	int deleteByRid(Integer rid);
+
+
 }

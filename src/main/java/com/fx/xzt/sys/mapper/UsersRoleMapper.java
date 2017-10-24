@@ -1,6 +1,7 @@
 package com.fx.xzt.sys.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -34,5 +35,9 @@ public interface UsersRoleMapper extends BaseMapper<UsersRole>{
 	 * 角色列表
 	 */
 	List<UsersRole> getByAll(UsersRole usersRole);
+
+	List<Map<String, Object>> getRoles(Map<String, Object> map);
+
+	String  getRName(Long id);
 	
 }

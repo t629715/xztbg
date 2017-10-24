@@ -25,6 +25,7 @@ public class RealGoldConfServiceImpl extends BaseService<RealGoldConf> implement
      */
     @Override
     public List<Map<String, Object>> getRealGoldConf() {
+        List list = realGoldConfMapper.getRealGoldConf();
         return realGoldConfMapper.getRealGoldConf();
     }
 

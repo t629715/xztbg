@@ -45,7 +45,7 @@ public interface UsersService extends IService<Users>{
 	int updateByIdSelective(Users users,List<Integer> rids);
 	/**
 	 * 删除
-	 * @param users
+	 * @param
 	 * @return
 	 */
 	int deleteById(Long id);
@@ -64,5 +64,23 @@ public interface UsersService extends IService<Users>{
 	 * @return
 	 */
 	List<Map<String,Object>> selectByBrokerMessage(Long pid);
+
+	/**
+	 * 运营商视角-查询
+	 * @param pid
+	 * @param startTime
+	 * @param endTime
+	 * @return
+	 */
+	PageInfo<Map<String, Object>> sightOfCarrieroperator(Long pid,String startTime, String endTime, Integer pageNum, Integer pageSize);
+
+	/**
+	 * @param usersInfo
+	 * @return int
+	 * @Author:  tianliya
+	 * @Description: 运营商视角-新建经纪人
+	 * @Date:11:15 2017/10/21
+	 */
+	public int insertAgent(Users usersInfo);
 
 }

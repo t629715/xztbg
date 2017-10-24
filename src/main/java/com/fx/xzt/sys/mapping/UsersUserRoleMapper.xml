@@ -88,10 +88,19 @@
     delete from users_user_role
     where id = #{id,jdbcType=INTEGER}
   </delete>
+    <!--根据角色id删除用户角色对应关系 tianliya 10月23日 修改-->
   <delete id="deleteByUserRole" parameterType="com.fx.xzt.sys.entity.UsersUserRole" >
     delete from users_user_role
-    where uid = #{uid,jdbcType=INTEGER} and rid = #{rid,jdbcType=INTEGER}
+    <where>
+        <if test="uid != null">
+            and uid = #{uid,jdbcType=INTEGER}
+        </if>
+        <if test="rid != null">
+            and rid = #{rid,jdbcType=INTEGER}
+        </if>
+    </where>
   </delete>
+    <!--根据角色id删除用户角色对应关系 tianliya 10月23日 修改-->
   <delete id="deleteByUser" parameterType="java.lang.Integer" >
     delete from users_user_role
     where uid = #{uid,jdbcType=INTEGER}

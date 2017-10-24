@@ -1,28 +1,22 @@
 package com.fx.xzt.sys.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
 import com.fx.xzt.sys.entity.Users;
+import com.fx.xzt.sys.entity.UsersPermission;
 import com.fx.xzt.sys.model.UsersModel;
+import com.fx.xzt.sys.service.UsersPermissionService;
 import com.fx.xzt.sys.service.UsersService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
 import com.github.pagehelper.PageInfo;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -33,11 +27,13 @@ import com.github.pagehelper.PageInfo;
 *
  */
 @Controller
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/permission")
+public class UserPermissionController {
 	
 	@Resource
 	private UsersService userService;
+	@Resource
+	UsersPermissionService usersPermissionService;
 	
 	/**
 	 * 插入新用户
@@ -72,6 +68,24 @@ public class UserController {
 			return "您要查找的用户名是:"+userInfo.getUserName();
 		}
 		return "查找用户失败";
+	}
+
+	@ResponseBody
+	@RequestMapping(value="/selectPermissions", method=RequestMethod.GET)
+	public CommonResponse selectPermissions(){
+		CommonResponse response = new CommonResponse();
+		List list = usersPermissionService.getPermissions();
+		if (list != null && list.size() != 0){
+			response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+			response.setData(list);
+			response.setMsg("1");
+		}else {
+			response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+			response.setData(list);
+			response.setMsg("0");
+		}
+
+		return response;
 	}
 	
 	/**
