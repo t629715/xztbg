@@ -35,6 +35,12 @@ public class ConstantUtil {
      */
     public final static Integer GOLD_REDEEM_CONF_ISENABLE_QY = 1; //启用
     public final static Integer GOLD_REDEEM_CONF_ISENABLE_JY = 0; //禁用
+    
+    /**
+     * 是否使用卡券
+     */
+    public final static Integer ISUSECARD_SY = 1;
+    public final static Integer ISUSECARD_BSY = 0;
 
     /**
      * 客户信息-状态

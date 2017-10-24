@@ -18,5 +18,27 @@ import com.fx.xzt.sys.entity.InOutGold;
 @Repository
 public interface InOutGoldMapper extends BaseMapper<InOutGold> {
 
+	/**
+	 * 
+	* @Title: selectByInOutGold 
+	* @Description: 出入金查询
+	* @param map
+	* @return    设定文件 
+	* @return List<Map<String,Object>>    返回类型 
+	* @throws 
+	* @author htt
+	 */
 	List<Map<String, Object>> selectByInOutGold (Map<String,Object> map);
+	
+	/**
+	 * 
+	* @Title: selectByRechargeChannel 
+	* @Description: 出入金分析--支付渠道分析
+	* @param map
+	* @return    设定文件 
+	* @return List<Map<String,Object>>    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	List<Map<String, Object>> selectByRechargeChannel (Map<String,Object> map);
 }

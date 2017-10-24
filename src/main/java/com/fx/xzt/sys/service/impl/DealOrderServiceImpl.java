@@ -1,5 +1,14 @@
 package com.fx.xzt.sys.service.impl;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
 import com.fx.xzt.sys.entity.DealOrder;
 import com.fx.xzt.sys.entity.GoldRightDealConf;
 import com.fx.xzt.sys.mapper.DealOrderMapper;
@@ -7,13 +16,6 @@ import com.fx.xzt.sys.mapper.GoldRightDealConfMapper;
 import com.fx.xzt.sys.service.DealOrderService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author htt
@@ -44,7 +46,9 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
      * @param pageSize
      * @return
      */
-    public PageInfo<Map<String, Object>> selectByDealOrder(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName, Integer orderState, Integer pageNum, Integer pageSize) {
+    public PageInfo<Map<String, Object>> selectByDealOrder(String userName, String orderNo, String startTime, String endTime, 
+    		String regStartTime, String regEndTime, String agentName, String brokerName, Integer orderState, Integer isUseCard,
+    		Integer pageNum, Integer pageSize) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("orderNo", orderNo);
@@ -55,6 +59,7 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         map.put("orderState", orderState);
+        map.put("isUseCard", isUseCard);
         PageHelper.startPage(pageNum,pageSize);
         List<Map<String, Object>> list = dealOrderMapper.selectByDealOrder(map);
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
@@ -74,7 +79,8 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
      * @param orderState 订单状态
      * @return
      */
-    public List<Map<String, Object>> excelDealOrderMessage(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName, Integer orderState) {
+    public List<Map<String, Object>> excelDealOrderMessage(String userName, String orderNo, String startTime, String endTime, 
+    		String regStartTime, String regEndTime, String agentName, String brokerName, Integer orderState, Integer isUseCard) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("orderNo", orderNo);
@@ -83,6 +89,7 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         map.put("orderState", orderState);
+        map.put("isUseCard", isUseCard);
         List<Map<String, Object>> list = dealOrderMapper.selectByDealOrder(map);
         return list;
     }
@@ -100,7 +107,8 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
      * @param orderState 订单状态
      * @return
      */
-    public Map<String, Object> selectByDealOrderCount(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName, Integer orderState) {
+    public Map<String, Object> selectByDealOrderCount(String userName, String orderNo, String startTime, String endTime, 
+    		String regStartTime, String regEndTime, String agentName, String brokerName, Integer orderState, Integer isUseCard) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("orderNo", orderNo);
@@ -109,6 +117,7 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         map.put("orderState", orderState);
+        map.put("isUseCard", isUseCard);
         return dealOrderMapper.selectByDealOrderCount(map);
     }
 

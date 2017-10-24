@@ -49,8 +49,9 @@ public class DealOrderController {
      */
     @RequestMapping(value="/selectByDealOrder")
     @ResponseBody
-    public Object selectByDealOrder(HttpServletRequest request, String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime,
-                                    String agentName, String brokerName, Integer orderState, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+    public Object selectByDealOrder(HttpServletRequest request, String userName, String orderNo, String startTime, String endTime, 
+    		String regStartTime, String regEndTime, String agentName, String brokerName, Integer orderState, Integer isUseCard,
+    		@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
 
         CommonResponse cr = new CommonResponse();
         try {
@@ -61,7 +62,7 @@ public class DealOrderController {
                 if (users.getPid() != null &&  users.getPid() == 1) {
                     agentNameStr = users.getUserName();
                 }
-                PageInfo<Map<String, Object>> pageInfo = dealOrderService.selectByDealOrder(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName, orderState, pageNum, pageSize);
+                PageInfo<Map<String, Object>> pageInfo = dealOrderService.selectByDealOrder(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName, orderState, isUseCard, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
@@ -97,8 +98,8 @@ public class DealOrderController {
      */
     @RequestMapping(value="/excelDealOrderMessage")
     @ResponseBody
-    public void excelDealOrderMessage(HttpServletRequest request, HttpServletResponse response, String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime,  String agentName, String brokerName, Integer orderState){
-
+    public void excelDealOrderMessage(HttpServletRequest request, HttpServletResponse response, String userName, String orderNo, String startTime, String endTime, 
+    		String regStartTime, String regEndTime,  String agentName, String brokerName, Integer orderState, Integer isUseCard){
         try {
             String tieleName = "金权交易";
             String excelName = "金权交易";
@@ -109,17 +110,44 @@ public class DealOrderController {
                 if (users.getPid() != null &&  users.getPid() == 1) {
                     agentNameStr = users.getUserName();
                 }
-                List<Map<String, Object>> list = dealOrderService.excelDealOrderMessage(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName, orderState);
+                List<Map<String, Object>> list = dealOrderService.excelDealOrderMessage(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName, orderState, isUseCard);
                 if (list != null && list.size() > 0) {
                     for (Map<String, Object> map : list) {
                         map.put("upOrDown", ConstantUtil.dealOrderUpOrDown.toMap().get(map.get("upOrDown").toString()));
+                        
+                        Object buyPreRmbObj =  map.get("buyPreRmb");
+                        Object buyAfterRmbObj =  map.get("buyAfterRmb");
+                        Object ensureAmountObj =  map.get("ensureAmount");
+                        Object profitLossNumberObj =  map.get("profitLossNumber");
+                        Object voucherValueObj =  map.get("voucherValue");
+                        
+                        if (buyPreRmbObj != null && buyPreRmbObj != "") {
+                        	Double buyPreRmb = Double.valueOf(buyPreRmbObj.toString());
+                        	map.put("buyPreRmb", buyPreRmb/100);
+                        }
+                        if (buyAfterRmbObj != null && buyAfterRmbObj != "") {
+                        	Double buyAfterRmb = Double.valueOf(buyAfterRmbObj.toString());
+                        	map.put("buyAfterRmb", buyAfterRmb/100);
+                        }
+                        if (ensureAmountObj != null && ensureAmountObj != "") {
+                        	Double ensureAmount = Double.valueOf(ensureAmountObj.toString());
+                        	map.put("ensureAmount", ensureAmount/100);
+                        }
+                        if (profitLossNumberObj != null && profitLossNumberObj != "") {
+                        	Double profitLossNumber = Double.valueOf(profitLossNumberObj.toString());
+                        	map.put("profitLossNumber", profitLossNumber/100);
+                        }
+                        if (voucherValueObj != null && voucherValueObj != "") {
+                        	Double voucherValue = Double.valueOf(voucherValueObj.toString());
+                        	map.put("voucherValue", voucherValue/100);
+                        }
                     }
                     POIUtils poi = new POIUtils();
                     //判断是否为代理商账户
                     if (users.getPid() != null && users.getPid() == 1) {
                         String[] heads = {"用户账号", "注册时间",  "经纪人", "交易订单号", "合约类型", "方向", "黄金克数", "建仓前余额", "建仓后余额",
                                 "合约金额", "买入金额", "交易成本", "买入点数", "卖出点数", "建仓时间", "平仓时间", "盈亏"};
-                        String[] colums = {"userName", "registerTime", "brokerName", "orderNo", "productName", "upOrDown", "handNumber", "", "",
+                        String[] colums = {"userName", "registerTime", "brokerName", "orderNo", "productName", "upOrDown", "handNumber", "buyPreRmb", "buyAfterRmb",
                                 "ensureAmount", "ensureAmount", "ensureAmount", "openPositionPrice", "closePositionPrice", "createTime", "endTime", "profitLossNumber"};
                         poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                     } else if (users.getPid() == null || users.getPid() == 0) {
@@ -142,7 +170,8 @@ public class DealOrderController {
      */
     @RequestMapping(value="/selectByDealOrderCount")
     @ResponseBody
-    public Object selectByDealOrderCount(HttpServletRequest request, String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime,  String agentName, String brokerName, Integer orderState){
+    public Object selectByDealOrderCount(HttpServletRequest request, String userName, String orderNo, String startTime, String endTime, 
+    		String regStartTime, String regEndTime,  String agentName, String brokerName, Integer orderState, Integer isUseCard){
         CommonResponse cr = new CommonResponse();
         try {
             HttpSession httpSession = request.getSession();
@@ -153,7 +182,7 @@ public class DealOrderController {
                     agentNameStr = users.getUserName();
                 }
                 Map<String, Object> map = new HashMap<String, Object>();
-                map = dealOrderService.selectByDealOrderCount(userName, orderNo, startTime, endTime, regStartTime, regEndTime,agentNameStr, brokerName, orderState);
+                map = dealOrderService.selectByDealOrderCount(userName, orderNo, startTime, endTime, regStartTime, regEndTime,agentNameStr, brokerName, orderState, isUseCard);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(map);
                 cr.setMsg("操作成功！");

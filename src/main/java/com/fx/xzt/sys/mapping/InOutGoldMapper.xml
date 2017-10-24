@@ -35,5 +35,22 @@
 		order by i.RegisterTime desc
 	</select>
 	<!--出入金查询结束 -->
+	
+	<!--出入金分析-支付渠道分析开始-htt -->
+	<select id="selectByRechargeChannel" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT RechargeChannel rechargeChannel, DATE_FORMAT(RechargeTime,'%Y-%c-%d') rechargeTime, SUM(RMBAmt) rmbAmt
+		FROM User_Recharge 
+		<where>
+			and STATUS = 1 
+			<if test="startTime !=null and startTime !='' ">
+              and DATE_FORMAT(RechargeTime,'%Y-%c-%d') &gt;=#{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime !=null and endTime != '' ">
+              and DATE_FORMAT(RechargeTime,'%Y-%c-%d') &lt;=#{endTime,jdbcType=TIMESTAMP}
+           </if>
+		</where>
+		GROUP BY RechargeChannel,DATE_FORMAT(RechargeTime,'%Y-%c-%d')
+	</select>
+	<!--出入金分析-支付渠道分析结束 -->
 
 </mapper>
