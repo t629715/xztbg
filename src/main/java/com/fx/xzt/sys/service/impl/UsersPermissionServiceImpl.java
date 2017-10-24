@@ -129,6 +129,11 @@ public class UsersPermissionServiceImpl extends BaseService<UsersPermission> imp
 		return m;
 	}
 
+	@Override
+	public List<Map<String, Object>> getPermissions() {
+		return usersPermissionMapper.getPermissions();
+	}
+
 	/**
 	 * 根据用户角色获取菜单
 	 */
@@ -147,5 +152,9 @@ public class UsersPermissionServiceImpl extends BaseService<UsersPermission> imp
     	getMenu(m, data);
     	return m;
 	}
+
+	/**
+	 *
+	 */
 
 }

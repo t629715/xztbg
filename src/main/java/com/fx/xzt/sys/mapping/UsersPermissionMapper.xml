@@ -29,6 +29,11 @@
   	select p.*
 	from users_permission p
   </select>
+
+  <select id="getPermissions" resultType="java.util.Map">
+    select p.id pid,p.text pname
+    from users_permission p
+  </select>
   <insert id="insertUsersPermission" parameterType="com.fx.xzt.sys.entity.UsersPermission" useGeneratedKeys="true" keyProperty="id">
     insert into users_permission
     <trim prefix="(" suffix=")" suffixOverrides="," >
