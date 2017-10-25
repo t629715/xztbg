@@ -52,9 +52,15 @@ public interface InfoGoldlessonMapper extends BaseMapper<InfoGoldlesson>{
     Map<String, Object> selectOneByInfoId(Long infoId);
 
     /**
-     * 发布
+     * 发布  tianliya
      * @param
      * @return
      */
     int posted(InfoGoldlesson infoGoldlesson);
+
+    /**
+     * 获取所有的发布人 tianliya
+     * @return
+     */
+    List<Map<String, Object>> selectOperators();
 }

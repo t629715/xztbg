@@ -72,4 +72,10 @@ public interface InfoGoldlessonService extends IService<InfoGoldlesson>{
      * @return
      */
     Map<String, Object> getOne(Long infoId);
+
+    /**
+     * 获取所有发布人
+     * @return
+     */
+    List<Map<String, Object>> getOperators();
 }

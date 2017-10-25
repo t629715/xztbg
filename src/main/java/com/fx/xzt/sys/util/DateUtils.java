@@ -15,11 +15,13 @@ public class DateUtils {
 
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
-	private static SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	private static SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
 
 	private static SimpleDateFormat sdf2 = new SimpleDateFormat("HHmmss");
 	
 	private static SimpleDateFormat sdf3 = new SimpleDateFormat("yyyyMMddHHmmss");
+	private static SimpleDateFormat sdf4 = new SimpleDateFormat("yyyy-MM-dd");
 	
 	/**
 	 * 
@@ -34,12 +36,22 @@ public class DateUtils {
 	
 	/**
 	 * 
-	 * @Description: 格式化时间为串行，格式:yyyy-MM-dd
+	 * @Description: 格式化时间为串行，格式:yyyy-MM-dd HH:mm:ss
 	 * @param date  处理时间
 	 * @author jcwang
 	 * @date 2017年8月23日 下午6:16:57
 	 */
 	public static String formatDateByMidLine(Date date){
+		return sdf1.format(date);
+	}
+	/**
+	 *
+	 * @Description: 格式化时间为串行，格式:yyyy-MM-dd
+	 * @param date  处理时间
+	 * @author jcwang
+	 * @date 2017年8月23日 下午6:16:57
+	 */
+	public static String formatDateByMidLine1(Date date){
 		return sdf1.format(date);
 	}
 	

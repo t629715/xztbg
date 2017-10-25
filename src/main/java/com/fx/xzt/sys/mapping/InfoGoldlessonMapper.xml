@@ -147,6 +147,11 @@
       </if>
     </trim>
   </insert>
-  
   <!--发布黄金课堂-tianliya-end-->
+
+  <!--获取所有的发布人 tianliya start-->
+  <select id="selectOperators" resultType="java.util.Map">
+    SELECT DISTINCT(operator) from info_goldlesson
+  </select>
+  <!--获取所有的发布人 tianliya end-->
 </mapper>

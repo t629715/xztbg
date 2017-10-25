@@ -113,4 +113,10 @@ public class InfoGoldlessonServiceImpl extends BaseService<InfoGoldlesson> imple
         Map map = infoGoldlessonMapper.selectOneByInfoId(infoId);
         return map;
     }
+
+    @Override
+    public List<Map<String, Object>>getOperators() {
+        List<Map<String, Object>> map = infoGoldlessonMapper.selectOperators();
+        return map;
+    }
 }
