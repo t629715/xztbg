@@ -70,14 +70,14 @@
     select ur.id id,ur.name rname, ur.create_time rCreateTime
     from users_role ur
     <where>
-      <if test="userName != null">
-        ur.name = #{userName,jdbcType=VARCHAR}
+      <if test="userName != null and userName != ''">
+        and ur.name = #{userName,jdbcType=VARCHAR}
       </if>
-      <if test="startTime != null">
-        ur.createTime = #{startTime,jdbcType=TIMESTAMP}
+      <if test="startTime != null and startTime != ''">
+        and ur.create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
       </if>
-      <if test="endTime != null">
-        ur.createTime = #{endTime,jdbcType=TIMESTAMP}
+      <if test="endTime != null and endTime != ''">
+        and ur.create_time &lt;= #{endTime,jdbcType=TIMESTAMP}
       </if>
     </where>
   </select>

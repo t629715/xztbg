@@ -1,14 +1,16 @@
 package com.fx.xzt.sys.service.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
-import com.fx.xzt.sys.entity.UsersRole;
 import com.fx.xzt.sys.mapper.UsersMapper;
 import com.fx.xzt.sys.mapper.UsersRoleMapper;
+import com.fx.xzt.sys.util.DateUtil;
+import com.fx.xzt.sys.util.DateUtils;
 import org.springframework.stereotype.Service;
 
 import com.fx.xzt.sys.entity.UsersUserRole;
@@ -95,10 +97,21 @@ public class UsersUserRoleServiceImpl extends BaseService<UsersUserRole> impleme
 	 */
 	@Override
 	public PageInfo selectRoleUsers(String userName, String startTime, String endTime, Integer pageNum, Integer pageSize) {
-		Map<String, Object> map = new HashMap();
+		Map map = new HashMap();
+		if (startTime != null && startTime !=""){
+			Date start = null;
+			start = DateUtil.convertTimeMillisToDate(Long.valueOf(startTime));
+			String st = DateUtils.formatDateByMidLine(start);
+			map.put("startTime",st);
+		}
+		if (endTime != null && endTime !=""){
+			Date end = null;
+			end = DateUtil.convertTimeMillisToDate(Long.valueOf(endTime));
+			String st = DateUtils.formatDateByMidLine(end);
+			map.put("endTime",st);
+		}
+
 		map.put("userName",userName);
-		map.put("startTime",startTime);
-		map.put("endTime",endTime);
 		PageHelper.startPage(pageNum,pageSize);
 		//获取所有的角色
 		List<Map<String, Object>> usersRoles = usersRoleMapper.getRoles(map);

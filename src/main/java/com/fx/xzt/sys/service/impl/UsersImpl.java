@@ -1,6 +1,5 @@
 package com.fx.xzt.sys.service.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,7 +9,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 
-import com.fx.xzt.sys.util.MethodUtil;
+import com.fx.xzt.sys.util.DateUtil;
+import com.fx.xzt.sys.util.DateUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -134,32 +134,23 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 
 	public PageInfo<UsersModel> selectByUsersModel(String phone, String startTime, String endTime, Integer pageNum,
 			Integer pageSize) {
-		Map map = MethodUtil.formatTime(startTime, endTime);
-		Map map1 = new HashMap();
-		/*Map map = new HashMap();
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-ss hh:mm:ss");
-		if (startTime != "" && !"NaN".equals(startTime) && startTime != null){
-			Long start = new Long(startTime);
-			Date ds = new Date(start);
-			String st = simpleDateFormat.format(ds);
-			map.put("startTime",st );
+		Map map = new HashMap();
+		if (startTime != null && startTime !=""){
+			Date start = null;
+			start = DateUtil.convertTimeMillisToDate(Long.valueOf(startTime));
+			String st = DateUtils.formatDateByMidLine(start);
+			map.put("startTime",st);
 		}
-		if (endTime != "" && !"NaN".equals(endTime) && endTime != null){
-			Long end = new Long(endTime);
-			Date de = new Date(end);
-			String et = simpleDateFormat.format(de);
-			map.put("endTime", et);
-		}*/
+		if (endTime != null && endTime !=""){
+			Date end = null;
+			end = DateUtil.convertTimeMillisToDate(Long.valueOf(endTime));
+			String st = DateUtils.formatDateByMidLine(end);
+			map.put("endTime",st);
+		}
 
 		map.put("phone", phone);
 		PageHelper.startPage(pageNum,pageSize);
-		String ms = (String) map.get("startTime");
-		String me = (String) map.get("endTime");
-		map1.put("startTime",ms);
-		map1.put("endTime",me);
-		map1.put("phone",phone);
-
-		List<UsersModel> list = usersMapper.selectByUsersModel(map1);
+		List<UsersModel> list = usersMapper.selectByUsersModel(map);
 		PageInfo<UsersModel> pageInfo = new PageInfo<UsersModel>(list);
 
 		if (list.size() == 0){
@@ -206,8 +197,20 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 	public PageInfo<Map<String, Object>> sightOfCarrieroperator(Long pid, String startTime, String endTime,
 																Integer pageNum,
 																Integer pageSize) {
-		Map map = MethodUtil.formatTime(startTime, endTime);
-		map.put("pid",pid);
+
+		Map map = new HashMap();
+		if (startTime != null && startTime !=""){
+			Date start = null;
+			start = DateUtil.convertTimeMillisToDate(Long.valueOf(startTime));
+			String st = DateUtils.formatDateByMidLine(start);
+			map.put("startTime",st);
+		}
+		if (endTime != null && endTime !=""){
+			Date end = null;
+			end = DateUtil.convertTimeMillisToDate(Long.valueOf(startTime));
+			String st = DateUtils.formatDateByMidLine(end);
+			map.put("endTime",st);
+		}
 		Users users = usersMapper.selectById(pid);
 		Map mo = usersMapper.getOneByUserId(pid);
 		List<Map<String, Object>> list = new ArrayList<>();
