@@ -18,7 +18,6 @@ import com.fx.xzt.sys.entity.UsersPermission;
 import com.fx.xzt.sys.entity.UsersRole;
 import com.fx.xzt.sys.entity.UsersUserRole;
 import com.fx.xzt.sys.model.TreeModel;
-import com.fx.xzt.sys.model.UsersMenuModel;
 import com.fx.xzt.sys.model.UsersUserRoleModel;
 import com.fx.xzt.sys.service.UsersPermissionService;
 import com.fx.xzt.sys.service.UsersRoleService;
@@ -51,12 +50,15 @@ public class RoleController {
 	@ResponseBody
 	@RequestMapping(value="/selectByPermissionAll")
 	public Object selectByPermissionAll(){
-		Map<String, Object> map = new HashMap<>();
-		List<UsersMenuModel> list = new ArrayList<>();
-		UsersMenuModel model = usersPermissionService.getByUsersPermissionAll();
-		list.add(model);
-		map.put("items", list);
-		return map;
+		//Map<String, Object> map = new HashMap<>();
+		//List<UsersMenuModel> list = new ArrayList<>();
+		//UsersMenuModel model = usersPermissionService.getByUsersPermissionAll();
+		Map<String, Object> permission = usersPermissionService.getByUsersPermissionAllNew();
+		CommonResponse cr = new CommonResponse();
+		cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+        cr.setData(permission);
+        cr.setMsg("操作成功！");
+		return cr;
 	}
 	
 	/**
@@ -78,14 +80,14 @@ public class RoleController {
 			if (u != null) {
 				List<Integer> rids = usersUserRoleService.selectByUserId(u.getId().intValue());
 				if(rids != null && !rids.isEmpty()){
-					Map<String, Object> map = new HashMap<>();
-					UsersMenuModel model = usersPermissionService.getByUsersPermissionRids(rids);
+					//Map<String, Object> map = new HashMap<>();
+					/*UsersMenuModel model = usersPermissionService.getByUsersPermissionRids(rids);
 					List<UsersMenuModel> list = new ArrayList<>();
-					list.add(model);
-					map.put("items", list);
-					
+					list.add(model);*/
+					//map.put("items", permission);
+					Map<String, Object> permission = usersPermissionService.getByUsersPermission(rids);
 					cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
-		            cr.setData(map);
+		            cr.setData(permission);
 		            cr.setMsg("操作成功！");
 				} else {
 					cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);

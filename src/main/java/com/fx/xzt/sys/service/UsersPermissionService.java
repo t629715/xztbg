@@ -58,4 +58,27 @@ public interface UsersPermissionService extends IService<UsersPermission>{
 	UsersMenuModel getByUsersPermissionAll();
 
 	List<Map<String, Object>> getPermissions();
+	
+	/**
+	 * 
+	* @Title: getByUsersPermission 
+	* @Description: 根据用户角色获取菜单
+	* @param rids
+	* @return    设定文件 
+	* @return Map<String,Object>    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	Map<String, Object> getByUsersPermission(List<Integer> rids);
+	
+	/**
+	 * 
+	* @Title: getByUsersPermissionAllNew 
+	* @Description: 获取全部菜单
+	* @return    设定文件 
+	* @return Map<String,Object>    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	Map<String, Object> getByUsersPermissionAllNew();
 }

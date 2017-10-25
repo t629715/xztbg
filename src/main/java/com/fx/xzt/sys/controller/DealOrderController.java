@@ -182,7 +182,7 @@ public class DealOrderController {
                     agentNameStr = users.getUserName();
                 }
                 Map<String, Object> map = new HashMap<String, Object>();
-                map = dealOrderService.selectByDealOrderCount(userName, orderNo, startTime, endTime, regStartTime, regEndTime,agentNameStr, brokerName, orderState, isUseCard);
+                map = dealOrderService.selectByDealOrderCount(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName, orderState, isUseCard);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(map);
                 cr.setMsg("操作成功！");

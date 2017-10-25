@@ -14,6 +14,7 @@ import com.fx.xzt.sys.mapper.UsersPermissionMapper;
 import com.fx.xzt.sys.model.TreeModel;
 import com.fx.xzt.sys.model.UsersMenuModel;
 import com.fx.xzt.sys.service.UsersPermissionService;
+import com.fx.xzt.sys.util.StringUtil;
 
 @Service
 public class UsersPermissionServiceImpl extends BaseService<UsersPermission> implements UsersPermissionService{
@@ -152,9 +153,75 @@ public class UsersPermissionServiceImpl extends BaseService<UsersPermission> imp
     	getMenu(m, data);
     	return m;
 	}
+	
+	/**
+	 * 
+	* @Title: handleMenu 
+	* @Description: 循环处理二级菜单
+	* @param map
+	* @param data    设定文件 
+	* @return void    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	public void handleMenu(Map<String,Object> map, List<UsersPermission> data) {
+        List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+        for (UsersPermission p : data) {
+            if (p.getPid().equals(map.get("id"))) {
+            	Map<String,Object> perMap = new HashMap<String,Object>();
+            	perMap.put("icon", StringUtil.convertNullToEmpty(p.getIcon()));
+            	perMap.put("pid", p.getPid());
+            	perMap.put("id", p.getId());
+            	//perMap.put("index", StringUtil.isNotEmpty(p.getSref()) ? p.getSref() : p.getId() + "");
+            	perMap.put("index", p.getSref() != null ? p.getSref() : p.getId() + "");
+            	perMap.put("title", StringUtil.convertNullToEmpty(p.getText()));
+            	handleMenu(perMap, data);
+                list.add(perMap);
+            }
+        }
+        if (list != null && list.size() > 0) {
+        	map.put("subs", list);
+        }
+    }
+	
+	/**
+	 * 
+	* @Title: getByUsersPermissionAllNew 
+	* @Description: 获取全部菜单
+	* @return    设定文件 
+	* @return Map<String,Object>    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	public Map<String, Object> getByUsersPermissionAllNew() {
+		List<UsersPermission> data = usersPermissionMapper.getByRidsAll();
+		Map<String,Object> permission = new HashMap<String,Object>();
+		permission.put("icon", "");
+		permission.put("pid", -1);
+		permission.put("id", 0);
+		permission.put("index", "0");
+		permission.put("title", "象智投后台");
+		handleMenu(permission, data);
+		return permission;
+	}
 
 	/**
-	 *
+	 * 根据用户角色获取菜单
 	 */
+	public Map<String, Object> getByUsersPermission(List<Integer> rids) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		if(rids != null && rids.size() > 0){
+			map.put("rids", rids);
+		}
+		List<UsersPermission> data = usersPermissionMapper.getByRids(map);
+		Map<String,Object> permission = new HashMap<String,Object>();
+		permission.put("icon", "");
+		permission.put("pid", -1);
+		permission.put("id", 0);
+		permission.put("index", "0");
+		permission.put("title", "象智投后台");
+		handleMenu(permission, data);
+		return permission;
+	}
 
 }

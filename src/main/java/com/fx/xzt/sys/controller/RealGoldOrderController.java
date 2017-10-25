@@ -110,6 +110,21 @@ public class RealGoldOrderController {
                     agentNameStr = users.getUserName();
                 }
                 List<Map<String, Object>> list = realGoldOrderService.excelRealGoldOrder(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName);
+                if (list != null && list.size() > 0) {
+                    for (Map<String, Object> map : list) {
+                        Object rmbAmountObj =  map.get("rmbAmount");
+                        Object feeObj =  map.get("fee");
+                        
+                        if (rmbAmountObj != null && rmbAmountObj != "") {
+                        	Double rmbAmount = Double.valueOf(rmbAmountObj.toString());
+                        	map.put("rmbAmount", rmbAmount/100);
+                        }
+                        if (feeObj != null && feeObj != "") {
+                        	Double fee = Double.valueOf(feeObj.toString());
+                        	map.put("fee", fee/100);
+                        }
+                    }
+                }
                 POIUtils poi = new POIUtils();
                 //判断是否为代理商账户
                 if (users.getPid() != null &&  users.getPid() == 1) {
