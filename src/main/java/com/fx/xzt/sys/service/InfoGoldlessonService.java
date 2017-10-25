@@ -48,7 +48,7 @@ public interface InfoGoldlessonService extends IService<InfoGoldlesson>{
      * @Decription:
      * @Date 2017/10/15 22:04
     */
-    int modifyGoldLesson(String title, Short state, String operator, Long infoId);
+    int modifyGoldLesson(String title, String imagePath, String contentPath,Short state, String operator, Long infoId);
 
     /**
      * @param infoId 黄金课堂主键

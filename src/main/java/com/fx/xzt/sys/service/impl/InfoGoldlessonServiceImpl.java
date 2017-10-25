@@ -3,6 +3,8 @@ package com.fx.xzt.sys.service.impl;
 import com.fx.xzt.sys.entity.InfoGoldlesson;
 import com.fx.xzt.sys.mapper.InfoGoldlessonMapper;
 import com.fx.xzt.sys.service.InfoGoldlessonService;
+import com.fx.xzt.sys.util.DateUtil;
+import com.fx.xzt.sys.util.DateUtils;
 import com.fx.xzt.util.IdUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -37,8 +39,18 @@ public class InfoGoldlessonServiceImpl extends BaseService<InfoGoldlesson> imple
         Map map1 = new HashMap();
         PageHelper.startPage(pageNum, pageSize);
         map1.put("title",title);
-        map1.put("startTime",startTime);
-        map1.put("endTime",endTime);
+        if (startTime != null && startTime !=""){
+            Date start = null;
+            start = DateUtil.convertTimeMillisToDate(Long.valueOf(startTime));
+            String st = DateUtils.formatDateByMidLine(start);
+            map1.put("startTime",st);
+        }
+        if (endTime != null && endTime !=""){
+            Date end = null;
+            end = DateUtil.convertTimeMillisToDate(Long.valueOf(endTime));
+            String st = DateUtils.formatDateByMidLine(end);
+            map1.put("endTime",st);
+        }
         map1.put("state",state);
         map1.put("operator",operator);
         List list = infoGoldlessonMapper.selectByInfoGoldlesson(map1);
@@ -70,12 +82,14 @@ public class InfoGoldlessonServiceImpl extends BaseService<InfoGoldlesson> imple
      * @Date 2017/10/15 22:08
     */
     @Transactional
-    public int modifyGoldLesson(String title, Short state, String operator, Long infoId) {
+    public int modifyGoldLesson(String title, String imagePath, String contentPath,Short state, String operator, Long infoId) {
         Map map = new HashMap();
         map.put("title",title);
         map.put("state",state);
         map.put("operator",operator);
         map.put("infoId",infoId);
+        map.put("imagePath",imagePath);
+        map.put("contentPath",contentPath);
         return infoGoldlessonMapper.edit(map);
     }
 

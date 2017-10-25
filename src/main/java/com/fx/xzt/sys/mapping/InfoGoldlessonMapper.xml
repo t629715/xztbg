@@ -13,8 +13,8 @@
   </resultMap>
   <!--获取所有的黄金课堂-tianliya-start-->
   <select id="selectByInfoGoldlesson" resultType="java.util.Map" parameterType="java.util.Map" >
-    select @rownum:=@rownum+1 as rowNum,info_id AS infoId,title,state,createtime,releasetime,imagepath,operator
-    from (select @rownum:=0)r, info_goldlesson
+    select info_id AS infoId,title,state,createtime,releasetime,imagepath,operator,contentpath
+    from info_goldlesson
     <where>
       <if test="title != null and title !='' ">
         and title like concat(concat('%',#{title,jdbcType=VARCHAR}),'%')
@@ -68,8 +68,8 @@
       <if test="title != null" >
         title = #{title,jdbcType=VARCHAR},
       </if>
-      <if test="contentpath != null" >
-        contentpath = #{contentpath,jdbcType=VARCHAR},
+      <if test="contentPath != null" >
+        contentpath = #{contentPath,jdbcType=VARCHAR},
       </if>
       <if test="createtime != null" >
         createtime = #{createtime,jdbcType=TIMESTAMP},
@@ -77,8 +77,8 @@
       <if test="releasetime != null" >
         releasetime = #{releasetime,jdbcType=TIMESTAMP},
       </if>
-      <if test="imagepath != null" >
-        imagepath = #{imagepath,jdbcType=VARCHAR},
+      <if test="imagePath != null" >
+        imagepath = #{imagePath,jdbcType=VARCHAR},
       </if>
       <if test="state != null" >
         state = #{state,jdbcType=SMALLINT},

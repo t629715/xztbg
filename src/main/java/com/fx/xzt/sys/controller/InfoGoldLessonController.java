@@ -30,8 +30,6 @@ public class InfoGoldLessonController {
      * 获取黄金课堂信息  tianliya
      * @param request
      * @param title
-     * @param releasesettimeStart
-     * @param releasesettimeEnd
      * @param state
      * @param operator
      * @param pageNum
@@ -40,15 +38,15 @@ public class InfoGoldLessonController {
      */
     @RequestMapping(value="/getGoldLesson",method= RequestMethod.POST)
     @ResponseBody
-    public CommonResponse getInfoGoldLesson(HttpServletRequest request, String title, String releasesettimeStart,
-                                            String releasesettimeEnd, Short state, String operator,
+    public CommonResponse getInfoGoldLesson(HttpServletRequest request, String title, String startTime,
+                                            String endTime, Short state, String operator,
                                             Integer pageNum, Integer pageSize){
         CommonResponse response = new CommonResponse();
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
-                PageInfo<Map<String, Object>> pageInfo = infoGoldlessonService.getGoldLesson(title, releasesettimeStart, releasesettimeEnd,
+                PageInfo<Map<String, Object>> pageInfo = infoGoldlessonService.getGoldLesson(title, startTime, endTime,
                                                                         state,operator, pageNum, pageSize);
                 response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 response.setData(pageInfo);
@@ -121,13 +119,13 @@ public class InfoGoldLessonController {
     */
     @RequestMapping(value="/modifyGoldLesson",method=RequestMethod.POST)
     @ResponseBody
-    public CommonResponse modifyInfoGoldLesson(HttpServletRequest request, Long infoId, String title, String operator, Short state){
+    public CommonResponse modifyInfoGoldLesson(HttpServletRequest request, Long infoId, String imagePath,String contentPath, String title, String operator, Short state){
         CommonResponse response = new CommonResponse();
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
-                int i = infoGoldlessonService.modifyGoldLesson(title, state, operator, infoId);
+                int i = infoGoldlessonService.modifyGoldLesson(title, imagePath,contentPath,state, operator, infoId);
                 if (i != 0){
                     response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                     response.setData(i);
