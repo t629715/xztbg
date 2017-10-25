@@ -86,6 +86,8 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
         map.put("orderNo", orderNo);
         map.put("startTime", startTime);
         map.put("endTime", endTime);
+        map.put("regStartTime", regStartTime);
+        map.put("regEndTime", regEndTime);
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         map.put("orderState", orderState);
@@ -114,6 +116,8 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
         map.put("orderNo", orderNo);
         map.put("startTime", startTime);
         map.put("endTime", endTime);
+        map.put("regStartTime", regStartTime);
+        map.put("regEndTime", regEndTime);
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         map.put("orderState", orderState);
