@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import com.fx.xzt.sys.entity.InfoInformation;
+import com.fx.xzt.sys.util.DateUtil;
+import com.fx.xzt.sys.util.DateUtils;
 import com.fx.xzt.util.IdUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,8 +39,18 @@ public class InfoInforMationServiceImpl extends BaseService<InfoInformation> imp
 											  Integer state, String operator, Integer pageNum, Integer pageSize) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("title", title);
-		map.put("startTime", startTime);
-		map.put("endTime", endTime);
+		if (startTime != null && startTime !=""){
+			Date start = null;
+			start = DateUtil.convertTimeMillisToDate(Long.valueOf(startTime));
+			String st = DateUtils.formatDateByMidLine(start);
+			map.put("startTime",st);
+		}
+		if (endTime != null && endTime !=""){
+			Date end = null;
+			end = DateUtil.convertTimeMillisToDate(Long.valueOf(endTime));
+			String st = DateUtils.formatDateByMidLine(end);
+			map.put("endTime",st);
+		}
 		map.put("state", state);
 		map.put("operator", operator);
 		PageHelper.startPage(pageNum,pageSize);
@@ -53,7 +65,7 @@ public class InfoInforMationServiceImpl extends BaseService<InfoInformation> imp
 	 */
 	@Transactional
 	public int posted(InfoInformation i) {
-		i.setInfoId(IdUtil.generateyymmddhhMMssSSSAnd4Random());
+		i.setInfoId(new Long((int)(Math.random()*10000)));
 		i.setReleasetime(new Date());
 		i.setCreatetime(new Date());
 		i.setState((short)1);
@@ -84,5 +96,13 @@ public class InfoInforMationServiceImpl extends BaseService<InfoInformation> imp
 		}*/
 		return msg;
 	}
-	
+	/**
+	 * 获取所有的发布人  tianliya
+	 * @return
+	 */
+	@Override
+	public List<Map<String, Object>>getOperators() {
+		List<Map<String, Object>> map = infoInforMationMapper.selectOperators();
+		return map;
+	}
 }

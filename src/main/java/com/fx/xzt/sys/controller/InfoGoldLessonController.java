@@ -232,7 +232,7 @@ public class InfoGoldLessonController {
     }
 
     /**
-     * 发布
+     * 获取发布人
      * @param request
      * @return
      */

@@ -3,6 +3,7 @@ package com.fx.xzt.sys.service;
 import com.fx.xzt.sys.entity.InfoInformation;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
 import java.util.Map;
 
 public interface InfoInforMationService extends IService<InfoInformation>{
@@ -38,4 +39,9 @@ public interface InfoInforMationService extends IService<InfoInformation>{
 	 * 置顶 / 取消置顶
 	 */
 	/*int editTopState(Map<String, Object> map);*/
+	/**
+	 * 获取所有发布人
+	 * @return
+	 */
+	List<Map<String, Object>> getOperators();
 }

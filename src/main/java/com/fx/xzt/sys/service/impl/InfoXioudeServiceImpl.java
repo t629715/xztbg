@@ -3,12 +3,15 @@ package com.fx.xzt.sys.service.impl;
 import com.fx.xzt.sys.entity.InfoXioude;
 import com.fx.xzt.sys.mapper.InfoXioudeMapper;
 import com.fx.xzt.sys.service.InfoXioudeService;
+import com.fx.xzt.sys.util.DateUtil;
+import com.fx.xzt.sys.util.DateUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,9 +36,18 @@ public class InfoXioudeServiceImpl extends BaseService<InfoXioude> implements In
         Map map1 = new HashMap();
         PageHelper.startPage(pageNum, pageSize);
         map1.put("title",title);
-
-        map1.put("startTime",startTime);
-        map1.put("endTime",endTime);
+        if (startTime != null && startTime !=""){
+            Date start = null;
+            start = DateUtil.convertTimeMillisToDate(Long.valueOf(startTime));
+            String st = DateUtils.formatDateByMidLine(start);
+            map1.put("startTime",st);
+        }
+        if (endTime != null && endTime !=""){
+            Date end = null;
+            end = DateUtil.convertTimeMillisToDate(Long.valueOf(endTime));
+            String st = DateUtils.formatDateByMidLine(end);
+            map1.put("endTime",st);
+        }
         map1.put("state",state);
         map1.put("operator",operator);
         List list = infoXioudeMapper.selectByInfoXioude(map1);
@@ -112,6 +124,16 @@ public class InfoXioudeServiceImpl extends BaseService<InfoXioude> implements In
     @Override
     public Map<String, Object> getOne(Long infoId) {
         Map map = infoXioudeMapper.selectOneByInfoId(infoId);
+        return map;
+    }
+
+    /**
+     * 获取所有的发布人  tianliya
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>>getOperators() {
+        List<Map<String, Object>> map = infoXioudeMapper.selectOperators();
         return map;
     }
 }

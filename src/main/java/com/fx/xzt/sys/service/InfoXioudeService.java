@@ -4,6 +4,7 @@ import com.fx.xzt.sys.entity.InfoXioude;
 import com.github.pagehelper.PageInfo;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -69,4 +70,9 @@ public interface InfoXioudeService extends IService<InfoXioude>{
      * @return
      */
     Map<String, Object> getOne(Long infoId);
+    /**
+     * 获取所有发布人
+     * @return
+     */
+    List<Map<String, Object>> getOperators();
 }
