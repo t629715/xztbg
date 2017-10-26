@@ -174,19 +174,15 @@ public class RoleController {
 		return usersUserRoleService.selectByUsersRole(pageNum, pageSize);
 	}
 	/**
-	 * 查询每个角色的用户集合 列表
+	 * 查询每个角色的用户集合 列表  tianliya
 	 */
-	/*@ResponseBody
-	@RequestMapping(value="/selectByRoleUsers")
-	public PageInfo<List<UsersUserRoleModel>> selectByRoleUsers(String phone,String startTime,String endTime,Integer pageNum,Integer pageSize){
-		return usersUserRoleService.selectByRoleUsers(phone, startTime, endTime, pageNum, pageSize);
-	}*/
-
 	@ResponseBody
 	@RequestMapping(value="/selectRoleUsers")
 	public PageInfo selectRoleUsers(String roleName,String startTime,String endTime,Integer pageNum,Integer pageSize){
 		return usersUserRoleService.selectRoleUsers(roleName, startTime, endTime, pageNum, pageSize);
 	}
+
+
 
 	/**
 	 * 添加功能

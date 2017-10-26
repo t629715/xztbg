@@ -90,6 +90,9 @@ public class InfoGoldlessonServiceImpl extends BaseService<InfoGoldlesson> imple
         map.put("infoId",infoId);
         map.put("imagePath",imagePath);
         map.put("contentPath",contentPath);
+        map.put("createtime",new Date());
+        DateUtil.convertTimeMillisToDate(new Date().getTime());
+
         return infoGoldlessonMapper.edit(map);
     }
 
@@ -113,7 +116,9 @@ public class InfoGoldlessonServiceImpl extends BaseService<InfoGoldlesson> imple
      */
     @Transactional
     public int posted(InfoGoldlesson infoGoldlesson) {
-        infoGoldlesson.setInfoId(IdUtil.generateyymmddhhMMssSSSAnd4Random());
+        short s = 0;
+        infoGoldlesson.setState(s);
+        infoGoldlesson.setCreatetime(new Date());
         return infoGoldlessonMapper.posted(infoGoldlesson);
     }
 
@@ -128,6 +133,10 @@ public class InfoGoldlessonServiceImpl extends BaseService<InfoGoldlesson> imple
         return map;
     }
 
+    /**
+     * 获取所有的发布人  tianliya
+     * @return
+     */
     @Override
     public List<Map<String, Object>>getOperators() {
         List<Map<String, Object>> map = infoGoldlessonMapper.selectOperators();
