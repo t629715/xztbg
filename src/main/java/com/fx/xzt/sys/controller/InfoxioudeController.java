@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -213,6 +214,44 @@ public class InfoxioudeController {
                 }else {
                     response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                     response.setData(i);
+                    response.setMsg("操作失败！");
+                }
+
+            } else {
+                response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                response.setData("{}");
+                response.setMsg("操作失败！");
+            }
+        } catch (Exception e) {
+            response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            response.setData("{}");
+            response.setMsg("操作失败！");
+            throw e;
+        }
+        return response;
+    }
+
+    /**
+     * 获取发布人
+     * @param request
+     * @return
+     */
+    @RequestMapping(value="/getOperators")
+    @ResponseBody
+    public CommonResponse getOperators(HttpServletRequest request){
+        CommonResponse response = new CommonResponse();
+        try {
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            if (users != null) {
+                List list = xioudeService.getOperators();
+                if (list != null && list.size() != 0){
+                    response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+                    response.setData(list);
+                    response.setMsg("操作成功！");
+                }else {
+                    response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+                    response.setData(list);
                     response.setMsg("操作失败！");
                 }
 

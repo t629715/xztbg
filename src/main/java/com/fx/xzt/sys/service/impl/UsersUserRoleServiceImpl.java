@@ -1,14 +1,13 @@
 package com.fx.xzt.sys.service.impl;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
 
+import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.mapper.UsersMapper;
 import com.fx.xzt.sys.mapper.UsersRoleMapper;
+import com.fx.xzt.sys.model.UsersRoleModel;
 import com.fx.xzt.sys.util.DateUtil;
 import com.fx.xzt.sys.util.DateUtils;
 import org.springframework.stereotype.Service;
@@ -96,7 +95,7 @@ public class UsersUserRoleServiceImpl extends BaseService<UsersUserRole> impleme
 	 * @return
 	 */
 	@Override
-	public PageInfo selectRoleUsers(String userName, String startTime, String endTime, Integer pageNum, Integer pageSize) {
+	public PageInfo<Map<String,Object>> selectRoleUsers(String userName, String startTime, String endTime, Integer pageNum, Integer pageSize) {
 		Map map = new HashMap();
 		if (startTime != null && startTime !=""){
 			Date start = null;
@@ -112,10 +111,32 @@ public class UsersUserRoleServiceImpl extends BaseService<UsersUserRole> impleme
 		}
 
 		map.put("userName",userName);
-		PageHelper.startPage(pageNum,pageSize);
+
 		//获取所有的角色
-		List<Map<String, Object>> usersRoles = usersRoleMapper.getRoles(map);
-		for (Map m:usersRoles){
+		List<UsersRoleModel> usersRoles = usersRoleMapper.getRoles(map);
+		List mapList = new ArrayList();
+		PageHelper.startPage(pageNum,pageSize);
+		for (UsersRoleModel usersUserRole:usersRoles){
+			Map<String, Object> ma = new HashMap<String,Object>();
+			int i = 0;
+			String userNames = "";
+			for (Users users:usersUserRole.getUsersList()){
+				if (i!=0){
+					userNames += "、";
+				}
+				i++;
+				userNames += users.getUserName();
+
+			}
+			ma.put("userNames",userNames);
+			ma.put("id",usersUserRole.getInfoId());
+			ma.put("rCreateTime",usersUserRole.getCreateTime());
+			ma.put("rname",usersUserRole.getRoleName());
+
+			mapList.add(ma);
+
+		}
+		/*for (Map m:usersRoles){
 			List<UsersUserRole> list = usersUserRoleMapper.selectByRoleId(new Integer(m.get("id").toString()));
 			String sb = "";
 			String  uName = null;
@@ -129,9 +150,10 @@ public class UsersUserRoleServiceImpl extends BaseService<UsersUserRole> impleme
 				sb += uName;
 			}
 			m.put("userNames",sb);
-		}
+		}*/
 		//获取角色对应的用户集合
-		PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(usersRoles);
+
+		PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(mapList);
 		return pageInfo;
 	}
 

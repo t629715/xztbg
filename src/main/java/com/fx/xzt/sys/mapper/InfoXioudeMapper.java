@@ -50,4 +50,10 @@ public interface InfoXioudeMapper extends BaseMapper<InfoXioude>{
      * @return
      */
     int releaseXioude(Map<String, Object> map);
+
+    /**
+     * 获取所有的发布人 tianliya
+     * @return
+     */
+    List<Map<String, Object>> selectOperators();
 }

@@ -18,8 +18,9 @@
   </resultMap>
   <!--获取满足条件的咨询信息 -tianliya-start-->
   <select id="getByAll" resultType="java.util.Map" parameterType="java.util.Map" >
-  	select @rownum:=@rownum+1 as rowNum,info_id as infoId, title, state, createtime, releasetime, operator
-    from (select @rownum:=0)r,info_information
+  	select info_id as infoId, title, state, createtime, releasetime, operator, contentpath contentPath,
+            content_from_type contentFromType,information_from informationFrom, imagepath imagePath
+    from info_information
     <where>
 	    <if test="title != null and title !='' ">
 	    	and title like concat(concat('%',#{title,jdbcType=VARCHAR}),'%')
@@ -244,11 +245,9 @@
     </select>
     <!--获取所有的状态-tianliya-end-->
 
-    <!--获取所有的发布人-tianliya-start-->
-    <select id="selectOperators" resultType="java.lang.String">
-        SELECT  DISTINCT(operator)  FROM info_information
+    <select id="selectOperators" resultType="java.util.Map">
+        SELECT DISTINCT(operator) from info_information
     </select>
-    <!--获取所有的发布人-tianliya-end-->
   <!--<update id="editTopState" parameterType="map" >
   	update Info_Information
 	set TopState = #{off,jdbcType=INTEGER}

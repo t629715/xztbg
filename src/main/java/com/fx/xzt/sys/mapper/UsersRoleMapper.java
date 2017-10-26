@@ -3,6 +3,7 @@ package com.fx.xzt.sys.mapper;
 import java.util.List;
 import java.util.Map;
 
+import com.fx.xzt.sys.model.UsersRoleModel;
 import org.springframework.stereotype.Repository;
 
 import com.fx.xzt.sys.entity.UsersRole;
@@ -36,7 +37,7 @@ public interface UsersRoleMapper extends BaseMapper<UsersRole>{
 	 */
 	List<UsersRole> getByAll(UsersRole usersRole);
 
-	List<Map<String, Object>> getRoles(Map<String, Object> map);
+	List<UsersRoleModel> getRoles(Map<String, Object> map);
 
 	String  getRName(Long id);
 	

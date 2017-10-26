@@ -1,6 +1,7 @@
 package com.fx.xzt.sys.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -219,4 +220,43 @@ public class InfoInforMationController {
 		map.put("msg", msg);
 		return map;
 	}*/
+
+
+	/**
+	 * 获取发布人
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/getOperators")
+	@ResponseBody
+	public CommonResponse getOperators(HttpServletRequest request){
+		CommonResponse response = new CommonResponse();
+		try {
+			HttpSession httpSession = request.getSession();
+			Users users = (Users) httpSession.getAttribute("currentUser");
+			if (users != null) {
+				List list = infoInforMationService.getOperators();
+				if (list != null && list.size() != 0){
+					response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+					response.setData(list);
+					response.setMsg("操作成功！");
+				}else {
+					response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+					response.setData(list);
+					response.setMsg("操作失败！");
+				}
+
+			} else {
+				response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+				response.setData("{}");
+				response.setMsg("操作失败！");
+			}
+		} catch (Exception e) {
+			response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+			response.setData("{}");
+			response.setMsg("操作失败！");
+			throw e;
+		}
+		return response;
+	}
 }

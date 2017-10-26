@@ -6,6 +6,15 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
+
+  <resultMap id="ResultMap" type="com.fx.xzt.sys.model.UsersRoleModel" >
+    <id column="id" property="infoId" jdbcType="INTEGER" />
+    <result column="name" property="roleName" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <collection property="usersList" ofType="com.fx.xzt.sys.entity.Users">
+      <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+    </collection>
+  </resultMap>
   <sql id="Base_Column_List" >
     id, name, create_time
   </sql>
@@ -66,9 +75,28 @@
   </delete>
 
   <!--tianliya-->
-  <select id="getRoles" resultType="java.util.Map" parameterType="java.util.Map" >
+  <!--<select id="getRoles" resultType="java.util.Map" parameterType="java.util.Map" >
     select ur.id id,ur.name rname, ur.create_time rCreateTime
     from users_role ur
+    <where>
+      <if test="userName != null and userName != ''">
+        and ur.name = #{userName,jdbcType=VARCHAR}
+      </if>
+      <if test="startTime != null and startTime != ''">
+        and ur.create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        and ur.create_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>-->
+  <select id="getRoles" resultMap="ResultMap" parameterType="java.util.Map">
+    select ur.id, ur.`name`, ur.create_time, us.user_name
+    from users_role ur
+    left join users_user_role uur
+    on ur.id = uur.rid
+    left join users us
+    on  uur.uid = us.id
     <where>
       <if test="userName != null and userName != ''">
         and ur.name = #{userName,jdbcType=VARCHAR}

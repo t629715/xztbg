@@ -72,5 +72,10 @@
     FROM info_xioude
     WHERE info_id=#{infoId,jdbcType=BIGINT}
   </select>
+
   <!--获取一条希欧德中心数据-tianliya-end-->
+  <!--获取所有的发布人 tianliya start-->
+  <select id="selectOperators" resultType="java.util.Map">
+    SELECT DISTINCT(operator) from info_xioude
+  </select>
 </mapper>

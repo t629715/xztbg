@@ -41,5 +41,9 @@ public interface InfoInforMationMapper extends BaseMapper<InfoInformation>{
 	 */
 	List<Integer> selecctStates();
 
-	List<String> selectOperators();
+	/**
+	 * 获取所有的发布人 tianliya
+	 * @return
+	 */
+	List<Map<String, Object>> selectOperators();
 }
