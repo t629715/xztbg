@@ -1,18 +1,19 @@
 package com.fx.xzt.sys.service.impl;
 
+import java.text.ParseException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
 import com.fx.xzt.sys.entity.FinanceOrder;
 import com.fx.xzt.sys.mapper.FinanceOrderMapper;
 import com.fx.xzt.sys.service.FinanceOrderService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author htt
@@ -44,7 +45,7 @@ public class FinanceOrderServiceImpl extends BaseService<FinanceOrder> implement
      * @return
      */
     public PageInfo<Map<String, Object>> selectByFinanceOrder(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime,
-                                                              String agentName, String brokerName, Integer status, Integer type, String nper, Integer pageNum, Integer pageSize) {
+    		String redeemStartTime, String redeemEndTime, String agentName, String brokerName, Integer status, Integer type, String nper, Integer pageNum, Integer pageSize) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("orderNo", orderNo);
@@ -52,6 +53,8 @@ public class FinanceOrderServiceImpl extends BaseService<FinanceOrder> implement
         map.put("endTime", endTime);
         map.put("regStartTime", regStartTime);
         map.put("regEndTime", regEndTime);
+        map.put("redeemStartTime", redeemStartTime);
+        map.put("redeemEndTime", redeemEndTime);
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         map.put("status", status);
@@ -79,7 +82,7 @@ public class FinanceOrderServiceImpl extends BaseService<FinanceOrder> implement
      * @return
      */
     public List<Map<String, Object>> excelFinanceOrder(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime,
-                                                       String agentName, String brokerName, Integer status, Integer type, String nper) throws ParseException {
+    		String redeemStartTime, String redeemEndTime, String agentName, String brokerName, Integer status, Integer type, String nper) throws ParseException {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("orderNo", orderNo);
@@ -87,9 +90,11 @@ public class FinanceOrderServiceImpl extends BaseService<FinanceOrder> implement
         map.put("endTime", endTime);
         map.put("regStartTime", regStartTime);
         map.put("regEndTime", regEndTime);
+        map.put("redeemStartTime", redeemStartTime);
+        map.put("redeemEndTime", redeemEndTime);
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
-        map.put("orderState", status);
+        map.put("status", status);
         map.put("type", type);
         map.put("nper", nper);
         List<Map<String, Object>> list = financeOrderMapper.selectByFinanceOrder(map);
@@ -112,7 +117,7 @@ public class FinanceOrderServiceImpl extends BaseService<FinanceOrder> implement
      * @return
      */
     public Map<String, Object> selectByFinanceOrderCount(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime,
-                                                         String agentName, String brokerName, Integer status, Integer type, String nper) {
+    		String redeemStartTime, String redeemEndTime, String agentName, String brokerName, Integer status, Integer type, String nper) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("orderNo", orderNo);
@@ -120,11 +125,86 @@ public class FinanceOrderServiceImpl extends BaseService<FinanceOrder> implement
         map.put("endTime", endTime);
         map.put("regStartTime", regStartTime);
         map.put("regEndTime", regEndTime);
+        map.put("redeemStartTime", redeemStartTime);
+        map.put("redeemEndTime", redeemEndTime);
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
-        map.put("orderState", status);
+        map.put("status", status);
         map.put("type", type);
         map.put("nper", nper);
         return financeOrderMapper.selectByFinanceOrderCount(map);
     }
+
+    /**
+     * 黄金理财--查询
+     */
+	public PageInfo<Map<String, Object>> selectByGoldFinanceOrder(String userName, String orderNo, String startTime, String endTime,
+			String regStartTime, String regEndTime, String redeemStartTime, String redeemEndTime, String agentName, String brokerName,
+			Integer status, Integer type, String nper, Integer pageNum, Integer pageSize) {
+		Map<String, Object> map = new HashMap<String, Object>();
+        map.put("userName", userName);
+        map.put("orderNo", orderNo);
+        map.put("startTime", startTime);
+        map.put("endTime", endTime);
+        map.put("regStartTime", regStartTime);
+        map.put("regEndTime", regEndTime);
+        map.put("redeemStartTime", redeemStartTime);
+        map.put("redeemEndTime", redeemEndTime);
+        map.put("agentName", agentName);
+        map.put("brokerName", brokerName);
+        map.put("status", status);
+        map.put("type", type);
+        map.put("nper", nper);
+        PageHelper.startPage(pageNum,pageSize);
+        List<Map<String, Object>> list = financeOrderMapper.selectByGoldFinanceOrder(map);
+        PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
+        return pagehelper;
+	}
+
+	/**
+	 * 黄金理财-导出
+	 */
+	public List<Map<String, Object>> excelGoldFinanceOrder(String userName, String orderNo, String startTime, String endTime,
+			String regStartTime, String regEndTime, String redeemStartTime, String redeemEndTime, String agentName, String brokerName,
+			Integer status, Integer type, String nper) throws ParseException {
+		Map<String, Object> map = new HashMap<String, Object>();
+        map.put("userName", userName);
+        map.put("orderNo", orderNo);
+        map.put("startTime", startTime);
+        map.put("endTime", endTime);
+        map.put("regStartTime", regStartTime);
+        map.put("regEndTime", regEndTime);
+        map.put("redeemStartTime", redeemStartTime);
+        map.put("redeemEndTime", redeemEndTime);
+        map.put("agentName", agentName);
+        map.put("brokerName", brokerName);
+        map.put("status", status);
+        map.put("type", type);
+        map.put("nper", nper);
+        List<Map<String, Object>> list = financeOrderMapper.selectByGoldFinanceOrder(map);
+        return list;
+	}
+
+	/**
+	 * 黄金理财--统计
+	 */
+	public Map<String, Object> selectByGoldFinanceOrderCount(String userName, String orderNo, String startTime, String endTime,
+			String regStartTime, String regEndTime, String redeemStartTime, String redeemEndTime, String agentName, String brokerName,
+			Integer status, Integer type, String nper) {
+		Map<String, Object> map = new HashMap<String, Object>();
+        map.put("userName", userName);
+        map.put("orderNo", orderNo);
+        map.put("startTime", startTime);
+        map.put("endTime", endTime);
+        map.put("regStartTime", regStartTime);
+        map.put("regEndTime", regEndTime);
+        map.put("redeemStartTime", redeemStartTime);
+        map.put("redeemEndTime", redeemEndTime);
+        map.put("agentName", agentName);
+        map.put("brokerName", brokerName);
+        map.put("status", status);
+        map.put("type", type);
+        map.put("nper", nper);
+        return financeOrderMapper.selectByGoldFinanceOrderCount(map);
+	}
 }
