@@ -120,6 +120,7 @@ public class DealOrderController {
                         Object ensureAmountObj =  map.get("ensureAmount");
                         Object profitLossNumberObj =  map.get("profitLossNumber");
                         Object voucherValueObj =  map.get("voucherValue");
+                        Object shareAmountObj = map.get("shareAmount");
                         
                         if (buyPreRmbObj != null && buyPreRmbObj != "") {
                         	Double buyPreRmb = Double.valueOf(buyPreRmbObj.toString());
@@ -141,6 +142,10 @@ public class DealOrderController {
                         	Double voucherValue = Double.valueOf(voucherValueObj.toString());
                         	map.put("voucherValue", voucherValue/100);
                         }
+                        if (shareAmountObj != null && shareAmountObj != "") {
+                        	Double shareAmount = Double.valueOf(shareAmountObj.toString());
+                        	map.put("shareAmount", shareAmount/100);
+                        }
                     }
                     POIUtils poi = new POIUtils();
                     //判断是否为代理商账户
@@ -152,9 +157,9 @@ public class DealOrderController {
                         poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                     } else if (users.getPid() == null || users.getPid() == 0) {
                         String[] heads = {"用户账号", "注册时间", "代理商", "经纪人", "交易订单号", "合约类型", "方向", "黄金克数", "建仓前余额", "建仓后余额",
-                                "合约金额", "买入金额", "交易成本", "买入点数", "卖出点数", "建仓时间", "平仓时间", "盈亏"};
-                        String[] colums = {"userName", "registerTime", "agentName", "brokerName", "orderNo", "productName", "upOrDown", "handNumber", "", "",
-                                "ensureAmount", "ensureAmount", "ensureAmount", "openPositionPrice", "closePositionPrice", "createTime", "endTime", "profitLossNumber"};
+                                "合约金额", "买入金额", "交易成本", "买入点数", "卖出点数", "建仓时间", "平仓时间", "盈亏", "交易分成"};
+                        String[] colums = {"userName", "registerTime", "agentName", "brokerName", "orderNo", "productName", "upOrDown", "handNumber", "buyPreRmb", "buyAfterRmb",
+                                "ensureAmount", "ensureAmount", "ensureAmount", "openPositionPrice", "closePositionPrice", "createTime", "endTime", "profitLossNumber", "shareAmount"};
                         poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                     }
                 }
@@ -185,11 +190,11 @@ public class DealOrderController {
                 map = dealOrderService.selectByDealOrderCount(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName, orderState, isUseCard);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(map);
-                cr.setMsg("操作成功！");
+                cr.setMsg("查询成功！");
             } else {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 cr.setData("{}");
-                cr.setMsg("操作失败！");
+                cr.setMsg("无操作权限！");
             }
         } catch (Exception e) {
             cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);

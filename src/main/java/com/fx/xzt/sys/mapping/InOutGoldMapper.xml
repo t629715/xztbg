@@ -26,10 +26,10 @@
 				and l.UserName = #{userName,jdbcType=VARCHAR}
 			</if>
 			<if test="agentName != null and agentName !='' ">
-				and ua.user_name = #{agentName,jdbcType=VARCHAR}
+				and ua.id = #{agentName,jdbcType=VARCHAR}
 			</if>
 			<if test="brokerName != null and brokerName !='' ">
-				and ub.user_name = #{brokerName,jdbcType=VARCHAR}
+				and ub.id = #{brokerName,jdbcType=VARCHAR}
 			</if>
 		</where>
 		order by i.RegisterTime desc

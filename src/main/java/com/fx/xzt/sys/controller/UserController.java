@@ -22,6 +22,7 @@ import com.fx.xzt.sys.model.UsersModel;
 import com.fx.xzt.sys.service.UsersService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
+import com.fx.xzt.sys.util.StringUtil;
 import com.github.pagehelper.PageInfo;
 
 /**
@@ -156,15 +157,18 @@ public class UserController {
 	}
 
 	/**
-	 * 根据代理商获取经纪人列表
+	 * 根据代理商获取经纪人列表,若pid为空则取当前登录人下的经纪人
 	 * @param pid
 	 * @return
 	 */
 	@RequestMapping(value="/selectByBrokerMessage")
 	@ResponseBody
-	public Object selectByBrokerMessage(@RequestParam Long pid){
+	public Object selectByBrokerMessage(HttpServletRequest request, @RequestParam Long pid){
 		CommonResponse cr = new CommonResponse();
         try {
+        	HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+        	pid = pid != null && pid != 0 ? pid : users.getId();
         	List<Map<String, Object>> list = userService.selectByBrokerMessage(pid);
         	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
             cr.setData(list);
