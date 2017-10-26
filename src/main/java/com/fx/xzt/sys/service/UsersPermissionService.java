@@ -57,7 +57,7 @@ public interface UsersPermissionService extends IService<UsersPermission>{
 	 */
 	UsersMenuModel getByUsersPermissionAll();
 
-	List<Map> getPermissions();
+	List<Map<String, Object>> getPermissions();
 	
 	/**
 	 * 

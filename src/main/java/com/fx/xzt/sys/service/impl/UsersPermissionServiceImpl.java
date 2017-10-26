@@ -131,22 +131,28 @@ public class UsersPermissionServiceImpl extends BaseService<UsersPermission> imp
 	}
 
 	@Override
-	public List<Map> getPermissions() {
+	public List<Map<String, Object>> getPermissions() {
 		Map map = new HashMap();
 		map.put("type",1);
-		List<Map> first = usersPermissionMapper.getPermissions(map);
+		List<Map<String, Object>> first = usersPermissionMapper.getPermissions(map);
 		for (Map map1:first){
 			Map mapf = new HashMap();
 			mapf.put("type",2);
 			mapf.put("id",map1.get("id"));
-			List<Map> second = usersPermissionMapper.getPermissions(mapf);
+			List<Map<String, Object>> second = usersPermissionMapper.getPermissions(mapf);
 			for (Map map2:second){
 				map.put("type",3);
 				map.put("id",map2.get("id"));
-				List<Map> thread = usersPermissionMapper.getPermissions(map2);
-				map2.put("thread",thread);
+				List<Map<String, Object>> thread = usersPermissionMapper.getPermissions(map2);
+				if (thread.size() != 0 && thread != null) {
+					map2.put("thread",thread);
+				}
+				
 			}
-			map1.put("second",second);
+			if (second.size() != 0 && second != null) {
+				map1.put("second",second);
+			}
+			
 		}
 		return first;
 	}
