@@ -111,47 +111,9 @@ public class UsersUserRoleServiceImpl extends BaseService<UsersUserRole> impleme
 		}
 
 		map.put("userName",userName);
-
-		//获取所有的角色
-		List<UsersRoleModel> usersRoles = usersRoleMapper.getRoles(map);
-		List mapList = new ArrayList();
 		PageHelper.startPage(pageNum,pageSize);
-		for (UsersRoleModel usersUserRole:usersRoles){
-			Map<String, Object> ma = new HashMap<String,Object>();
-			int i = 0;
-			String userNames = "";
-			for (Users users:usersUserRole.getUsersList()){
-				if (i!=0){
-					userNames += "、";
-				}
-				i++;
-				userNames += users.getUserName();
-
-			}
-			ma.put("userNames",userNames);
-			ma.put("id",usersUserRole.getInfoId());
-			ma.put("rCreateTime",usersUserRole.getCreateTime());
-			ma.put("rname",usersUserRole.getRoleName());
-
-			mapList.add(ma);
-
-		}
-		/*for (Map m:usersRoles){
-			List<UsersUserRole> list = usersUserRoleMapper.selectByRoleId(new Integer(m.get("id").toString()));
-			String sb = "";
-			String  uName = null;
-			for (UsersUserRole uur:list){
-				if (uur.getUid()!= null){
-					if (usersMapper.selectById(new Long(uur.getUid())) != null)
-					uName = usersMapper.selectById(new Long(uur.getUid())).getUserName();
-				}
-				if (!sb.equals(""))
-					sb += "、";
-				sb += uName;
-			}
-			m.put("userNames",sb);
-		}*/
-		//获取角色对应的用户集合
+		//获取所有的角色
+		List<Map<String, Object>> mapList = usersRoleMapper.getRoles(map);
 
 		PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(mapList);
 		return pageInfo;

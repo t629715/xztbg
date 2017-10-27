@@ -37,7 +37,7 @@ public interface UsersRoleMapper extends BaseMapper<UsersRole>{
 	 */
 	List<UsersRole> getByAll(UsersRole usersRole);
 
-	List<UsersRoleModel> getRoles(Map<String, Object> map);
+	List<Map<String, Object>> getRoles(Map<String, Object> map);
 
 	String  getRName(Long id);
 	
