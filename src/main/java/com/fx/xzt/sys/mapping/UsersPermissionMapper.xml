@@ -32,17 +32,10 @@
 
  <!-- 分级获取菜单 tly start-->
 
-  <select id="getPermissions" resultType="java.util.Map" parameterType="java.util.Map">
-    select p.id id,p.text pname, p.pid pid
-    from users_permission p
-    <where>
-      <if test="type != null and type != ''">
-        and p.type = #{type,jdbcType=INTEGER}
-      </if>
-      <if test="id != null and id != ''">
-        and p.pid = #{id,jdbcType=INTEGER}
-      </if>
-    </where>
+  <select id="getPermissions" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select p.*
+	from users_permission p
+	inner JOIN (select DISTINCT pid from users_role_permission rp) a on a.pid = p.id
   </select>
 
   <!-- 分级获取菜单  tly end-->

@@ -131,30 +131,18 @@ public class UsersPermissionServiceImpl extends BaseService<UsersPermission> imp
 	}
 
 	@Override
-	public List<Map<String, Object>> getPermissions() {
-		Map map = new HashMap();
-		map.put("type",1);
-		List<Map<String, Object>> first = usersPermissionMapper.getPermissions(map);
-		for (Map map1:first){
-			Map mapf = new HashMap();
-			mapf.put("type",2);
-			mapf.put("id",map1.get("id"));
-			List<Map<String, Object>> second = usersPermissionMapper.getPermissions(mapf);
-			for (Map map2:second){
-				map.put("type",3);
-				map.put("id",map2.get("id"));
-				List<Map<String, Object>> thread = usersPermissionMapper.getPermissions(map2);
-				if (thread.size() != 0 && thread != null) {
-					map2.put("thread",thread);
-				}
-				
-			}
-			if (second.size() != 0 && second != null) {
-				map1.put("second",second);
-			}
-			
-		}
-		return first;
+	public TreeModel getPermissions() {
+
+		List<UsersPermission> data = usersPermissionMapper.getPermissions();
+		TreeModel tree = new TreeModel();
+		tree.setIcon("");
+		tree.setLabel("");
+		tree.setId(0);
+		tree.setPid(-1);
+		tree.setText("聚优顾后台");
+		tree.setTranslate("聚优顾后台");
+		getTree(tree,data);
+		return tree;
 	}
 
 	/**

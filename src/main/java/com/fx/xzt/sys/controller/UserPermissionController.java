@@ -2,6 +2,7 @@ package com.fx.xzt.sys.controller;
 
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.entity.UsersPermission;
+import com.fx.xzt.sys.model.TreeModel;
 import com.fx.xzt.sys.model.UsersModel;
 import com.fx.xzt.sys.service.UsersPermissionService;
 import com.fx.xzt.sys.service.UsersService;
@@ -74,8 +75,8 @@ public class UserPermissionController {
 	@RequestMapping(value="/selectPermissions", method=RequestMethod.GET)
 	public CommonResponse selectPermissions(){
 		CommonResponse response = new CommonResponse();
-		List list = usersPermissionService.getPermissions();
-		if (list != null && list.size() != 0){
+		TreeModel list = usersPermissionService.getPermissions();
+		if (list != null){
 			response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 			response.setData(list);
 			response.setMsg("1");

@@ -37,5 +37,5 @@ public interface UsersPermissionMapper extends BaseMapper<UsersPermission> {
 	 */
 	List<UsersPermission> getByRidsAll();
 
-	List<Map<String, Object>> getPermissions(Map<String, Object> map);
+	List<UsersPermission> getPermissions();
 }
