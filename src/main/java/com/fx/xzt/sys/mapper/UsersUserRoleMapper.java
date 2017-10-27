@@ -47,4 +47,6 @@ public interface UsersUserRoleMapper extends BaseMapper<UsersUserRole>{
 	 * 
 	 */
 	List<UsersUserRole> selectByRoleId(Integer rid);
+
+
 }

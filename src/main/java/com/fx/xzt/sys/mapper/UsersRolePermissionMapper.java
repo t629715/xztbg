@@ -26,5 +26,9 @@ public interface UsersRolePermissionMapper extends BaseMapper<UsersRolePermissio
 	 */
 	int deleteByRid(Integer rid);
 
-
+	/**
+	 * 查询某个角色的菜单集合
+	 *
+	 */
+	List<Integer> selectPidByRoleId(Integer rid);
 }

@@ -51,6 +51,13 @@
     delete from users_role_permission
     where rid = #{rid,jdbcType=INTEGER}
   </delete>
+<!--获取 给定角色的彩单集合  tianliya start-->
+  <select id="selectPidByRoleId" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+    select pid
+    from users_role_permission
+    where rid = #{rid,jdbcType=INTEGER}
+  </select>
+  <!--获取 给定角色的彩单集合  tianliya start-->
   <!-- <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >

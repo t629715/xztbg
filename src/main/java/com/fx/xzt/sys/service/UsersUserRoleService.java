@@ -60,5 +60,7 @@ public interface UsersUserRoleService extends IService<UsersUserRole>{
 	PageInfo selectRoleUsers(String roleName,String startTime,String endTime,Integer pageNum,Integer pageSize);
 	
 	List<UsersUserRole> selectByRoleId(Integer roleId);
+
+
 	
 }

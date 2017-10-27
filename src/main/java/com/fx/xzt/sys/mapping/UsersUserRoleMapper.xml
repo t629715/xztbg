@@ -20,6 +20,9 @@
     from users_user_role
     where rid = #{rid,jdbcType=INTEGER}
   </select>
+
+
+
   <select id="selectByUsersRole" resultType="com.fx.xzt.sys.model.UsersUserRoleModel">
   	<!-- select uid,u.phone uname,group_concat(r.name) as rname
 	from users_user_role ur

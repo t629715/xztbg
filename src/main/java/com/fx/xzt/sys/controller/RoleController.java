@@ -7,7 +7,9 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import javax.sql.ConnectionPoolDataSource;
 
+import com.fx.xzt.sys.service.UsersRolePermissionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,6 +39,9 @@ public class RoleController {
 	
 	@Resource
 	UsersRoleService usersRoleService;
+
+	@Resource
+	UsersRolePermissionService usersRolePermissionService;
 	
 	/**
 	 * 
@@ -222,8 +227,6 @@ public class RoleController {
 	}
 	/**
 	 * 添加角色
-	 * @param type
-	 * @param userId
 	 * @return
 	 */
 	@RequestMapping(value="/insertRole")
@@ -278,7 +281,19 @@ public class RoleController {
 		return map;
 	}
 
-	
 
+	/**
+	 * 获取某个角色的菜单集合
+	 * @param rid
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/selectPidByRid")
+	public Map selectPidByRid(Integer rid){
+		Map map = new HashMap();
+		List pids = usersRolePermissionService.selectPidByRoleId(rid);
+		map.put("pids",pids);
+		return map;
+	}
 
 }

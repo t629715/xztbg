@@ -2,6 +2,8 @@ package com.fx.xzt.sys.service;
 
 import com.fx.xzt.sys.entity.UsersRolePermission;
 
+import java.util.List;
+
 public interface UsersRolePermissionService extends IService<UsersRolePermission>{
 	/**
 	 * 添加
@@ -19,4 +21,10 @@ public interface UsersRolePermissionService extends IService<UsersRolePermission
 	 * 根据 rid 删除
 	 */
 	int deleteByRid(Integer rid);
+	/**
+	 * 角色管理-获取某个角色的菜单集合
+	 * @param roleId
+	 * @return
+	 */
+	List<Integer> selectPidByRoleId(Integer roleId);
 }
