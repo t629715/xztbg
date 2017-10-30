@@ -123,20 +123,20 @@ public class InfoBannerController {
 
 	/**
 	 * 修改图片显示的顺序
-	 * @param upSerialNo 交换的上一条
-	 * @param downSerialNo 交换的另一条
+	 * @param downSortNo 交换的上一条
+	 * @param downSortNo 交换的另一条
 	 * @return
 	 */
 	@RequestMapping(value="/upDown",method=RequestMethod.POST)
 	@ResponseBody
-	public CommonResponse upDown(HttpServletRequest request, Long upSerialNo,Long downSerialNo){
+	public CommonResponse upDown(HttpServletRequest request, Integer upSortNo,Integer downSortNo){
 
 		CommonResponse response = new CommonResponse();
 		try {
 			HttpSession httpSession = request.getSession();
 			Users users = (Users) httpSession.getAttribute("currentUser");
 			if (users != null) {
-				int msg = infoBannerService.up(upSerialNo, downSerialNo);
+				int msg = infoBannerService.up(upSortNo, downSortNo);
 				response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 				response.setData(msg);
 				response.setMsg("操作成功！");

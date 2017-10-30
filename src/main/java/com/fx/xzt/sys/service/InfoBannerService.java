@@ -25,11 +25,11 @@ public interface InfoBannerService extends IService<InfoBanner>{
 
 	/**
 	 * 向上向下
-	 * @param upSerialNo   上一个
-	 * @param downSerialNo 下一个
+	 * @param upSortNo   上一个
+	 * @param upSortNo 下一个
 	 * @return
 	 */
-	int up(Long upSerialNo,Long downSerialNo);
+	int up(Integer upSortNo,Integer downSortNo);
 
 	/**
 	 * 根据序号获取图片

@@ -260,7 +260,7 @@ public class RoleController {
 	public Map<String,Object> deleteRole(Integer roleId){
 		Map<String,Object> map = new HashMap<String,Object>();
 		List<UsersUserRole> list = usersUserRoleService.selectByRoleId(roleId);
-		if(list==null||list.isEmpty()){
+		if(list!=null || !list.isEmpty()){
 			map.put("msg", -1);
 			map.put("explain", "该权限下面有用户无法删除");
 			return map;

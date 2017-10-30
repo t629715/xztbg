@@ -14,6 +14,7 @@ import com.fx.xzt.sys.mapper.InfoBannerMapper;
 import com.fx.xzt.sys.service.InfoBannerService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class InfoBannerServiceImpl extends BaseService<InfoBanner> implements InfoBannerService{
@@ -41,6 +42,7 @@ public class InfoBannerServiceImpl extends BaseService<InfoBanner> implements In
 	 * @param infoBanner
 	 * @return
 	 */
+	@Transactional
 	public int edit(InfoBanner infoBanner) {
 		infoBanner.setModifyTime(new Date());
 		return infoBannerMapper.edit(infoBanner);
@@ -51,6 +53,7 @@ public class InfoBannerServiceImpl extends BaseService<InfoBanner> implements In
 	 * @param infoBanner
 	 * @return
 	 */
+	@Transactional
 	public int add(InfoBanner infoBanner) {
 		infoBanner.setCreateTime(new Date());
 		return infoBannerMapper.add(infoBanner);
@@ -61,19 +64,20 @@ public class InfoBannerServiceImpl extends BaseService<InfoBanner> implements In
 	 * @param serialNo
 	 * @return
 	 */
+	@Transactional
 	public int deleteById(Long serialNo) {
 		return infoBannerMapper.deleteBySeriaNo(serialNo);
 	}
 
 	/**
 	 * 向上  乡下
-	 * @param upSerialNo   上一个
-	 * @param downSerialNo 下一个
+	 * @param uPSortNo   上一个
+	 * @param downSortNo 下一个
 	 * @return
 	 */
-	public int up(Long upSerialNo, Long downSerialNo) {
-		InfoBanner upib = selectById(upSerialNo);
-		InfoBanner downib = selectById(downSerialNo);
+	public int up(Integer uPSortNo, Integer downSortNo) {
+		InfoBanner upib = infoBannerMapper.selectBySortNo(uPSortNo);
+		InfoBanner downib = infoBannerMapper.selectBySortNo(downSortNo);
 		int msg = 0;
 		int upSort = upib.getSortNo();
 		int downSort = downib.getSortNo();

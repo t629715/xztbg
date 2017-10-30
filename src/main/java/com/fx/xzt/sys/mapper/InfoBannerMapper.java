@@ -58,4 +58,10 @@ public interface InfoBannerMapper extends BaseMapper<InfoBanner>{
 	 */
 	List<Map<String,Object>> selectAdPic(Short page);
 
+	/**
+	 * 根据排序获取图片 tianliya
+	 * @param SortNo
+	 * @return
+	 */
+	InfoBanner selectBySortNo(Integer SortNo);
 }

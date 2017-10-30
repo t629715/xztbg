@@ -84,7 +84,7 @@ public class UsersRoleServiceImpl extends BaseService<UsersRole> implements User
 		if (msg > 0){
 			UsersUserRole usersUserRole = new UsersUserRole();
 			usersUserRole.setRid(roleId);
-			msg = usersUserRoleMapper.deleteByUserRole(usersUserRole);
+			usersUserRoleMapper.deleteByUserRole(usersUserRole);
 		}
 		return msg;
 	}

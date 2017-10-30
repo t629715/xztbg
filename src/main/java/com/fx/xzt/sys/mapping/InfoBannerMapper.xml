@@ -17,7 +17,7 @@
         <result column="Operator" property="operator" jdbcType="VARCHAR" />
     </resultMap>
     <sql id="Base_Column_List" >
-        SerialNo, Page, PicturePath, AppID, SkipPath, SkipType, Description, SortNo, Valid, 
+        SerialNo, Page, PicturePath, AppID, SkipPath, SkipType, Description, SortNo , Valid,
         CreateTime, ModifyTime, Operator
     </sql>
     <select id="getByPageAll" resultMap="BaseResultMap" parameterType="map" >
@@ -37,8 +37,8 @@
 
     <!--获取用于广告的图片-start-tianliya-->
     <select id="selectAdPic" resultType="java.util.Map" parameterType="java.lang.Short" >
-        SET @rownum=0;
-        select @rownum:=@rownum+1 as rowNum,SerialNo,Page,PicturePath,SkipPath
+
+        select SortNo,SerialNo,Page,PicturePath,SkipPath
         from Info_Banner
         WHERE Page = #{page,jdbcType=SMALLINT} AND valid = 1
         order by SortNo
@@ -83,7 +83,7 @@
                 Operator = #{operator,jdbcType=VARCHAR},
             </if>
         </set>
-        where SerialNo = #{serialNo,jdbcType=BIGINT}
+        where SortNo = #{sortNo,jdbcType=BIGINT}
     </update>
     <insert id="add" parameterType="com.fx.xzt.sys.entity.InfoBanner" useGeneratedKeys="true" keyProperty="SerialNo">
         insert into Info_Banner
@@ -167,10 +167,24 @@
     </delete>
     <select id="selectBySeriaNo" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select 
-        <include refid="Base_Column_List" />
+        SerialNo serialNo, Page page, PicturePath picturePath, AppID appID, SkipPath skipPath,
+        SkipType skipType, Description description, SortNo sortNo, Valid valid,
+        CreateTime createTime, ModifyTime modifyTime, Operator operator
         from Info_Banner
         where SerialNo = #{serialNo,jdbcType=BIGINT}
     </select>
+
+    <!--根据排序号查询数据 tianliya-->
+    <select id="selectBySortNo" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        SerialNo serialNo, Page page, PicturePath picturePath, AppID appID, SkipPath skipPath,
+        SkipType skipType, Description description, SortNo sortNo, Valid valid,
+        CreateTime createTime, ModifyTime modifyTime, Operator operator
+        from Info_Banner
+        where SortNo = #{SortNo,jdbcType=INTEGER}
+    </select>
+    <!--根据排序号查询数据 tianliya-->
+
    <!--  <sql id="Example_Where_Clause" >
         <where >
             <foreach collection="oredCriteria" item="criteria" separator="or" >
