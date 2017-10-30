@@ -24,13 +24,15 @@
     o.product_id productId, c.product_name productName,c.product_no productNo,c.cycle,c.year_incom_percent yearIncomPercent,
     c.float_percent floatPercent, c.nper nper, c.type type,
     o.buy_amount buyAmount,o.buy_time buyTime,o.redeem_time redeemTime,o.status,o.income,
-    o.initial_price initialPrice, o.clear_price clearPrice, o.share_amount shareAmount 
+    o.initial_price initialPrice, o.clear_price clearPrice, 
+    s.share_amount shareAmount 
     FROM finance_order o
     LEFT JOIN User_Login u ON o.user_id = u.UserID
     LEFT JOIN User_Info i ON u.UserID = i.UserID
     LEFT JOIN users ua ON i.agent_id = ua.id
     LEFT JOIN users ub ON i.broker_id = ub.id
     LEFT JOIN finance_conf c ON o.product_id = c.id
+    LEFT JOIN share_record s on o.id = s.order_id
     <where>
       and u.Status = 1 and o.type = 1
       <if test="userName != null and userName != '' ">
@@ -137,13 +139,14 @@
     o.product_id productId, c.product_name productName,c.product_no productNo,c.cycle,c.year_incom_percent yearIncomPercent,
     c.float_percent floatPercent, c.nper nper, c.type type,
     o.buy_amount buyAmount,o.buy_time buyTime,o.redeem_time redeemTime,o.status,o.income,
-    o.initial_price initialPrice, o.clear_price clearPrice, o.share_amount shareAmount 
+    o.initial_price initialPrice, o.clear_price clearPrice, s.share_amount shareAmount 
     FROM finance_order o
     LEFT JOIN User_Login u ON o.user_id = u.UserID
     LEFT JOIN User_Info i ON u.UserID = i.UserID
     LEFT JOIN users ua ON i.agent_id = ua.id
     LEFT JOIN users ub ON i.broker_id = ub.id
     LEFT JOIN finance_conf_goldearn c ON o.product_id = c.id
+    LEFT JOIN share_record s on o.id = s.order_id
     <where>
       and u.Status = 1 and o.type = 2
       <if test="userName != null and userName != '' ">

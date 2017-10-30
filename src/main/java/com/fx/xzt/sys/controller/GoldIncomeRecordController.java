@@ -1,5 +1,6 @@
 package com.fx.xzt.sys.controller;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -155,7 +156,8 @@ public class GoldIncomeRecordController {
                     for (Map<String, Object> map : list) {
                     	Object incomeObj =  map.get("income");
                     	Object totalIncomObj =  map.get("totalIncom");
-                    	Object priceObj =  map.get("price");
+                    	//Object priceObj =  map.get("price");
+                    	Object incomePercentObj = map.get("incomePercent");
                         if (incomeObj != null && incomeObj != "") {
                         	Double income = Double.valueOf(incomeObj.toString());
                         	map.put("income", income/100);
@@ -164,9 +166,14 @@ public class GoldIncomeRecordController {
                         	Double totalIncom = Double.valueOf(totalIncomObj.toString());
                         	map.put("totalIncom", totalIncom/100);
                         }
-                        if (priceObj != null && priceObj != "") {
+                        /*if (priceObj != null && priceObj != "") {
                         	Double price = Double.valueOf(priceObj.toString());
                         	map.put("price", price/100);
+                        }*/
+                        if (incomePercentObj != null && incomePercentObj != "") {
+                        	Double incomePercent = Double.valueOf(incomePercentObj.toString());
+                        	DecimalFormat df = new DecimalFormat("0.00%");
+                        	map.put("incomePercent", df.format(incomePercent));
                         }
                     }
                     POIUtils poi = new POIUtils();

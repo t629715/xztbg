@@ -15,20 +15,21 @@
 
     <!--实金交易开始-htt-->
     <select id="selectByRealGoldOrder" resultType="java.util.Map" parameterType="java.util.Map">
-      SELECT o.id id, o.order_no orderNo, o.user_id userID, u.UserName userName,DATE_FORMAT(i.RegisterTime, '%Y-%m-%d %h:%i:%s')  registerTime,
+      SELECT o.id id, o.order_no orderNo, o.user_id userID, u.UserName userName,i.RegisterTime registerTime,
       i.agent_id AS agentId, ua.user_name AS agentName, i.broker_id AS brokerId, ub.user_name AS brokerName ,
       o.gold_product_id goldProductId, c.name productName,o.buy_price buyPrice, o.gram gram,
-      o.rmb_amount rmbAmount, o.fee fee,DATE_FORMAT(o.buy_time, '%Y-%m-%d %h:%i:%s') buyTime
+      o.rmb_amount rmbAmount, o.fee fee,o.buy_time buyTime, s.share_amount shareAmount
       FROM real_gold_order o
       LEFT JOIN User_Login u ON o.user_id = u.UserID
       LEFT JOIN User_Info i ON u.UserID = i.UserID
       LEFT JOIN users ua ON i.agent_id = ua.id
       LEFT JOIN users ub ON i.broker_id = ub.id
       LEFT JOIN real_gold_conf c ON o.gold_product_id = c.id
+      LEFT JOIN share_record s on o.id = s.order_id
       <where>
           and u.Status = 1
           <if test="userName != null and userName != '' ">
-            and i.userName = #{userName,jdbcType=VARCHAR}
+            and u.userName = #{userName,jdbcType=VARCHAR}
           </if>
           <if test="orderNo != null and orderNo != '' ">
               and o.order_no = #{orderNo,jdbcType=VARCHAR}
@@ -67,7 +68,7 @@
         <where>
             and u.Status = 1
           <if test="userName != null and userName != '' ">
-            and i.userName = #{userName,jdbcType=VARCHAR}
+            and u.userName = #{userName,jdbcType=VARCHAR}
           </if>
           <if test="orderNo != null and orderNo != '' ">
               and o.order_no = #{orderNo,jdbcType=VARCHAR}

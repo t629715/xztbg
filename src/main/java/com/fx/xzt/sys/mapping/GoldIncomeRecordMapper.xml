@@ -25,7 +25,7 @@
 		<where>
 			and u.Status = 1
 			<if test="userName != null and userName != '' ">
-				and i.userName = #{userName,jdbcType=VARCHAR}
+				and u.userName = #{userName,jdbcType=VARCHAR}
 			</if>
 			<if test="orderNo != null and orderNo != '' ">
 				and o.order_no = #{orderNo,jdbcType=VARCHAR}
@@ -43,10 +43,10 @@
 				and r.create_time &lt;#{endTypeTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="agentName != null and agentName !='' ">
-				and ua.user_name = #{agentName,jdbcType=VARCHAR}
+				and ua.id = #{agentName,jdbcType=VARCHAR}
 			</if>
 			<if test="brokerName != null and brokerName !='' ">
-				and ub.user_name = #{brokerName,jdbcType=VARCHAR}
+				and ub.id = #{brokerName,jdbcType=VARCHAR}
 			</if>
 		</where>
 		order by r.create_time DESC
@@ -55,7 +55,7 @@
 
 	<!-- 黄金收益结算查询统计开始-htt -->
 	<select id="selectByGoldIncomeCount" resultType="java.util.Map" parameterType="java.util.Map">
-		SELECT SUM(r.income) incomeSum 
+		SELECT SUM(r.income) incomeSum , SUM(gram) gramSum
 		FROM gold_income_record r
 		LEFT JOIN User_Login u ON r.user_id = u.UserID
 		LEFT JOIN User_Info i ON u.UserID = i.UserID
@@ -64,7 +64,7 @@
 		<where>
 			and u.Status = 1
 			<if test="userName != null and userName != '' ">
-				and i.userName = #{userName,jdbcType=VARCHAR}
+				and u.userName = #{userName,jdbcType=VARCHAR}
 			</if>
 			<if test="orderNo != null and orderNo != '' ">
 				and o.order_no = #{orderNo,jdbcType=VARCHAR}
@@ -76,10 +76,10 @@
 				and r.create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="agentName != null and agentName !='' ">
-				and ua.user_name = #{agentName,jdbcType=VARCHAR}
+				and ua.id = #{agentName,jdbcType=VARCHAR}
 			</if>
 			<if test="brokerName != null and brokerName !='' ">
-				and ub.user_name = #{brokerName,jdbcType=VARCHAR}
+				and ub.id = #{brokerName,jdbcType=VARCHAR}
 			</if>
 		</where>
 	</select>
