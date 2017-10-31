@@ -35,6 +35,9 @@ public class GoldRightDealConfServiceImpl extends BaseService<GoldRightDealConf>
         logger.debug("查询所有金权规则信息");
         PageHelper.startPage(pageNum,pageSize,true);
         List<GoldRightDealConf> goldRightDealConfs = goldRightDealConfMapper.selectAll();
+        System.out.println(
+                goldRightDealConfs
+        );
         return new PageInfo<GoldRightDealConf>(goldRightDealConfs);
     }
 
@@ -56,14 +59,14 @@ public class GoldRightDealConfServiceImpl extends BaseService<GoldRightDealConf>
      * @return
      */
     @Transactional
-    public Boolean updateByPrimaryKey(Integer id, String name, Integer contract,
-                                      Integer buyPercent, Double pointCount, Integer volatility,
+    public Boolean updateByPrimaryKey(Long id, String name, Integer contract,
+                                      Float buyPercent, Double pointCount, Double volatility,
                                       Integer minGramPerOrder, Integer maxGramPerOrder, Integer maxPositionCount,
                                       Integer maxBuyCountPerDay, Double stopProfitSet, Integer blowingUpSet) {
         Map map = new HashMap();
         map.put("id",id);//产品id
         map.put("name",name);//产品名字
-        map.put("contract",contract);//产品合约
+       /* map.put("contract",contract);//产品合约
         map.put("buyPercent",buyPercent);//买入金额
         map.put("pointCount",pointCount);//点差
         map.put("volatility",volatility);//最下小数波动
@@ -72,8 +75,8 @@ public class GoldRightDealConfServiceImpl extends BaseService<GoldRightDealConf>
         map.put("maxPositionCount",maxPositionCount);//最大建仓次数
         map.put("maxBuyCountPerDay",maxBuyCountPerDay);//
         map.put("stopProfitSet",stopProfitSet);//止盈设置
-        map.put("blowingUpSet",blowingUpSet);//止损设置
-        int i = goldRightDealConfMapper.modifyByPrimaryKey(map);
+        map.put("blowingUpSet",blowingUpSet);//止损设置*/
+        int i = goldRightDealConfMapper.modifyGoldRightCong(map);
         if (i != 0){
             return true;
         }

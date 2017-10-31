@@ -27,6 +27,6 @@ public interface GoldRightDealConfMapper extends BaseMapper<GoldRightDealConf>{
      * @param map
      * @return
      */
-    int modifyByPrimaryKey(Map map);
+    int modifyGoldRightCong(Map map);
 
 }

@@ -187,9 +187,14 @@ public class InfoBannerController {
 	 * @param page
 	 * @return
 	 */
-	@RequestMapping(value="/getAdPic",method=RequestMethod.POST)
+	@RequestMapping(value="/getAdPic1",method=RequestMethod.POST)
 	@ResponseBody
-	public List<Map<String, Object>> getAdPic(Short page){
+	public List<Map<String, Object>> getAdPic1(Short page){
+		return infoBannerService.getAdPic(page);
+	}
+	@RequestMapping(value="/getAdPic2",method=RequestMethod.POST)
+	@ResponseBody
+	public List<Map<String, Object>> getAdPic2(Short page){
 		return infoBannerService.getAdPic(page);
 	}
 

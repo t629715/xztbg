@@ -30,8 +30,8 @@ public interface GoldRightDealConfService extends IService<GoldRightDealConf> {
      * @param blowingUpSet
      * @return
      */
-    Boolean updateByPrimaryKey(Integer id, String name, Integer contract,
-                               Integer buyPercent, Double pointCount, Integer volatility,
+    Boolean updateByPrimaryKey(Long id, String name, Integer contract,
+                               Float buyPercent, Double pointCount, Double volatility,
                                Integer minGramPerOrder, Integer maxGramPerOrder, Integer maxPositionCount,
                                 Integer maxBuyCountPerDay, Double stopProfitSet, Integer blowingUpSet);
 
