@@ -46,10 +46,10 @@
 				and r.RechargeTime &lt;=#{endTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="agentName != null and agentName !='' ">
-				and ua.user_name = #{agentName,jdbcType=VARCHAR}
+				and ua.id = #{agentName,jdbcType=VARCHAR}
 			</if>
 			<if test="brokerName != null and brokerName !='' ">
-				and ub.user_name = #{brokerName,jdbcType=VARCHAR}
+				and ub.id = #{brokerName,jdbcType=VARCHAR}
 			</if>
 			<if test="rechargechannel != null and rechargechannel!='' ">
 				and r.RechargeChannel =
@@ -77,16 +77,16 @@
 				and r.userName = #{userName,jdbcType=VARCHAR}
 			</if>
 			<if test="startTime !=null and startTime !='' ">
-				and o.RechargeTime &gt;=#{startTime,jdbcType=TIMESTAMP}
+				and r.RechargeTime &gt;=#{startTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="endTime !=null and endTime != '' ">
-				and o.RechargeTime &lt;=#{endTime,jdbcType=TIMESTAMP}
+				and r.RechargeTime &lt;=#{endTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="agentName != null and agentName !='' ">
-				and ua.agent_name = #{agentName,jdbcType=VARCHAR}
+				and ua.id = #{agentName,jdbcType=VARCHAR}
 			</if>
 			<if test="brokerName != null and brokerName !='' ">
-				and ub.broker_name = #{brokerName,jdbcType=VARCHAR}
+				and ub.id = #{brokerName,jdbcType=VARCHAR}
 			</if>
 			<if test="rechargechannel != null and rechargechannel!='' ">
 				and r.RechargeChannel =

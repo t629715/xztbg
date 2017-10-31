@@ -118,12 +118,17 @@ public class UserRechargeController {
                 List<Map<String, Object>> list = userRechargeService.excelRecharge(userName, startTime, endTime, agentNameStr, brokerName, rechargechannel, status);
                 if (list != null && list.size() > 0) {
                     for (Map<String, Object> map : list) {
+                    	Object RMBAmtObj =  map.get("RMBAmt");
+                    	if (RMBAmtObj != null && RMBAmtObj != "") {
+                        	Double RMBAmt = Double.valueOf(RMBAmtObj.toString());
+                        	map.put("RMBAmt", RMBAmt/100);
+                        }
                         map.put("Status", ConstantUtil.rechargeStatus.toMap().get(map.get("Status").toString()));
                         map.put("RechargeChannel", ConstantUtil.rechargeChannel.toMap().get(map.get("RechargeChannel").toString()));
                     }
                     POIUtils poi = new POIUtils();
                     String[] heads = {"用户账号", "充值金额",  "充值渠道", "充值时间"};
-                    String[] colums = {"userName", "RMBAmt", "RechargeChannel", "RechargeTime"};
+                    String[] colums = {"UserName", "RMBAmt", "RechargeChannel", "RechargeTime"};
                     poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                 }
             }
