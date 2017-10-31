@@ -66,8 +66,8 @@ public class GoldRightDealConfController {
 
     @RequestMapping(value = "/modifyGoldRightDealConf",method=RequestMethod.POST)
     @ResponseBody
-    public Object modifyGoldRightDealConf(HttpServletRequest request, Integer id, String name, Integer contract,
-                                    Integer buyPercent, Double pointCount, Integer volatility,
+    public Object modifyGoldRightDealConf(HttpServletRequest request, Long id, String name, Integer contract,
+                                    Float  buyPercent, Double pointCount, Double volatility,
                                     Integer minGramPerOrder, Integer maxGramPerOrder, Integer maxPositionCount,
                                     Integer maxBuyCountPerDay, Double stopProfitSet, Integer blowingUpSet) {
         logger.debug("获取修改进群规则信息接口");

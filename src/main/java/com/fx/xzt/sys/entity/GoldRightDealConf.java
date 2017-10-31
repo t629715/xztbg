@@ -23,7 +23,7 @@ public class GoldRightDealConf implements Serializable{
     /**
      *买入金额 ;百分之多少100:代表全额购买
      */
-    private Integer buyPercent;
+    private Float buyPercent;
 
     /**
      *点差
@@ -33,7 +33,7 @@ public class GoldRightDealConf implements Serializable{
     /**
      *最小小数波动位数
      */
-    private Integer volatility;
+    private Double  volatility;
 
     /**
      *单笔交易最小克数
@@ -90,6 +90,8 @@ public class GoldRightDealConf implements Serializable{
      */
     private Integer status;
 
+    private Float minLossPercent;
+
     /**
      *交易时间(09:00-11:30,13:30-15:00) 表示两个时间段
      */
@@ -119,11 +121,11 @@ public class GoldRightDealConf implements Serializable{
         this.contract = contract;
     }
 
-    public Integer getBuyPercent() {
+    public Float getBuyPercent() {
         return buyPercent;
     }
 
-    public void setBuyPercent(Integer buyPercent) {
+    public void setBuyPercent(Float buyPercent) {
         this.buyPercent = buyPercent;
     }
 
@@ -135,11 +137,11 @@ public class GoldRightDealConf implements Serializable{
         this.pointCount = pointCount;
     }
 
-    public Integer getVolatility() {
+    public Double getVolatility() {
         return volatility;
     }
 
-    public void setVolatility(Integer volatility) {
+    public void setVolatility(Double volatility) {
         this.volatility = volatility;
     }
 
@@ -237,5 +239,38 @@ public class GoldRightDealConf implements Serializable{
 
     public void setDealTime(String dealTime) {
         this.dealTime = dealTime == null ? null : dealTime.trim();
+    }
+
+    public Float getMinLossPercent() {
+        return minLossPercent;
+    }
+
+    public void setMinLossPercent(Float minLossPercent) {
+        this.minLossPercent = minLossPercent;
+    }
+
+    @Override
+    public String toString() {
+        return "GoldRightDealConf{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", contract=" + contract +
+                ", buyPercent=" + buyPercent +
+                ", pointCount=" + pointCount +
+                ", volatility=" + volatility +
+                ", minGramPerOrder=" + minGramPerOrder +
+                ", maxGramPerOrder=" + maxGramPerOrder +
+                ", maxHandCount=" + maxHandCount +
+                ", maxBuyCountPerDay=" + maxBuyCountPerDay +
+                ", maxPositionCount=" + maxPositionCount +
+                ", poundage=" + poundage +
+                ", volatilityProfitLoss=" + volatilityProfitLoss +
+                ", stopProfitSet=" + stopProfitSet +
+                ", stopLossSet=" + stopLossSet +
+                ", blowingUpSet=" + blowingUpSet +
+                ", status=" + status +
+                ", minLossPercent=" + minLossPercent +
+                ", dealTime='" + dealTime + '\'' +
+                '}';
     }
 }

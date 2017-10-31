@@ -5,9 +5,9 @@
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="contract" property="contract" jdbcType="INTEGER" />
-    <result column="buy_percent" property="buyPercent" jdbcType="INTEGER" />
+    <result column="buy_percent" property="buyPercent" jdbcType="FLOAT" />
     <result column="point_count" property="pointCount" jdbcType="DOUBLE" />
-    <result column="volatility" property="volatility" jdbcType="INTEGER" />
+    <result column="volatility" property="volatility" jdbcType="DOUBLE" />
     <result column="min_gram_per_order" property="minGramPerOrder" jdbcType="INTEGER" />
     <result column="max_gram_per_order" property="maxGramPerOrder" jdbcType="INTEGER" />
     <result column="max_hand_count" property="maxHandCount" jdbcType="INTEGER" />
@@ -20,6 +20,7 @@
     <result column="blowing_up_set" property="blowingUpSet" jdbcType="INTEGER" />
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="deal_time" property="dealTime" jdbcType="VARCHAR" />
+    <result column="min_loss_percent" property="minLossPercent" jdbcType="FLOAT" />
   </resultMap>
 
   <!--获取金权规则信息-start-tianliya-->
@@ -32,23 +33,23 @@
   <!--获取金权规则信息-end-tianliya-->
 
   <!--根据id修改金权规则信息：start-tianliya-->
-  <update id="modifyByPrimaryKey">
+  <update id="modifyGoldRightCong" parameterType="java.util.Map">
     update gold_right_deal_conf
     <set >
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="contract != null" >
+      <!--<if test="contract != null" >
         contract = #{contract,jdbcType=INTEGER},
       </if>
       <if test="buyPercent != null" >
-        buy_percent = #{buyPercent,jdbcType=INTEGER},
+        buy_percent = #{buyPercent,jdbcType=FLOAT},
       </if>
       <if test="pointCount != null" >
         point_count = #{pointCount,jdbcType=DOUBLE},
       </if>
       <if test="volatility != null" >
-        volatility = #{volatility,jdbcType=INTEGER},
+        volatility = #{volatility,jdbcType=DOUBLE},
       </if>
       <if test="minGramPerOrder != null" >
         min_gram_per_order = #{minGramPerOrder,jdbcType=INTEGER},
@@ -85,7 +86,7 @@
       </if>
       <if test="dealTime != null" >
         deal_time = #{dealTime,jdbcType=VARCHAR},
-      </if>
+      </if>-->
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
