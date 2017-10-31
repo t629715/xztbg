@@ -35,14 +35,14 @@ public class GoldRightDealConfController {
     GoldRightDealConfService goldRightDealConfService;
     @RequestMapping(value = "/getAllGoldRight",method= RequestMethod.POST)
     @ResponseBody
-    public Object getAllGoldRight(HttpServletRequest request, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
-        logger.debug("获取理财产品信息接口");
+    public Object getAllGoldRight(HttpServletRequest request) {
+        logger.debug("获取金权规则接口");
         CommonResponse response = new CommonResponse();
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
-                PageInfo<GoldRightDealConf> pageInfo = goldRightDealConfService.getAllGoldRight(pageNum,pageSize);
+                PageInfo<GoldRightDealConf> pageInfo = goldRightDealConfService.getAllGoldRight(1,10);
                 response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 response.setData(pageInfo);
                 response.setMsg("操作成功！");
