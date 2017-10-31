@@ -65,7 +65,7 @@ public class FinanceOrderController {
             if (users != null) {
                 String agentNameStr = agentName;
                 if (users.getPid() != null &&  users.getPid() == 1) {
-                    agentNameStr = users.getUserName();
+                    agentNameStr = users.getId().toString();
                 }
                 PageInfo<Map<String, Object>> pageInfo = financeOrderService.selectByFinanceOrder(userName, orderNo, startTime, endTime, regStartTime, regEndTime,
                 		redeemStartTime, redeemEndTime, agentNameStr, brokerName, status, type, nper, pageNum, pageSize);
@@ -117,7 +117,7 @@ public class FinanceOrderController {
             if (users != null) {
                 String agentNameStr = agentName;
                 if (users.getPid() != null &&  users.getPid() == 1) {
-                    agentNameStr = users.getUserName();
+                	agentNameStr = users.getId().toString();
                 }
                 List<Map<String, Object>> list = financeOrderService.excelFinanceOrder(userName, orderNo, startTime, endTime, regStartTime, regEndTime, 
                 		redeemStartTime, redeemEndTime, agentNameStr, brokerName, status, type, nper);
@@ -214,7 +214,7 @@ public class FinanceOrderController {
             if (users != null) {
                 String agentNameStr = agentName;
                 if (users.getPid() != null &&  users.getPid() == 1) {
-                    agentNameStr = users.getUserName();
+                	agentNameStr = users.getId().toString();
                 }
                 Map<String, Object> map = new HashMap<String, Object>();
                 map = financeOrderService.selectByFinanceOrderCount(userName, orderNo, startTime, endTime, regStartTime, regEndTime, 
@@ -266,7 +266,7 @@ public class FinanceOrderController {
             if (users != null) {
                 String agentNameStr = agentName;
                 if (users.getPid() != null &&  users.getPid() == 1) {
-                    agentNameStr = users.getUserName();
+                	agentNameStr = users.getId().toString();
                 }
                 PageInfo<Map<String, Object>> pageInfo = financeOrderService.selectByGoldFinanceOrder(userName, orderNo, startTime, endTime, regStartTime, regEndTime,
                 		redeemStartTime, redeemEndTime, agentNameStr, brokerName, status, type, nper, pageNum, pageSize);
@@ -318,7 +318,7 @@ public class FinanceOrderController {
             if (users != null) {
                 String agentNameStr = agentName;
                 if (users.getPid() != null &&  users.getPid() == 1) {
-                    agentNameStr = users.getUserName();
+                	agentNameStr = users.getId().toString();
                 }
                 List<Map<String, Object>> list = financeOrderService.excelGoldFinanceOrder(userName, orderNo, startTime, endTime, regStartTime, regEndTime, 
                 		redeemStartTime, redeemEndTime, agentNameStr, brokerName, status, type, nper);
@@ -400,7 +400,7 @@ public class FinanceOrderController {
             if (users != null) {
                 String agentNameStr = agentName;
                 if (users.getPid() != null &&  users.getPid() == 1) {
-                    agentNameStr = users.getUserName();
+                	agentNameStr = users.getId().toString();
                 }
                 Map<String, Object> map = new HashMap<String, Object>();
                 map = financeOrderService.selectByGoldFinanceOrderCount(userName, orderNo, startTime, endTime, regStartTime, regEndTime, 

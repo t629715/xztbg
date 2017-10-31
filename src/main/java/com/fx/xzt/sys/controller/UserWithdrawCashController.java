@@ -19,7 +19,6 @@ import com.fx.xzt.sys.model.UserWithdrawCashModel;
 import com.fx.xzt.sys.service.UserWithdrawCashService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
-import com.fx.xzt.sys.util.UserWithdrawCashStatusEnum;
 import com.fx.xzt.util.POIUtils;
 import com.github.pagehelper.PageInfo;
 
@@ -216,4 +215,38 @@ public class UserWithdrawCashController {
         }
         return cr;
     }
+	
+	@RequestMapping(value="/auditPassedById")
+	@ResponseBody
+	public Object auditPassedById(HttpServletRequest request,  String withdrawid) throws Exception{
+		CommonResponse cr = new CommonResponse();
+        try {
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            if (users != null) {
+                Map<String, Object> map = new HashMap<String, Object>();
+                int flag = userWithdrawCashService.auditPassedById(withdrawid);
+                if (flag > 0) {
+                	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);
+                	cr.setData("{}");
+                	cr.setMsg("操作成功！");
+                } else {
+                	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+                	cr.setData("{}");
+                	cr.setMsg("操作失败！");
+                }
+            } else {
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("操作失败！");
+            }
+        } catch (Exception e) {
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("操作失败！");
+            throw e;
+            // e.printStackTrace();
+        }
+        return cr;
+	}
 }

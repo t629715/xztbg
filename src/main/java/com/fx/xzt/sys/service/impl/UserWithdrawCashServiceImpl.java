@@ -1,5 +1,6 @@
 package com.fx.xzt.sys.service.impl;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import com.fx.xzt.sys.mapper.UserWithdrawCashMapper;
 import com.fx.xzt.sys.model.UserWithdrawCashModel;
 import com.fx.xzt.sys.service.UserWithdrawCashService;
 import com.fx.xzt.sys.util.AccountRecordStatusEnum;
+import com.fx.xzt.sys.util.ConstantUtil;
 import com.fx.xzt.sys.util.UserWithdrawCashStatusEnum;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -161,6 +163,20 @@ public class UserWithdrawCashServiceImpl extends BaseService<UserWithdrawCash> i
         map.put("brokerName", brokerName);
         map.put("status", status);
 		return userWithdrawCashMapper.selectByWithdrawCashCount(map);
+	}
+	
+	/**
+	 * 现金提取--审核通过
+	 */
+	@Transactional
+	public int auditPassedById(String withdrawid) throws ParseException{
+		SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		UserWithdrawCash u = new UserWithdrawCash();
+		u.setWithdrawid(withdrawid);
+		u.setStatus(Short.decode(ConstantUtil.withdrawCashStatus.YWC.toString()));
+		u.setFinishtime(sdf.parse(sdf.format(new Date())));
+		int msg = userWithdrawCashMapper.updateByIdSelective(u);
+		return msg;
 	}
 	
 }

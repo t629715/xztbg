@@ -188,7 +188,7 @@ public class ConstantUtil {
      */
     public static enum withdrawCashStatus {
         SHZ("审核中","0"),
-        YWC("已完成","1");
+        YWC("已审核","1");
         private String name;
         private String index;
         private withdrawCashStatus(String name,String index){
@@ -266,5 +266,7 @@ public class ConstantUtil {
             return rlt;
         }
     }
+    
+    
 
 }

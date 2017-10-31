@@ -1,5 +1,6 @@
 package com.fx.xzt.sys.service;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -93,5 +94,17 @@ public interface UserWithdrawCashService extends IService<UserWithdrawCash>{
 	Map<String, Object> selectByWithdrawCashCount (String userName, String startTime, String endTime, 
 			String agentName, String brokerName, Integer status);
 	
+	/**
+	 * 
+	* @Title: auditPassedById 
+	* @Description: 现金提取--审核通过
+	* @param withdrawid
+	* @return
+	* @throws ParseException    设定文件 
+	* @return int    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	public int auditPassedById(String withdrawid) throws ParseException;
 	
 }

@@ -32,19 +32,19 @@
 		<where>
 			and u.Status = 1
 			<if test="userName != null and userName != '' ">
-				and r.userName = #{userName,jdbcType=VARCHAR}
+				and u.UserName = #{userName,jdbcType=VARCHAR}
 			</if>
 			<if test="startTime !=null and startTime !='' ">
-				and r.WithdrawAmt &gt;=#{startTime,jdbcType=TIMESTAMP}
+				and w.WithdrawTime &gt;=#{startTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="endTime !=null and endTime != '' ">
-				and r.WithdrawAmt &lt;=#{endTime,jdbcType=TIMESTAMP}
+				and w.WithdrawTime &lt;=#{endTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="agentName != null and agentName !='' ">
-				and ua.user_name = #{agentName,jdbcType=VARCHAR}
+				and ua.id = #{agentName,jdbcType=VARCHAR}
 			</if>
 			<if test="brokerName != null and brokerName !='' ">
-				and ub.user_name = #{brokerName,jdbcType=VARCHAR}
+				and ub.id = #{brokerName,jdbcType=VARCHAR}
 			</if>
 			<if test="status != null">
 				and w.Status = #{status,jdbcType=SMALLINT}
@@ -65,19 +65,19 @@
 		<where>
 			and u.Status = 1
 			<if test="userName != null and userName != '' ">
-				and r.userName = #{userName,jdbcType=VARCHAR}
+				and u.UserName = #{userName,jdbcType=VARCHAR}
 			</if>
 			<if test="startTime !=null and startTime !='' ">
-				and r.WithdrawAmt &gt;=#{startTime,jdbcType=TIMESTAMP}
+				and w.WithdrawTime &gt;=#{startTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="endTime !=null and endTime != '' ">
-				and r.WithdrawAmt &lt;=#{endTime,jdbcType=TIMESTAMP}
+				and w.WithdrawTime &lt;=#{endTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="agentName != null and agentName !='' ">
-				and ua.user_name = #{agentName,jdbcType=VARCHAR}
+				and ua.id = #{agentName,jdbcType=VARCHAR}
 			</if>
 			<if test="brokerName != null and brokerName !='' ">
-				and ub.user_name = #{brokerName,jdbcType=VARCHAR}
+				and ub.id = #{brokerName,jdbcType=VARCHAR}
 			</if>
 			<if test="status != null">
 				and w.Status = #{status,jdbcType=SMALLINT}
