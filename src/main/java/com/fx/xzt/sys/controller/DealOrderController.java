@@ -1,5 +1,6 @@
 package com.fx.xzt.sys.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -212,9 +213,9 @@ public class DealOrderController {
      * @return
      * @date 2017-10-12 14:02
      */
-    @RequestMapping(value="/getHedgeArbitrage")
+    @RequestMapping(value="/getHedgeArbitrage1")
     @ResponseBody
-    public Object getHedgeArbitrage(HttpServletRequest request){
+    public Object getHedgeArbitrage1(HttpServletRequest request){
         CommonResponse cr = new CommonResponse();
         try {
             HttpSession httpSession = request.getSession();
@@ -222,8 +223,71 @@ public class DealOrderController {
             if (users != null) {
                 Map<String, Object> map = new HashMap<String, Object>();
                 map = dealOrderService.selectHandNumBuyAmount();
+                Map map1 = new HashMap();
+                map1.put("gramUp",map.get("gramUp"));
+                map1.put("avgUp",map.get("avgUp"));
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
-                cr.setData(map);
+                cr.setData(map1);
+                cr.setMsg("操作成功！");
+            } else {
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("操作失败！");
+            }
+        } catch (Exception e) {
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("操作失败！");
+            throw e;
+        }
+        return cr;
+    }
+    @RequestMapping(value="/getHedgeArbitrage2")
+    @ResponseBody
+    public Object getHedgeArbitrage2(HttpServletRequest request){
+        CommonResponse cr = new CommonResponse();
+        try {
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            if (users != null) {
+                Map<String, Object> map = new HashMap<String, Object>();
+                map = dealOrderService.selectHandNumBuyAmount();
+                List list = new ArrayList();
+                Map map1 = new HashMap();
+                map1.put("gramDown",map.get("gramDown"));
+                map1.put("avgDown",map.get("avgDown"));
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+                cr.setData(map1);
+                cr.setMsg("操作成功！");
+            } else {
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("操作失败！");
+            }
+        } catch (Exception e) {
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("操作失败！");
+            throw e;
+        }
+        return cr;
+    }
+    @RequestMapping(value="/getHedgeArbitrage3")
+    @ResponseBody
+    public Object getHedgeArbitrage3(HttpServletRequest request){
+        CommonResponse cr = new CommonResponse();
+        try {
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            if (users != null) {
+                Map<String, Object> map = new HashMap<String, Object>();
+                map = dealOrderService.selectHandNumBuyAmount();
+                List list = new ArrayList();
+                Map map1 = new HashMap();
+                map1.put("netValue",map.get("netValue"));
+                map1.put("profit",map.get("profit"));
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+                cr.setData(map1);
                 cr.setMsg("操作成功！");
             } else {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
