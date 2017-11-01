@@ -50,7 +50,7 @@ public class UserController {
 	@RequestMapping(value="/insert", method=RequestMethod.POST)
 	public String insert(@RequestBody Users userInfo){
 		if(userInfo.getStatus()==null){
-			userInfo.setStatus("0");
+			userInfo.setStatus("1");
 		}
 		Integer count = userService.save(userInfo);
 		if(count>0){

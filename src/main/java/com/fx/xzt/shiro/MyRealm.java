@@ -61,7 +61,7 @@ public class MyRealm extends AuthorizingRealm{
 				throw new IncorrectCredentialsException("账号或密码错误！");
 			}
 			
-			if (!"0".equals(userInfo.getStatus())) {
+			if ("0".equals(userInfo.getStatus())) {
 				throw new DisabledAccountException("帐号"+myToken.getPrincipal()+"已失效！");
 			}
 			

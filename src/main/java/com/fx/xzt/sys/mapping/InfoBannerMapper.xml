@@ -32,16 +32,16 @@
            		and SerialNo = #{serialNo,jdbcType=BIGINT}
             </if>
         </where>
-        order by SortNo
+        order by SortNo DESC
     </select>
 
     <!--获取用于广告的图片-start-tianliya-->
     <select id="selectAdPic" resultType="java.util.Map" parameterType="java.lang.Short" >
 
-        select SortNo,SerialNo,Page,PicturePath,SkipPath
+        select SortNo,SerialNo,Page,PicturePath,SkipPath,CreateTime,SkipType
         from Info_Banner
         WHERE Page = #{page,jdbcType=SMALLINT} AND valid = 1
-        order by SortNo
+        order by SortNo DESC
     </select>
     <!--获取用于广告的图片-end-tianliya-->
 
