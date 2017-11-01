@@ -251,5 +251,44 @@ public class GoldIncomeRecordController {
         }
         return cr;
     }
+    
+    /**
+     * 
+    * @Title: selectByGoldGramCount 
+    * @Description: 黄金收益查询-黄金克重统计
+    * @param request
+    * @return
+    * @throws Exception    设定文件 
+    * @return Object    返回类型 
+    * @throws 
+    * @author htt
+     */
+    @RequestMapping(value="/selectByGoldGramCount")
+    @ResponseBody
+    public Object selectByGoldGramCount(HttpServletRequest request) throws Exception{
+        CommonResponse cr = new CommonResponse();
+        try {
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            if (users != null) {           	
+                Map<String, Object> map = new HashMap<String, Object>();
+                map = goldIncomeRecordService.selectByGoldGramCount();
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+                cr.setData(map);
+                cr.setMsg("操作成功！");
+            } else {
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("操作失败！");
+            }
+        } catch (Exception e) {
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("操作失败！");
+            throw e;
+            // e.printStackTrace();
+        }
+        return cr;
+    }
 
 }

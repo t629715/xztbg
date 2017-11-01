@@ -43,10 +43,10 @@
 				and r.create_time &lt;#{endTypeTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="agentName != null and agentName !='' ">
-				and ua.id = #{agentName,jdbcType=VARCHAR}
+				and ua.id = #{agentName,jdbcType=BIGINT}
 			</if>
 			<if test="brokerName != null and brokerName !='' ">
-				and ub.id = #{brokerName,jdbcType=VARCHAR}
+				and ub.id = #{brokerName,jdbcType=BIGINT}
 			</if>
 		</where>
 		order by r.create_time DESC
@@ -75,12 +75,29 @@
 			<if test="endTime !=null and endTime != '' ">
 				and r.create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
 			</if>
+			<if test="startTypeTime !=null and startTypeTime !='' ">
+				and r.create_time &gt;=#{startTypeTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTypeTime !=null and endTypeTime != '' ">
+				and r.create_time &lt;#{endTypeTime,jdbcType=TIMESTAMP}
+			</if>
 			<if test="agentName != null and agentName !='' ">
-				and ua.id = #{agentName,jdbcType=VARCHAR}
+				and ua.id = #{agentName,jdbcType=BIGINT}
 			</if>
 			<if test="brokerName != null and brokerName !='' ">
-				and ub.id = #{brokerName,jdbcType=VARCHAR}
+				and ub.id = #{brokerName,jdbcType=BIGINT}
 			</if>
+		</where>
+	</select>
+	<!-- 黄金收益结算查询统计结束-htt -->
+	
+	<!-- 黄金收益结算查询统计开始-htt -->
+	<select id="selectByGoldGramCount" resultType="java.util.Map">
+		SELECT SUM(r.gold) goldSum 
+		FROM user_gold_account r
+		LEFT JOIN User_Login u ON r.user_id = u.UserID
+		<where>
+			and u.Status = 1
 		</where>
 	</select>
 	<!-- 黄金收益结算查询统计结束-htt -->

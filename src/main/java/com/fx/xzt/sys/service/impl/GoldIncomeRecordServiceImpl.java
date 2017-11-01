@@ -86,5 +86,12 @@ public class GoldIncomeRecordServiceImpl extends BaseService<GoldIncomeRecord> i
         return goldIncomeRecordMapper.selectByGoldIncomeCount(map);
 	}
 
+	/**
+	 * 黄金收益查询--黄金总重
+	 */
+	public Map<String, Object> selectByGoldGramCount() {
+		return goldIncomeRecordMapper.selectByGoldGramCount();
+	}
+
 
 }

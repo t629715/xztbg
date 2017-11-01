@@ -30,4 +30,14 @@ public interface GoldIncomeRecordMapper extends BaseMapper<GoldIncomeRecord> {
      * @return
      */
     Map<String, Object> selectByGoldIncomeCount(Map<String,Object> map);
+    /**
+     * 
+    * @Title: selectByGoldGramCount 
+    * @Description: 黄金总重
+    * @return    设定文件 
+    * @return Map<String,Object>    返回类型 
+    * @throws 
+    * @author htt
+     */
+    Map<String, Object> selectByGoldGramCount();
 }
