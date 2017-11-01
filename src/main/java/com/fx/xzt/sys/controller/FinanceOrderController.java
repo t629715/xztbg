@@ -130,6 +130,7 @@ public class FinanceOrderController {
                     	Object buyAmountObj =  map.get("buyAmount");
                     	Object incomeObj =  map.get("income");
                     	Object yearIncomPercentObj =  map.get("yearIncomPercent");
+                    	Object shareAmountObj = map.get("shareAmount");
                     	if (buyAmountObj != null && buyAmountObj != "") {
                         	Double buyAmount = Double.valueOf(buyAmountObj.toString());
                         	map.put("buyAmount", buyAmount/100);
@@ -143,6 +144,10 @@ public class FinanceOrderController {
                         	DecimalFormat df = new DecimalFormat("0.00%");
                         	map.put("yearIncomPercent", df.format(yearIncomPercent));
                         }
+                    	 if (shareAmountObj != null && shareAmountObj != "") {
+                         	Double shareAmount = Double.valueOf(shareAmountObj.toString());
+                         	map.put("shareAmount", shareAmount/100);
+                         }
                     }
                 }
                 POIUtils poi = new POIUtils();
@@ -153,9 +158,9 @@ public class FinanceOrderController {
                     //判断是否为代理商账户
                     if (users.getPid() != null &&  users.getPid() == 1) {
                         String[] heads = {"用户账号", "注册时间", "经纪人", "交易订单号", "产品编号", "产品名称", "周期", "收益率", "买入金额",
-                                "买入时间", "赎回时间", "状态", "收益支出"};
+                                "买入时间", "赎回时间", "状态", "收益支出", "交易分成"};
                         String[] colums = {"userName", "registerTime", "brokerName", "orderNo", "productNo", "productName", "cycle", "yearIncomPercent", "buyAmount",
-                                "buyTime", "redeemTime", "status", "income"};
+                                "buyTime", "redeemTime", "status", "income", "shareAmount"};
                         poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                     } else if (users.getPid() == null || users.getPid() == 0){
                         if (status != null && status == 2) {
@@ -331,6 +336,7 @@ public class FinanceOrderController {
                     	Object buyAmountObj =  map.get("buyAmount");
                     	Object incomeObj =  map.get("income");
                     	Object yearIncomPercentObj =  map.get("yearIncomPercent");
+                    	Object shareAmountObj = map.get("shareAmount");
                     	if (buyAmountObj != null && buyAmountObj != "") {
                         	Double buyAmount = Double.valueOf(buyAmountObj.toString());
                         	map.put("buyAmount", buyAmount/100);
@@ -344,6 +350,10 @@ public class FinanceOrderController {
                         	DecimalFormat df = new DecimalFormat("0.00%");
                         	map.put("yearIncomPercent", df.format(yearIncomPercent));
                         }
+                    	if (shareAmountObj != null && shareAmountObj != "") {
+                         	Double shareAmount = Double.valueOf(shareAmountObj.toString());
+                         	map.put("shareAmount", shareAmount/100);
+                         }
                     }
                 }
                 POIUtils poi = new POIUtils();

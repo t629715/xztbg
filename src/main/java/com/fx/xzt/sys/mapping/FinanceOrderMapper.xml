@@ -81,12 +81,15 @@
 
   <!--理财交易金额统计开始-htt-->
   <select id="selectByFinanceOrderCount" resultType="java.util.Map" parameterType="java.util.Map">
-    SELECT SUM(o.buy_amount) buyAmountSum, Sum(o.income) incomeSum FROM finance_order o
+    SELECT SUM(o.buy_amount) buyAmountSum, Sum(o.income) incomeSum,
+    SUM(s.share_amount) shareAmountSum 
+    FROM finance_order o
     LEFT JOIN User_Login u ON o.user_id = u.UserID
     LEFT JOIN User_Info i ON u.UserID = i.UserID
     LEFT JOIN users ua ON i.agent_id = ua.id
     LEFT JOIN users ub ON i.broker_id = ub.id
     LEFT JOIN finance_conf c ON o.product_id = c.id
+    LEFT JOIN share_record s on o.id = s.order_id
     <where>
       and u.Status = 1 and o.type = 1
       <if test="userName != null and userName != '' ">
@@ -195,12 +198,15 @@
   
     <!--黄金理财交易金额统计开始-htt-->
   <select id="selectByGoldFinanceOrderCount" resultType="java.util.Map" parameterType="java.util.Map">
-    SELECT SUM(o.buy_amount) buyAmountSum, Sum(o.income) incomeSum FROM finance_order o
+    SELECT SUM(o.buy_amount) buyAmountSum, Sum(o.income) incomeSum,
+    SUM(s.share_amount) shareAmountSum 
+     FROM finance_order o
     LEFT JOIN User_Login u ON o.user_id = u.UserID
     LEFT JOIN User_Info i ON u.UserID = i.UserID
     LEFT JOIN users ua ON i.agent_id = ua.id
     LEFT JOIN users ub ON i.broker_id = ub.id
     LEFT JOIN finance_conf_goldearn c ON o.product_id = c.id
+    LEFT JOIN share_record s on o.id = s.order_id
     <where>
       and u.Status = 1 and o.type = 2
       <if test="userName != null and userName != '' ">

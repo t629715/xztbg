@@ -114,6 +114,7 @@ public class RealGoldOrderController {
                     for (Map<String, Object> map : list) {
                         Object rmbAmountObj =  map.get("rmbAmount");
                         Object feeObj =  map.get("fee");
+                        Object shareAmountObj = map.get("shareAmount");
                         
                         if (rmbAmountObj != null && rmbAmountObj != "") {
                         	Double rmbAmount = Double.valueOf(rmbAmountObj.toString());
@@ -123,13 +124,17 @@ public class RealGoldOrderController {
                         	Double fee = Double.valueOf(feeObj.toString());
                         	map.put("fee", fee/100);
                         }
+                        if (shareAmountObj != null && shareAmountObj != "") {
+                         	Double shareAmount = Double.valueOf(shareAmountObj.toString());
+                         	map.put("shareAmount", shareAmount/100);
+                         }
                     }
                 }
                 POIUtils poi = new POIUtils();
                 //判断是否为代理商账户
                 if (users.getPid() != null &&  users.getPid() == 1) {
-                    String[] heads = {"用户账号","注册时间","经纪人","交易订单号","合约类型","买入价","黄金克数","买入金额","手续费", "买入时间"};
-                    String[] colums = {"userName","registerTime","brokerName","orderNo","productName","buyPrice","gram","rmbAmount","fee", "buyTime"};
+                    String[] heads = {"用户账号","注册时间","经纪人","交易订单号","合约类型","买入价","黄金克数","买入金额","手续费", "买入时间", "交易分成"};
+                    String[] colums = {"userName","registerTime","brokerName","orderNo","productName","buyPrice","gram","rmbAmount","fee", "buyTime", "shareAmount"};
                     poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                 } else if (users.getPid() == null || users.getPid() == 0){
                     String[] heads = {"用户账号","注册时间","代理商","经纪人","交易订单号","合约类型","买入价","黄金克数","买入金额","手续费", "买入时间"};
