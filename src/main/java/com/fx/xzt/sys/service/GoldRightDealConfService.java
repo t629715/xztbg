@@ -5,6 +5,8 @@ package com.fx.xzt.sys.service;
 import com.fx.xzt.sys.entity.GoldRightDealConf;
 import com.github.pagehelper.PageInfo;
 
+import java.util.Map;
+
 public interface GoldRightDealConfService extends IService<GoldRightDealConf> {
     /**
      * 获取所有的理财产品并分页
@@ -12,7 +14,7 @@ public interface GoldRightDealConfService extends IService<GoldRightDealConf> {
      * @param pageSize 每页显示多少条
      * @return PageInfo
      */
-    PageInfo<GoldRightDealConf> getAllGoldRight(Integer pageNum, Integer pageSize);
+    PageInfo<Map<String, Object>> getAllGoldRight(Integer pageNum, Integer pageSize);
 
     /**
      * 根据id修改金权规则

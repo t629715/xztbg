@@ -94,7 +94,7 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 			users.setUserName(phone);
 			users.setCreateTime(new Date());
 			users.setUpdateTime(new Date());
-			users.setStatus("0");
+			users.setStatus("1");
 			msg=usersMapper.insertUsers(users);
 			if(msg>0&&rids!=null&&!rids.isEmpty()){
 				Integer uid = users.getId().intValue();

@@ -31,14 +31,15 @@ public class GoldRightDealConfServiceImpl extends BaseService<GoldRightDealConf>
      * @return
      */
     @Override
-    public PageInfo<GoldRightDealConf> getAllGoldRight(Integer pageNum, Integer pageSize) {
+    public PageInfo<Map<String, Object>> getAllGoldRight(Integer pageNum, Integer pageSize) {
         logger.debug("查询所有金权规则信息");
         PageHelper.startPage(pageNum,pageSize,true);
-        List<GoldRightDealConf> goldRightDealConfs = goldRightDealConfMapper.selectAll();
-        System.out.println(
-                goldRightDealConfs
-        );
-        return new PageInfo<GoldRightDealConf>(goldRightDealConfs);
+        List<Map<String, Object>> goldRightDealConfs = goldRightDealConfMapper.selectAll();
+
+        for (Map m:goldRightDealConfs){
+            m.put("id",m.get("id").toString());
+        }
+        return new PageInfo<Map<String, Object>>(goldRightDealConfs);
     }
 
 
@@ -66,7 +67,7 @@ public class GoldRightDealConfServiceImpl extends BaseService<GoldRightDealConf>
         Map map = new HashMap();
         map.put("id",id);//产品id
         map.put("name",name);//产品名字
-       /* map.put("contract",contract);//产品合约
+        map.put("contract",contract);//产品合约
         map.put("buyPercent",buyPercent);//买入金额
         map.put("pointCount",pointCount);//点差
         map.put("volatility",volatility);//最下小数波动
@@ -75,7 +76,7 @@ public class GoldRightDealConfServiceImpl extends BaseService<GoldRightDealConf>
         map.put("maxPositionCount",maxPositionCount);//最大建仓次数
         map.put("maxBuyCountPerDay",maxBuyCountPerDay);//
         map.put("stopProfitSet",stopProfitSet);//止盈设置
-        map.put("blowingUpSet",blowingUpSet);//止损设置*/
+        map.put("blowingUpSet",blowingUpSet);//止损设置
         int i = goldRightDealConfMapper.modifyGoldRightCong(map);
         if (i != 0){
             return true;

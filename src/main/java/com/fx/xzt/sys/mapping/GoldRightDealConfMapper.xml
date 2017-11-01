@@ -24,9 +24,9 @@
   </resultMap>
 
   <!--获取金权规则信息-start-tianliya-->
-  <select id="selectAll" resultMap="BaseResultMap">
-    SELECT id,contract,buy_percent,point_count,volatility,min_gram_per_order,max_gram_per_order,
-            stop_profit_set,blowing_up_set,max_position_count,max_buy_count_per_day,name
+  <select id="selectAll" resultType="java.util.Map">
+    SELECT id,contract,buy_percent buyPercent,point_count pointCount,volatility,min_gram_per_order minGramPerOrder,max_gram_per_order maxPerOrder,
+            stop_profit_set stopProfitSet,blowing_up_set blowingUpSet,max_position_count maxPositionCount,max_buy_count_per_day maxBuyCountPerDay,name
     FROM gold_right_deal_conf
     ORDER BY id
   </select>
@@ -39,7 +39,7 @@
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <!--<if test="contract != null" >
+      <if test="contract != null" >
         contract = #{contract,jdbcType=INTEGER},
       </if>
       <if test="buyPercent != null" >
@@ -86,7 +86,7 @@
       </if>
       <if test="dealTime != null" >
         deal_time = #{dealTime,jdbcType=VARCHAR},
-      </if>-->
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>

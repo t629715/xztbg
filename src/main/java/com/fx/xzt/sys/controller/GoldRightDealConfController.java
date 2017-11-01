@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 /**
  * @author tianliya
@@ -42,7 +43,7 @@ public class GoldRightDealConfController {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
-                PageInfo<GoldRightDealConf> pageInfo = goldRightDealConfService.getAllGoldRight(1,10);
+                PageInfo<Map<String, Object>> pageInfo = goldRightDealConfService.getAllGoldRight(1,10);
                 response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 response.setData(pageInfo);
                 response.setMsg("操作成功！");
@@ -66,7 +67,7 @@ public class GoldRightDealConfController {
 
     @RequestMapping(value = "/modifyGoldRightDealConf",method=RequestMethod.POST)
     @ResponseBody
-    public Object modifyGoldRightDealConf(HttpServletRequest request, Long id, String name, Integer contract,
+    public Object modifyGoldRightDealConf(HttpServletRequest request, String id, String name, Integer contract,
                                     Float  buyPercent, Double pointCount, Double volatility,
                                     Integer minGramPerOrder, Integer maxGramPerOrder, Integer maxPositionCount,
                                     Integer maxBuyCountPerDay, Double stopProfitSet, Integer blowingUpSet) {
@@ -76,7 +77,8 @@ public class GoldRightDealConfController {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
-                Boolean b = goldRightDealConfService.updateByPrimaryKey(id, name, contract,
+                Long ids = new Long(id);
+                Boolean b = goldRightDealConfService.updateByPrimaryKey(ids, name, contract,
                          buyPercent, pointCount, volatility,
                          minGramPerOrder, maxGramPerOrder, maxPositionCount,
                          maxBuyCountPerDay, stopProfitSet, blowingUpSet);
