@@ -59,7 +59,7 @@ public class RealGoldOrderController {
             if (users != null) {
                 String agentNameStr = agentName;
                 if (users.getPid() != null &&  users.getPid() == 1) {
-                    agentNameStr = users.getUserName();
+                    agentNameStr = users.getId().toString();
                 }
                 PageInfo<Map<String, Object>> pageInfo = realGoldOrderService.selectByRealGoldOrder(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
@@ -107,7 +107,7 @@ public class RealGoldOrderController {
             if (users != null) {
                 String agentNameStr = agentName;
                 if (users.getPid() != null &&  users.getPid() == 1) {
-                    agentNameStr = users.getUserName();
+                    agentNameStr = users.getId().toString();
                 }
                 List<Map<String, Object>> list = realGoldOrderService.excelRealGoldOrder(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName);
                 if (list != null && list.size() > 0) {
@@ -151,11 +151,23 @@ public class RealGoldOrderController {
     public Object selectByRealGoldCount(HttpServletRequest request, String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName) {
         CommonResponse cr = new CommonResponse();
         try {
-            Map<String,Object> map = new HashMap<String,Object>();
-            map = realGoldOrderService.selectByRealGoldCount(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentName, brokerName);
-            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
-            cr.setData(map);
-            cr.setMsg("操作成功！");
+        	HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            if (users != null) {
+                String agentNameStr = agentName;
+                if (users.getPid() != null &&  users.getPid() == 1) {
+                    agentNameStr = users.getId().toString();
+                }
+                Map<String,Object> map = new HashMap<String,Object>();
+                map = realGoldOrderService.selectByRealGoldCount(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName);
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+                cr.setData(map);
+                cr.setMsg("操作成功！");
+            } else {
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("操作失败！");
+            }
         } catch (Exception e) {
             cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
             cr.setData("{}");

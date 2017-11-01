@@ -60,10 +60,10 @@
         and o.redeem_time &lt;=#{redeemEndTime,jdbcType=TIMESTAMP}
       </if>
       <if test="agentName != null and agentName !='' ">
-        and ua.id = #{agentName,jdbcType=VARCHAR}
+        and ua.id = #{agentName,jdbcType=BIGINT}
       </if>
       <if test="brokerName != null and brokerName !='' ">
-        and ub.id = #{brokerName,jdbcType=VARCHAR}
+        and ub.id = #{brokerName,jdbcType=BIGINT}
       </if>
       <if test="status != null and status !='' ">
         and o.status = #{status,jdbcType=INTEGER}
@@ -114,10 +114,10 @@
         and o.redeem_time &lt;=#{redeemEndTime,jdbcType=TIMESTAMP}
       </if>
       <if test="agentName != null and agentName !='' ">
-        and ua.id = #{agentName,jdbcType=VARCHAR}
+        and ua.id = #{agentName,jdbcType=BIGINT}
       </if>
       <if test="brokerName != null and brokerName !='' ">
-        and ub.id = #{brokerName,jdbcType=VARCHAR}
+        and ub.id = #{brokerName,jdbcType=BIGINT}
       </if>
       <if test="status != null and status !='' ">
         and o.status = #{status,jdbcType=INTEGER}
@@ -174,10 +174,10 @@
         and o.redeem_time &lt;=#{redeemEndTime,jdbcType=TIMESTAMP}
       </if>
       <if test="agentName != null and agentName !='' ">
-        and ua.id = #{agentName,jdbcType=VARCHAR}
+        and ua.id = #{agentName,jdbcType=BIGINT}
       </if>
       <if test="brokerName != null and brokerName !='' ">
-        and ub.id = #{brokerName,jdbcType=VARCHAR}
+        and ub.id = #{brokerName,jdbcType=BIGINT}
       </if>
       <if test="status != null and status !='' ">
         and o.status = #{status,jdbcType=INTEGER}
@@ -228,10 +228,10 @@
         and o.redeem_time &lt;=#{redeemEndTime,jdbcType=TIMESTAMP}
       </if>
       <if test="agentName != null and agentName !='' ">
-        and ua.id = #{agentName,jdbcType=VARCHAR}
+        and ua.id = #{agentName,jdbcType=BIGINT}
       </if>
       <if test="brokerName != null and brokerName !='' ">
-        and ub.id = #{brokerName,jdbcType=VARCHAR}
+        and ub.id = #{brokerName,jdbcType=BIGINT}
       </if>
       <if test="status != null and status !='' ">
         and o.status = #{status,jdbcType=INTEGER}

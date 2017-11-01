@@ -61,7 +61,7 @@ public class DealOrderController {
             if (users != null) {
                 String agentNameStr = agentName;
                 if (users.getPid() != null &&  users.getPid() == 1) {
-                    agentNameStr = users.getUserName();
+                    agentNameStr = users.getId().toString();
                 }
                 PageInfo<Map<String, Object>> pageInfo = dealOrderService.selectByDealOrder(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName, orderState, isUseCard, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
@@ -109,7 +109,7 @@ public class DealOrderController {
             if (users != null) {
                 String agentNameStr = agentName;
                 if (users.getPid() != null &&  users.getPid() == 1) {
-                    agentNameStr = users.getUserName();
+                    agentNameStr = users.getId().toString();
                 }
                 List<Map<String, Object>> list = dealOrderService.excelDealOrderMessage(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName, orderState, isUseCard);
                 if (list != null && list.size() > 0) {
@@ -185,7 +185,7 @@ public class DealOrderController {
             if (users != null) {
                 String agentNameStr = agentName;
                 if (users.getPid() != null &&  users.getPid() == 1) {
-                    agentNameStr = users.getUserName();
+                    agentNameStr = users.getId().toString();
                 }
                 Map<String, Object> map = new HashMap<String, Object>();
                 map = dealOrderService.selectByDealOrderCount(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName, orderState, isUseCard);
