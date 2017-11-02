@@ -237,5 +237,27 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		return msg;
 	}
 
+	/**
+	 * 小象视角-查询
+	 * @param
+	 * @param startTime
+	 * @param endTime
+	 * @return
+	 */
+	@Override
+	public PageInfo<Map<String, Object>> sightOfElephant(Long id , Long  pid,
+														 String startTime, String endTime,
+														 Integer pageNum, Integer pageSize) {
+		Map map = new HashMap();
+		map.put("id",id);
+		map.put("pid",pid);
+		map.put("startTime",startTime);
+		map.put("endTime",endTime);
+		PageHelper.startPage(pageNum,pageSize);
+		List list  = usersMapper.getByAgentNameAndType(map);
+		PageInfo pageInfo = new PageInfo(list);
+		return pageInfo;
+	}
+
 
 }

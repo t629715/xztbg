@@ -32,7 +32,7 @@
         and operator = #{operator,jdbcType=VARCHAR}
       </if>
     </where>
-    ORDER BY releasetime desc
+    ORDER BY createtime desc
   </select>
   <!--获取所有的黄金课堂-tianliya-end-->
 

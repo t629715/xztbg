@@ -248,22 +248,44 @@ public class UserController {
 				}
 				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 			}
-			/*int i = userService.insertAgent(usersInfo);
-			if (i != 0){
-				cr.setData(i);
-				cr.setMsg("操作成功！");
-			}
-			else{
-				cr.setData(i);
-				cr.setMsg("操作失败！");
-			}
-			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
-			*/
 		} catch (Exception e) {
 			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
 			cr.setData("{}");
 			cr.setMsg("操作失败！");
 			throw e;
+		}
+		return cr;
+	}
+
+	/**
+	 * 小象视角 - 查询  tianliya
+	 * @param request
+	 * @param startTime
+	 * @param endTime
+	 * @param pageNum
+	 * @param pageSize
+	 * @return
+	 */
+	@RequestMapping(value="/sightOfElephant")
+	@ResponseBody
+	public Object sightOfsightOfElephant(HttpServletRequest request, Long agentName ,Long brokerName, String startTime, String endTime, Integer pageNum, Integer pageSize){
+		CommonResponse cr = new CommonResponse();
+		try {
+			HttpSession httpSession = request.getSession();
+			Users users = (Users) httpSession.getAttribute("currentUser");
+			if (users != null){
+				PageInfo<Map<String, Object>> list = userService.sightOfElephant(brokerName,agentName,startTime,endTime,pageNum,pageSize);
+				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+				cr.setData(list);
+				cr.setMsg("操作成功！");
+			}
+
+		} catch (Exception e) {
+			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+			cr.setData("{}");
+			cr.setMsg("操作失败！");
+			throw e;
+			// e.printStackTrace();
 		}
 		return cr;
 	}

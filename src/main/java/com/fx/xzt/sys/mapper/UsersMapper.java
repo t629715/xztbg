@@ -58,4 +58,11 @@ public interface UsersMapper extends BaseMapper<Users>{
 	 */
 	Map<String, Object> getOneByUserId(Long userId);
 
+	/**
+	 * 根据代理商名字，经纪人名字、创建时间、类型查询 tianliya
+	 * @param map
+	 * @return
+	 */
+	List<Map<String, Object>> getByAgentNameAndType(Map<String, Object> map);
+
 }

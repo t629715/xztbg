@@ -13,7 +13,7 @@
   </resultMap>
   <!--获取希欧德详情-tianliya-start-->
   <select id="selectByInfoXioude" resultType="java.util.Map" parameterType="java.util.Map" >
-    select info_id as infoId, title, createtime, releasetime, state, operator
+    select info_id as infoId, title, createtime, releasetime, state, operator, contentpath, imagepath
     from info_xioude
     <where>
       <if test="title != null and title !='' ">
@@ -32,7 +32,7 @@
         and operator = #{operator,jdbcType=VARCHAR}
       </if>
     </where>
-    order by releasetime desc
+    order by createtime desc
   </select>
   <!--获取希欧德详情-tianliya-end-->
 
@@ -61,6 +61,9 @@
       <if test="operator != null" >
         operator = #{operator,jdbcType=VARCHAR},
       </if>
+      <if test="releasetime != null" >
+        releasetime = #{releasetime,jdbcType=VARCHAR},
+      </if>
     </set>
     where info_id = #{infoId,jdbcType=BIGINT}
   </update>
@@ -78,4 +81,60 @@
   <select id="selectOperators" resultType="java.util.Map">
     SELECT DISTINCT(operator) from info_xioude
   </select>
+
+  <insert id="releaseXioude" parameterType="java.util.Map">
+    insert into info_xioude
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="infoId != null" >
+        info_id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="contentpath != null" >
+        contentpath,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="releasetime != null" >
+        releasetime,
+      </if>
+      <if test="imagepath != null" >
+        imagepath,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="infoId != null" >
+        #{infoId,jdbcType=BIGINT},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="contentpath != null" >
+        #{contentpath,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="releasetime != null" >
+        #{releasetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="imagepath != null" >
+        #{imagepath,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=SMALLINT},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
 </mapper>

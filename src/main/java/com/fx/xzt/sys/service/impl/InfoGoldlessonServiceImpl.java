@@ -90,7 +90,10 @@ public class InfoGoldlessonServiceImpl extends BaseService<InfoGoldlesson> imple
         map.put("infoId",infoId);
         map.put("imagePath",imagePath);
         map.put("contentPath",contentPath);
-        map.put("releasetime",new Date());
+        if (state==1){
+            map.put("releasetime",new Date());
+        }
+
         DateUtil.convertTimeMillisToDate(new Date().getTime());
 
         return infoGoldlessonMapper.edit(map);

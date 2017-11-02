@@ -83,4 +83,13 @@ public interface UsersService extends IService<Users>{
 	 */
 	public int insertAgent(Users usersInfo);
 
+	/**
+	 * 小象视角-查询
+	 * @param
+	 * @param startTime
+	 * @param endTime
+	 * @return
+	 */
+	PageInfo<Map<String, Object>> sightOfElephant(Long  id,Long pid,String startTime, String endTime, Integer pageNum, Integer pageSize);
+
 }

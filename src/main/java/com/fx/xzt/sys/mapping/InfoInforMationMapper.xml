@@ -19,7 +19,7 @@
   <!--获取满足条件的咨询信息 -tianliya-start-->
   <select id="getByAll" resultType="java.util.Map" parameterType="java.util.Map" >
   	select info_id as infoId, title, state, createtime, releasetime, operator, contentpath contentPath,
-            content_from_type contentFromType,information_from informationFrom, imagepath imagePath
+            content_from_type contentFromType,information_from informationFrom, imagepath imagePath, state
     from info_information
     <where>
 	    <if test="title != null and title !='' ">
@@ -38,73 +38,9 @@
 			and operator = #{operator,jdbcType=VARCHAR}
 		</if>
     </where>
-    order by  releasetime desc
+    order by  createtime desc
   </select>
   <!--获取满足条件的咨询信息 -tianliya-end-->
-
-    <!--<insert id="posted" parameterType="com.fx.xzt.sys.entity.InfoInforMation" useGeneratedKeys="true" keyProperty="SerialNo">
-    insert into Info_Information
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="title != null" >
-        Title,
-      </if>
-      <if test="contentpath != null" >
-        ContentPath,
-      </if>
-      <if test="contentfromtype != null" >
-        ContentFromType,
-      </if>
-      <if test="informationfrom != null" >
-        InformationFrom,
-      </if>
-      <if test="createtime != null" >
-        CreateTime,
-      </if>
-      <if test="releasetime != null" >
-        ReleaseTime,
-      </if>
-      <if test="state != null" >
-        State,
-      </if>
-      <if test="operator != null" >
-        Operator,
-      </if>
-      <if test="topState != null" >
-        TopState,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="title != null" >
-        #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="contentpath != null" >
-        #{contentpath,jdbcType=VARCHAR},
-      </if>
-      <if test="contentfromtype != null" >
-        #{contentfromtype,jdbcType=SMALLINT},
-      </if>
-      <if test="informationfrom != null" >
-        #{informationfrom,jdbcType=VARCHAR},
-      </if>
-      <if test="createtime != null" >
-        #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="releasetime != null" >
-        #{releasetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="state != null" >
-        #{state,jdbcType=SMALLINT},
-      </if>
-      <if test="operator != null" >
-        #{operator,jdbcType=VARCHAR},
-      </if>
-      <if test="topState != null" >
-        #{topState,jdbcType=SMALLINT},
-      </if>
-    </trim>
-  </insert>
-  -->
-
     <!--根据主键查询一条数据-tianliya-start-->
     <select id="getById" resultType="java.util.Map" parameterType="java.lang.Long" >
         select info_id as infoId, title, contentpath as contentPath, content_from_type as contentFromType,
@@ -131,6 +67,9 @@
       </if>
       <if test="contentpath != null" >
           contentpath = #{contentpath,jdbcType=VARCHAR},
+      </if>
+        <if test="imagepath != null" >
+            imagepath = #{imagepath,jdbcType=VARCHAR},
       </if>
       <if test="contentFromType != null" >
         content_from_type = #{contentFromType,jdbcType=SMALLINT},
@@ -159,17 +98,6 @@
     <!--编辑-tianiya-end-->
 
     <!--发布资讯-tianliya-start-->
-    <!--<insert id="posted" parameterType="com.fx.xzt.sys.entity.InfoInformation">
-      insert into info_information (info_id, title, contentpath,
-                                      content_from_type, information_from, createtime,
-                                      releasetime, imagepath, state,
-                                      operator)
-      values (#{infoId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{contentpath,jdbcType=VARCHAR},
-              #{contentFromType,jdbcType=SMALLINT}, #{informationFrom,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP},
-              #{releasetime,jdbcType=TIMESTAMP}, #{imagepath,jdbcType=VARCHAR}, #{state,jdbcType=SMALLINT},
-              #{operator,jdbcType=VARCHAR})
-    </insert>-->
-
     <insert id="posted" parameterType="com.fx.xzt.sys.entity.InfoInformation" >
         insert into info_information
         <trim prefix="(" suffix=")" suffixOverrides="," >
