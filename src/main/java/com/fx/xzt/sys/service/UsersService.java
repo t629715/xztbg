@@ -94,4 +94,13 @@ public interface UsersService extends IService<Users>{
 	 */
 	List<Map<String,Object>> selectByChannelMessage();
 
+	/**
+	 * 小象视角-查询
+	 * @param
+	 * @param startTime
+	 * @param endTime
+	 * @return
+	 */
+	PageInfo<Map<String, Object>> sightOfElephant(Long  id,Long pid,String startTime, String endTime, Integer pageNum, Integer pageSize);
+
 }

@@ -38,10 +38,10 @@
     <!--获取用于广告的图片-start-tianliya-->
     <select id="selectAdPic" resultType="java.util.Map" parameterType="java.lang.Short" >
 
-        select SortNo,SerialNo,Page,PicturePath,SkipPath,CreateTime,SkipType
+        select SortNo,SerialNo,Page,PicturePath,SkipPath,CreateTime,SkipType,AppID,Description
         from Info_Banner
         WHERE Page = #{page,jdbcType=SMALLINT} AND valid = 1
-        order by SortNo DESC
+        order by CreateTime DESC
     </select>
     <!--获取用于广告的图片-end-tianliya-->
 

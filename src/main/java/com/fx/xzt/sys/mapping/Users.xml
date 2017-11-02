@@ -202,6 +202,29 @@
     </select>
     <!--获取渠道商列表结束-->
 
+    <!--根据代理商名字，经纪人名字、创建时间、类型查询 tianliya start-->
+        <select id="getByAgentNameAndType" resultType="java.util.Map" parameterType="java.util.Map">
+            select u1.id id , u1.user_name userName,u1.pid, u1.phone phone,u1.create_time createTime,u2.user_name agentName
+            from users u1
+            left join users u2
+            on u1.pid=u2.id
+            <where>
+                <if test="pid != null and pid != ''">
+                    and u2.id=#{pid,jdbcType=BIGINT}
+                </if>
+                <if test="id != null and id != ''">
+                    and u1.id=#{id,jdbcType=BIGINT}
+                </if>
+                <if test="startTime != null and startTime != ''">
+                    and u1.create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+                </if>
+                <if test="endTime != null and endTime != ''">
+                    and u1.create_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+                </if>
+            </where>
+        </select>
+    <!--根据代理商名字，经纪人名字、创建时间、类型查询 tianliya end-->
+>>>>>>> branch 'master' of http://houtingting@192.168.0.181:10101/r/jfxx/xztbg.git
 
 
 </mapper>

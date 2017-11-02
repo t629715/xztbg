@@ -32,7 +32,7 @@
         and operator = #{operator,jdbcType=VARCHAR}
       </if>
     </where>
-    ORDER BY releasetime desc
+    ORDER BY createtime desc
   </select>
   <!--获取所有的黄金课堂-tianliya-end-->
 
@@ -95,9 +95,6 @@
   <insert id="posted" parameterType="com.fx.xzt.sys.entity.InfoGoldlesson">
     insert into info_goldlesson
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="infoId != null" >
-        info_id,
-      </if>
       <if test="title != null" >
         title,
       </if>
@@ -121,9 +118,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="infoId != null" >
-        #{infoId,jdbcType=BIGINT},
-      </if>
       <if test="title != null" >
         #{title,jdbcType=VARCHAR},
       </if>

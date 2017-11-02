@@ -173,9 +173,9 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
         map.put("gramUp",gramUp);
         //买跌持仓克重
         Long productIdDown = (Long) mapUp.get("productId");
-        goldRightDealConf.setId(productIdUp);
+        goldRightDealConf.setId(productIdDown);
         Integer contractDown = goldRightDealConfMapper.selectOne(goldRightDealConf).getContract();
-        Integer gramDown = handNumUp*contractDown;
+        Integer gramDown = handNumDown*contractDown;
         map.put("gramDown",gramDown);
         return map;
     }

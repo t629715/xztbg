@@ -65,10 +65,8 @@ public class InfoInforMationServiceImpl extends BaseService<InfoInformation> imp
 	 */
 	@Transactional
 	public int posted(InfoInformation i) {
-		i.setInfoId(new Long((int)(Math.random()*10000)));
-		i.setReleasetime(new Date());
 		i.setCreatetime(new Date());
-		i.setState((short)1);
+		i.setState((short)0);
 		//i.setTopState((short)0);
 		return infoInforMationMapper.posted(i);
 	}
@@ -77,7 +75,9 @@ public class InfoInforMationServiceImpl extends BaseService<InfoInformation> imp
 	}
 	@Transactional
 	public int edit(InfoInformation i) {
-
+		if (i.getState()==1){
+			i.setReleasetime(new Date());
+		}
 		return infoInforMationMapper.edit(i);
 	}
 	@Transactional

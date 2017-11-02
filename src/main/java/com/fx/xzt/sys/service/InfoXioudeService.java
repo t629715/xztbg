@@ -59,10 +59,9 @@ public interface InfoXioudeService extends IService<InfoXioude>{
 
     /**
      * 发布xioude  tianliya
-     * @param infoId
      * @return
      */
-    int releaseXioude(Long infoId, String operator);
+    int releaseXioude(String title,String contentPath,String imagePath, String operator);
 
     /**
      * 获取一条数据

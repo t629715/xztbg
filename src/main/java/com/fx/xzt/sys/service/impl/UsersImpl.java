@@ -9,8 +9,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 
-import com.fx.xzt.sys.util.DateUtil;
-import com.fx.xzt.sys.util.DateUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +18,8 @@ import com.fx.xzt.sys.mapper.UsersMapper;
 import com.fx.xzt.sys.model.UsersModel;
 import com.fx.xzt.sys.service.UsersService;
 import com.fx.xzt.sys.service.UsersUserRoleService;
+import com.fx.xzt.sys.util.DateUtil;
+import com.fx.xzt.sys.util.DateUtils;
 import com.fx.xzt.util.JsonUtils;
 import com.fx.xzt.util.MD5Utils;
 import com.github.pagehelper.PageHelper;
@@ -242,6 +242,27 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 	 */
 	public List<Map<String, Object>> selectByChannelMessage() {
 		return usersMapper.selectByChannelMessage();
+	}
+	
+	 /* 小象视角-查询
+	 * @param
+	 * @param startTime
+	 * @param endTime
+	 * @return
+	 */
+	@Override
+	public PageInfo<Map<String, Object>> sightOfElephant(Long id , Long  pid,
+														 String startTime, String endTime,
+														 Integer pageNum, Integer pageSize) {
+		Map map = new HashMap();
+		map.put("id",id);
+		map.put("pid",pid);
+		map.put("startTime",startTime);
+		map.put("endTime",endTime);
+		PageHelper.startPage(pageNum,pageSize);
+		List list  = usersMapper.getByAgentNameAndType(map);
+		PageInfo pageInfo = new PageInfo(list);
+		return pageInfo;
 	}
 
 

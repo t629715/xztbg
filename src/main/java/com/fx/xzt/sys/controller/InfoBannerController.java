@@ -40,6 +40,7 @@ public class InfoBannerController {
 			HttpSession httpSession = request.getSession();
 			Users users = (Users) httpSession.getAttribute("currentUser");
 			if (users != null) {
+				infoBanner.setOperator(users.getUserName());
 				int msg = infoBannerService.add(infoBanner);
 				response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 				response.setData(msg);
@@ -72,6 +73,7 @@ public class InfoBannerController {
 			HttpSession httpSession = request.getSession();
 			Users users = (Users) httpSession.getAttribute("currentUser");
 			if (users != null) {
+				infoBanner.setOperator(users.getUserName());
 				int msg = infoBannerService.edit(infoBanner);
 				response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 				response.setData(msg);

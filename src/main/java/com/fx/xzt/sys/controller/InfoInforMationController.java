@@ -148,6 +148,7 @@ public class InfoInforMationController {
 			HttpSession httpSession = request.getSession();
 			Users users = (Users) httpSession.getAttribute("currentUser");
 			if (users != null) {
+				infoInforMation.setOperator(users.getUserName());
 				int i = infoInforMationService.edit(infoInforMation);
 				if (i != 0){
 					response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);

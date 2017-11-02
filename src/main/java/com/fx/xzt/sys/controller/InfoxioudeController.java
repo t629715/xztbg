@@ -112,7 +112,6 @@ public class InfoxioudeController {
      * @param request
      * @param infoId
      * @param title
-     * @param operator
      * @param state
      * @return
      * @Author: tianliya
@@ -121,13 +120,14 @@ public class InfoxioudeController {
     */
     @RequestMapping(value="/modifyInfoXioude",method=RequestMethod.POST)
     @ResponseBody
-    public CommonResponse modifyInfoXioude(HttpServletRequest request, String title, Short state, String operator, Long infoId, String contentpath, String imagepath){
+    public CommonResponse modifyInfoXioude(HttpServletRequest request, String title, Short state, Long infoId, String contentPath, String imagePath){
         CommonResponse response = new CommonResponse();
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
-                int i = xioudeService.modifyXioude(title, state, operator, infoId,contentpath, imagepath);
+                String operator = users.getUserName();
+                int i = xioudeService.modifyXioude(title, state, operator, infoId,contentPath, imagePath);
                 if (i != 0){
                     response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                     response.setData(i);
@@ -195,18 +195,17 @@ public class InfoxioudeController {
     /**
      * 发布
      * @param request
-     * @param infoId
      * @return
      */
     @RequestMapping(value="/releaseXioude")
     @ResponseBody
-    public CommonResponse releaseXioude(HttpServletRequest request, Long infoId){
+    public CommonResponse releaseXioude(HttpServletRequest request, String title,String contentPath,String imagePath){
         CommonResponse response = new CommonResponse();
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
-                int i  = xioudeService.releaseXioude(infoId,users.getUserName());
+                int i  = xioudeService.releaseXioude(title,contentPath,imagePath,users.getUserName());
                 if (i != 0){
                     response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                     response.setData(i);

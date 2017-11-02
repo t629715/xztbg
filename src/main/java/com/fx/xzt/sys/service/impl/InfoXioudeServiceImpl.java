@@ -87,6 +87,10 @@ public class InfoXioudeServiceImpl extends BaseService<InfoXioude> implements In
         map.put("infoId",infoId);
         map.put("contentpath",contentpath);
         map.put("imagepath",imagepath);
+        if (state==1){
+            map.put("releasetime",new Date());
+        }
+
         return infoXioudeMapper.edit(map);
     }
 
@@ -105,14 +109,18 @@ public class InfoXioudeServiceImpl extends BaseService<InfoXioude> implements In
 
     /**
      * 发布xioude  tianliya
-     * @param infoId
      * @return
      */
     @Override
-    public int releaseXioude(Long infoId, String operator) {
+    public int releaseXioude(String title,String contentPath,String imagePath, String operator) {
         Map map = new HashMap();
-        map.put("infoId",infoId);
+        map.put("title",title);
+        map.put("contentpath",contentPath);
+        map.put("imagepath",imagePath);
         map.put("operator",operator);
+        map.put("state",0);
+        map.put("createtime",new Date());
+
         return infoXioudeMapper.releaseXioude(map);
     }
 

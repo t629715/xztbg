@@ -90,7 +90,10 @@ public class InfoGoldlessonServiceImpl extends BaseService<InfoGoldlesson> imple
         map.put("infoId",infoId);
         map.put("imagePath",imagePath);
         map.put("contentPath",contentPath);
-        map.put("releasetime",new Date());
+        if (state==1){
+            map.put("releasetime",new Date());
+        }
+
         DateUtil.convertTimeMillisToDate(new Date().getTime());
 
         return infoGoldlessonMapper.edit(map);
@@ -116,7 +119,6 @@ public class InfoGoldlessonServiceImpl extends BaseService<InfoGoldlesson> imple
      */
     @Transactional
     public int posted(InfoGoldlesson infoGoldlesson) {
-        infoGoldlesson.setInfoId(new Long((int)(Math.random() * 10000)));
         short s = 0;
         infoGoldlesson.setState(s);
         infoGoldlesson.setCreatetime(new Date());
