@@ -67,7 +67,7 @@
 	<select id="getByAccountMessage" resultType="java.util.Map"
 		parameterType="java.util.Map">
 		SELECT u.UserID AS userId,l.UserName AS userName,l.Status AS
-		STATUS,u.RealName,
+		STATUS,u.RealName,u.RegisterTime registerTime,
 		u.agent_id AS agentId, ua.user_name AS agentName, u.broker_id AS brokerId,
 		u1.user_name AS brokerName ,
 		u.IDCard AS idcard,b.BankName AS bankName,ub.AccountNum AS accountNum,
@@ -89,11 +89,11 @@
 			<if test="userName != null and userName != '' ">
 				and l.UserName = #{userName,jdbcType=VARCHAR}
 			</if>
-			<if test="agentName != null and agentName !='' ">
-				and ua.user_name = #{agentName,jdbcType=VARCHAR}
+			<if test="agentsName != null and agentsName !='' ">
+				and ua.id = #{agentsName,jdbcType=VARCHAR}
 			</if>
 			<if test="brokerName != null and brokerName !='' ">
-				and u.user_name = #{brokerName,jdbcType=VARCHAR}
+				and u1.id = #{brokerName,jdbcType=VARCHAR}
 			</if>
 			<if test="startTime !=null and startTime !='' ">
 				and u.RegisterTime &gt;=#{startTime,jdbcType=TIMESTAMP}
@@ -122,11 +122,11 @@
 			<if test="userName != null and userName != '' ">
 				and l.UserName = #{userName,jdbcType=VARCHAR}
 			</if>
-			<if test="agentName != null and agentName !='' ">
-				and ua.user_name = #{agentName,jdbcType=VARCHAR}
+			<if test="agentsName != null and agentsName !='' ">
+				and ua.id = #{agentsName,jdbcType=VARCHAR}
 			</if>
 			<if test="brokerName != null and brokerName !='' ">
-				and ub.user_name = #{brokerName,jdbcType=VARCHAR}
+				and ub.id = #{brokerName,jdbcType=VARCHAR}
 			</if>
 			<if test="startTime !=null and startTime !='' ">
 				and u.RegisterTime &gt;=#{startTime,jdbcType=TIMESTAMP}

@@ -25,7 +25,7 @@
 		<where>
 			and u.Status = 1
 			<if test="userName != null and userName != '' ">
-				and u.userName = #{userName,jdbcType=VARCHAR}
+				and u.UserName = #{userName,jdbcType=VARCHAR}
 			</if>
 			<if test="orderNo != null and orderNo != '' ">
 				and o.order_no = #{orderNo,jdbcType=VARCHAR}
@@ -64,7 +64,7 @@
 		<where>
 			and u.Status = 1
 			<if test="userName != null and userName != '' ">
-				and u.userName = #{userName,jdbcType=VARCHAR}
+				and u.UserName = #{userName,jdbcType=VARCHAR}
 			</if>
 			<if test="orderNo != null and orderNo != '' ">
 				and o.order_no = #{orderNo,jdbcType=VARCHAR}

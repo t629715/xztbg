@@ -267,4 +267,32 @@ public class UserController {
 		}
 		return cr;
 	}
+	
+	/**
+	 * 
+	* @Title: selectByChannelMessage 
+	* @Description: TODO
+	* @return    设定文件 
+	* @return Object    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	@RequestMapping(value="/selectByChannelMessage")
+	@ResponseBody
+	public Object selectByChannelMessage(){
+		CommonResponse cr = new CommonResponse();
+        try {
+        	List<Map<String, Object>> list = userService.selectByChannelMessage();
+        	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+            cr.setData(list);
+            cr.setMsg("操作成功！");
+        } catch (Exception e) {
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("操作失败！");
+            throw e;
+            // e.printStackTrace();
+        }
+        return cr;
+	}
 }

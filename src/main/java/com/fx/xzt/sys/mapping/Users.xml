@@ -196,6 +196,11 @@
     </select>
     <!--获取当前用户 tianliya end结束-->
 
+	<!--获取渠道商列表开始-->
+    <select id="selectByChannelMessage" resultType="java.util.Map">
+      SELECT id,user_name channelName FROM users WHERE STATUS=1 AND pid=-1 ORDER  by create_time desc
+    </select>
+    <!--获取渠道商列表结束-->
 
 
 

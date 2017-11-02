@@ -82,5 +82,16 @@ public interface UsersService extends IService<Users>{
 	 * @Date:11:15 2017/10/21
 	 */
 	public int insertAgent(Users usersInfo);
+	
+	/**
+	 * 
+	* @Title: selectByChannelMessage 
+	* @Description: 获取渠道商数据
+	* @return    设定文件 
+	* @return List<Map<String,Object>>    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	List<Map<String,Object>> selectByChannelMessage();
 
 }

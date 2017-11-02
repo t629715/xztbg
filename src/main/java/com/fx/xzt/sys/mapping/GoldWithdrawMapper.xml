@@ -1,24 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fx.xzt.sys.mapper.GoldWithdrawMapper">
-	<resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.GoldWithdraw">
-		<id column="id" jdbcType="BIGINT" property="id" />
-	    <result column="user_id" jdbcType="BIGINT" property="userId" />
-	    <result column="type" jdbcType="SMALLINT" property="type" />
-	    <result column="amount" jdbcType="REAL" property="amount" />
-	    <result column="fee" jdbcType="INTEGER" property="fee" />
-	    <result column="insurance" jdbcType="INTEGER" property="insurance" />
-	    <result column="logistics_fee" jdbcType="INTEGER" property="logisticsFee" />
-	    <result column="apply_time" jdbcType="TIMESTAMP" property="applyTime" />
-	    <result column="send_time" jdbcType="TIMESTAMP" property="sendTime" />
-	    <result column="status" jdbcType="SMALLINT" property="status" />
-	    <result column="logistics_no" jdbcType="VARCHAR" property="logisticsNo" />
-	    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-	</resultMap>
 	
 	<!--黄金提取查询开始-htt-->
 	<select id="selectByGoldWithdraw" resultType="java.util.Map" parameterType="java.util.Map">
-	    SELECT w.id id, w.user_id userId, w.type type, w.amount amount, w.fee fee, w.insurance insurance, w.logistics_fee logisticsFee, 
+	    SELECT CAST(w.id AS CHAR) id, w.user_id userId, w.type type, w.amount amount, w.fee fee, w.insurance insurance, w.logistics_fee logisticsFee, 
 		w.apply_time applyTime, w.send_time sendTime, w.status status, w.logistics_no logisticsNo, w.update_time updateTime,
 		u.UserName userName, i.agent_id AS agentId, ua.user_name AS agentName, i.broker_id AS brokerId, ub.user_name AS brokerName,
 		a.contact_name contactName, a.contact_phone contactPhone, a.delivery_address deliveryAddress
@@ -40,10 +26,10 @@
 	        and w.apply_time &lt;=#{endTime,jdbcType=TIMESTAMP}
 	      </if>
 	       <if test="agentName != null and agentName !='' ">
-	        and ua.user_name = #{agentName,jdbcType=VARCHAR}
+	        and ua.id = #{agentName,jdbcType=BIGINT}
 	      </if>
 	      <if test="brokerName != null and brokerName !='' ">
-	        and ub.user_name = #{brokerName,jdbcType=VARCHAR}
+	        and ub.id = #{brokerName,jdbcType=BIGINT}
 	      </if>
 	      <if test="status != null and status !='' ">
 	        and w.status = #{status,jdbcType=INTEGER}

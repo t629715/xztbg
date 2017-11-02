@@ -19,6 +19,7 @@ import com.fx.xzt.sys.service.GoldWithdrawService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
 import com.fx.xzt.sys.util.DateUtil;
+import com.fx.xzt.sys.util.StringUtil;
 import com.fx.xzt.util.POIUtils;
 import com.github.pagehelper.PageInfo;
 
@@ -200,7 +201,7 @@ public class GoldWithdrawController {
 	 */
 	@RequestMapping(value="/addLogisticsNoById")
     @ResponseBody
-    public Object addLogisticsNoById(HttpServletRequest request, @RequestParam String logisticsNo, @RequestParam Short status, @RequestParam Long id) {
+    public Object addLogisticsNoById(HttpServletRequest request, @RequestParam String logisticsNo, @RequestParam Short status, @RequestParam String id) {
         CommonResponse cr = new CommonResponse();
         cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
         cr.setMsg("操作失败！");
@@ -208,8 +209,8 @@ public class GoldWithdrawController {
         	HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
         	if (users != null) {
-        		if (logisticsNo != null && !logisticsNo.equals("") && logisticsNo.length() > 0 && id > 0 && status > 0) {
-                    int flag = goldWithdrawService.addLogisticsNoById(logisticsNo, status, DateUtil.convertDateToString("yyyy-MM-dd HH:mm:ss"), id);
+        		if (StringUtil.isNotEmpty(logisticsNo) && StringUtil.isNotEmpty(id)&& status > 0) {
+                    int flag = goldWithdrawService.addLogisticsNoById(logisticsNo, status, DateUtil.convertDateToString("yyyy-MM-dd HH:mm:ss"), Long.parseLong(id));
                     if (flag > 0) {
                         cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);
                         cr.setMsg("操作成功！");
@@ -218,7 +219,7 @@ public class GoldWithdrawController {
         	} else {
         		cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 cr.setData("{}");
-                cr.setMsg("操作失败！");
+                cr.setMsg("无操作权限！");
         	}
         } catch (Exception e) {
             throw e;
@@ -240,7 +241,7 @@ public class GoldWithdrawController {
 	 */
 	@RequestMapping(value="/updateLogisticsNoById")
     @ResponseBody
-    public Object updateLogisticsNoById(HttpServletRequest request, @RequestParam String logisticsNo, @RequestParam Long id) {
+    public Object updateLogisticsNoById(HttpServletRequest request, @RequestParam String logisticsNo, @RequestParam String id) {
         CommonResponse cr = new CommonResponse();
         cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
         cr.setMsg("操作失败！");
@@ -248,8 +249,8 @@ public class GoldWithdrawController {
         	HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
         	if (users != null) {
-        		if (logisticsNo != null && !logisticsNo.equals("") && logisticsNo.length() > 0 && id > 0) {
-                    int flag = goldWithdrawService.updateLogisticsNoById(logisticsNo, DateUtil.convertDateToString("yyyy-MM-dd HH:mm:ss"), id);
+        		if (StringUtil.isNotEmpty(logisticsNo) && StringUtil.isNotEmpty(id)) {
+                    int flag = goldWithdrawService.updateLogisticsNoById(logisticsNo, DateUtil.convertDateToString("yyyy-MM-dd HH:mm:ss"), Long.parseLong(id));
                     if (flag > 0) {
                         cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);
                         cr.setMsg("操作成功！");

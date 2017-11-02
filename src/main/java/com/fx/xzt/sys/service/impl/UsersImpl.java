@@ -237,5 +237,12 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		return msg;
 	}
 
+	/**
+	 * 获取渠道商数据
+	 */
+	public List<Map<String, Object>> selectByChannelMessage() {
+		return usersMapper.selectByChannelMessage();
+	}
+
 
 }
