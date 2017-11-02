@@ -119,7 +119,6 @@ public class InfoGoldlessonServiceImpl extends BaseService<InfoGoldlesson> imple
      */
     @Transactional
     public int posted(InfoGoldlesson infoGoldlesson) {
-        infoGoldlesson.setInfoId(new Long((int)(Math.random() * 10000)));
         short s = 0;
         infoGoldlesson.setState(s);
         infoGoldlesson.setCreatetime(new Date());
