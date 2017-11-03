@@ -107,7 +107,7 @@ public class GoldRightDealConfController {
                     String goldRightConf = JsonUtils.toJSONString(goldRightDealConf);
                     System.out.println(key+"---------"+goldRightConf);
                     System.out.println(redisService.get(key));
-                    //redisService.put(key,goldRightConf);
+                    redisService.put(key,goldRightConf);
                     System.out.println(redisService.get(key));
                     response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                     response.setData(b);
