@@ -224,7 +224,7 @@
             </where>
         </select>
     <!--根据代理商名字，经纪人名字、创建时间、类型查询 tianliya end-->
->>>>>>> branch 'master' of http://houtingting@192.168.0.181:10101/r/jfxx/xztbg.git
+
 
 
 </mapper>

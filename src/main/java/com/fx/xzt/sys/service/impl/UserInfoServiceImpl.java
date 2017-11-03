@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.crypto.MacSpi;
 
 import org.springframework.stereotype.Service;
 
@@ -110,6 +111,9 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		map.put("applyTimeEnd", applyTimeEnd);
 		PageHelper.startPage(pageNum,pageSize);
 		List<Map<String, Object>> list = userInfoMapper.getByRealNameAuth(map);
+		for (Map m:list){
+			m.put("UserID", m.get("UserID").toString());
+		}
 		PageInfo<Map<String, Object>> pagehelper = new PageInfo<Map<String, Object>>(list);
 		return pagehelper;
 	}
