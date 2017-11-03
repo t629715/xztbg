@@ -16,14 +16,14 @@ public interface FinanceConfService extends IService<FinanceConf> {
      * @param pageSize 每页显示多少条
      * @return PageInfo
      */
-    PageInfo<Map<String,Object>> getFinanceConfs(Integer pageNum, Integer pageSize);
+    PageInfo<FinanceConf> getFinanceConfs(Integer pageNum, Integer pageSize);
 
     /**
      * 根据产品编号删除产品
      * @param id 产品主键
      * @return Boolean
      */
-    Boolean removeFinanceConfById(Long id, Integer Type);
+    Boolean removeFinanceConfById(Long id);
 
     /**
      * 根据id修改产品信息
@@ -40,5 +40,5 @@ public interface FinanceConfService extends IService<FinanceConf> {
      */
     Boolean modifyFinanceConf(Integer id, String productNo, String productName,
                               Float yearIncomPercent, Integer cycle, Float minMoney,
-                              Integer calcMethod, Short redeemMethod, Short settleMethod,Integer type);
+                              Integer calcMethod, Short redeemMethod, Short settleMethod);
 }

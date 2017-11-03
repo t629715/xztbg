@@ -19,7 +19,7 @@ public interface FinanceConfMapper extends BaseMapper<FinanceConf>{
      * 获取所有的理财产品
      * @return list
      */
-    List<Map<String,Object>> selectFinanceConfs();
+    List<FinanceConf> selectFinanceConfs();
 
     /**
      * 根据产品编号删除产品
@@ -27,12 +27,6 @@ public interface FinanceConfMapper extends BaseMapper<FinanceConf>{
      * @return int
      */
     int deleteFinanceConfById(Long id);
-    /**
-     * 根据产品编号删除产品
-     * @param id
-     * @return int
-     */
-    int deleteFinanceConfEarnById(Long id);
 
     /**
      * 根据id修改理财产品
@@ -40,10 +34,4 @@ public interface FinanceConfMapper extends BaseMapper<FinanceConf>{
      * @return
      */
     int modifyFinanceConf(Map map);
-    /**
-     * 根据id修改黄金稳赚
-     * @param map
-     * @return
-     */
-    int modifyFinanceConfEarn(Map map);
 }

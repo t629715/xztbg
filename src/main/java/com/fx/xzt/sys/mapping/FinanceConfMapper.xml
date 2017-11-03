@@ -17,73 +17,18 @@
   </resultMap>
 
   <!--获取所有的理财产品-->
-  <select id="selectFinanceConfs" resultType="java.util.Map">
-    select t1.*
-    from
-      (select id,product_no productNo, product_name productName,cycle,type,
-                  year_incom_percent yearIncomPercent,min_money minMoney,
-                  calc_method calcMethod,redeem_method redeemMethod,settle_method settleMethod
-      from finance_conf
-      union all
-      select id,product_no productNo, product_name productName,cycle,type,
-                  year_incom_percent yearIncomPercent,min_money minMoney,
-                  calc_method calcMethod,redeem_method redeemMethod,settle_method settleMethod
-      from finance_conf_goldearn ) t1
-    order by id
+  <select id="selectFinanceConfs" resultMap="BaseResultMap">
+    SELECT * FROM finance_conf
+    ORDER BY id
   </select>
   <delete id="deleteFinanceConfById">
     DELETE FROM finance_conf
     WHERE id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteFinanceConfEarnById">
-    DELETE FROM finance_conf_goldearn
-    WHERE id = #{id,jdbcType=VARCHAR}
-  </delete>
-
 
   <!--修改理财产品-->
   <update id="modifyFinanceConf" >
     UPDATE finance_conf
-    <set >
-      <if test="productNo != null" >
-        product_no = #{productNo,jdbcType=VARCHAR},
-      </if>
-      <if test="productName != null" >
-        product_name = #{productName,jdbcType=VARCHAR},
-      </if>
-      <if test="yearIncomPercent != null" >
-        year_incom_percent = #{yearIncomPercent,jdbcType=REAL},
-      </if>
-      <if test="cycle != null" >
-        cycle = #{cycle,jdbcType=INTEGER},
-      </if>
-      <if test="minMoney != null" >
-        min_money = #{minMoney,jdbcType=REAL},
-      </if>
-      <if test="calcMethod != null" >
-        calc_method = #{calcMethod,jdbcType=INTEGER},
-      </if>
-      <if test="redeemMethod != null" >
-        redeem_method = #{redeemMethod,jdbcType=SMALLINT},
-      </if>
-      <if test="settleMethod != null" >
-        settle_method = #{settleMethod,jdbcType=SMALLINT},
-      </if>
-      <if test="floatPercent != null" >
-        float_percent = #{floatPercent,jdbcType=REAL},
-      </if>
-      <if test="nper != null" >
-        nper = #{nper,jdbcType=INTEGER},
-      </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=INTEGER},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-
-  <update id="modifyFinanceConfEarn" >
-    UPDATE finance_conf_goldearn
     <set >
       <if test="productNo != null" >
         product_no = #{productNo,jdbcType=VARCHAR},

@@ -55,7 +55,7 @@ public class FinanceConfController {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
-                PageInfo<Map<String,Object>> pageInfo = financeConfService.getFinanceConfs(pageNum, pageSize);
+                PageInfo<FinanceConf> pageInfo = financeConfService.getFinanceConfs(pageNum, pageSize);
                 response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 response.setData(pageInfo);
                 response.setMsg("操作成功！");
@@ -83,14 +83,14 @@ public class FinanceConfController {
      */
     @RequestMapping(value = "/removeFinanceConfById",method=RequestMethod.POST)
     @ResponseBody
-    public Object removeFinanceConfByProductNo(HttpServletRequest request, Long id,Integer type) {
+    public Object removeFinanceConfByProductNo(HttpServletRequest request, Long id) {
         logger.debug("获取删除理财产品信息接口");
         CommonResponse response = new CommonResponse();
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
-                Boolean b = financeConfService.removeFinanceConfById(id,type);
+                Boolean b = financeConfService.removeFinanceConfById(id);
                 if (b){
                     response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                     response.setData(b);
@@ -133,7 +133,7 @@ public class FinanceConfController {
     @ResponseBody
     public Object modifyFinanceConf(HttpServletRequest request, Integer id, String productNo, String productName,
                                     Float yearIncomPercent, Integer cycle, Float minMoney,
-                                    Integer calcMethod, Short redeemMethod, Short settleMethod,Integer type) {
+                                    Integer calcMethod, Short redeemMethod, Short settleMethod) {
         logger.debug("获取修改理财产品信息接口");
         CommonResponse response = new CommonResponse();
         try {
@@ -142,7 +142,7 @@ public class FinanceConfController {
             if (users != null) {
                 Boolean b = financeConfService.modifyFinanceConf(id, productNo, productName,
                         yearIncomPercent, cycle, minMoney,
-                        calcMethod, redeemMethod, settleMethod, type);
+                        calcMethod, redeemMethod, settleMethod);
                 if (b){
                     response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                     response.setData(b);

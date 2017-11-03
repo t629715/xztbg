@@ -31,11 +31,11 @@ public class FinanceConfServiceImpl extends BaseService<FinanceConf> implements 
      * @return
      */
     @Override
-    public PageInfo<Map<String,Object>> getFinanceConfs(Integer pageNum, Integer pageSize) {
+    public PageInfo<FinanceConf> getFinanceConfs(Integer pageNum, Integer pageSize) {
         logger.debug("查询所有理财产品");
         PageHelper.startPage(pageNum,pageSize,true);
-        List<Map<String,Object>> financeConfs = financeConfMapper.selectFinanceConfs();
-        return new PageInfo<Map<String,Object>>(financeConfs);
+        List<FinanceConf> financeConfs = financeConfMapper.selectFinanceConfs();
+        return new PageInfo<FinanceConf>(financeConfs);
     }
 
     /**
@@ -44,15 +44,9 @@ public class FinanceConfServiceImpl extends BaseService<FinanceConf> implements 
      * @return
      */
     @Transactional
-    public Boolean removeFinanceConfById(Long id, Integer type) {
+    public Boolean removeFinanceConfById(Long id) {
         logger.debug("根据产品编号删除理财产品");
-        Integer i = 0;
-        if (type==1){
-            i = financeConfMapper.deleteFinanceConfById(id);
-        }else {
-            i = financeConfMapper.deleteFinanceConfEarnById(id);
-        }
-
+        Integer i = financeConfMapper.deleteFinanceConfById(id);
         if (i != null){
             return true;
         }
@@ -75,7 +69,7 @@ public class FinanceConfServiceImpl extends BaseService<FinanceConf> implements 
     @Transactional
     public Boolean modifyFinanceConf(Integer id, String productNo, String productName,
                                      Float yearIncomPercent, Integer cycle, Float minMoney,
-                                     Integer calcMethod, Short redeemMethod, Short settleMethod,Integer type) {
+                                     Integer calcMethod, Short redeemMethod, Short settleMethod) {
         Map map = new HashMap();
         map.put("id",id);
         map.put("productNo",productNo);
@@ -86,13 +80,7 @@ public class FinanceConfServiceImpl extends BaseService<FinanceConf> implements 
         map.put("calcMethod",calcMethod);
         map.put("redeemMethod",redeemMethod);
         map.put("settleMethod",settleMethod);
-        int i = 0;
-        if (type == 1){
-            i = financeConfMapper.modifyFinanceConf(map);
-        }else {
-            i = financeConfMapper.modifyFinanceConfEarn(map);
-        }
-
+        int i = financeConfMapper.modifyFinanceConf(map);
         if (i != 0){
             return true;
         }
