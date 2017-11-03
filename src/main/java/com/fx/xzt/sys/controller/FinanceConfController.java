@@ -1,5 +1,6 @@
 package com.fx.xzt.sys.controller;
 
+import com.fx.xzt.redis.RedisService;
 import com.fx.xzt.sys.entity.FinanceConf;
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.service.FinanceConfService;
@@ -10,6 +11,7 @@ import com.fx.xzt.util.POIUtils;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +26,7 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author tianliya
@@ -35,9 +38,12 @@ import java.util.Map;
 @RequestMapping("/financeConf")
 public class FinanceConfController {
     private static final Logger logger = LoggerFactory.getLogger(FinanceConfController.class);
-
+    @Resource
+    RedisService redisService;
     @Resource
     FinanceConfService financeConfService;
+    @Resource
+    private RedisTemplate redisTemplate;
 
     /**
      * 获取所有的理财产品信息
@@ -55,7 +61,7 @@ public class FinanceConfController {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
-                PageInfo<FinanceConf> pageInfo = financeConfService.getFinanceConfs(pageNum, pageSize);
+                PageInfo<Map<String,Object>> pageInfo = financeConfService.getFinanceConfs(pageNum, pageSize);
                 response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 response.setData(pageInfo);
                 response.setMsg("操作成功！");
@@ -83,14 +89,14 @@ public class FinanceConfController {
      */
     @RequestMapping(value = "/removeFinanceConfById",method=RequestMethod.POST)
     @ResponseBody
-    public Object removeFinanceConfByProductNo(HttpServletRequest request, Long id) {
+    public Object removeFinanceConfByProductNo(HttpServletRequest request, Long id,Integer type) {
         logger.debug("获取删除理财产品信息接口");
         CommonResponse response = new CommonResponse();
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
-                Boolean b = financeConfService.removeFinanceConfById(id);
+                Boolean b = financeConfService.removeFinanceConfById(id,type);
                 if (b){
                     response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                     response.setData(b);
@@ -133,7 +139,7 @@ public class FinanceConfController {
     @ResponseBody
     public Object modifyFinanceConf(HttpServletRequest request, Integer id, String productNo, String productName,
                                     Float yearIncomPercent, Integer cycle, Float minMoney,
-                                    Integer calcMethod, Short redeemMethod, Short settleMethod) {
+                                    Integer calcMethod, Short redeemMethod, Short settleMethod,Integer type) {
         logger.debug("获取修改理财产品信息接口");
         CommonResponse response = new CommonResponse();
         try {
@@ -142,7 +148,7 @@ public class FinanceConfController {
             if (users != null) {
                 Boolean b = financeConfService.modifyFinanceConf(id, productNo, productName,
                         yearIncomPercent, cycle, minMoney,
-                        calcMethod, redeemMethod, settleMethod);
+                        calcMethod, redeemMethod, settleMethod, type);
                 if (b){
                     response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                     response.setData(b);

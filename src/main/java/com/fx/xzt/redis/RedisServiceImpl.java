@@ -1,6 +1,7 @@
 package com.fx.xzt.redis;
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
@@ -34,6 +35,11 @@ public class RedisServiceImpl implements RedisService {
 	
 	public boolean exists(String key) {
 		return redisTemplate.hasKey(key);
+	}
+
+	@Override
+	public Set<String> allKeys(String pattern) {
+		return redisTemplate.keys(pattern);
 	}
 
 	public void delete(String key) {

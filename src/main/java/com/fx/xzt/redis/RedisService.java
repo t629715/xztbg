@@ -1,6 +1,7 @@
 package com.fx.xzt.redis;
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -36,6 +37,8 @@ public interface RedisService {
      * @return 
      */  
 	boolean exists(String key);
+
+	Set<String> allKeys(String pattern);
 	
 	/** 
      * 删除

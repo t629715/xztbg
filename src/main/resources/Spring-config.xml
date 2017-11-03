@@ -100,7 +100,7 @@
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
-	<import resource="classpath:Spring-redis.xml" />
+	<import resource="classpath:redis-cluster.xml" />
 	<import resource="classpath:Spring-freemarker.xml" />
 	<import resource="classpath:Spring-shiro.xml" />
 </beans>

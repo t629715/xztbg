@@ -22,6 +22,7 @@ public interface GoldRightDealConfMapper extends BaseMapper<GoldRightDealConf>{
      */
     List selectAll();
 
+    GoldRightDealConf selectOneById(Long id);
     /**
      * 根据id修改金权规则
      * @param map

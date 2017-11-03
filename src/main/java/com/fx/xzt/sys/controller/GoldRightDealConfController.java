@@ -1,5 +1,6 @@
 package com.fx.xzt.sys.controller;
 
+import com.fx.xzt.redis.RedisService;
 import com.fx.xzt.sys.entity.FinanceConf;
 import com.fx.xzt.sys.entity.GoldRightDealConf;
 import com.fx.xzt.sys.entity.Users;
@@ -7,6 +8,7 @@ import com.fx.xzt.sys.service.FinanceConfService;
 import com.fx.xzt.sys.service.GoldRightDealConfService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
+import com.fx.xzt.util.JsonUtils;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +33,8 @@ import java.util.Map;
 @RequestMapping("/goldRightDealConf")
 public class GoldRightDealConfController {
     private static final Logger logger = LoggerFactory.getLogger(GoldRightDealConfController.class);
-
+    @Resource
+    RedisService redisService;
     @Resource
     GoldRightDealConfService goldRightDealConfService;
     @RequestMapping(value = "/getAllGoldRight",method= RequestMethod.POST)
@@ -64,13 +67,29 @@ public class GoldRightDealConfController {
     }
 
 
-
+    /**
+     * 修改 金权规则信息
+     * @param request
+     * @param id
+     * @param name
+     * @param contract
+     * @param buyPercent
+     * @param pointCount
+     * @param volatility
+     * @param minGramPerOrder
+     * @param maxGramPerOrder
+     * @param maxPositionCount
+     * @param maxBuyCountPerDay
+     * @param stopProfitSet
+     * @param blowingUpSet
+     * @return
+     */
     @RequestMapping(value = "/modifyGoldRightDealConf",method=RequestMethod.POST)
     @ResponseBody
     public Object modifyGoldRightDealConf(HttpServletRequest request, String id, String name, Integer contract,
                                     Float  buyPercent, Double pointCount, Double volatility,
                                     Integer minGramPerOrder, Integer maxGramPerOrder, Integer maxPositionCount,
-                                    Integer maxBuyCountPerDay, Double stopProfitSet, Integer blowingUpSet) {
+                                    Integer maxBuyCountPerDay, Double stopProfitSet, Integer blowingUpSet,Integer status) {
         logger.debug("获取修改进群规则信息接口");
         CommonResponse response = new CommonResponse();
         try {
@@ -81,8 +100,15 @@ public class GoldRightDealConfController {
                 Boolean b = goldRightDealConfService.updateByPrimaryKey(ids, name, contract,
                          buyPercent, pointCount, volatility,
                          minGramPerOrder, maxGramPerOrder, maxPositionCount,
-                         maxBuyCountPerDay, stopProfitSet, blowingUpSet);
+                         maxBuyCountPerDay, stopProfitSet, blowingUpSet, status);
                 if (b){
+                    GoldRightDealConf goldRightDealConf = goldRightDealConfService.getGoldRight(new Long(id));
+                    String key = "fx_xzt_gold_right_deal_cofing_"+goldRightDealConf.getId();
+                    String goldRightConf = JsonUtils.toJSONString(goldRightDealConf);
+                    System.out.println(key+"---------"+goldRightConf);
+                    System.out.println(redisService.get(key));
+                    //redisService.put(key,goldRightConf);
+                    System.out.println(redisService.get(key));
                     response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                     response.setData(b);
                     response.setMsg("操作成功！");

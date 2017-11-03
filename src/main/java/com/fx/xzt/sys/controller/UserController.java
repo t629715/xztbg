@@ -1,13 +1,18 @@
 package com.fx.xzt.sys.controller;
 
+import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.fx.xzt.sys.util.DateUtil;
+import com.fx.xzt.util.POIUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -317,5 +322,41 @@ public class UserController {
 			// e.printStackTrace();
 		}
 		return cr;
+	}
+
+	/**
+	 * 导出 小象视角查询的结果
+	 * @param request
+	 * @param response
+	 * @param agentName
+	 * @param brokerName
+	 * @param startTime
+	 * @param endTime
+	 * @param pageNum
+	 * @param pageSize
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/excelSightOfElephant")
+	@ResponseBody
+	public void excelSightOfElephant(HttpServletRequest request,HttpServletResponse response,
+									 Long agentName , Long brokerName, String startTime,
+									 String endTime,
+									 Integer pageNum, Integer pageSize) throws Exception{
+
+		try {
+			String tieleName = "小象管理视角";
+			String excelName = "想管理视角";
+			HttpSession httpSession = request.getSession();
+			Users users = (Users) httpSession.getAttribute("currentUser");
+			if (users != null) {
+				List<Map<String, Object>> list = userService.sightOfElephant(brokerName,agentName,startTime,endTime,pageNum,pageSize).getList();
+					POIUtils poi = new POIUtils();
+					String[] heads = {"商户名", "姓名",  "联系电话", "类型", "代理商", "创建时间"};
+					String[] colums = {"userName", "userName", "phone", "type", "agentName", "createTime"};
+					poi.doExport(request, response, list, tieleName, excelName, heads, colums);
+				}
+			}catch (Exception e){
+				e.printStackTrace();
+		}
 	}
 }

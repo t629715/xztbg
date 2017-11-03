@@ -63,7 +63,7 @@ public class GoldRightDealConfServiceImpl extends BaseService<GoldRightDealConf>
     public Boolean updateByPrimaryKey(Long id, String name, Integer contract,
                                       Float buyPercent, Double pointCount, Double volatility,
                                       Integer minGramPerOrder, Integer maxGramPerOrder, Integer maxPositionCount,
-                                      Integer maxBuyCountPerDay, Double stopProfitSet, Integer blowingUpSet) {
+                                      Integer maxBuyCountPerDay, Double stopProfitSet, Integer blowingUpSet,Integer status) {
         Map map = new HashMap();
         map.put("id",id);//产品id
         map.put("name",name);//产品名字
@@ -77,10 +77,16 @@ public class GoldRightDealConfServiceImpl extends BaseService<GoldRightDealConf>
         map.put("maxBuyCountPerDay",maxBuyCountPerDay);//
         map.put("stopProfitSet",stopProfitSet);//止盈设置
         map.put("blowingUpSet",blowingUpSet);//止损设置
+        map.put("status",status);
         int i = goldRightDealConfMapper.modifyGoldRightCong(map);
         if (i != 0){
             return true;
         }
         return false;
+    }
+
+    @Override
+    public GoldRightDealConf getGoldRight(Long id) {
+        return goldRightDealConfMapper.selectOneById(id);
     }
 }

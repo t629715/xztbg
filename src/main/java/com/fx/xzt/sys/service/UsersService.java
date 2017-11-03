@@ -103,4 +103,13 @@ public interface UsersService extends IService<Users>{
 	 */
 	PageInfo<Map<String, Object>> sightOfElephant(Long  id,Long pid,String startTime, String endTime, Integer pageNum, Integer pageSize);
 
+	/**
+	 * 小象视角-查询
+	 * @param
+	 * @param startTime
+	 * @param endTime
+	 * @return
+	 */
+	List<Map<String, Object>> excelSightOfElephant(Long  id,Long pid,String startTime, String endTime);
+
 }
