@@ -265,5 +265,16 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		return pageInfo;
 	}
 
+	@Override
+	public List<Map<String, Object>> excelSightOfElephant(Long id, Long pid, String startTime, String endTime) {
+		Map map = new HashMap();
+		map.put("id",id);
+		map.put("pid",pid);
+		map.put("startTime",startTime);
+		map.put("endTime",endTime);
+		List list  = usersMapper.getByAgentNameAndType(map);
+		return list;
+	}
+
 
 }
