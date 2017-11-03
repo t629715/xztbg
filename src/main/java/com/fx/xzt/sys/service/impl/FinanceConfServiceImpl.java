@@ -89,6 +89,7 @@ public class FinanceConfServiceImpl extends BaseService<FinanceConf> implements 
         int i = 0;
         if (type == 1){
             i = financeConfMapper.modifyFinanceConf(map);
+
         }else {
             i = financeConfMapper.modifyFinanceConfEarn(map);
         }

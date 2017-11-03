@@ -35,6 +35,13 @@ public interface GoldRightDealConfService extends IService<GoldRightDealConf> {
     Boolean updateByPrimaryKey(Long id, String name, Integer contract,
                                Float buyPercent, Double pointCount, Double volatility,
                                Integer minGramPerOrder, Integer maxGramPerOrder, Integer maxPositionCount,
-                                Integer maxBuyCountPerDay, Double stopProfitSet, Integer blowingUpSet);
+                                Integer maxBuyCountPerDay, Double stopProfitSet, Integer blowingUpSet, Integer status);
+
+    /**
+     * 根据id后去金权交易信息
+     * @param id
+     * @return
+     */
+    GoldRightDealConf getGoldRight(Long id);
 
 }

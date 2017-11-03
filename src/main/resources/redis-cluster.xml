@@ -5,7 +5,8 @@
 
 
     <!--引入配置文件-->
-    <bean id="placeholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <bean id="placeholderConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="order" value="1"/>
         <property name="ignoreUnresolvablePlaceholders" value="true"/>
         <property name="locations">
@@ -24,11 +25,14 @@
         <!-- 每次最大连接数 -->
         <property name="numTestsPerEvictionRun" value="${redis.pool.numTestsPerEvictionRun}"/>
         <!-- 释放扫描的扫描间隔 -->
-        <property name="timeBetweenEvictionRunsMillis" value="${redis.pool.timeBetweenEvictionRunsMillis}"/>
+        <property name="timeBetweenEvictionRunsMillis"
+                  value="${redis.pool.timeBetweenEvictionRunsMillis}"/>
         <!-- 连接的最小空闲时间 -->
-        <property name="minEvictableIdleTimeMillis" value="${redis.pool.minEvictableIdleTimeMillis}"/>
+        <property name="minEvictableIdleTimeMillis"
+                  value="${redis.pool.minEvictableIdleTimeMillis}"/>
         <!-- 连接控歘按时间多久后释放，当空闲时间>该值且空闲连接>最大空闲连接数时直接释放 -->
-        <property name="softMinEvictableIdleTimeMillis" value="${redis.pool.softMinEvictableIdleTimeMillis}"/>
+        <property name="softMinEvictableIdleTimeMillis"
+                  value="${redis.pool.softMinEvictableIdleTimeMillis}"/>
         <!-- 获得链接时的最大等待毫秒数，小于0：阻塞不确定时间，默认-1 -->
         <property name="maxWaitMillis" value="${redis.pool.maxWaitMillis}"/>
         <!-- 在获得链接的时候检查有效性，默认false -->
@@ -41,7 +45,8 @@
 
 
     <!--配置RedisClusterConfiguration-->
-    <bean id="redisClusterConfiguration" class="org.springframework.data.redis.connection.RedisClusterConfiguration">
+    <bean id="redisClusterConfiguration"
+          class="org.springframework.data.redis.connection.RedisClusterConfiguration">
         <property name="maxRedirects" value="${redis.maxRedirects}"></property>
         <property name="clusterNodes">
             <set>
@@ -53,12 +58,29 @@
                     <constructor-arg name="host" value="${redis.host2}"/>
                     <constructor-arg name="port" value="${redis.port2}"/>
                 </bean>
+                <bean class="org.springframework.data.redis.connection.RedisNode">
+                    <constructor-arg name="host" value="${redis.host3}"/>
+                    <constructor-arg name="port" value="${redis.port3}"/>
+                </bean>
+                <bean class="org.springframework.data.redis.connection.RedisNode">
+                    <constructor-arg name="host" value="${redis.host4}"/>
+                    <constructor-arg name="port" value="${redis.port4}"/>
+                </bean>
+                <bean class="org.springframework.data.redis.connection.RedisNode">
+                    <constructor-arg name="host" value="${redis.host5}"/>
+                    <constructor-arg name="port" value="${redis.port5}"/>
+                </bean>
+                <bean class="org.springframework.data.redis.connection.RedisNode">
+                    <constructor-arg name="host" value="${redis.host6}"/>
+                    <constructor-arg name="port" value="${redis.port6}"/>
+                </bean>
             </set>
         </property>
     </bean>
 
     <!--配置JedisConnectionFactory-->
-    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+    <bean id="jedisConnectionFactory"
+          class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
         <constructor-arg name="poolConfig" ref="jedisPoolConfig"/>
         <constructor-arg name="clusterConfig" ref="redisClusterConfiguration"/>
     </bean>
@@ -66,18 +88,18 @@
     <!--redisTemplate-->
     <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
         <property name="connectionFactory" ref="jedisConnectionFactory"/>
-        <property name="keySerializer">
-            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
-        </property>      
-        <property name="valueSerializer">
-            <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
-        </property>   
-        <property name="hashKeySerializer">
-           <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
-        </property>   
-        <property name="hashValueSerializer">
-           <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer"/>
-        </property> 
+        <!--<property name="keySerializer">-->
+        <!--<bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>-->
+        <!--</property>-->
+        <!--<property name="valueSerializer">-->
+        <!--<bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer"/>-->
+        <!--</property>-->
+        <!--<property name="hashKeySerializer">-->
+        <!--<bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>-->
+        <!--</property>-->
+        <!--<property name="hashValueSerializer">-->
+        <!--<bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer"/>-->
+        <!--</property>-->
     </bean>
 
 </beans>
