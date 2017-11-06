@@ -52,7 +52,7 @@ public class DateUtils {
 	 * @date 2017年8月23日 下午6:16:57
 	 */
 	public static String formatDateByMidLine1(Date date){
-		return sdf1.format(date);
+		return sdf4.format(date);
 	}
 	
 	/**

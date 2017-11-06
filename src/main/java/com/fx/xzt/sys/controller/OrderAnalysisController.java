@@ -35,7 +35,7 @@ public class OrderAnalysisController {
      * @param pageSize
      * @return
      */
-    @RequestMapping(value="/orderAnalysis",method= RequestMethod.POST)
+    @RequestMapping(value="/orderAnalysis")
     @ResponseBody
     public CommonResponse getXioude(HttpServletRequest request, String startTime,
                                             String endTime,  String agentName,Short upOrDown,
@@ -45,7 +45,7 @@ public class OrderAnalysisController {
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
-            if (users != null) {
+            /*if (users != null) {
                 PageInfo<Map<String, Object>> pageInfo = orderAnalysisService.orderAnalysis(startTime,endTime,
                                                                         agentName,upOrDown,orderState,profitLoss,
                                                                         pageNum, pageSize);
@@ -56,7 +56,13 @@ public class OrderAnalysisController {
                 response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 response.setData("{}");
                 response.setMsg("操作失败！");
-            }
+            }*/
+            PageInfo<Map<String, Object>> pageInfo = orderAnalysisService.orderAnalysis(startTime,endTime,
+                    agentName,upOrDown,orderState,profitLoss,
+                    pageNum, pageSize);
+            response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+            response.setData(pageInfo);
+            response.setMsg("操作成功！");
         } catch (Exception e) {
             response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
             response.setData("{}");

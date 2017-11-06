@@ -332,16 +332,13 @@ public class UserController {
 	 * @param brokerName
 	 * @param startTime
 	 * @param endTime
-	 * @param pageNum
-	 * @param pageSize
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/excelSightOfElephant")
 	@ResponseBody
 	public void excelSightOfElephant(HttpServletRequest request,HttpServletResponse response,
 									 Long agentName , Long brokerName, String startTime,
-									 String endTime,
-									 Integer pageNum, Integer pageSize) throws Exception{
+									 String endTime) throws Exception{
 
 		try {
 			String tieleName = "小象管理视角";
@@ -349,7 +346,7 @@ public class UserController {
 			HttpSession httpSession = request.getSession();
 			Users users = (Users) httpSession.getAttribute("currentUser");
 			if (users != null) {
-				List<Map<String, Object>> list = userService.sightOfElephant(brokerName,agentName,startTime,endTime,pageNum,pageSize).getList();
+				List<Map<String, Object>> list = userService.execelSightOfElephant(brokerName,agentName,startTime,endTime);
 					POIUtils poi = new POIUtils();
 					String[] heads = {"商户名", "姓名",  "联系电话", "类型", "代理商", "创建时间"};
 					String[] colums = {"userName", "userName", "phone", "type", "agentName", "createTime"};

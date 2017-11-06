@@ -62,17 +62,12 @@ public class UserInfoController {
 		cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
 		cr.setMsg("操作失败！");
 		try {
-			/*if (type > 0 && userId > 0) {
+			if (type > 0 && userId > 0) {
 				int flag = userInfoService.editUserInfo(type, userId);
 				if (flag > 0) {
 					cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);
 					cr.setMsg("操作成功！");
 				}
-			}*/
-			int flag = userInfoService.editUserInfo(type, userId);
-			if (flag > 0) {
-				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);
-				cr.setMsg("操作成功！");
 			}
 		} catch (Exception e) {
 			throw e;
@@ -132,7 +127,7 @@ public class UserInfoController {
 		cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
 		cr.setMsg("操作失败！");
 		try {
-			/*if (status > 0 && userId > 0) {
+			if (status > 0 && userId > 0) {
 				UserLogin u = new UserLogin();
 				u.setStatus(status);
 				u.setUserid(userId);
@@ -141,19 +136,10 @@ public class UserInfoController {
 					cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);
 					cr.setMsg("操作成功！");
 				}
-			}*/
-			UserLogin u = new UserLogin();
-				u.setStatus(status);
-				u.setUserid(userId);
-				int flag = userLoginService.updateByIdSelective(u);
-				if (flag > 0) {
-					cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);
-					cr.setMsg("操作成功！");
-				}
+			}
 		} catch (Exception e) {
 			throw e;
 		}
-		
 		return cr;
 	}
 

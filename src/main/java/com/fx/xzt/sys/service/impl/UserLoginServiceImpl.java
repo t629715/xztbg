@@ -45,9 +45,6 @@ public class UserLoginServiceImpl extends BaseService<UserLogin> implements User
         map.put("attribution", attribution);
         PageHelper.startPage(pageNum, pageSize);
         List<Map<String, Object>> list = userLoginMapper.getByRegisterMessage(map);
-        for(Map m:list){
-        	m.put("UserID", m.get("UserID").toString());
-        }
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<Map<String, Object>>(list);
         return pagehelper;
     }

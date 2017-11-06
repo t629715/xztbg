@@ -112,4 +112,16 @@ public interface UsersService extends IService<Users>{
 	 */
 	List<Map<String, Object>> excelSightOfElephant(Long  id,Long pid,String startTime, String endTime);
 
+	/**
+	 * 小象视角-导出
+	 * @param id
+	 * @param pid
+	 * @param startTime
+	 * @param endTime
+	 * @return
+	 */
+	public List<Map<String, Object>> execelSightOfElephant(Long id , Long  pid,
+														   String startTime, String endTime
+	);
+
 }
