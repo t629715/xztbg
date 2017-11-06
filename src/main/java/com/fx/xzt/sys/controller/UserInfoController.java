@@ -7,7 +7,9 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import com.fx.xzt.sys.entity.Users;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -243,6 +245,84 @@ public class UserInfoController {
 			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 			cr.setData(map);
 			cr.setMsg("操作成功！");
+		} catch (Exception e) {
+			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+			cr.setData("{}");
+			cr.setMsg("操作失败！");
+			throw e;
+			// e.printStackTrace();
+		}
+		return JSON.toJSONString(cr);
+	}
+
+	@RequestMapping(value="/selectSubClients")
+	@ResponseBody
+	public Object selectSubClients(HttpServletRequest request,String userName,String agentsName, String brokerName,String startTime,String endTime,@RequestParam Integer pageNum,@RequestParam Integer pageSize){
+		CommonResponse cr = new CommonResponse();
+		try {
+			HttpSession httpSession = request.getSession();
+			Users users = (Users) httpSession.getAttribute("currentUser");
+			if (users != null){
+				agentsName = users.getUserName();
+				PageInfo<Map<String, Object>> pageInfo = userInfoService.getSubClients(userName, agentsName, brokerName, pageNum, pageSize);
+				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+				cr.setData(pageInfo);
+				cr.setMsg("操作成功！");
+			}
+
+		} catch (Exception e) {
+			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+			cr.setData("{}");
+			cr.setMsg("操作失败！");
+			throw e;
+			// e.printStackTrace();
+		}
+		return cr;
+	}
+	/**
+	 * 导出excel--账户信息
+	 */
+	@RequestMapping(value="/excelSubClients")
+	@ResponseBody
+	public void excelSubClients(HttpServletRequest request, HttpServletResponse response,String userName,String agentName, String brokerName,String startTime,String endTime){
+		HttpSession httpSession = request.getSession();
+		Users users = (Users) httpSession.getAttribute("currentUser");
+		if (users != null){
+			agentName = users.getUserName();
+			List<Map<String, Object>> list = userInfoService.getExcelSubClientsAccount(userName,agentName, brokerName);
+			POIUtils poi = new POIUtils();
+			String[] heads = {"用户账号","代理商","经纪人","人民币余额","人民币冻结","人民币理财","利息","黄金"};
+			String[] colums = {"userName","agentName","brokerName","rmb","frozenRmb","finance","totalIncome","gold"};
+			poi.doExport(request, response, list, "账户信息", "账户信息", heads, colums);
+		}
+
+	}
+
+	/**
+	 * 下级客户-金额统计
+	 * @param userName
+	 * @param agentName
+	 * @param brokerName
+	 * @param startTime
+	 * @param endTime
+	 * @return
+	 */
+	@RequestMapping(value="/selectSubClientsCount")
+	@ResponseBody
+	public String selectSubClientsCount(HttpServletRequest request, String userName,String agentName, String brokerName,String startTime,String endTime){
+		CommonResponse cr = new CommonResponse();
+		try {
+			HttpSession httpSession = request.getSession();
+			Users users = (Users) httpSession.getAttribute("currentUser");
+			if (users != null){
+				agentName = users.getUserName();
+				Map<String,Object> map = new HashMap<String,Object>();
+				map = userInfoService.getSubClientsAccountCount(userName,agentName, brokerName);
+				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+				cr.setData(map);
+				cr.setMsg("操作成功！");
+			}
+
 		} catch (Exception e) {
 			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
 			cr.setData("{}");

@@ -229,6 +229,62 @@
 		</set>
 		where UserID = #{userid,jdbcType=BIGINT}
 	</update>
+	<!--合作伙伴-获取下级客户信息 tianliya-->
+	<select id="getSubClients" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT u.UserID AS userId,l.UserName AS userName,l.Status AS
+			STATUS,u.RealName,u.RegisterTime registerTime,
+			u.agent_id AS agentId, ua.user_name AS agentName, u.broker_id AS brokerId,
+			u1.user_name AS brokerName ,
+			a.rmb AS rmb,a.finance AS finance,frozen_rmb AS frozenRmb,total_income AS
+			totalIncome,
+			g.gold as gold
+			FROM User_Info u
+			RIGHT JOIN User_Login l ON u.UserID = l.UserID
+			LEFT JOIN users ua ON u.agent_id = ua.id
+			LEFT JOIN users u1 ON u.broker_id = u1.id
+			LEFT JOIN user_account a ON a.user_id = u.UserID
+			left join user_gold_account g on g.user_id = u.UserID
+			<where>
+				<if test="userName != null and userName != '' ">
+					and l.UserName = #{userName,jdbcType=VARCHAR}
+				</if>
+				<if test="agentName != null and agentName !='' ">
+					and ua.user_name = #{agentName,jdbcType=VARCHAR}
+				</if>
+				<if test="brokerName != null and brokerName !='' ">
+					and u1.id = #{brokerName,jdbcType=VARCHAR}
+				</if>
+			</where>
+			order by RegisterTime DESC
+	</select>
+	<!--合作伙伴-获取下级客户信息 tianliya-->
+
+	<!--下级客户-财产信息统计 tianliya-->
+	<select id="getSubClientsAccountCount" resultType="java.util.Map"
+			parameterType="java.util.Map">
+		SELECT SUM(rmb) rmbSum, SUM(finance) finaceSum, SUM(frozen_rmb)
+		frozenRmbSum,
+		SUM(total_income) AS totalIncomeSum, SUM(gold) goldSum
+		FROM User_Info u
+		RIGHT JOIN User_Login l ON u.UserID = l.UserID
+		LEFT JOIN user_account a ON l.UserID = a.user_id
+		LEFT JOIN user_gold_account ga ON ga.user_id = l.UserID
+		LEFT JOIN users ua ON u.agent_id = ua.id
+		LEFT JOIN users ub ON u.broker_id = ub.id
+		<where>
+			<if test="userName != null and userName != '' ">
+				and l.UserName = #{userName,jdbcType=VARCHAR}
+			</if>
+			<if test="agentName != null and agentName !='' ">
+				and ua.user_name = #{agentName,jdbcType=VARCHAR}
+			</if>
+			<if test="brokerName != null and brokerName !='' ">
+				and ub.id = #{brokerName,jdbcType=VARCHAR}
+			</if>
+
+		</where>
+	</select>
+	<!--下级客户-财产信息 tianliya-->
 	<!-- <sql id="Example_Where_Clause" > <where > <foreach collection="oredCriteria" 
 		item="criteria" separator="or" > <if test="criteria.valid" > <trim prefix="(" 
 		suffix=")" prefixOverrides="and" > <foreach collection="criteria.criteria" 

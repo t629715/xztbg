@@ -147,4 +147,57 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		map.put("endTime", endTime);
 		return userInfoMapper.getByAccountCount(map);
 	}
+
+	/**
+	 * 获取下级客户信息
+	 * @param userName
+	 * @param agentName
+	 * @param brokerName
+	 * @param pageNum
+	 * @param pageSize
+	 * @return
+	 */
+	@Override
+	public PageInfo<Map<String,Object>> getSubClients(String userName, String agentName, String brokerName, Integer pageNum, Integer pageSize) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("userName", userName);
+		map.put("agentName", agentName);
+		map.put("brokerName", brokerName);
+		PageHelper.startPage(pageNum,pageSize);
+		List<Map<String, Object>> list = userInfoMapper.getSubClients(map);
+		return new PageInfo<Map<String, Object>>(list);
+	}
+
+	/**
+	 * 导出下级客户信息
+	 * @param userName
+	 * @param agentName
+	 * @param brokerName
+	 * @return
+	 */
+	@Override
+	public List<Map<String, Object>> getExcelSubClientsAccount(String userName, String agentName, String brokerName) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("userName", userName);
+		map.put("agentName", agentName);
+		map.put("brokerName", brokerName);
+		List<Map<String, Object>> list = userInfoMapper.getSubClients(map);
+		return list;
+	}
+
+	/**
+	 * 获取下级客户的账户统计
+	 * @param userName
+	 * @param agentName
+	 * @param brokerName
+	 * @return
+	 */
+	@Override
+	public Map<String, Object> getSubClientsAccountCount(String userName, String agentName, String brokerName) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("userName", userName);
+		map.put("agentName", agentName);
+		map.put("brokerName", brokerName);
+		return userInfoMapper.getSubClientsAccountCount(map);
+	}
 }
