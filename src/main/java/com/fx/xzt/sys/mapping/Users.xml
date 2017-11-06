@@ -100,6 +100,9 @@
             <if test="updateTime != null">
                 update_time,
             </if>
+            <if test="pid != null">
+                pid,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -128,6 +131,9 @@
             </if>
             <if test="updateTime != null">
                 #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="pid != null">
+                #{pid,jdbcType=BIGINT},
             </if>
         </trim>
     </insert>
@@ -177,12 +183,12 @@
             <if test="pid != null and pid!='' ">
                 and pid = #{pid,jdbcType=BIGINT}
             </if>
-            <!--<if test="startTime != null and startTime!='' ">
+            <if test="startTime != null and startTime!='' ">
                 and create_time &gt; = #{startTime,jdbcType=TIMESTAMP}
             </if>
             <if test="endTime != null and endTime!='' ">
                 and create_time &lt; = #{endTime,jdbcType=TIMESTAMP}
-            </if>-->
+            </if>
         </where>
         ORDER  by create_time desc
     </select>
@@ -224,6 +230,25 @@
             </where>
         </select>
     <!--根据代理商名字，经纪人名字、创建时间、类型查询 tianliya end-->
+    <!--商户管理运营商视角 tianliya-->
+    <select id="getSightOfOperator" resultType="java.util.Map" parameterType="java.util.Map">
+        select u1.id id , u1.user_name userName,u1.pid, u1.phone phone,u1.create_time createTime,u2.user_name agentName
+        from users u1
+        left join users u2
+        on u1.pid=u2.id
+        <where>
+            <if test="pid != null and pid != ''">
+                and u1.pid=#{pid,jdbcType=BIGINT}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                and u1.create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                and u1.create_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+    <!--商户管理运营商视角 tianliya-->
 
 
 </mapper>

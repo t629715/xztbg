@@ -181,48 +181,6 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		return usersMapper.selectByBrokerMessage(map);
 	}
 
-	/**
-	 * 运营商视角 - 查询
-	 * @param pid
-	 * @param startTime
-	 * @param endTime
-	 * @param pageNum
-	 * @param pageSize
-	 * @return
- 	* @Author:  tianliya
- 	* @Description:
- 	* @Date:16:16 2017/10/20
-	*/
-	@Override
-	public PageInfo<Map<String, Object>> sightOfCarrieroperator(Long pid, String startTime, String endTime,
-																Integer pageNum,
-																Integer pageSize) {
-
-		Map map = new HashMap();
-		if (startTime != null && startTime !=""){
-			Date start = null;
-			start = DateUtil.convertTimeMillisToDate(Long.valueOf(startTime));
-			String st = DateUtils.formatDateByMidLine(start);
-			map.put("startTime",st);
-		}
-		if (endTime != null && endTime !=""){
-			Date end = null;
-			end = DateUtil.convertTimeMillisToDate(Long.valueOf(startTime));
-			String st = DateUtils.formatDateByMidLine(end);
-			map.put("endTime",st);
-		}
-		Users users = usersMapper.selectById(pid);
-		Map mo = usersMapper.getOneByUserId(pid);
-		List<Map<String, Object>> list = new ArrayList<>();
-		list.add(mo);
-		list.addAll(1,usersMapper.selectByBrokerMessage(map));
-		PageHelper.startPage(pageNum,pageSize);
-		PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(list);
-		if (list.size()==0){
-			pageInfo.setPageNum(1);
-		}
-		return pageInfo;
-	}
 
 	/**
 	 * @param usersInfo
@@ -244,7 +202,7 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		return usersMapper.selectByChannelMessage();
 	}
 	
-	 /* 小象视角-查询
+	 /** 小象视角-查询
 	 * @param
 	 * @param startTime
 	 * @param endTime
@@ -264,20 +222,32 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		PageInfo pageInfo = new PageInfo(list);
 		return pageInfo;
 	}
+
+	/**
+	 * 商户管理-运营商视角
+	 * @param pid
+	 * @param startTime
+	 * @param endTime
+	 * @param pageNum
+	 * @param pageSize
+	 * @return
+	 */
+	@Override
+	public PageInfo<Map<String, Object>> sightOfOperator(Long pid, String startTime, String endTime, Integer pageNum, Integer pageSize) {
+		Map map = new HashMap();
+		map.put("pid",pid);
+		map.put("startTime",startTime);
+		map.put("endTime",endTime);
+		PageHelper.startPage(pageNum,pageSize);
+		List list  = usersMapper.getSightOfOperator(map);
+		PageInfo pageInfo = new PageInfo(list);
+		return pageInfo;
+	}
+
 	@Override
 	public List<Map<String, Object>> execelSightOfElephant(Long id , Long  pid,
 														 String startTime, String endTime
 														 ) {
-		Map map = new HashMap();
-		map.put("id",id);
-		map.put("pid",pid);
-		map.put("startTime",startTime);
-		map.put("endTime",endTime);
-		List list  = usersMapper.getByAgentNameAndType(map);
-		return list;
-	}
-	@Override
-	public List<Map<String, Object>> excelSightOfElephant(Long id, Long pid, String startTime, String endTime) {
 		Map map = new HashMap();
 		map.put("id",id);
 		map.put("pid",pid);

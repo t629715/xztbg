@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.fx.xzt.sys.util.DateUtil;
+import com.fx.xzt.util.MD5Utils;
 import com.fx.xzt.util.POIUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -207,8 +208,8 @@ public class UserController {
 			HttpSession httpSession = request.getSession();
 			Users users = (Users) httpSession.getAttribute("currentUser");
 			if (users != null){
-				//pid = users.getId();
-				PageInfo<Map<String, Object>> list = userService.sightOfCarrieroperator(pid,startTime,endTime,pageNum,pageSize);
+				pid = users.getId();
+				PageInfo<Map<String, Object>> list = userService.sightOfOperator(pid,startTime,endTime,pageNum,pageSize);
 				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 				cr.setData(list);
 				cr.setMsg("操作成功！");
@@ -234,13 +235,15 @@ public class UserController {
 	 */
 	@RequestMapping(value="/insertAgent",method = RequestMethod.POST)
 	@ResponseBody
-	public Object insertAgent(HttpServletRequest request, @RequestBody Users usersInfo){
+	public Object insertAgent(HttpServletRequest request,Users usersInfo){
 		CommonResponse cr = new CommonResponse();
 		try {
 			HttpSession httpSession = request.getSession();
 			Users users = (Users) httpSession.getAttribute("currentUser");
 			if (users != null){
+				users = userService.getUserInfo(users.getUserName(),users.getPassword());
 				Long pid = users.getId();
+				usersInfo.setPassword(MD5Utils.encrypt(usersInfo.getPassword()));
 				usersInfo.setPid(pid);
 				int i = userService.insertAgent(usersInfo);
 				if (i != 0){
