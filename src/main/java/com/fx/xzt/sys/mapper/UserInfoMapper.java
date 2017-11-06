@@ -46,5 +46,19 @@ public interface UserInfoMapper extends BaseMapper<UserInfo>{
 	 * @return
 	 */
 	Map<String,Object> getByAccountCount(Map<String,Object> map);
-	
+
+	/**
+	 * 合作伙伴-获取下级客户信息
+	 * @param map
+	 * @return
+	 */
+	List<Map<String, Object>> getSubClients(Map<String,Object> map);
+
+	/**
+	 * 合作伙伴-获取下级客户信息金钱统计
+	 * @param map
+	 * @return
+	 */
+	Map<String, Object> getSubClientsAccountCount(Map<String,Object> map);
+
 }

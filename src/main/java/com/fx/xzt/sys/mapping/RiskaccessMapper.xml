@@ -29,7 +29,7 @@
     LEFT JOIN User_Login l ON l.UserID = i.UserID
     <where>
       and l.Status = 1
-      and r.open_state = 1
+      and r.access_state = 1
       <if test="userName != null and userName !=''">
         and l.UserName = #{userName,jdbcType=VARCHAR}
       </if>

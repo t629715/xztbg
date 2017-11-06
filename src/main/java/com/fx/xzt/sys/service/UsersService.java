@@ -66,15 +66,6 @@ public interface UsersService extends IService<Users>{
 	List<Map<String,Object>> selectByBrokerMessage(Long pid);
 
 	/**
-	 * 运营商视角-查询
-	 * @param pid
-	 * @param startTime
-	 * @param endTime
-	 * @return
-	 */
-	PageInfo<Map<String, Object>> sightOfCarrieroperator(Long pid,String startTime, String endTime, Integer pageNum, Integer pageSize);
-
-	/**
 	 * @param usersInfo
 	 * @return int
 	 * @Author:  tianliya
@@ -104,12 +95,26 @@ public interface UsersService extends IService<Users>{
 	PageInfo<Map<String, Object>> sightOfElephant(Long  id,Long pid,String startTime, String endTime, Integer pageNum, Integer pageSize);
 
 	/**
-	 * 小象视角-查询
-	 * @param
+	 * 商户管理-运营商视角
+	 * @param id
+	 * @param pid
+	 * @param startTime
+	 * @param endTime
+	 * @param pageNum
+	 * @param pageSize
+	 * @return
+	 */
+	PageInfo<Map<String, Object>> sightOfOperator(Long pid,String startTime, String endTime, Integer pageNum, Integer pageSize);
+	/**
+	 * 小象视角-导出
+	 * @param id
+	 * @param pid
 	 * @param startTime
 	 * @param endTime
 	 * @return
 	 */
-	List<Map<String, Object>> excelSightOfElephant(Long  id,Long pid,String startTime, String endTime);
+	public List<Map<String, Object>> execelSightOfElephant(Long id , Long  pid,
+														   String startTime, String endTime
+	);
 
 }

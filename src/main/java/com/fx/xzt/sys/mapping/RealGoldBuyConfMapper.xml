@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fx.xzt.sys.mapper.RealGoldBuyConfMapper" >
+  <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.RealGoldBuyConf" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="year_incom_percent" property="yearIncomPercent" jdbcType="REAL" />
+    <result column="buy_poundage" property="buyPoundage" jdbcType="REAL" />
+    <result column="sell_poundage" property="sellPoundage" jdbcType="REAL" />
+    <result column="max_buy_count" property="maxBuyCount" jdbcType="DOUBLE" />
+    <result column="min_buy_count" property="minBuyCount" jdbcType="DOUBLE" />
+    <result column="product_no" property="productNo" jdbcType="VARCHAR" />
+    <result column="cycle" property="cycle" jdbcType="INTEGER" />
+    <result column="redeem_method" property="redeemMethod" jdbcType="SMALLINT" />
+    <result column="settle_method" property="settleMethod" jdbcType="SMALLINT" />
+    <result column="calc_method" property="calcMethod" jdbcType="SMALLINT" />
+    <result column="clac_start_point" property="clacStartPoint" jdbcType="REAL" />
+  </resultMap>
+
+  <!--获取所有的贵金属信息 tianliya-->
+  <select id="selectAllRealGoldBuyConf" resultType="java.util.Map">
+    select id, name, year_incom_percent yearIncomPercent,product_no productNo, cycle, redeem_method redeemMethod, settle_method settleMethod,
+            calc_method calcMethod, clac_start_point calcStartPoint
+    from real_gold_buy_conf
+  </select>
+
+  <!--根据主键删除一条贵金属信息 tianliya-->
+  <delete id="deleteById" parameterType="java.lang.Long" >
+    delete from real_gold_buy_conf
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <!--修改贵金属信息 tianliya-->
+  <update id="updateById" parameterType="java.util.Map" >
+    update real_gold_buy_conf
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="yearIncomPercent != null" >
+        year_incom_percent = #{yearIncomPercent,jdbcType=REAL},
+      </if>
+      <if test="buyPoundage != null" >
+        buy_poundage = #{buyPoundage,jdbcType=REAL},
+      </if>
+      <if test="sellPoundage != null" >
+        sell_poundage = #{sellPoundage,jdbcType=REAL},
+      </if>
+      <if test="maxBuyCount != null" >
+        max_buy_count = #{maxBuyCount,jdbcType=DOUBLE},
+      </if>
+      <if test="minBuyCount != null" >
+        min_buy_count = #{minBuyCount,jdbcType=DOUBLE},
+      </if>
+      <if test="productNo != null" >
+        product_no = #{productNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cycle != null" >
+        cycle = #{cycle,jdbcType=INTEGER},
+      </if>
+      <if test="redeemMethod != null" >
+        redeem_method = #{redeemMethod,jdbcType=SMALLINT},
+      </if>
+      <if test="settleMethod != null" >
+        settle_method = #{settleMethod,jdbcType=SMALLINT},
+      </if>
+      <if test="calcMethod != null" >
+        calc_method = #{calcMethod,jdbcType=SMALLINT},
+      </if>
+      <if test="calcStartPoint != null" >
+        clac_start_point = #{calcStartPoint,jdbcType=REAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

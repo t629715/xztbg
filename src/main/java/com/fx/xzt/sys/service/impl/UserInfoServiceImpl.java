@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.crypto.MacSpi;
 
 import org.springframework.stereotype.Service;
 
@@ -111,9 +110,6 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		map.put("applyTimeEnd", applyTimeEnd);
 		PageHelper.startPage(pageNum,pageSize);
 		List<Map<String, Object>> list = userInfoMapper.getByRealNameAuth(map);
-		for (Map m:list){
-			m.put("UserID", m.get("UserID").toString());
-		}
 		PageInfo<Map<String, Object>> pagehelper = new PageInfo<Map<String, Object>>(list);
 		return pagehelper;
 	}
@@ -150,5 +146,58 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
 		return userInfoMapper.getByAccountCount(map);
+	}
+
+	/**
+	 * 获取下级客户信息
+	 * @param userName
+	 * @param agentName
+	 * @param brokerName
+	 * @param pageNum
+	 * @param pageSize
+	 * @return
+	 */
+	@Override
+	public PageInfo<Map<String,Object>> getSubClients(String userName, String agentName, String brokerName, Integer pageNum, Integer pageSize) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("userName", userName);
+		map.put("agentName", agentName);
+		map.put("brokerName", brokerName);
+		PageHelper.startPage(pageNum,pageSize);
+		List<Map<String, Object>> list = userInfoMapper.getSubClients(map);
+		return new PageInfo<Map<String, Object>>(list);
+	}
+
+	/**
+	 * 导出下级客户信息
+	 * @param userName
+	 * @param agentName
+	 * @param brokerName
+	 * @return
+	 */
+	@Override
+	public List<Map<String, Object>> getExcelSubClientsAccount(String userName, String agentName, String brokerName) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("userName", userName);
+		map.put("agentName", agentName);
+		map.put("brokerName", brokerName);
+		List<Map<String, Object>> list = userInfoMapper.getSubClients(map);
+		return list;
+	}
+
+	/**
+	 * 获取下级客户的账户统计
+	 * @param userName
+	 * @param agentName
+	 * @param brokerName
+	 * @return
+	 */
+	@Override
+	public Map<String, Object> getSubClientsAccountCount(String userName, String agentName, String brokerName) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("userName", userName);
+		map.put("agentName", agentName);
+		map.put("brokerName", brokerName);
+		return userInfoMapper.getSubClientsAccountCount(map);
 	}
 }

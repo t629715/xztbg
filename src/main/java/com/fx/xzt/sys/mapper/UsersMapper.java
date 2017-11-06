@@ -75,5 +75,11 @@ public interface UsersMapper extends BaseMapper<Users>{
 	 * @return
 	 */
 	List<Map<String, Object>> getByAgentNameAndType(Map<String, Object> map);
+	/**
+	 * 商户管理-运营商视角 tianliya
+	 * @param map
+	 * @return
+	 */
+	List<Map<String, Object>> getSightOfOperator(Map<String, Object> map);
 
 }
