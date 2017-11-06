@@ -1,20 +1,19 @@
 package com.fx.xzt.sys.service.impl;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
-import com.fx.xzt.sys.model.UserLoginModel;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fx.xzt.sys.entity.UserLogin;
 import com.fx.xzt.sys.mapper.UserLoginMapper;
 import com.fx.xzt.sys.service.UserLoginService;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 
 @Service
@@ -30,7 +29,7 @@ public class UserLoginServiceImpl extends BaseService<UserLogin> implements User
 
     public PageInfo<Map<String, Object>> getByRegisterMessage(String userName, String startTime, String endTime,
             String registerFrom, String registerIp, String lastStartTime, String lastEndTime, String lastLoginFrom,
-            String agentsName, String brokerName, String attribution, Integer pageNum, Integer pageSize) {
+            String agentName, String brokerName, String attribution, Integer pageNum, Integer pageSize) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("startTime", startTime);
@@ -40,14 +39,11 @@ public class UserLoginServiceImpl extends BaseService<UserLogin> implements User
         map.put("lastStartTime", lastStartTime);
         map.put("lastEndTime", lastEndTime);
         map.put("lastLoginFrom", lastLoginFrom);
-        map.put("agentsName", agentsName);
+        map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         map.put("attribution", attribution);
         PageHelper.startPage(pageNum, pageSize);
         List<Map<String, Object>> list = userLoginMapper.getByRegisterMessage(map);
-        for(Map m:list){
-        	m.put("UserID", m.get("UserID").toString());
-        }
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<Map<String, Object>>(list);
         return pagehelper;
     }
@@ -72,5 +68,16 @@ public class UserLoginServiceImpl extends BaseService<UserLogin> implements User
         return list;
     }
 
+	/**
+	 * 根据userName获取用户账户信息
+	 */
+	public List<Map<String, Object>> getByAccount(String userName) {
+		Map<String, Object> map = new HashMap<String, Object>();
+        map.put("userName", userName);
+        List<Map<String, Object>> list = userLoginMapper.getByAccount(map);
+		return list;
+	}
+
+    
 
 }

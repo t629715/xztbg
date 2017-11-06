@@ -101,11 +101,11 @@ public class UserInfoController {
 	@ResponseBody
 	public Object selectByRegisterMessage(String userName, String startTime, String endTime,
 		String registerFrom, String registerIp, String lastStartTime, String lastEndTime, String lastLoginFrom,
-		String agentsName, String brokerName, String attribution, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+		String agentName, String brokerName, String attribution, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
 		CommonResponse cr = new CommonResponse();
 		try {
 			PageInfo<Map<String, Object>> pageInfo = userLoginService.getByRegisterMessage(userName, startTime, endTime, registerFrom, registerIp,
-					lastStartTime, lastEndTime, lastLoginFrom, agentsName, brokerName, attribution, pageNum, pageSize);
+					lastStartTime, lastEndTime, lastLoginFrom, agentName, brokerName, attribution, pageNum, pageSize);
 			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 			cr.setData(pageInfo);
 			cr.setMsg("操作成功！");

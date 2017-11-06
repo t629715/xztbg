@@ -1,12 +1,9 @@
 package com.fx.xzt.sys.service;
-import com.github.pagehelper.PageInfo;
-
-
-import com.fx.xzt.sys.entity.UserLogin;
-import com.fx.xzt.sys.model.UserLoginModel;
-
 import java.util.List;
 import java.util.Map;
+
+import com.fx.xzt.sys.entity.UserLogin;
+import com.github.pagehelper.PageInfo;
 
 
 public interface UserLoginService extends IService<UserLogin>{
@@ -34,7 +31,7 @@ public interface UserLoginService extends IService<UserLogin>{
 	 */
 	PageInfo<Map<String, Object>> getByRegisterMessage(String userName, String startTime, String endTime,
 									   String registerFrom, String registerIp, String lastStartTime,
-									   String lastEndTime, String lastLoginFrom, String agentsName,
+									   String lastEndTime, String lastLoginFrom, String agentName,
 									   String brokerName, String attribution, Integer pageNum,
 									   Integer pageSize);
 
@@ -57,5 +54,17 @@ public interface UserLoginService extends IService<UserLogin>{
 													String registerFrom, String registerIp, String lastStartTime,
 													String lastEndTime, String lastLoginFrom,
 													String agentsName, String brokerName, String attribution);
+	
+	/**
+	 * 
+	* @Title: getByAccount 
+	* @Description: 根据用户名获取用户账户信息
+	* @param userName
+	* @return    设定文件 
+	* @return List<Map<String,Object>>    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	List<Map<String, Object>> getByAccount(String userName);
 	
 }

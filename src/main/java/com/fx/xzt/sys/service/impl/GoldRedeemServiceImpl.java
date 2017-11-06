@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fx.xzt.sys.entity.GoldRedeem;
 import com.fx.xzt.sys.mapper.GoldRedeemMapper;
@@ -67,6 +68,14 @@ public class GoldRedeemServiceImpl extends BaseService<GoldRedeem> implements Go
         map.put("endTime", endTime);
         map.put("channelName", channelName);
         return goldRedeemMapper.selectByGoldRedeemCount(map);
+	}
+
+	/**
+	 * 黄金赎回--新增
+	 */
+	@Transactional
+	public int insertGoldRedeem(GoldRedeem goldRedeem) {
+		return goldRedeemMapper.insertGoldRedeem(goldRedeem);
 	}
 
 

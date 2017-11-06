@@ -3,6 +3,7 @@ package com.fx.xzt.sys.service;
 import java.util.List;
 import java.util.Map;
 
+import com.fx.xzt.sys.entity.GoldRedeem;
 import com.github.pagehelper.PageInfo;
 
 /**
@@ -62,5 +63,16 @@ public interface GoldRedeemService {
 	* @author htt
 	 */
 	Map<String, Object> selectByGoldRedeemCount(String userName, String startTime, String endTime, String channelName);
-
+	
+	/**
+	 * 
+	* @Title: insertGoldRedeem 
+	* @Description: 黄金赎回--新增
+	* @param goldRedeem
+	* @return    设定文件 
+	* @return int    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	int insertGoldRedeem (GoldRedeem goldRedeem);
 }

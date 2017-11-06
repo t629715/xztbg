@@ -34,6 +34,7 @@
         LEFT JOIN (SELECT userid useridm,MAX(loginTime) lastlogintime,loginFrom lastloginfrom,fromIp lastfromip FROM User_LoginInfo GROUP BY  useridm) m
         ON l.UserID = m.useridm
         <where>
+        	and l.Status = 1
             <if test="userName != null and userName != '' ">
                 and l.UserName = #{userName,jdbcType=VARCHAR}
             </if>
@@ -58,11 +59,11 @@
             <if test="lastLoginFrom != null and lastLoginFrom !='' ">
                 and m.lastloginfrom = #{lastLoginFrom,jdbcType=VARCHAR}
             </if>
-            <if test="agentsName != null and agentsName !='' ">
-                and u.user_name = #{agentsName,jdbcType=VARCHAR}
+            <if test="agentName != null and agentName !='' ">
+                and u.id = #{agentName,jdbcType=BIGINT}
             </if>
             <if test="brokerName != null and brokerName !='' ">
-                and u1.user_name = #{brokerName,jdbcType=VARCHAR}
+                and u1.id = #{brokerName,jdbcType=BIGINT}
             </if>
             <if test="attribution != null and attribution !='' ">
                 and i.attribution = #{attribution,jdbcType=VARCHAR}
@@ -87,6 +88,20 @@
     </set>
     where UserID = #{userid,jdbcType=BIGINT}
   </update>
+  
+  	<!--获取用户账户开始-htt-->
+    <select id="getByAccount" resultType="java.util.Map" parameterType="java.util.Map" >
+    	SELECT l.UserID , l.UserName ,a.id id,a.rmb
+        FROM User_Login l 
+        LEFT JOIN user_account a ON l.UserID = a.user_id
+        <where>
+        	and l.Status = 1
+            <if test="userName != null and userName != '' ">
+                and l.UserName = #{userName,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    <!--获取用户账户结束-->
 
   <!-- <sql id="Example_Where_Clause" >
     <where >

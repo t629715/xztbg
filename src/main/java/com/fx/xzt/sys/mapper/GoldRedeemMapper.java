@@ -42,4 +42,16 @@ public interface GoldRedeemMapper extends BaseMapper<GoldRedeem> {
 	 */
 	Map<String, Object> selectByGoldRedeemCount(Map<String,Object> map);
 	
+	/**
+	 * 
+	* @Title: insertGoldRedeem 
+	* @Description: 黄金赎回--新增
+	* @param goldRedeem
+	* @return    设定文件 
+	* @return int    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	int insertGoldRedeem(GoldRedeem goldRedeem);
+	
 }

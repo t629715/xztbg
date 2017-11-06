@@ -10,14 +10,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fx.xzt.sys.entity.GoldRedeem;
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.service.GoldRedeemService;
+import com.fx.xzt.sys.service.UserLoginService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
+import com.fx.xzt.sys.util.StringUtil;
+import com.fx.xzt.util.IdUtil;
 import com.fx.xzt.util.POIUtils;
 import com.github.pagehelper.PageInfo;
 
@@ -35,6 +40,8 @@ public class GoldRedeemController {
 
 	@Resource
 	GoldRedeemService goldRedeemService;
+	@Resource
+	UserLoginService userLoginService;
 	
 	/**
 	 * 
@@ -172,6 +179,100 @@ public class GoldRedeemController {
             }
         } catch (Exception e) {
             cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("操作失败！");
+            throw e;
+            // e.printStackTrace();
+        }
+        return cr;
+    }
+	
+	/**
+	 * 
+	* @Title: checkUserName 
+	* @Description: 验证用户名是否存在，存在返回用户账户信息
+	* @param request
+	* @param userName
+	* @return
+	* @throws Exception    设定文件 
+	* @return Object    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	@RequestMapping(value="/checkUserName")
+    @ResponseBody
+	public Object checkUserName(HttpServletRequest request, @RequestParam String userName) throws Exception {
+        CommonResponse cr = new CommonResponse();
+        try {
+            HttpSession httpSession = request.getSession();
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("操作失败！");
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            if (users != null) {
+            	if (StringUtil.isNotEmpty(userName)) {
+            		List<Map<String, Object>> list = userLoginService.getByAccount(userName);
+            		if (list != null && list.size() == 1 && 
+            				list.get(0).get("id") != null && list.get(0).get("id") != "") {
+            			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+                        cr.setData(list.get(0));
+                        cr.setMsg("操作成功！");
+            		}
+            	} 
+            } else {
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("无操作权限！");
+            }
+        } catch (Exception e) {
+        	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("操作失败！");
+            throw e;
+            // e.printStackTrace();
+        }
+        return cr;
+    }
+	
+	
+	/**
+	 * 
+	* @Title: saveGoldRedeem 
+	* @Description: 黄金赎回记录--新增
+	* @param request
+	* @param goldRedeem
+	* @return
+	* @throws Exception    设定文件 
+	* @return Object    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	@RequestMapping(value="/saveGoldRedeem")
+    @ResponseBody
+	public Object saveGoldRedeem(HttpServletRequest request, GoldRedeem goldRedeem) throws Exception {
+        CommonResponse cr = new CommonResponse();
+        try {
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            if (users != null) {
+            	goldRedeem.setId(IdUtil.generateyymmddhhMMssSSSAnd4Random());
+            	int flag = goldRedeemService.insertGoldRedeem(goldRedeem);
+            	if (flag > 0) {
+            		cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);
+                    cr.setData("{}");
+                    cr.setMsg("操作成功！");
+            	} else {
+            		cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+                    cr.setData("{}");
+                    cr.setMsg("操作失败！");
+            	}
+            } else {
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("无操作权限！");
+            }
+        } catch (Exception e) {
+        	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
             cr.setData("{}");
             cr.setMsg("操作失败！");
             throw e;

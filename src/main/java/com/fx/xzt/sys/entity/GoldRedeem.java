@@ -17,10 +17,12 @@ public class GoldRedeem implements Serializable {
 	private Long id;        //id
 	private Long userId;    //用户账号
 	private Float gram;     //克重
-	private Integer price;  //赎回价格
+	private Double price;  //赎回价格
 	private Integer amount; //赎回金额
 	private Date createTime;//赎回时间
-	private Long poundage;  //赎回手续费
+	private Long poundage;  //赎回手续
+	private Long accountId; //用户账户id
+	private String userName;
 	
 	public Long getId() {
 		return id;
@@ -46,11 +48,11 @@ public class GoldRedeem implements Serializable {
 		this.gram = gram;
 	}
 	
-	public Integer getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 	
-	public void setPrice(Integer price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 	
@@ -77,7 +79,21 @@ public class GoldRedeem implements Serializable {
 	public void setPoundage(Long poundage) {
 		this.poundage = poundage;
 	}
-	
-	
+
+	public Long getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(Long accountId) {
+		this.accountId = accountId;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 	
 }

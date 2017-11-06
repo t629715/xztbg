@@ -18,7 +18,6 @@ import com.fx.xzt.sys.service.GoldRedeemConfService;
 import com.fx.xzt.sys.service.UserLoginInfoService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
-import com.fx.xzt.sys.util.StringUtil;
 
 /**
  * 
@@ -90,7 +89,6 @@ public class GoldRedeemConfController {
 	* @param price  赎回价格
 	* @param gram   赎回黄金克重
 	* @param poundagePercent  手续费百分比
-	* @param userName  账号
 	* @return
 	* @throws Exception    设定文件 
 	* @return Object    返回类型 
@@ -99,15 +97,15 @@ public class GoldRedeemConfController {
 	 */
 	@RequestMapping(value="/calculationGoldRedeem")
     @ResponseBody
-	public Object calculationGoldRedeem(HttpServletRequest request, @RequestParam Integer price, @RequestParam Double gram, 
-			@RequestParam Double poundagePercent, @RequestParam String userName) throws Exception {
+	public Object calculationGoldRedeem(HttpServletRequest request, @RequestParam Double price, @RequestParam Double gram, 
+			@RequestParam Double poundagePercent) throws Exception {
         CommonResponse cr = new CommonResponse();
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
-            	if (price > 0 && gram > 0 && poundagePercent > 0 && StringUtil.isNotEmpty(userName)) {
-            		Double amount = price * gram;
+            	if (price > 0 && gram > 0 && poundagePercent > 0) {
+            		Double amount = price * gram * 100;
             		Double poundage = amount * poundagePercent;
             		Double total = amount - poundage;
             		Map<String, Object> map = new HashMap<String, Object>();
