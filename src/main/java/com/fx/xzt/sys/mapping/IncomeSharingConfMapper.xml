@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fx.xzt.sys.mapper.IncomeSharingConfMapper" >
+  <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.IncomeSharingConf" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="real_gold_percent" property="realGoldPercent" jdbcType="DOUBLE" />
+    <result column="random_percent" property="randomPercent" jdbcType="DOUBLE" />
+    <result column="gold_right_percent" property="goldRightPercent" jdbcType="DOUBLE" />
+    <result column="gold_percent" property="goldPercent" jdbcType="DOUBLE" />
+    <result column="agent_id" property="agentId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, real_gold_percent, random_percent, gold_right_percent, gold_percent, agent_id
+  </sql>
+  <select id="selectIncomeSharingConf" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from income_sharing_conf
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+<delete id="deleteByAgentId" parameterType="java.lang.Long">
+  delete FROM income_sharing_conf where agent_id = #{agentId,jdbcType=BIGINT}
+</delete>
+  <insert id="insertIncomeSharingConf" parameterType="com.fx.xzt.sys.entity.IncomeSharingConf" >
+    insert into income_sharing_conf
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="realGoldPercent != null" >
+        real_gold_percent,
+      </if>
+      <if test="randomPercent != null" >
+        random_percent,
+      </if>
+      <if test="goldRightPercent != null" >
+        gold_right_percent,
+      </if>
+      <if test="goldPercent != null" >
+        gold_percent,
+      </if>
+      <if test="agentId != null" >
+        agent_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="realGoldPercent != null" >
+        #{realGoldPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="randomPercent != null" >
+        #{randomPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="goldRightPercent != null" >
+        #{goldRightPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="goldPercent != null" >
+        #{goldPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="agentId != null" >
+        #{agentId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateIncomeSharingConf" parameterType="com.fx.xzt.sys.entity.IncomeSharingConf" >
+    update income_sharing_conf
+    <set >
+      <if test="realGoldPercent != null" >
+        real_gold_percent = #{realGoldPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="randomPercent != null" >
+        random_percent = #{randomPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="goldRightPercent != null" >
+        gold_right_percent = #{goldRightPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="goldPercent != null" >
+        gold_percent = #{goldPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="agentId != null" >
+        agent_id = #{agentId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

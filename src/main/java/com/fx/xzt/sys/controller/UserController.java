@@ -103,6 +103,7 @@ public class UserController {
 	@ResponseBody
 	public Map<String,Object> insertUser(Users users,@RequestParam(value="rids", required=false)List<Integer> rids){
 		Map<String,Object> map = new HashMap<String,Object>();
+		users.setPid(new Long(1));
 		users.setStatus("1");
 		int msg = userService.insertUsers(users, rids);
 		map.put("msg", msg);
