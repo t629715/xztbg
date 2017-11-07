@@ -171,6 +171,12 @@
     delete from users
     where id = #{id,jdbcType=BIGINT}
   </delete>
+    <!--根据代理商id删除经纪人 tianliya-->
+    <delete id="deleteByPid" parameterType="java.lang.Long">
+        delete from users
+        where pid = #{pid,jdbcType=BIGINT}
+    </delete>
+    <!--根据代理商id删除经纪人 tianliya-->
     <!--获取代理商列表开始-->
     <select id="selectByAgentMessage" resultType="java.util.Map">
       SELECT id,user_name agentName FROM users WHERE STATUS=1 AND pid=1 ORDER  by create_time desc
@@ -210,11 +216,12 @@
 
     <!--根据代理商名字，经纪人名字、创建时间、类型查询 tianliya start-->
         <select id="getByAgentNameAndType" resultType="java.util.Map" parameterType="java.util.Map">
-            select u1.id id , u1.user_name userName,u1.pid, u1.phone phone,u1.create_time createTime,u2.user_name agentName
+            select u1.id id , u1.user_name userName,u1.pid, u1.phone phone,u1.create_time createTime,if(u2.pid is not null,u2.user_name,null) agentName
             from users u1
             left join users u2
             on u1.pid=u2.id
             <where>
+                u1.pid is not null
                 <if test="pid != null and pid != ''">
                     and u2.id=#{pid,jdbcType=BIGINT}
                 </if>
@@ -228,6 +235,7 @@
                     and u1.create_time &lt;= #{endTime,jdbcType=TIMESTAMP}
                 </if>
             </where>
+            order by u1.pid
         </select>
     <!--根据代理商名字，经纪人名字、创建时间、类型查询 tianliya end-->
     <!--商户管理运营商视角 tianliya-->

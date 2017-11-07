@@ -1,14 +1,11 @@
 package com.fx.xzt.sys.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 
+import com.fx.xzt.sys.mapper.UsersPermissionMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,7 +41,8 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 	
 	@Resource
 	private UsersUserRoleService usersUserRoleService;
-	
+	@Resource
+	private UsersPermissionMapper usersPermissionMapper;
 	public static final String USER_INFO = "uid";
 
 	public Users getUserInfo(Long uid) {
@@ -91,7 +89,6 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		if(selectUser==null){
 			List<Integer> uids = new ArrayList<Integer>();
 			users.setPassword(MD5Utils.encrypt(users.getPassword()));
-			users.setUserName(phone);
 			users.setCreateTime(new Date());
 			users.setUpdateTime(new Date());
 			users.setStatus("1");
@@ -129,7 +126,10 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 	
 	@Transactional
 	public int deleteById(Long id) {
-		return usersMapper.deleteById(id);
+		int i = 0;
+		usersMapper.deleteByPid(id);
+		i = usersMapper.deleteById(id);
+		return i;
 	}
 
 	public PageInfo<UsersModel> selectByUsersModel(String phone, String startTime, String endTime, Integer pageNum,
@@ -253,7 +253,14 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		map.put("pid",pid);
 		map.put("startTime",startTime);
 		map.put("endTime",endTime);
-		List list  = usersMapper.getByAgentNameAndType(map);
+		List<Map<String,Object>> list  = usersMapper.getByAgentNameAndType(map);
+		for (Map m:list){
+			if ("1".equals(m.get("type"))){
+				m.put("type","代理商");
+			}else{
+				m.put("type","经纪人");
+			}
+		}
 		return list;
 	}
 

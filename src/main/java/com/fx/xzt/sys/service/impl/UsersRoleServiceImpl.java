@@ -1,11 +1,14 @@
 package com.fx.xzt.sys.service.impl;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
 import com.fx.xzt.sys.entity.UsersUserRole;
+import com.fx.xzt.sys.mapper.UsersPermissionMapper;
 import com.fx.xzt.sys.mapper.UsersUserRoleMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +29,9 @@ public class UsersRoleServiceImpl extends BaseService<UsersRole> implements User
 	UsersRolePermissionService usersRolePermissionService;
 	@Resource
 	UsersUserRoleMapper usersUserRoleMapper;
+
+	@Resource
+	UsersPermissionMapper usersPermissionMapper;
 	
 	@Transactional
 	public int insertRole(UsersRole usersRole,List<Integer> pids) {
@@ -33,7 +39,17 @@ public class UsersRoleServiceImpl extends BaseService<UsersRole> implements User
 		int msg=usersRoleMapper.insertRole(usersRole);
 		if(msg>0){
 			Integer rid = usersRole.getId();
+			Set<Integer> set = new HashSet();
 			if(pids!=null&&!pids.isEmpty()){
+				for (Integer pid : pids) {
+					set.add(usersPermissionMapper.getByPid(pid));
+				}
+				for (Integer i:set){
+					UsersRolePermission urp = new UsersRolePermission();
+					urp.setRid(rid);
+					urp.setPid(i);
+					msg = usersRolePermissionService.insertUsersRolePermission(urp);
+				}
 				for (Integer pid : pids) {
 					UsersRolePermission urp = new UsersRolePermission();
 					urp.setRid(rid);
