@@ -43,6 +43,32 @@ public class ConstantUtil {
     public final static Integer ISUSECARD_BSY = 0;
 
     /**
+     * 用户账户记录行为
+     */
+    public final static String USER_ACCOUNT_RECORD_ACTION_CZ = "10";
+    public final static String USER_ACCOUNT_RECORD_ACTION_TX = "20";
+    public final static String USER_ACCOUNT_RECORD_ACTION_LCJL = "30";
+    public final static String USER_ACCOUNT_RECORD_ACTION_SJDH = "40";
+    public final static String USER_ACCOUNT_RECORD_ACTION_JYSY = "50";
+    public final static String USER_ACCOUNT_RECORD_ACTION_DJ = "60";
+    public final static String USER_ACCOUNT_RECORD_ACTION_HQLCSF = "70";
+    public final static String USER_ACCOUNT_RECORD_ACTION_LC = "80";
+    public final static String USER_ACCOUNT_RECORD_ACTION_HJSH = "90";
+    
+    /**
+     * 用户账户记录状态
+     */
+    public final static Integer USER_ACCOUNT_RECORD_STATUS_WSH = 0;
+    public final static Integer USER_ACCOUNT_RECORD_STATUS_YSH = 1;
+    
+    /**
+     * 用户账户记录方向
+     */
+    public final static String USER_ACCOUNT_RECORD_SIDE_J = "I";
+    public final static String USER_ACCOUNT_RECORD_SIDE_C = "O";
+    
+
+    /**
      * 客户信息-状态
      */
     public static enum userStatus {

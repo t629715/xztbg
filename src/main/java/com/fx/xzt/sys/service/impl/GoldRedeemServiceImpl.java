@@ -1,5 +1,7 @@
 package com.fx.xzt.sys.service.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,8 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fx.xzt.sys.entity.GoldRedeem;
+import com.fx.xzt.sys.entity.UserAccountRecord;
 import com.fx.xzt.sys.mapper.GoldRedeemMapper;
+import com.fx.xzt.sys.mapper.UserAccountMapper;
+import com.fx.xzt.sys.mapper.UserAccountRecordMapper;
 import com.fx.xzt.sys.service.GoldRedeemService;
+import com.fx.xzt.sys.util.ConstantUtil;
+import com.fx.xzt.util.IdUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -28,6 +35,10 @@ public class GoldRedeemServiceImpl extends BaseService<GoldRedeem> implements Go
 	
 	@Resource
 	GoldRedeemMapper goldRedeemMapper;
+	@Resource
+	UserAccountMapper userAccountMapper;
+	@Resource
+	UserAccountRecordMapper userAccountRecordMapper;
 
 	/**
 	 * 黄金赎回查询
@@ -75,7 +86,37 @@ public class GoldRedeemServiceImpl extends BaseService<GoldRedeem> implements Go
 	 */
 	@Transactional
 	public int insertGoldRedeem(GoldRedeem goldRedeem) {
-		return goldRedeemMapper.insertGoldRedeem(goldRedeem);
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			//新增黄金赎回数据
+			goldRedeem.setCreateTime(sdf.parse(sdf.format(new Date())));
+			int flag1 = goldRedeemMapper.insertGoldRedeem(goldRedeem);
+			//新增账户记录
+			UserAccountRecord record = new UserAccountRecord();
+			record.setId(IdUtil.generateyymmddhhMMssSSSAnd4Random());
+			record.setUserId(goldRedeem.getUserId());
+			record.setUserName(goldRedeem.getUserName());
+			record.setSide(ConstantUtil.USER_ACCOUNT_RECORD_SIDE_J);
+			record.setAction(ConstantUtil.USER_ACCOUNT_RECORD_ACTION_HJSH);
+			record.setStatus(ConstantUtil.USER_ACCOUNT_RECORD_STATUS_YSH);
+			record.setRmb(goldRedeem.getAmount());
+			record.setCreateTime(sdf.parse(sdf.format(new Date())));
+			record.setDescription("黄金赎回");
+			int flag2 = userAccountRecordMapper.add(record);
+			//更新账户余额
+			Map<String, Object> map = new  HashMap<String, Object>();
+			map.put("id", goldRedeem.getAccountId());
+			map.put("rmb", goldRedeem.getAmount());
+			int flag3 = userAccountMapper.updateByGoldReedm(map);
+			if (flag1 > 0 && flag2 >0 && flag3 > 0) {
+				return 1;
+			} else {
+				return -1;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
 	}
 
 

@@ -83,9 +83,9 @@ public class UserWithdrawCashServiceImpl extends BaseService<UserWithdrawCash> i
 		if(msg > 0){
 			UserWithdrawCash selectUWC = userWithdrawCashMapper.selectByIdKey(withdrawid);
 			UserAccountRecord userAccountRecord = new UserAccountRecord();
-			userAccountRecord.setUserid(selectUWC.getUserid());
+			/*userAccountRecord.setUserid(selectUWC.getUserid());
 			userAccountRecord.setCreatetime(sdf.format(selectUWC.getWithdrawtime()));
-			userAccountRecord.setStatus(AccountRecordStatusEnum.success.getIndex());
+			userAccountRecord.setStatus(AccountRecordStatusEnum.success.getIndex());*/
 			msg = userAccountRecordMapper.updateByIdSelective(userAccountRecord);
 			if(msg <=0){
 				msg = 0;

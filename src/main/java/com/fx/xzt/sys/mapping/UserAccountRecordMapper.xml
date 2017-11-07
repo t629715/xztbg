@@ -2,17 +2,82 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.fx.xzt.sys.mapper.UserAccountRecordMapper" >
   <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.UserAccountRecord" >
-    <id column="SerialNo" property="serialno" jdbcType="BIGINT" />
-    <result column="UserID" property="userid" jdbcType="BIGINT" />
-    <result column="UserName" property="username" jdbcType="VARCHAR" />
-    <result column="Side" property="side" jdbcType="CHAR" />
-    <result column="Action" property="action" jdbcType="CHAR" />
-    <result column="RMBAtm" property="rmbatm" jdbcType="DECIMAL" />
-    <result column="UAmt" property="uamt" jdbcType="DECIMAL" />
-    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" javaType="string" />
-    <result column="Status" property="status" jdbcType="SMALLINT" />
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="user_uame" property="userName" jdbcType="VARCHAR" />
+    <result column="side" property="side" jdbcType="CHAR" />
+    <result column="action" property="action" jdbcType="CHAR" />
+    <result column="rmb" property="rmb" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="SMALLINT" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
   </resultMap>
-  <sql id="Base_Column_List" >
+  <!-- 用户账户记录新增开始-htt -->
+   <insert id="add" parameterType="com.fx.xzt.sys.entity.UserAccountRecord" >
+    insert into user_account_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userName != null" >
+        user_uame,
+      </if>
+      <if test="side != null" >
+        side,
+      </if>
+      <if test="action != null" >
+        action,
+      </if>
+      <if test="rmb != null" >
+        rmb,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="side != null" >
+        #{side,jdbcType=CHAR},
+      </if>
+      <if test="action != null" >
+        #{action,jdbcType=CHAR},
+      </if>
+      <if test="rmb != null" >
+        #{rmb,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <!-- 用户账户记录新增结束-htt -->
+  
+  
+  <!-- <sql id="Base_Column_List" >
     SerialNo, UserID, UserName, Side, Action, RMBAtm, UAmt, CreateTime, Status
   </sql>
   <select id="getAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
@@ -151,7 +216,7 @@
         and CreateTime = #{createtime,jdbcType=TIMESTAMP}
       </if>
     </where>
-  </update>
+  </update>-->
   <!-- <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
