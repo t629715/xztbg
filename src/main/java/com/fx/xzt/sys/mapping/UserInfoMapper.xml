@@ -285,6 +285,12 @@
 		</where>
 	</select>
 	<!--下级客户-财产信息 tianliya-->
+
+	<!--修改客户的经济人 tianliya-->
+	<update id="updateUserInfoBrokerId" parameterType="java.util.Map">
+		update User_Info set broker_id=#{brokerId,jdbcType=BIGINT} where UserID = #{userId,jdbcType=BIGINT}
+	</update>
+	<!--修改客户的经济人 tianliya-->
 	<!-- <sql id="Example_Where_Clause" > <where > <foreach collection="oredCriteria" 
 		item="criteria" separator="or" > <if test="criteria.valid" > <trim prefix="(" 
 		suffix=")" prefixOverrides="and" > <foreach collection="criteria.criteria" 

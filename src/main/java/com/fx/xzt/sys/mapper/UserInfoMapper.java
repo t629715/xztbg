@@ -61,4 +61,11 @@ public interface UserInfoMapper extends BaseMapper<UserInfo>{
 	 */
 	Map<String, Object> getSubClientsAccountCount(Map<String,Object> map);
 
+	/**
+	 * 修改客户的经纪人id
+	 * @param map
+	 * @return
+	 */
+	int updateUserInfoBrokerId(Map<String,Object> map);
+
 }

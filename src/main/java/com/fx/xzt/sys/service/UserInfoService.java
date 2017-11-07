@@ -102,4 +102,12 @@ public interface UserInfoService extends IService<UserInfo> {
      * @return
      */
     Map<String,Object> getSubClientsAccountCount(String userName, String agentName, String brokerName);
+
+    /**
+     * 变更客户经纪人
+     * @param userId
+     * @param brokerId
+     * @return
+     */
+    int changeBroker(Long userId, Long brokerId);
 }

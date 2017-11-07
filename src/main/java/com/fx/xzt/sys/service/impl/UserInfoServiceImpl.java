@@ -165,6 +165,9 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		map.put("brokerName", brokerName);
 		PageHelper.startPage(pageNum,pageSize);
 		List<Map<String, Object>> list = userInfoMapper.getSubClients(map);
+		for (Map m:list){
+			m.put("userId",m.get("userId").toString());
+		}
 		return new PageInfo<Map<String, Object>>(list);
 	}
 
@@ -182,6 +185,7 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		map.put("agentName", agentName);
 		map.put("brokerName", brokerName);
 		List<Map<String, Object>> list = userInfoMapper.getSubClients(map);
+
 		return list;
 	}
 
@@ -199,5 +203,13 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		map.put("agentName", agentName);
 		map.put("brokerName", brokerName);
 		return userInfoMapper.getSubClientsAccountCount(map);
+	}
+
+	@Override
+	public int changeBroker(Long userId, Long brokerId) {
+		Map map = new HashMap();
+		map.put("userId",userId);
+		map.put("brokerId",brokerId);
+		return userInfoMapper.updateUserInfoBrokerId(map);
 	}
 }

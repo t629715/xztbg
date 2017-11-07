@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.fx.xzt.sys.entity.UserInfo;
 import com.fx.xzt.sys.entity.Users;
+import org.springframework.aop.target.CommonsPool2TargetSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -332,4 +334,33 @@ public class UserInfoController {
 		}
 		return JSON.toJSONString(cr);
 	}
+
+
+	/**
+	 * 变更经纪人
+	 */
+	@RequestMapping(value="/cheageBroker")
+	@ResponseBody
+	 public CommonResponse cheageBroker(HttpServletRequest request,String userId,Long  brokerId){
+	 	CommonResponse response = new CommonResponse();
+	 	try{
+	 		HttpSession session = request.getSession();
+	 		Users users = (Users)session.getAttribute("currentUser");
+	 		if (users != null){
+	 			int msg = userInfoService.changeBroker(Long.valueOf(userId),brokerId);
+	 			if (msg>0){
+	 				response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+					response.setData(msg);
+					response.setMsg("变更成功");
+	 			}else{
+					response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+					response.setData(msg);
+					response.setMsg("变更失败");
+				}
+			}
+		}catch (Exception e){
+	 		e.printStackTrace();
+		}
+		return response;
+	 }
 }
