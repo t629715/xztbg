@@ -30,6 +30,12 @@
 	from users_permission p
   </select>
 
+  <select id="getByPid" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+    select pid
+    from users_permission
+    where id = #{pid,jdbcType=INTEGER}
+  </select>
+
  <!-- 分级获取菜单 tly start-->
 
   <select id="getPermissions" resultMap="BaseResultMap" parameterType="java.util.Map">

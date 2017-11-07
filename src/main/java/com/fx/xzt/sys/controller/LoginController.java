@@ -61,7 +61,7 @@ public class LoginController {
 		Map<String,Object> map = new HashMap<String,Object>();
 		logger.debug("userInfo", userInfo);
 		String password = MD5Utils.encrypt(userInfo.getPassword());
-		MyAuthenticationToken token = new MyAuthenticationToken(userInfo.getPhone(), password, true, null);
+		MyAuthenticationToken token = new MyAuthenticationToken(userInfo.getUserName(), password, true, null);
 		Subject subject = SecurityUtils.getSubject();
 		try {
 			subject.login(token);//会到自定义的Realm中进行验证返回

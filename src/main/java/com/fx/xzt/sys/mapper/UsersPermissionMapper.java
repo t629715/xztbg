@@ -2,6 +2,7 @@ package com.fx.xzt.sys.mapper;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.stereotype.Repository;
 
@@ -37,5 +38,16 @@ public interface UsersPermissionMapper extends BaseMapper<UsersPermission> {
 	 */
 	List<UsersPermission> getByRidsAll();
 
+	/**
+	 * 获取所有的菜单
+	 * @return
+	 */
 	List<UsersPermission> getPermissions();
+
+	/**
+	 * 根据Rid获取
+	 * @param pid
+	 * @return
+	 */
+	Integer getByPid(Integer pid );
 }

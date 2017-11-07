@@ -31,6 +31,13 @@ public interface UsersMapper extends BaseMapper<Users>{
 	int updateByIdSelective(Users users);
 	
 	int deleteById(Long id);
+
+	/**
+	 * 根据代理商id删除经纪人
+	 * @param pid
+	 * @return
+	 */
+	int deleteByPid(Long pid);
 	
 	List<UsersModel> selectByUsersModel(Map<String,Object> map);
 	
