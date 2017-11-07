@@ -9,9 +9,11 @@ import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
+import com.fx.xzt.util.CaptchaUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
@@ -110,17 +112,30 @@ public class LoginController {
 	 }
 
 	/**
+	 * 验证验证码
+	 * @param request
+	 * @param code
+	 * @return
+	 */
+	 @RequestMapping(value = "/chackCode", method = RequestMethod.GET)
+	 @ResponseBody
+	 public Boolean checkCode(HttpServletRequest request,String code){
+		String randomString = (String )request.getSession().getAttribute("randomString");
+		if (code.equals(randomString)) return true;
+		return false;
+	 }
+	/**
 	 * 获取验证码
 	 * @param request
 	 * @param response
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	/*@RequestMapping(value = "/captcha", method = RequestMethod.GET)
+	@RequestMapping(value = "/captcha", method = RequestMethod.GET)
 	@ResponseBody
 	public void captcha(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException
 	{
 		CaptchaUtil.outputCaptcha(request, response);
-	}*/
+	}
 }

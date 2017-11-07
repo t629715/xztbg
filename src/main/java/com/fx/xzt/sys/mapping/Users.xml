@@ -243,7 +243,7 @@
     <!--根据代理商名字，经纪人名字、创建时间、类型查询 tianliya end-->
     <!--商户管理运营商视角 tianliya-->
     <select id="getSightOfOperator" resultType="java.util.Map" parameterType="java.util.Map">
-        select u1.id id , u1.user_name userName,u1.pid, u1.phone phone,u1.create_time createTime,u2.user_name agentName
+        select u1.id id , u1.user_name userName,u1.pid, u1.phone phone,u1.create_time createTime,if(u2.pid is not null,u2.user_name,null) as agentName
         from users u1
         left join users u2
         on u1.pid=u2.id
