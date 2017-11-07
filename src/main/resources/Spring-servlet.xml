@@ -83,15 +83,21 @@
 	<mvc:resources mapping="template/**" location="/WEB-INF/template/" />
 	<mvc:resources mapping="/js/**" location="/js/" />
 	<mvc:resources mapping="/css/**" location="/css/" />
+	<mvc:resources mapping="/static/**" location="/static/"/>
 
 	<!-- 开启默认处理 -->
 	<mvc:default-servlet-handler />
 
-	<!-- 配置freeMarker视图解析器 -->
-	<bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
-		<property name="contentType" value="text/html; charset=UTF-8" />
-		<property name="requestContextAttribute" value="request" />
-		<property name="suffix" value=".htm" />
+	<bean id="activityViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/template/"/>
+		<property name="suffix" value=""/>
 	</bean>
+
+	<!-- 配置freeMarker视图解析器 -->
+	<!--<bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">-->
+		<!--<property name="contentType" value="text/html; charset=UTF-8" />-->
+		<!--<property name="requestContextAttribute" value="request" />-->
+		<!--<property name="suffix" value=".htm" />-->
+	<!--</bean>-->
 
 </beans>

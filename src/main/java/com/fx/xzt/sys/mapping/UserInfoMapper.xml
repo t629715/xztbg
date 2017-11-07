@@ -232,18 +232,18 @@
 	<!--合作伙伴-获取下级客户信息 tianliya-->
 	<select id="getSubClients" resultType="java.util.Map" parameterType="java.util.Map">
 		SELECT u.UserID AS userId,l.UserName AS userName,l.Status AS
-			STATUS,u.RealName,u.RegisterTime registerTime,
-			u.agent_id AS agentId, ua.user_name AS agentName, u.broker_id AS brokerId,
-			u1.user_name AS brokerName ,
-			a.rmb AS rmb,a.finance AS finance,frozen_rmb AS frozenRmb,total_income AS
-			totalIncome,
-			g.gold as gold
-			FROM User_Info u
-			RIGHT JOIN User_Login l ON u.UserID = l.UserID
-			LEFT JOIN users ua ON u.agent_id = ua.id
-			LEFT JOIN users u1 ON u.broker_id = u1.id
-			LEFT JOIN user_account a ON a.user_id = u.UserID
-			left join user_gold_account g on g.user_id = u.UserID
+		STATUS,u.RealName,u.RegisterTime registerTime,
+		u.agent_id AS agentId, ua.user_name AS agentName, u.broker_id AS brokerId,
+		u1.user_name AS brokerName ,
+		format(a.rmb/100,2) AS rmb,format(a.finance/100,2) AS finance,format(a.frozen_rmb/100,2) AS frozenRmb,format(a.total_income/100,2) AS
+		totalIncome,
+		g.gold as gold
+		FROM User_Info u
+		RIGHT JOIN User_Login l ON u.UserID = l.UserID
+		LEFT JOIN users ua ON u.agent_id = ua.id
+		LEFT JOIN users u1 ON u.broker_id = u1.id
+		LEFT JOIN user_account a ON a.user_id = u.UserID
+		left join user_gold_account g on g.user_id = u.UserID
 			<where>
 				<if test="userName != null and userName != '' ">
 					and l.UserName = #{userName,jdbcType=VARCHAR}
@@ -262,9 +262,9 @@
 	<!--下级客户-财产信息统计 tianliya-->
 	<select id="getSubClientsAccountCount" resultType="java.util.Map"
 			parameterType="java.util.Map">
-		SELECT SUM(rmb) rmbSum, SUM(finance) finaceSum, SUM(frozen_rmb)
-		frozenRmbSum,
-		SUM(total_income) AS totalIncomeSum, SUM(gold) goldSum
+		SELECT format(SUM(rmb)/100,2) rmbSum, format(SUM(finance)/100,2) finaceSum, format(SUM(frozen_rmb),2)
+		frozenRmbSum ,
+		format(SUM(total_income)/100,2) AS totalIncomeSum, SUM(gold) goldSum
 		FROM User_Info u
 		RIGHT JOIN User_Login l ON u.UserID = l.UserID
 		LEFT JOIN user_account a ON l.UserID = a.user_id

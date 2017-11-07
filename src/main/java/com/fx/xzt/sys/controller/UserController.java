@@ -103,6 +103,7 @@ public class UserController {
 	@ResponseBody
 	public Map<String,Object> insertUser(Users users,@RequestParam(value="rids", required=false)List<Integer> rids){
 		Map<String,Object> map = new HashMap<String,Object>();
+		users.setPid(new Long(1));
 		users.setStatus("1");
 		int msg = userService.insertUsers(users, rids);
 		map.put("msg", msg);
@@ -351,8 +352,8 @@ public class UserController {
 			if (users != null) {
 				List<Map<String, Object>> list = userService.execelSightOfElephant(brokerName,agentName,startTime,endTime);
 					POIUtils poi = new POIUtils();
-					String[] heads = {"商户名", "姓名",  "联系电话", "类型", "代理商", "创建时间"};
-					String[] colums = {"userName", "userName", "phone", "type", "agentName", "createTime"};
+					String[] heads = {"商户名", "姓名", "类型", "代理商", "创建时间"};
+					String[] colums = {"userName", "userName",  "type", "agentName", "createTime"};
 					poi.doExport(request, response, list, tieleName, excelName, heads, colums);
 				}
 			}catch (Exception e){
