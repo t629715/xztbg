@@ -165,6 +165,7 @@ public class RealGoldOrderController {
                 }
                 Map<String,Object> map = new HashMap<String,Object>();
                 map = realGoldOrderService.selectByRealGoldCount(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName);
+               // System.out.println("=============:" + map.get("gramSum"));
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(map);
                 cr.setMsg("操作成功！");

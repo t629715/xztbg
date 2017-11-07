@@ -11,8 +11,8 @@
 		LEFT JOIN User_Info i ON l.UserID = i.UserID
 		LEFT JOIN users ua ON i.agent_id = ua.id
 		LEFT JOIN users ub ON i.broker_id = ub.id
-		LEFT JOIN (SELECT user_id, SUM(rmb) rj FROM user_account_record WHERE ACTION = '10' GROUP BY user_id) r ON r.user_id = a.user_id
-		LEFT JOIN (SELECT user_id, SUM(rmb) cj FROM user_account_record WHERE ACTION = '20' GROUP BY user_id) c ON c.user_id = a.user_id
+		LEFT JOIN (SELECT UserID, SUM(RMBAmt) rj FROM User_Recharge WHERE STATUS=1 GROUP BY UserID) r ON r.UserID = a.user_id
+		LEFT JOIN (SELECT UserID, SUM(WithdrawAmt) cj FROM User_WithdrawCash GROUP BY UserID) c ON c.UserID = a.user_id
 		LEFT JOIN (SELECT user_id,SUM(rmb_amount) sjAmount FROM real_gold_order GROUP BY user_id) sj ON sj.user_id = a.user_id
 		LEFT JOIN (
 		SELECT cbf.user_id,SUM(cbf.cbf) cbf FROM (SELECT user_id, fee cbf FROM real_gold_order 
