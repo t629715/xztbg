@@ -116,11 +116,4 @@ public class LoginController {
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	/*@RequestMapping(value = "/captcha", method = RequestMethod.GET)
-	@ResponseBody
-	public void captcha(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException
-	{
-		CaptchaUtil.outputCaptcha(request, response);
-	}*/
 }
