@@ -58,7 +58,7 @@
     <!--实金交易结束-htt-->
     <!--实金交易金额统计开始-htt-->
     <select id="selectByRealGoldCount" resultType="java.util.Map" parameterType="java.util.Map">
-        SELECT SUM(gram) gramSum, SUM(fee) feeSum,
+        SELECT ROUND(SUM(gram),3) gramSum, SUM(fee) feeSum,
         SUM(s.share_amount) shareAmountSum 
         FROM real_gold_order o      
         LEFT JOIN User_Login u ON o.user_id = u.UserID
