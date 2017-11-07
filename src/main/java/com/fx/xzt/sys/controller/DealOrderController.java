@@ -136,7 +136,7 @@ public class DealOrderController {
                         	map.put("ensureAmount", ensureAmount/100);
                         }
                         if (profitLossNumberObj != null && profitLossNumberObj != "") {
-                        	Double profitLossNumber = Double.valueOf(profitLossNumberObj.toString());
+                        	Double profitLossNumber = Double.valueOf(profitLossNumberObj.toString()) - Double.valueOf(ensureAmountObj.toString());
                         	map.put("profitLossNumber", profitLossNumber/100);
                         }
                         if (voucherValueObj != null && voucherValueObj != "") {

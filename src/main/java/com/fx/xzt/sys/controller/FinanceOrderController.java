@@ -364,7 +364,7 @@ public class FinanceOrderController {
                     excelName = "黄金稳赚交易";
                     //判断当时账户是否为代理商
                     if (users.getPid() != null &&  users.getPid() == 1) {
-                        String[] heads = {"用户账号", "交易订单号", "经纪人", "产品编号", "产品名称", "期数", "周期", "收益率", "浮动收益率", "赎回金额",
+                        String[] heads = {"用户账号", "交易订单号", "经纪人", "产品编号", "产品名称", "期数", "周期", "收益率", "浮动收益率", "买入金额",
                                 "买入时间", "赎回时间", "状态", "收益支出", "收益分成"};
                         String[] colums = {"userName", "orderNo", "brokerName", "productNo", "productName", "nper", "cycle", "yearIncomPercent", "floatPercent", "buyAmount",
                                 "buyTime", "redeemTime", "status", "income", "shareAmount"};
@@ -379,7 +379,7 @@ public class FinanceOrderController {
                                     "buyTime", "redeemTime", "status", "income"};
                             poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                         } else {
-                        	String[] heads = {"用户账号", "注册时间", "代理商", "经纪人", "交易订单号", "产品编号", "产品名称", "期数", "周期", "收益率", "初始价", "结算价", "浮动收益率", "赎回金额",
+                        	String[] heads = {"用户账号", "注册时间", "代理商", "经纪人", "交易订单号", "产品编号", "产品名称", "期数", "周期", "收益率", "初始价", "结算价", "浮动收益率", "买入金额",
                                     "买入时间", "赎回时间", "状态", "收益支出"};
                             String[] colums = {"userName", "registerTime", "agentName", "brokerName", "orderNo", "productNo", "productName", "nper", "cycle", "yearIncomPercent", 
                             		"initialPrice", "clearPrice", "floatPercent", "buyAmount",
