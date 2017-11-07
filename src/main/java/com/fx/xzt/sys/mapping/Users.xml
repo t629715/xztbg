@@ -238,7 +238,7 @@
                     and u1.create_time &lt;= #{endTime,jdbcType=TIMESTAMP}
                 </if>
             </where>
-            order by u1.create_time
+            order by u1.pid asc ,u1.create_time desc
         </select>
     <!--根据代理商名字，经纪人名字、创建时间、类型查询 tianliya end-->
     <!--商户管理运营商视角 tianliya-->
@@ -259,6 +259,7 @@
                 and u1.create_time &lt;= #{endTime,jdbcType=TIMESTAMP}
             </if>
         </where>
+        order by u1.pid asc ,u1.create_time desc
     </select>
     <!--商户管理运营商视角 tianliya-->
 
