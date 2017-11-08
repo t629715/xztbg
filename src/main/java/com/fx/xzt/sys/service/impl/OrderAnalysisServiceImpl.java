@@ -53,20 +53,16 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
         map.put("dates",dates);
         map.put("start",(pageNum-1)*pageSize);
         map.put("size",pageSize);
-        //PageHelper.startPage(pageNum,pageSize);
         List list = financeOrderMapper.goldUpAnalysis(map);
-        /*int pageTotal = list.size()/pageSize;
-        int pageStart = (pageNum-1)*pageSize;
-        int pageEnd = pageNum*pageSize;
-        if (pageEnd >= list.size()){
-            pageEnd = list.size()-1;
-        }
-        List listDto = new ArrayList();
-        for (int i = pageStart;i< pageEnd;i++){
-            listDto.add(list.get(i));
-        }*/
         PageInfo pageInfo = new PageInfo(list);
-        /*pageInfo.setPageNum(pageTotal);*/
+        int count = financeOrderMapper.getTotal(map);
+        pageInfo.setTotal(count);
+        pageInfo.setPages(count%pageSize==0?count/pageSize:count/pageSize+1);
        return pageInfo;
+    }
+
+    @Override
+    public Map<String, Object> orderAnalysisCount(String startTime, String endTime) {
+        return null;
     }
 }

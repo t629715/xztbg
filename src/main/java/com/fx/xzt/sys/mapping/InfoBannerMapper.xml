@@ -41,7 +41,7 @@
         select SortNo,SerialNo,Page,PicturePath,SkipPath,CreateTime,SkipType,AppID,Description
         from Info_Banner
         WHERE Page = #{page,jdbcType=SMALLINT} AND valid = 1
-        order by CreateTime DESC
+        order by SortNo DESC
     </select>
     <!--获取用于广告的图片-end-tianliya-->
 
@@ -172,6 +172,7 @@
         CreateTime createTime, ModifyTime modifyTime, Operator operator
         from Info_Banner
         where SerialNo = #{serialNo,jdbcType=BIGINT}
+        order by SortNO
     </select>
 
     <!--根据排序号查询数据 tianliya-->
@@ -182,6 +183,7 @@
         CreateTime createTime, ModifyTime modifyTime, Operator operator
         from Info_Banner
         where SortNo = #{SortNo,jdbcType=INTEGER}
+        order by SortNo
     </select>
     <!--根据排序号查询数据 tianliya-->
 

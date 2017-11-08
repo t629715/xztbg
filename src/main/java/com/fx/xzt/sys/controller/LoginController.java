@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
+import com.fx.xzt.util.CaptchaUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
@@ -116,4 +117,11 @@ public class LoginController {
 	 * @throws ServletException
 	 * @throws IOException
 	 */
+	@RequestMapping(value = "/captcha", method = RequestMethod.GET)
+	@ResponseBody
+	public void captcha(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException
+	{
+		CaptchaUtil.outputCaptcha(request, response);
+	}
 }

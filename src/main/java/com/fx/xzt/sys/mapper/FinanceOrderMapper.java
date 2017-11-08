@@ -38,6 +38,19 @@ public interface FinanceOrderMapper extends BaseMapper<FinanceOrder> {
      * @Date:11:54 2017/10/19
      */
     List<Map<String, Object>> goldUpAnalysis(Map<String, Object> map);
+
+    /**
+     * 交易分析统计
+     * @param map
+     * @return
+     */
+    Map<String, Object> getAnalysisCount(Map<String,Object> map);
+
+    /**
+     * 交易分析总条数
+     * @return
+     */
+    int getTotal(Map<String,Object> map);
     
     /**
      * 
