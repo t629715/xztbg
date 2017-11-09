@@ -21,6 +21,9 @@ public interface OrderAnalysisService {
                                                  Short upOrDown,Short orderState, Short profitLoss,Long agentId,
                                                  Integer pageNum, Integer pageSize);
 
+    List<Map<String, Object>> exportAnalysis(String startTime, String endTime, String agentName,
+                                                Short upOrDown,Short orderState, Short profitLoss,Long agentId
+                                                );
 
 
 }

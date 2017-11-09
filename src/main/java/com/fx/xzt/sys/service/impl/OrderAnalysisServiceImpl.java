@@ -144,4 +144,48 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
 
         return map1;
     }
+
+    /**
+     * 导出交易分析
+     * @param startTime
+     * @param endTime
+     * @param agentName
+     * @param upOrDown
+     * @param orderState
+     * @param profitLoss
+     * @param agentId
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> exportAnalysis(String startTime, String endTime,  String agentName,
+                                                       Short upOrDown,Short orderState, Short profitLoss,Long agentId
+                                                       ) {
+        Map map = new HashMap();
+        map.put("upOrDown",upOrDown);
+        map.put("orderState",orderState);
+        map.put("profitLoss",profitLoss);
+        Date start = null;
+        Date end = null;
+        if (startTime != null && startTime !=""){
+            start = DateUtil.convertTimeMillisToDate(Long.valueOf(startTime));
+        }
+        if (endTime != null && endTime !=""){
+            end = DateUtil.convertTimeMillisToDate(Long.valueOf(endTime));
+        }
+        List<String> dates = new ArrayList<String>();
+        for (Date date = start;date.before(end);date = DateUtil.modify(date,0,0,1,0,0,0)){
+            String time = DateUtils.formatDateByMidLine1(date);
+            dates.add(time);
+        }
+        map.put("dates",dates);
+        map.put("agentId",agentId);
+        List list = new ArrayList();
+        try{
+            list  = analysisOrderMapper.exportAnalysis(map);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return list;
+    }
 }

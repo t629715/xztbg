@@ -8,6 +8,7 @@ import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
 import com.fx.xzt.sys.util.DateUtil;
 import com.fx.xzt.sys.util.DateUtils;
+import com.fx.xzt.util.POIUtils;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -165,6 +167,70 @@ public class OrderAnalysisController {
             response.setMsg("操作失败！");
         }
         return JSON.toJSONString(response);
+    }
+
+
+    @RequestMapping(value="/exportAnalysis")
+    @ResponseBody
+    public void exportAnalysis(HttpServletRequest request, HttpServletResponse response,Integer time, String startTime,
+                               String endTime, String agentName, Short upOrDown,
+                               Short orderState, Short profitLoss, Long agentId,
+                               Integer pageNum, Integer pageSize){
+        try {
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            /*if (users != null) {
+                PageInfo<Map<String, Object>> pageInfo = orderAnalysisService.orderAnalysis(startTime,endTime,
+                                                                        agentName,upOrDown,orderState,profitLoss,
+                                                                        pageNum, pageSize);
+                response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+                response.setData(pageInfo);
+                response.setMsg("操作成功！");
+            } else {
+                response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                response.setData("{}");
+                response.setMsg("操作失败！");
+            }*/
+            String tieleName = "黄金赎回记录";
+            String excelName = "黄金赎回记录";
+            if (startTime == "" && endTime == ""){
+                long current=System.currentTimeMillis();//当前时间毫秒数
+                long zero=current/(1000*3600*24)*(1000*3600*24)- TimeZone.getDefault().getRawOffset();
+                if (time == 1){
+                    startTime = new Timestamp(zero).toString();
+                    endTime = (new Timestamp(zero).getTime()+24*3600*1000)+"";
+
+                }else if (time == 2){
+                    Date start = DateUtil.modify(new Timestamp(zero),0,0,-1,0,0,0);
+                    startTime = start.getTime()+"";
+                    endTime = new Timestamp(zero).getTime()+"";
+
+                }else if (time == 3){
+                    Date start = DateUtil.modify(new Timestamp(zero),0,0,-7,0,0,0);
+                    startTime = start.getTime()+"";
+                    endTime = new Timestamp(zero).getTime()+"";
+
+                }else {
+                    Date start = DateUtil.modify(new Timestamp(zero),0,0,-30,0,0,0);
+                    startTime = start.getTime()+"";
+                    endTime = new Timestamp(zero).getTime()+"";
+
+                }
+
+            }
+            List list = orderAnalysisService.exportAnalysis(startTime,endTime,
+                    agentName,upOrDown,orderState,profitLoss,agentId
+                    );
+            POIUtils poi = new POIUtils();
+            String[] heads = {"时间", "黄金稳赚交易用户",  "黄金稳赚交易金额", "随意存交易用户", "随意存交易金额", "金权交易用户",
+                    "金权交易金额","实物黄金交易用户","实物黄金交易金额"};
+            String[] colums = {"time", "goldUpCount", "goldUpAmount", "financeCount", "financeAmount", "goldRightCount",
+                    "goldRightAmount","realGoldCount","realGoldAmount"};
+            poi.doExport(request, response, list, tieleName, excelName, heads, colums);
+        } catch (Exception e) {
+
+        }
+
     }
 
 }

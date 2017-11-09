@@ -10,7 +10,7 @@
       (#{dt,jdbcType=TIMESTAMP})
     </foreach>
     ;
-    SELECT t.time time,t1.realGoldAmount,t1.realGoldCount,t2.goldRightAmount,t2.goldRightCount,t3.financeAmount,t3.financeCount,t4.goldUpAmount,t4.goldUpCount
+    SELECT t.time time,format(t1.realGoldAmount,2) realGoldAmount,t1.realGoldCount,format(t2.goldRightAmount,2) goldRightAmount,t2.goldRightCount,format(t3.financeAmount,2) financeAmount,t3.financeCount,format(t4.goldUpAmount,2) goldUpAmount,t4.goldUpCount
     FROM tmp_table t
     LEFT JOIN (
           SELECT DATE_FORMAT(rgo.buy_time,'%y-%m-%d') AS realGoldTime, COUNT(rgo.id) AS realGoldCount, SUM(rmb_amount) AS realGoldAmount
@@ -85,6 +85,91 @@
     ORDER BY time desc
     limit #{start}, #{size}
     ;
+    DROP TABLE IF EXISTS tmp_table;
+  </select>
+  <!--交易分析-tianliya-end-->
+
+
+  <!--导出交易分析-tainliya-start-->
+  <select id="exportAnalysis" resultType="java.util.Map" parameterType="java.util.Map">
+    DROP TABLE IF EXISTS tmp_table;
+    CREATE TEMPORARY TABLE tmp_table(`time` datetime DEFAULT NULL);
+    <foreach item="dt" collection="dates"  separator=";">
+      insert into tmp_table (time) values
+      (#{dt,jdbcType=TIMESTAMP})
+    </foreach>
+    ;
+    SELECT t.time time,format(t1.realGoldAmount,2) realGoldAmount,t1.realGoldCount,format(t2.goldRightAmount/100,2) goldRightAmount,t2.goldRightCount,format(t3.financeAmount,2) financeAmount,t3.financeCount,format(t4.goldUpAmount,2) goldUpAmount,t4.goldUpCount
+    FROM tmp_table t
+    LEFT JOIN (
+    SELECT DATE_FORMAT(rgo.buy_time,'%y-%m-%d') AS realGoldTime, COUNT(rgo.id) AS realGoldCount, SUM(rmb_amount) AS realGoldAmount
+    FROM real_gold_order rgo
+    LEFT JOIN User_Info ui
+    ON ui.UserID = rgo.user_id
+    <where>
+      <if test="agentId != null and agentId != ''">
+        AND ui.agent_id = #{agentId,jdbcType=BININT}
+      </if>
+    </where>
+    GROUP BY DATE_FORMAT(rgo.buy_time,'%m-%d-%Y')
+    ORDER BY DATE_FORMAT(rgo.buy_time,'%m-%d-%Y') DESC) t1
+    on t.time=t1.realGoldTime
+    left join (
+    SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldRightTime, COUNT(dor.id) AS goldRightCount, SUM(dor.ensure_amount) AS goldRightAmount
+    FROM deal_order dor
+    LEFT JOIN User_Info ui
+    ON ui.UserID = dor.user_id
+    <where>
+      <if test="agentId != null and agentId != ''">
+        AND ui.agent_id = #{agentId,jdbcType=BININT}
+      </if>
+      <if test="profitLoss != null and profitLoss != ''">
+        AND dor.profit_loss = #{profitLoss,jdbcType=INTEGER}
+      </if>
+      <if test="upOrDown != null and upOrDown != ''">
+        AND dor.up_or_down = #{upOrDown,jdbcType=INTEGER}
+      </if>
+      <if test="orderState != null and upOrDown != ''">
+        AND dor.order_state = #{orderState,jdbcType=INTEGER}
+      </if>
+    </where>
+    GROUP BY DATE_FORMAT(dor.create_time,'%m-%d-%Y')
+    ORDER BY DATE_FORMAT(dor.create_time,'%m-%d-%Y') DESC) t2
+    on t.time = t2.goldRightTime
+    left join (
+    SELECT DATE_FORMAT(fof.buy_time,'%y-%m-%d') AS financeTime, COUNT(fof.id) AS financeCount, SUM(fof.buy_amount) AS financeAmount
+    FROM finance_order fof
+    LEFT JOIN User_Info ui
+    ON ui.UserID = fof.user_id
+    <where>
+      fof.type = 1
+      <if test="agentId != null and agentId != ''">
+        AND ui.agent_id = #{agentId,jdbcType=BININT}
+      </if>
+    </where>
+    GROUP BY DATE_FORMAT(fof.buy_time,'%m-%d-%Y')
+    ORDER BY DATE_FORMAT(fof.buy_time,'%m-%d-%Y') DESC) t3
+    on t.time = t3.financeTime
+    left join (
+    SELECT DATE_FORMAT(fog.buy_time,'%y-%m-%d') AS goldUpTime, COUNT(fog.id) AS goldUpCount, SUM(fog.buy_amount) AS goldUpAmount
+    FROM finance_order fog
+    LEFT JOIN User_Info ui
+    ON ui.UserID = fog.user_id
+    <where>
+      fog.type = 2
+      <if test="agentId != null and agentId != ''">
+        AND ui.agent_id = #{agentId,jdbcType=BININT}
+      </if>
+    </where>
+    GROUP BY DATE_FORMAT(fog.buy_time,'%m-%d-%Y')
+    ORDER BY DATE_FORMAT(fog.buy_time,'%m-%d-%Y') DESC) t4
+    on t.time = t4.goldUpTime
+
+    <where>
+      realGoldAmount is not null or goldRightAmount is not null
+      or financeAmount is not null or goldUpAmount is not null
+    </where>
+    ORDER BY time desc;
     DROP TABLE IF EXISTS tmp_table;
   </select>
   <!--交易分析-tianliya-end-->
@@ -171,11 +256,8 @@
     <where>
       realGoldAmount is not null or goldRightAmount is not null
       or financeAmount is not null or goldUpAmount is not null
-
-
     </where>
-    ORDER BY time desc
-    limit #{start}, #{size}) a
+    ORDER BY time desc) a
     ;
     DROP TABLE IF EXISTS tmp_table;
   </select>
