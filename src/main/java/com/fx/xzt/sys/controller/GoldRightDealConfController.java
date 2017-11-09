@@ -1,10 +1,9 @@
 package com.fx.xzt.sys.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.fx.xzt.rabbitmq.OrderCloseDirective;
 import com.fx.xzt.redis.RedisService;
-import com.fx.xzt.sys.entity.FinanceConf;
-import com.fx.xzt.sys.entity.GoldRightDealConf;
-import com.fx.xzt.sys.entity.Users;
-import com.fx.xzt.sys.service.FinanceConfService;
+import com.fx.xzt.sys.entity.*;
 import com.fx.xzt.sys.service.GoldRightDealConfService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
@@ -12,15 +11,19 @@ import com.fx.xzt.util.JsonUtils;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -37,6 +40,14 @@ public class GoldRightDealConfController {
     RedisService redisService;
     @Resource
     GoldRightDealConfService goldRightDealConfService;
+
+    @Resource
+    private RabbitTemplate rabbitTemplate;
+    @Resource
+    private TopicExchange exchange;
+    private final static String goldRoutingKey = "FX.SGE.AUTD";
+    private final static String routingKey = "FX.SGE.AUTD.FORCE.CLOSE.REPOSITORY";
+
     @RequestMapping(value = "/getAllGoldRight",method= RequestMethod.POST)
     @ResponseBody
     public Object getAllGoldRight(HttpServletRequest request) {
@@ -130,5 +141,29 @@ public class GoldRightDealConfController {
             throw e;
         }
         return response;
+    }
+
+    @RequestMapping("/force-close-repository")
+    @ResponseBody
+    public CommonResponse forceCloseRepository(HttpServletRequest request) {
+        CommonResponse result = new CommonResponse();
+        //TODO:权限用户判断
+        HttpSession httpSession = request.getSession();
+        Users users = (Users) httpSession.getAttribute("currentUser");
+
+        OrderCloseDirective directive = new OrderCloseDirective();
+        directive.setContractCode(goldRoutingKey);
+        directive.setDirective(1);
+        directive.setOperator(users.getUserName());
+        directive.setDirectiveDate(new Date());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:dd");
+        logger.info("{}在{}对{}发送了平仓指令", directive.getOperator(), sdf.format(directive.getDirectiveDate()), directive.getContractCode());
+
+        //携带确认数据 因为是手动强平，所以不用
+        CorrelationData correlationData = new CorrelationData(JSON.toJSONString(directive));
+
+        rabbitTemplate.convertAndSend(exchange.getName(), routingKey, directive, correlationData);
+
+        return result;
     }
 }
