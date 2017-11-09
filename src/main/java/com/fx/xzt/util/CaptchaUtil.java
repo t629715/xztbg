@@ -1,7 +1,5 @@
 package com.fx.xzt.util;
 
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 import java.awt.image.BufferedImage;
 

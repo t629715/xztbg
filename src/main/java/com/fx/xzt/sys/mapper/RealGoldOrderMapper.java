@@ -30,10 +30,9 @@ public interface RealGoldOrderMapper extends BaseMapper<RealGoldOrder> {
 
     /**
      * 实金交易记录分析
-     * @param map
      * @return
      * @Author:  tianliya
      * @Date:12:04 2017/10/19
      */
-    List<Map<String, Object>> realGoldOrderAnalysis(Map<String, Object>map);
+    Map<String, Object> realGoldOrderAnalysis(Map<String,Object> map);
 };

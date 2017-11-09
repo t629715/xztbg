@@ -37,7 +37,6 @@ public class InfoGoldlessonServiceImpl extends BaseService<InfoGoldlesson> imple
                                   String endTime, Short state, String operator,
                                   Integer pageNum, Integer pageSize) {
         Map map1 = new HashMap();
-        PageHelper.startPage(pageNum, pageSize);
         map1.put("title",title);
         if (startTime != null && startTime !=""){
             Date start = null;
@@ -53,6 +52,7 @@ public class InfoGoldlessonServiceImpl extends BaseService<InfoGoldlesson> imple
         }
         map1.put("state",state);
         map1.put("operator",operator);
+        PageHelper.startPage(pageNum, pageSize);
         List list = infoGoldlessonMapper.selectByInfoGoldlesson(map1);
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
         return pagehelper;

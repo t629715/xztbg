@@ -151,36 +151,33 @@
     </select>
     <!--获取买跌的总手数、总买入价 -end - tianliya -->
 
-    <!--金权交易分析-tainliya-start-->
+    <!--金权交易统计-tainliya-start-->
     <select id="dealOrderAnalysis" resultType="java.util.Map" parameterType="java.util.Map">
-        SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldRightTime, COUNT(dor.id) AS goldRightCount, SUM(dor.ensure_amount) AS goldRightAmount
+        SELECT COUNT(dor.id) AS goldRightCount, SUM(dor.ensure_amount) AS goldRightAmount
         FROM deal_order dor
         LEFT JOIN User_Info ui
-        ON dor.user_id=ui.UserID
-        LEFT JOIN users us
-        ON ui.agent_id=us.id
+        ON dor.user_id = ui.UserID
         <where>
             <if test="startTime != null and startTime != ''">
-                AND dor.create_time>=#{startTime,jdbcType=TIMESTAMP}
+                AND dor.create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
             </if>
             <if test="endTime != null and endTime != ''">
-                AND dor.create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+                AND dor.create_time &lt;= #{endTime,jdbcType=TIMESTAMP}
             </if>
-            <if test="upOrDown != null">
-                AND dor.up_or_down =#{upOrDown,jdbcType=SMALLINT}
+            <if test="profitLoss != null and profitLoss != ''">
+                AND dor.profit_loss = #{profitLoss,jdbcType=INTEGER}
             </if>
-            <if test="orderState != null">
-                AND dor.order_state =#{orderState,jdbcType=SMALLINT}
+            <if test="upOrDown != null and upOrDown != ''">order_state
+                AND dor.up_or_down = #{upOrDown,jdbcType=INTEGER}
             </if>
-            <if test="profitLoss != null">
-                AND dor.profit_loss =#{profitLoss,jdbcType=SMALLINT}
+            <if test="orderState != null and upOrDown != ''">
+                AND dor.order_state = #{orderState,jdbcType=INTEGER}
             </if>
-            <if test="agentName != null">
-                AND us.user_name =#{agentName,jdbcType=VARCHAR}
+            <if test="agentId != null and agentId != ''">
+                AND ui.agent_id = #{agentId,jdbcType=BININT}
             </if>
         </where>
-        GROUP BY DATE_FORMAT(dor.create_time,'%m-%d-%Y')
-        ORDER BY DATE_FORMAT(dor.create_time,'%m-%d-%Y') DESC
+        LIMIT #{start,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
     </select>
     <!--金权交易分析-tianliya-end-->
 </mapper>

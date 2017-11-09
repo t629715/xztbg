@@ -127,7 +127,7 @@ public class UserVoucherController {
                         	map.put("deductionValue", deductionValue/100);
                         }
                         if (useStatusObje != null && useStatusObje != "") {
-                        	map.put("useStatus", ConstantUtil.userVoucherUseStatus.toMap().get(useStatusObje.toString()));
+                        	//map.put("useStatus", ConstantUtil.userVoucherUseStatus.toMap().get(useStatusObje.toString()));
                         }
                     }
                     POIUtils poi = new POIUtils();

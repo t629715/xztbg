@@ -254,155 +254,51 @@
 
   <!--随意存交易分析-tainliya-start-->
   <select id="randomAnalysis" resultType="java.util.Map" parameterType="java.util.Map">
-    SELECT DATE_FORMAT(fo.buy_time,'%y-%m-%d') randomTime, COUNT(fo.id) AS randomCount, SUM(fo.buy_amount) AS randomAmount
+    SELECT COUNT(fo.id) AS randomCount, SUM(fo.buy_amount) AS randomAmount
     FROM finance_order fo
-    LEFT JOIN finance_conf fc
-    ON fo.product_id=fc.id
     LEFT JOIN User_Info ui
-    ON fo.user_id=ui.UserID
-    LEFT JOIN users us
-    ON ui.agent_id = us.id
+    ON fo.user_id = ui.UserID
     <where>
-        fc.type=1
+        fo.type = 1
       <if test="startTime != null and startTime != ''">
-        AND fo.buy_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+        AND fo.create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
       </if>
       <if test="endTime != null and endTime != ''">
-        AND fo.buy_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+        AND fo.create_time &lt;= #{endTime,jdbcType=TIMESTAMP}
       </if>
-      <if test="agentName != null">
-        AND us.user_name =#{agentName,jdbcType=VARCHAR}
+      <if test="agentId != null and agentId != ''">
+        AND ui.agent_id = #{agentId,jdbcType=BININT}
       </if>
     </where>
-    GROUP BY DATE_FORMAT(fo.buy_time,'%m-%d-%Y')
-    ORDER BY DATE_FORMAT(fo.buy_time,'%m-%d-%Y') DESC
+    LIMIT #{start,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
+
   </select>
   <!--随意存交易分析-tianliya-end-->
-
-  <!--交易分析-tainliya-start-->
+  <!--黄金稳赚交易分析-tainliya-start-->
   <select id="goldUpAnalysis" resultType="java.util.Map" parameterType="java.util.Map">
-    DROP TABLE IF EXISTS tmp_table;
-    CREATE TEMPORARY TABLE tmp_table(`time` datetime DEFAULT NULL);
-    <foreach item="dt" collection="dates"  separator=";">
-      insert into tmp_table (time) values
-      (#{dt,jdbcType=TIMESTAMP})
-    </foreach>
-    ;
-    SELECT t.time time,t1.realGoldAmount,t1.realGoldCount,t2.goldRightAmount,t2.goldRightCount,t3.financeAmount,t3.financeCount,t4.goldUpAmount,t4.goldUpCount
-    FROM tmp_table t
-    LEFT JOIN (SELECT DATE_FORMAT(rgo.buy_time,'%y-%m-%d') AS realGoldTime, COUNT(rgo.id) AS realGoldCount, SUM(rmb_amount) AS realGoldAmount
-    FROM real_gold_order rgo
-    GROUP BY DATE_FORMAT(rgo.buy_time,'%m-%d-%Y')
-    ORDER BY DATE_FORMAT(rgo.buy_time,'%m-%d-%Y') DESC) t1
-    on t.time=t1.realGoldTime
-    left join (SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldRightTime, COUNT(dor.id) AS goldRightCount, SUM(dor.ensure_amount) AS goldRightAmount
-    FROM deal_order dor
-    GROUP BY DATE_FORMAT(dor.create_time,'%m-%d-%Y')
-    ORDER BY DATE_FORMAT(dor.create_time,'%m-%d-%Y') DESC) t2
-    on t.time = t2.goldRightTime
-    left join (SELECT DATE_FORMAT(fof.buy_time,'%y-%m-%d') AS financeTime, COUNT(fof.id) AS financeCount, SUM(fof.buy_amount) AS financeAmount
-    FROM finance_order fof
-    where fof.type = 1
-    GROUP BY DATE_FORMAT(fof.buy_time,'%m-%d-%Y')
-    ORDER BY DATE_FORMAT(fof.buy_time,'%m-%d-%Y') DESC) t3
-    on t.time = t3.financeTime
-    left join (SELECT DATE_FORMAT(fog.buy_time,'%y-%m-%d') AS goldUpTime, COUNT(fog.id) AS goldUpCount, SUM(fog.buy_amount) AS goldUpAmount
-    FROM finance_order fog
-    where fog.type = 2
-    GROUP BY DATE_FORMAT(fog.buy_time,'%m-%d-%Y')
-    ORDER BY DATE_FORMAT(fog.buy_time,'%m-%d-%Y') DESC) t4
-    on t.time = t4.goldUpTime
+    SELECT COUNT(fo.id) AS goldUpCount, SUM(fo.buy_amount) AS goldUpAmount
+    FROM finance_order fo
+    LEFT JOIN User_Info ui
+    ON fo.user_id = ui.UserID
     <where>
-      realGoldAmount is not null or goldRightAmount is not null
-      or financeAmount is not null or goldUpAmount is not null
+      fo.type = 2
+      <if test="startTime != null and startTime != ''">
+        AND fo.create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        AND fo.create_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="agentId != null and agentId != ''">
+        AND ui.agent_id = #{agentId,jdbcType=BININT}
+      </if>
     </where>
-    ORDER BY time desc
-    limit #{start}, #{size}
+    LIMIT #{start,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
   </select>
-  <!--交易分析-tianliya-end-->
+  <!--黄金稳赚交易分析-tianliya-end-->
 
-  <!--交易分析统计 tianliya-->
-  <select id="getAnalysisCount" resultType="java.util.Map" parameterType="java.util.Map">
-    DROP TABLE IF EXISTS tmp_table;
-    CREATE TEMPORARY TABLE tmp_table(`time` datetime DEFAULT NULL);
-    <foreach item="dt" collection="dates"  separator=";">
-      insert into tmp_table (time) values
-      (#{dt,jdbcType=TIMESTAMP})
-    </foreach>
-    ;
-    SELECT sum(t1.realGoldAmount) realGoldAmountTotal,sum(t1.realGoldCount) realGoldCountTotal,
-            sum(t2.goldRightAmount) goldRightAmountTotal,sum(t2.goldRightCount) goldRightCountTotal,
-            sum(t3.financeAmount) financeAmountTotal,sum(t3.financeCount) financeCountTotal,
-            sum(t4.goldUpAmount) goldUpAmountTotal,sum(t4.goldUpCount) goldUpCountTotal
-    FROM tmp_table t
-    LEFT JOIN (SELECT DATE_FORMAT(rgo.buy_time,'%y-%m-%d') AS realGoldTime, COUNT(rgo.id) AS realGoldCount, SUM(rmb_amount) AS realGoldAmount
-    FROM real_gold_order rgo
-    GROUP BY DATE_FORMAT(rgo.buy_time,'%m-%d-%Y')
-    ORDER BY DATE_FORMAT(rgo.buy_time,'%m-%d-%Y') DESC) t1
-    on t.time=t1.realGoldTime
-    left join (SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldRightTime, COUNT(dor.id) AS goldRightCount, SUM(dor.ensure_amount) AS goldRightAmount
-    FROM deal_order dor
-    GROUP BY DATE_FORMAT(dor.create_time,'%m-%d-%Y')
-    ORDER BY DATE_FORMAT(dor.create_time,'%m-%d-%Y') DESC) t2
-    on t.time = t2.goldRightTime
-    left join (SELECT DATE_FORMAT(fof.buy_time,'%y-%m-%d') AS financeTime, COUNT(fof.id) AS financeCount, SUM(fof.buy_amount) AS financeAmount
-    FROM finance_order fof
-    where fof.type = 1
-    GROUP BY DATE_FORMAT(fof.buy_time,'%m-%d-%Y')
-    ORDER BY DATE_FORMAT(fof.buy_time,'%m-%d-%Y') DESC) t3
-    on t.time = t3.financeTime
-    left join (SELECT DATE_FORMAT(fog.buy_time,'%y-%m-%d') AS goldUpTime, COUNT(fog.id) AS goldUpCount, SUM(fog.buy_amount) AS goldUpAmount
-    FROM finance_order fog
-    where fog.type = 2
-    GROUP BY DATE_FORMAT(fog.buy_time,'%m-%d-%Y')
-    ORDER BY DATE_FORMAT(fog.buy_time,'%m-%d-%Y') DESC) t4
-    on t.time = t4.goldUpTime
-    <where>
-      realGoldAmount is not null or goldRightAmount is not null
-      or financeAmount is not null or goldUpAmount is not null
-    </where>
-  </select>
-  <!--交易分析统计 tianliya-->
 
-  <!--交易分析的总条数 tianliya-->
-  <select id="getTotal" resultType="java.lang.Integer" parameterType="java.util.Map">
-    DROP TABLE IF EXISTS tmp_table;
-    CREATE TEMPORARY TABLE tmp_table(`time` datetime DEFAULT NULL);
-    <foreach item="dt" collection="dates"  separator=";">
-      insert into tmp_table (time) values
-      (#{dt,jdbcType=TIMESTAMP})
-    </foreach>
-    ;
-    SELECT count(time) total
-    FROM tmp_table t
-    LEFT JOIN (SELECT DATE_FORMAT(rgo.buy_time,'%y-%m-%d') AS realGoldTime, COUNT(rgo.id) AS realGoldCount, SUM(rmb_amount) AS realGoldAmount
-    FROM real_gold_order rgo
-    GROUP BY DATE_FORMAT(rgo.buy_time,'%m-%d-%Y')
-    ORDER BY DATE_FORMAT(rgo.buy_time,'%m-%d-%Y') DESC) t1
-    on t.time=t1.realGoldTime
-    left join (SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldRightTime, COUNT(dor.id) AS goldRightCount, SUM(dor.ensure_amount) AS goldRightAmount
-    FROM deal_order dor
-    GROUP BY DATE_FORMAT(dor.create_time,'%m-%d-%Y')
-    ORDER BY DATE_FORMAT(dor.create_time,'%m-%d-%Y') DESC) t2
-    on t.time = t2.goldRightTime
-    left join (SELECT DATE_FORMAT(fof.buy_time,'%y-%m-%d') AS financeTime, COUNT(fof.id) AS financeCount, SUM(fof.buy_amount) AS financeAmount
-    FROM finance_order fof
-    where fof.type = 1
-    GROUP BY DATE_FORMAT(fof.buy_time,'%m-%d-%Y')
-    ORDER BY DATE_FORMAT(fof.buy_time,'%m-%d-%Y') DESC) t3
-    on t.time = t3.financeTime
-    left join (SELECT DATE_FORMAT(fog.buy_time,'%y-%m-%d') AS goldUpTime, COUNT(fog.id) AS goldUpCount, SUM(fog.buy_amount) AS goldUpAmount
-    FROM finance_order fog
-    where fog.type = 2
-    GROUP BY DATE_FORMAT(fog.buy_time,'%m-%d-%Y')
-    ORDER BY DATE_FORMAT(fog.buy_time,'%m-%d-%Y') DESC) t4
-    on t.time = t4.goldUpTime
-    <where>
-      realGoldAmount is not null or goldRightAmount is not null
-      or financeAmount is not null or goldUpAmount is not null
-    </where>
-    ORDER BY time desc
-    limit #{start}, #{size}
-  </select>
-  <!--交易分析的总条数 tianliya-->
+
+
+
+
 </mapper>

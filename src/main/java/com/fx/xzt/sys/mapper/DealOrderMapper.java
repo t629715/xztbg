@@ -41,9 +41,9 @@ public interface DealOrderMapper extends BaseMapper<DealOrder> {
     Map<String, Object> selectHandNumberAndOpenPositionForDown();
 
     /**
-     * 金权交易分析 -tianliya
+     * 金权交易分析 交易用户、交易金额-tianliya
      * @return
      * @Date:11:10 2017/10/19
     */
-    List<Map<String, Object>> dealOrderAnalysis(Map<String, Object>map);
+    Map<String, Object> dealOrderAnalysis(Map<String,Object> map);
  }

@@ -205,6 +205,13 @@ public class DateUtil {
 		return days.intValue();
 	}
 
+	/**
+	 * 求两个时间类型的天差
+	 * @param date1
+	 * @param date2
+	 * @return
+	 * @throws ParseException
+	 */
 	public static int plusDay(Date date1, Date date2) throws ParseException {
 		Long diff = date1.getTime() - date2.getTime();
 		Long days = diff / (1000 * 3600 * 24);

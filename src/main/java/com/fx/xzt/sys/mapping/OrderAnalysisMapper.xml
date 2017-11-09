@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fx.xzt.sys.mapper.AnalysisOrderMapper">
+  <!--交易分析-tainliya-start-->
+  <select id="getAnalysis" resultType="java.util.Map" parameterType="java.util.Map">
+    DROP TABLE IF EXISTS tmp_table;
+    CREATE TEMPORARY TABLE tmp_table(`time` datetime DEFAULT NULL);
+    <foreach item="dt" collection="dates"  separator=";">
+      insert into tmp_table (time) values
+      (#{dt,jdbcType=TIMESTAMP})
+    </foreach>
+    ;
+    SELECT t.time time,t1.realGoldAmount,t1.realGoldCount,t2.goldRightAmount,t2.goldRightCount,t3.financeAmount,t3.financeCount,t4.goldUpAmount,t4.goldUpCount
+    FROM tmp_table t
+    LEFT JOIN (
+          SELECT DATE_FORMAT(rgo.buy_time,'%y-%m-%d') AS realGoldTime, COUNT(rgo.id) AS realGoldCount, SUM(rmb_amount) AS realGoldAmount
+          FROM real_gold_order rgo
+          LEFT JOIN User_Info ui
+          ON ui.UserID = rgo.user_id
+            <where>
+              <if test="agentId != null and agentId != ''">
+                AND ui.agent_id = #{agentId,jdbcType=BININT}
+              </if>
+            </where>
+          GROUP BY DATE_FORMAT(rgo.buy_time,'%m-%d-%Y')
+          ORDER BY DATE_FORMAT(rgo.buy_time,'%m-%d-%Y') DESC) t1
+    on t.time=t1.realGoldTime
+    left join (
+        SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldRightTime, COUNT(dor.id) AS goldRightCount, SUM(dor.ensure_amount) AS goldRightAmount
+        FROM deal_order dor
+        LEFT JOIN User_Info ui
+        ON ui.UserID = dor.user_id
+          <where>
+            <if test="agentId != null and agentId != ''">
+              AND ui.agent_id = #{agentId,jdbcType=BININT}
+            </if>
+            <if test="profitLoss != null and profitLoss != ''">
+              AND dor.profit_loss = #{profitLoss,jdbcType=INTEGER}
+            </if>
+            <if test="upOrDown != null and upOrDown != ''">
+              AND dor.up_or_down = #{upOrDown,jdbcType=INTEGER}
+            </if>
+            <if test="orderState != null and upOrDown != ''">
+              AND dor.order_state = #{orderState,jdbcType=INTEGER}
+            </if>
+          </where>
+        GROUP BY DATE_FORMAT(dor.create_time,'%m-%d-%Y')
+        ORDER BY DATE_FORMAT(dor.create_time,'%m-%d-%Y') DESC) t2
+    on t.time = t2.goldRightTime
+    left join (
+        SELECT DATE_FORMAT(fof.buy_time,'%y-%m-%d') AS financeTime, COUNT(fof.id) AS financeCount, SUM(fof.buy_amount) AS financeAmount
+        FROM finance_order fof
+        LEFT JOIN User_Info ui
+        ON ui.UserID = fof.user_id
+          <where>
+            fof.type = 1
+            <if test="agentId != null and agentId != ''">
+              AND ui.agent_id = #{agentId,jdbcType=BININT}
+            </if>
+          </where>
+        GROUP BY DATE_FORMAT(fof.buy_time,'%m-%d-%Y')
+        ORDER BY DATE_FORMAT(fof.buy_time,'%m-%d-%Y') DESC) t3
+    on t.time = t3.financeTime
+    left join (
+        SELECT DATE_FORMAT(fog.buy_time,'%y-%m-%d') AS goldUpTime, COUNT(fog.id) AS goldUpCount, SUM(fog.buy_amount) AS goldUpAmount
+        FROM finance_order fog
+        LEFT JOIN User_Info ui
+        ON ui.UserID = fog.user_id
+        <where>
+            fog.type = 2
+          <if test="agentId != null and agentId != ''">
+            AND ui.agent_id = #{agentId,jdbcType=BININT}
+          </if>
+        </where>
+        GROUP BY DATE_FORMAT(fog.buy_time,'%m-%d-%Y')
+        ORDER BY DATE_FORMAT(fog.buy_time,'%m-%d-%Y') DESC) t4
+    on t.time = t4.goldUpTime
+
+    <where>
+      realGoldAmount is not null or goldRightAmount is not null
+      or financeAmount is not null or goldUpAmount is not null
+
+
+    </where>
+    ORDER BY time desc
+    limit #{start}, #{size}
+    ;
+    DROP TABLE IF EXISTS tmp_table;
+  </select>
+  <!--交易分析-tianliya-end-->
+  <!--交易分析统计 tianliya-->
+  <select id="getAnalysisCount" resultType="java.util.Map" parameterType="java.util.Map">
+    DROP TABLE IF EXISTS tmp_table;
+    CREATE TEMPORARY TABLE tmp_table(`time` datetime DEFAULT NULL);
+    <foreach item="dt" collection="dates"  separator=";">
+      insert into tmp_table (time) values
+      (#{dt,jdbcType=TIMESTAMP})
+    </foreach>
+    ;
+    SELECT sum(a.realGoldAmount) realGoldAmountTotal,sum(a.realGoldCount) realGoldCountTotal,
+            sum(a.goldRightAmount) goldRightAmountTotal,sum(a.goldRightCount) goldRightCountTotal,
+            sum(a.financeAmount) financeAmountTotal,sum(a.financeCount) financeCountTotal,
+            sum(a.goldUpAmount) goldUpAmountTotal,sum(a.goldUpCount) goldUpCountTotal
+    FROM
+    (SELECT *
+    FROM tmp_table t
+    LEFT JOIN (
+    SELECT DATE_FORMAT(rgo.buy_time,'%y-%m-%d') AS realGoldTime, COUNT(rgo.id) AS realGoldCount, SUM(rmb_amount) AS realGoldAmount
+    FROM real_gold_order rgo
+    LEFT JOIN User_Info ui
+    ON ui.UserID = rgo.user_id
+    <where>
+      <if test="agentId != null and agentId != ''">
+        AND ui.agent_id = #{agentId,jdbcType=BININT}
+      </if>
+    </where>
+    GROUP BY DATE_FORMAT(rgo.buy_time,'%m-%d-%Y')
+    ORDER BY DATE_FORMAT(rgo.buy_time,'%m-%d-%Y') DESC) t1
+    on t.time=t1.realGoldTime
+    left join (
+    SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldRightTime, COUNT(dor.id) AS goldRightCount, SUM(dor.ensure_amount) AS goldRightAmount
+    FROM deal_order dor
+    LEFT JOIN User_Info ui
+    ON ui.UserID = dor.user_id
+    <where>
+      <if test="agentId != null and agentId != ''">
+        AND ui.agent_id = #{agentId,jdbcType=BININT}
+      </if>
+      <if test="profitLoss != null and profitLoss != ''">
+        AND dor.profit_loss = #{profitLoss,jdbcType=INTEGER}
+      </if>
+      <if test="upOrDown != null and upOrDown != ''">
+        AND dor.up_or_down = #{upOrDown,jdbcType=INTEGER}
+      </if>
+      <if test="orderState != null and upOrDown != ''">
+        AND dor.order_state = #{orderState,jdbcType=INTEGER}
+      </if>
+    </where>
+    GROUP BY DATE_FORMAT(dor.create_time,'%m-%d-%Y')
+    ORDER BY DATE_FORMAT(dor.create_time,'%m-%d-%Y') DESC) t2
+    on t.time = t2.goldRightTime
+    left join (
+    SELECT DATE_FORMAT(fof.buy_time,'%y-%m-%d') AS financeTime, COUNT(fof.id) AS financeCount, SUM(fof.buy_amount) AS financeAmount
+    FROM finance_order fof
+    LEFT JOIN User_Info ui
+    ON ui.UserID = fof.user_id
+    <where>
+      fof.type = 1
+      <if test="agentId != null and agentId != ''">
+        AND ui.agent_id = #{agentId,jdbcType=BININT}
+      </if>
+    </where>
+    GROUP BY DATE_FORMAT(fof.buy_time,'%m-%d-%Y')
+    ORDER BY DATE_FORMAT(fof.buy_time,'%m-%d-%Y') DESC) t3
+    on t.time = t3.financeTime
+    left join (
+    SELECT DATE_FORMAT(fog.buy_time,'%y-%m-%d') AS goldUpTime, COUNT(fog.id) AS goldUpCount, SUM(fog.buy_amount) AS goldUpAmount
+    FROM finance_order fog
+    LEFT JOIN User_Info ui
+    ON ui.UserID = fog.user_id
+    <where>
+      fog.type = 2
+      <if test="agentId != null and agentId != ''">
+        AND ui.agent_id = #{agentId,jdbcType=BININT}
+      </if>
+    </where>
+    GROUP BY DATE_FORMAT(fog.buy_time,'%m-%d-%Y')
+    ORDER BY DATE_FORMAT(fog.buy_time,'%m-%d-%Y') DESC) t4
+    on t.time = t4.goldUpTime
+
+    <where>
+      realGoldAmount is not null or goldRightAmount is not null
+      or financeAmount is not null or goldUpAmount is not null
+
+
+    </where>
+    ORDER BY time desc
+    limit #{start}, #{size}) a
+    ;
+    DROP TABLE IF EXISTS tmp_table;
+  </select>
+  <!--交易分析统计 tianliya-->
+  <!--交易分析的总条数 tianliya-->
+  <select id="getTotal" resultType="java.lang.Integer" parameterType="java.util.Map">
+    DROP TABLE IF EXISTS tmp_table;
+    CREATE TEMPORARY TABLE tmp_table(`time` datetime DEFAULT NULL);
+    <foreach item="dt" collection="dates"  separator=";">
+      insert into tmp_table (time) values
+      (#{dt,jdbcType=TIMESTAMP})
+    </foreach>
+    ;
+    SELECT count(time) total
+    FROM tmp_table t
+    LEFT JOIN (
+    SELECT DATE_FORMAT(rgo.buy_time,'%y-%m-%d') AS realGoldTime, COUNT(rgo.id) AS realGoldCount, SUM(rmb_amount) AS realGoldAmount
+    FROM real_gold_order rgo
+    LEFT JOIN User_Info ui
+    ON ui.UserID = rgo.user_id
+    <where>
+      <if test="agentId != null and agentId != ''">
+        AND ui.agent_id = #{agentId,jdbcType=BININT}
+      </if>
+    </where>
+    GROUP BY DATE_FORMAT(rgo.buy_time,'%m-%d-%Y')
+    ORDER BY DATE_FORMAT(rgo.buy_time,'%m-%d-%Y') DESC) t1
+    on t.time=t1.realGoldTime
+    left join (
+    SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldRightTime, COUNT(dor.id) AS goldRightCount, SUM(dor.ensure_amount) AS goldRightAmount
+    FROM deal_order dor
+    LEFT JOIN User_Info ui
+    ON ui.UserID = dor.user_id
+    <where>
+      <if test="agentId != null and agentId != ''">
+        AND ui.agent_id = #{agentId,jdbcType=BININT}
+      </if>
+      <if test="profitLoss != null and profitLoss != ''">
+        AND dor.profit_loss = #{profitLoss,jdbcType=INTEGER}
+      </if>
+      <if test="upOrDown != null and upOrDown != ''">
+        AND dor.up_or_down = #{upOrDown,jdbcType=INTEGER}
+      </if>
+      <if test="orderState != null and upOrDown != ''">
+        AND dor.order_state = #{orderState,jdbcType=INTEGER}
+      </if>
+    </where>
+    GROUP BY DATE_FORMAT(dor.create_time,'%m-%d-%Y')
+    ORDER BY DATE_FORMAT(dor.create_time,'%m-%d-%Y') DESC) t2
+    on t.time = t2.goldRightTime
+    left join (
+    SELECT DATE_FORMAT(fof.buy_time,'%y-%m-%d') AS financeTime, COUNT(fof.id) AS financeCount, SUM(fof.buy_amount) AS financeAmount
+    FROM finance_order fof
+    LEFT JOIN User_Info ui
+    ON ui.UserID = fof.user_id
+    <where>
+      fof.type = 1
+      <if test="agentId != null and agentId != ''">
+        AND ui.agent_id = #{agentId,jdbcType=BININT}
+      </if>
+    </where>
+    GROUP BY DATE_FORMAT(fof.buy_time,'%m-%d-%Y')
+    ORDER BY DATE_FORMAT(fof.buy_time,'%m-%d-%Y') DESC) t3
+    on t.time = t3.financeTime
+    left join (
+    SELECT DATE_FORMAT(fog.buy_time,'%y-%m-%d') AS goldUpTime, COUNT(fog.id) AS goldUpCount, SUM(fog.buy_amount) AS goldUpAmount
+    FROM finance_order fog
+    LEFT JOIN User_Info ui
+    ON ui.UserID = fog.user_id
+    <where>
+      fog.type = 2
+      <if test="agentId != null and agentId != ''">
+        AND ui.agent_id = #{agentId,jdbcType=BININT}
+      </if>
+    </where>
+    GROUP BY DATE_FORMAT(fog.buy_time,'%m-%d-%Y')
+    ORDER BY DATE_FORMAT(fog.buy_time,'%m-%d-%Y') DESC) t4
+    on t.time = t4.goldUpTime
+
+    <where>
+      realGoldAmount is not null or goldRightAmount is not null
+      or financeAmount is not null or goldUpAmount is not null
+    </where>
+    ;
+    DROP TABLE IF EXISTS tmp_table;
+  </select>
+  <!--交易分析的总条数 tianliya-->
+</mapper>
