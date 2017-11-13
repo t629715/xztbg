@@ -93,7 +93,7 @@
     <!--金权交易金额统计开始-htt-->
     <select id="selectByDealOrderCount" resultType="java.util.Map" parameterType="java.util.Map">
         SELECT SUM(ensure_amount) enSureAmountSum, SUM(profit_loss_number) profitLossNumberCount,
-        SUM(s.share_amount) shareAmountSum
+        SUM(s.share_amount) shareAmountSum, SUM(o.cost) costSum
         FROM deal_order o
         LEFT JOIN User_Login u ON o.user_id = u.UserID
         LEFT JOIN User_Info i ON u.UserID = i.UserID
