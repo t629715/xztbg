@@ -1,5 +1,6 @@
 package com.fx.xzt.sys.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,11 +95,12 @@ public class RealGoldOrderController {
      * @param agentName 代理商用户名
      * @param brokerName 经纪人用户名
      * @return
+     * @throws Exception 
      */
     @RequestMapping(value="/excelRealGoldOrder")
     @ResponseBody
     public void excelRealGoldOrder(HttpServletRequest request, HttpServletResponse response, String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime,
-                                   String agentName, String brokerName) {
+                                   String agentName, String brokerName) throws Exception {
         try {
             String tieleName = "实金交易";
             String excelName = "实金交易";
@@ -111,10 +113,21 @@ public class RealGoldOrderController {
                 }
                 List<Map<String, Object>> list = realGoldOrderService.excelRealGoldOrder(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName);
                 if (list != null && list.size() > 0) {
+                	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     for (Map<String, Object> map : list) {
                         Object rmbAmountObj =  map.get("rmbAmount");
                         Object feeObj =  map.get("fee");
                         Object shareAmountObj = map.get("shareAmount");
+                        Object registerTimeObj = map.get("registerTime");
+                    	Object buyTimeObj = map.get("buyTime");
+                    	
+               		 	if (registerTimeObj != null && registerTimeObj != "") {
+               		 		map.put("registerTime", sdf.format(sdf.parse(registerTimeObj.toString())));
+                        }
+               		 	
+	               		if (buyTimeObj != null && buyTimeObj != "") {
+	               			map.put("buyTime", sdf.format(sdf.parse(buyTimeObj.toString())));
+	                    }
                         
                         if (rmbAmountObj != null && rmbAmountObj != "") {
                         	Double rmbAmount = Double.valueOf(rmbAmountObj.toString());

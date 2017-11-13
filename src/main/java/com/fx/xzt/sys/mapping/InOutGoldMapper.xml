@@ -46,11 +46,123 @@
               and DATE_FORMAT(RechargeTime,'%Y-%c-%d') &gt;=#{startTime,jdbcType=TIMESTAMP}
             </if>
             <if test="endTime !=null and endTime != '' ">
-              and DATE_FORMAT(RechargeTime,'%Y-%c-%d') &lt;=#{endTime,jdbcType=TIMESTAMP}
+              and DATE_FORMAT(RechargeTime,'%Y-%c-%d') &lt;#{endTime,jdbcType=TIMESTAMP}
            </if>
 		</where>
 		GROUP BY RechargeChannel,DATE_FORMAT(RechargeTime,'%Y-%c-%d')
 	</select>
 	<!--出入金分析-支付渠道分析结束 -->
+	
+	<!--出入金分析-运营商出入金分析开始-htt -->
+	<select id="selectByAgent" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT
+			a.agentName,
+			SUM(a.rjSum),
+			SUM(a.cjSum)
+		FROM
+			(
+				SELECT
+					u.user_name agentName,
+					(
+						SELECT
+							SUM(RMBAmt) rj
+						FROM
+							User_Recharge r
+						WHERE
+							r. STATUS = 1
+						AND r.UserID = i.UserID
+						<if test="startTime !=null and startTime !='' ">
+							 and DATE_FORMAT(RechargeTime,'%Y-%c-%d %H:%i:%s') &gt;=#{startTime,jdbcType=TIMESTAMP}
+						</if>
+						<if test="endTime !=null and endTime != '' ">
+			              and DATE_FORMAT(RechargeTime,'%Y-%c-%d %H:%i:%s') &lt;#{endTime,jdbcType=TIMESTAMP}
+			           </if>
+					) rjSum,
+					(
+						SELECT
+							SUM(WithdrawAmt) cj
+						FROM
+							User_WithdrawCash c
+						WHERE
+							c. STATUS = 1
+						AND c.UserID = i.UserID
+						<if test="startTime !=null and startTime !='' ">
+							 and DATE_FORMAT(WithdrawTime,'%Y-%c-%d %H:%i:%s') &gt;=#{startTime,jdbcType=TIMESTAMP}
+						</if>
+						<if test="endTime !=null and endTime != '' ">
+			              and DATE_FORMAT(WithdrawTime,'%Y-%c-%d %H:%i:%s') &lt;#{endTime,jdbcType=TIMESTAMP}
+			           </if>
+					) cjSum
+				FROM
+					User_Info i
+				LEFT JOIN User_Login l ON i.UserID = l.UserID
+				LEFT JOIN users u ON i.agent_id = u.id
+				WHERE
+					i.agent_id IS NOT NULL
+				AND l. STATUS = 1
+			) a
+		WHERE
+			a.rjSum IS NOT NULL
+		OR a.cjSum IS NOT NULL
+		GROUP BY
+			a.agentName		
+	</select>
+	<!--出入金分析-运营商出入金分析结束 -->
+	
+	<!--出入金分析-运营商净入金分析开始-htt -->
+	<select id="selectByAgentNet" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT
+			a.agentName,
+			IFNULL(SUM(a.rjSum),0)-IFNULL(SUM(a.cjSum),0)
+		FROM
+			(
+				SELECT
+					u.user_name agentName,
+					(
+						SELECT
+							SUM(RMBAmt) rj
+						FROM
+							User_Recharge r
+						WHERE
+							r. STATUS = 1
+						AND r.UserID = i.UserID
+						<if test="startTime !=null and startTime !='' ">
+							 and DATE_FORMAT(RechargeTime,'%Y-%c-%d %H:%i:%s') &gt;=#{startTime,jdbcType=TIMESTAMP}
+						</if>
+						<if test="endTime !=null and endTime != '' ">
+			              and DATE_FORMAT(RechargeTime,'%Y-%c-%d %H:%i:%s') &lt;#{endTime,jdbcType=TIMESTAMP}
+			           </if>
+					) rjSum,
+					(
+						SELECT
+							SUM(WithdrawAmt) cj
+						FROM
+							User_WithdrawCash c
+						WHERE
+							c. STATUS = 1
+						AND c.UserID = i.UserID
+						<if test="startTime !=null and startTime !='' ">
+							 and DATE_FORMAT(WithdrawTime,'%Y-%c-%d %H:%i:%s') &gt;=#{startTime,jdbcType=TIMESTAMP}
+						</if>
+						<if test="endTime !=null and endTime != '' ">
+			              and DATE_FORMAT(WithdrawTime,'%Y-%c-%d %H:%i:%s') &lt;#{endTime,jdbcType=TIMESTAMP}
+			           </if>
+					) cjSum
+				FROM
+					User_Info i
+				LEFT JOIN User_Login l ON i.UserID = l.UserID
+				LEFT JOIN users u ON i.agent_id = u.id
+				WHERE
+					i.agent_id IS NOT NULL
+				AND l. STATUS = 1
+			) a
+		WHERE
+			a.rjSum IS NOT NULL
+		OR a.cjSum IS NOT NULL
+		GROUP BY
+			a.agentName	
+		
+	</select>
+	<!--出入金分析-运营商净入金分析结束 -->
 
 </mapper>

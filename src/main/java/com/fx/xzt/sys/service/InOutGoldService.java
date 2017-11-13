@@ -17,7 +17,7 @@ public interface InOutGoldService {
 	
 	/**
 	 * 
-	* @Title: selectByDealOrder 
+	* @Title: selectByInOutGold 
 	* @Description: 出入金查询
 	* @param userName  用户账号
 	* @param agentName  代理商账号
@@ -29,12 +29,12 @@ public interface InOutGoldService {
 	* @throws 
 	* @author htt
 	 */
-	PageInfo<Map<String, Object>> selectByDealOrder(String userName, String agentName, String brokerName, 
+	PageInfo<Map<String, Object>> selectByInOutGold(String userName, String agentName, String brokerName, 
 			Integer pageNum, Integer pageSize);
 	
 	/**
 	 * 
-	* @Title: excelDealOrder 
+	* @Title: excelInOutGold 
 	* @Description: 出入金查询--导出
 	* @param userName  用户账号
 	* @param agentName 代理商账号
@@ -44,6 +44,48 @@ public interface InOutGoldService {
 	* @throws 
 	* @author htt
 	 */
-	List<Map<String, Object>> excelDealOrder(String userName, String agentName, String brokerName);
+	List<Map<String, Object>> excelInOutGold(String userName, String agentName, String brokerName);
+	
+	/**
+	 * 
+	* @Title: selectByRechargeChannel 
+	* @Description: 出入金分析--支付渠道分析
+	* @param type   1：今天；2：昨天；3：近7天；4：本月
+	* @param startTime  开始时间
+	* @param endTime  结束时间
+	* @return    设定文件 
+	* @return List<Map<String,Object>>    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	List<Map<String, Object>> selectByRechargeChannel(String type, String startTime, String endTime);
+	
+	/**
+	 * 
+	* @Title: selectByAgent 
+	* @Description: 出入金分析--运营商出入金分析
+	* @param type 1：今天；2：昨天；3：近7天；4：本月
+	* @param startTime
+	* @param endTime
+	* @return    设定文件 
+	* @return List<Map<String,Object>>    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	List<Map<String, Object>> selectByAgent (String type, String startTime, String endTime);
+	
+	/**
+	 * 
+	* @Title: selectByAgentNet 
+	* @Description: 出入金分析-运营商净入金分析
+	* @param type 1：今天；2：昨天；3：近7天；4：本月
+	* @param startTime
+	* @param endTime
+	* @return    设定文件 
+	* @return List<Map<String,Object>>    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	List<Map<String, Object>> selectByAgentNet (String type, String startTime, String endTime);
 
 }

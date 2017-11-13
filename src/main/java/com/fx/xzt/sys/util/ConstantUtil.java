@@ -25,6 +25,9 @@ public class ConstantUtil {
     public final static Integer FINANCE_TYPE_LCCP = 1;    //理财产品
     public final static Integer FINANCE_TYPE_HJWZ = 2;    //黄金稳赚
     
+    /**
+     * 黄金收益记录统计类型
+     */
     public final static Integer GOLD_INCOME_RECORD_TYPE_ZT = 1;  //黄金收益记录统计类型-昨天
     public final static Integer GOLD_INCOME_RECORD_TYPE_JQT = 2; //黄金收益记录统计类型-近7天
     public final static Integer GOLD_INCOME_RECORD_TYPE_BY = 3;  //黄金收益记录统计类型-本月
@@ -66,6 +69,14 @@ public class ConstantUtil {
      */
     public final static String USER_ACCOUNT_RECORD_SIDE_J = "I";
     public final static String USER_ACCOUNT_RECORD_SIDE_C = "O";
+    
+    /**
+     * 出入金统计分析周期
+     */
+    public final static String IN_OUT_GOLD_NPER_JT = "1";   //出入金统计分析周期-今天
+    public final static String IN_OUT_GOLD_NPER_ZT = "2";   //出入金统计分析周期-昨天
+    public final static String IN_OUT_GOLD_NPER_JQT = "3";  //出入金统计分析周期-近七天
+    public final static String IN_OUT_GOLD_NPER_BY = "4";   //出入金统计分析周期-本月
     
 
     /**

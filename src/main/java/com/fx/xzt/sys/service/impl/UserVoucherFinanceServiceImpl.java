@@ -41,7 +41,7 @@ public class UserVoucherFinanceServiceImpl extends BaseService<UserVoucherFinanc
         map.put("useEndTime", useEndTime);
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
-        map.put("useState", useState);
+        map.put("useStatus", useState);
         PageHelper.startPage(pageNum,pageSize);
         List<Map<String, Object>> list = userVoucherFinanceMapper.selectByUserVoucherFinance(map);
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);

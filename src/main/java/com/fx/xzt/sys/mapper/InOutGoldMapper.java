@@ -41,4 +41,28 @@ public interface InOutGoldMapper extends BaseMapper<InOutGold> {
 	* @author htt
 	 */
 	List<Map<String, Object>> selectByRechargeChannel (Map<String,Object> map);
+	
+	/**
+	 * 
+	* @Title: selectByAgent 
+	* @Description: 出入金分析--运营商出入金分析
+	* @param map
+	* @return    设定文件 
+	* @return List<Map<String,Object>>    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	List<Map<String, Object>> selectByAgent (Map<String,Object> map);
+	
+	/**
+	 * 
+	* @Title: selectByAgentNet 
+	* @Description: 出入金分析-运营商净入金分析
+	* @param map
+	* @return    设定文件 
+	* @return List<Map<String,Object>>    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	List<Map<String, Object>> selectByAgentNet (Map<String,Object> map);
 }

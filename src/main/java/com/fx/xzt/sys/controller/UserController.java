@@ -171,16 +171,27 @@ public class UserController {
 	 */
 	@RequestMapping(value="/selectByBrokerMessage")
 	@ResponseBody
-	public Object selectByBrokerMessage(HttpServletRequest request, @RequestParam Long pid){
+	public Object selectByBrokerMessage(HttpServletRequest request, @RequestParam String pid){
 		CommonResponse cr = new CommonResponse();
         try {
+        	Long pidl = null;
         	HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
-        	pid = pid != null && pid != 0 ? pid : users.getId();
-        	List<Map<String, Object>> list = userService.selectByBrokerMessage(pid);
-        	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
-            cr.setData(list);
-            cr.setMsg("操作成功！");
+            if (users != null) {
+            	if (StringUtil.isNotEmpty(pid)) {
+            		pidl = Long.parseLong(pid);
+            	} else {
+            		pidl = users.getId();
+            	}
+            	List<Map<String, Object>> list = userService.selectByBrokerMessage(pidl);
+            	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+                cr.setData(list);
+                cr.setMsg("操作成功！");
+            } else {
+            	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("操作失败！");
+            }
         } catch (Exception e) {
             cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
             cr.setData("{}");

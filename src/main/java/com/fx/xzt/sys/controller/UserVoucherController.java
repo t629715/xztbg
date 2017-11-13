@@ -1,5 +1,7 @@
 package com.fx.xzt.sys.controller;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -58,7 +60,7 @@ public class UserVoucherController {
     @RequestMapping(value="/selectByUserVoucher")
     @ResponseBody
     public Object selectByUserVoucher(HttpServletRequest request, String userName, String startTime, String endTime, 
-    		String useStartTime, String useEndTime, String agentName, String brokerName, Integer useState,
+    		String useStartTime, String useEndTime, String agentName, String brokerName, Integer useStatus,
     		@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
 
         CommonResponse cr = new CommonResponse();
@@ -66,9 +68,8 @@ public class UserVoucherController {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
-                
                 PageInfo<Map<String, Object>> pageInfo = userVoucherService.selectByUserVoucher(userName, startTime, endTime, 
-                		useStartTime, useEndTime, agentName, brokerName, useState, pageNum, pageSize);
+                		useStartTime, useEndTime, agentName, brokerName, useStatus, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
@@ -103,13 +104,14 @@ public class UserVoucherController {
     * @param brokerName  经纪人账号
     * @param useState  使用状态
     * @return void    返回类型 
+     * @throws Exception 
     * @throws 
     * @author htt
      */
     @RequestMapping(value="/excelUserVoucher")
     @ResponseBody
     public void excelUserVoucher(HttpServletRequest request, HttpServletResponse response, String userName, String startTime, String endTime, 
-    		String useStartTime, String useEndTime, String agentName, String brokerName, Integer useState){
+    		String useStartTime, String useEndTime, String agentName, String brokerName, Integer useState) throws Exception{
         try {
             String tieleName = "优惠券信息";
             String excelName = "优惠券信息";
@@ -119,20 +121,30 @@ public class UserVoucherController {
                 List<Map<String, Object>> list = userVoucherService.excelUserVoucher(userName, startTime, endTime, 
                 		useStartTime, useEndTime, agentName, brokerName, useState);
                 if (list != null && list.size() > 0) {
+                	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     for (Map<String, Object> map : list) {
                     	Object useStatusObje = map.get("useStatus");
-                        Object deductionValueObj =  map.get("deductionValue");
-                        if (deductionValueObj != null && deductionValueObj != "") {
-                        	Double deductionValue = Double.valueOf(deductionValueObj.toString());
-                        	map.put("deductionValue", deductionValue/100);
-                        }
+                        Object deductionPercentObj =  map.get("deductionPercent");
+                        Object useTime = map.get("useTime");
+                        Object createTime = map.get("createTime");
                         if (useStatusObje != null && useStatusObje != "") {
                         	map.put("useStatus", ConstantUtil.userVoucherUseStatus.toMap().get(useStatusObje.toString()));
                         }
+                        if (useTime != null && useTime != "") {
+                        	map.put("useTime", sdf.format(sdf.parse(useTime.toString())));
+                        }
+                        if (createTime != null && createTime != "") {
+                        	map.put("createTime", sdf.format(sdf.parse(createTime.toString())));
+                        }
+                        if (deductionPercentObj != null && deductionPercentObj != "") {
+                        	Double deductionPercent = Double.valueOf(deductionPercentObj.toString());
+                        	DecimalFormat df = new DecimalFormat("00.00%");
+                        	map.put("deductionPercent", df.format(deductionPercent));
+                        }
                     }
                     POIUtils poi = new POIUtils();
-                    String[] heads = {"用户账号", "代理商",  "经纪人", "优惠券名称", "抵扣金额", "使用时间", "发放时间", "来源","状态"};
-                    String[] colums = {"userName", "agentName", "brokerName", "description", "deductionValue", "useTime", "createTime", "source", "useStatus"};
+                    String[] heads = {"用户账号", "代理商",  "经纪人", "优惠券名称", "抵扣比例", "使用时间", "发放时间", "来源","状态"};
+                    String[] colums = {"userName", "agentName", "brokerName", "description", "deductionPercent", "useTime", "createTime", "source", "useStatus"};
                     poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                 }
             }
