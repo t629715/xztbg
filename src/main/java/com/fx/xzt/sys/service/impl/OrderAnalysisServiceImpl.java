@@ -87,6 +87,7 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
         for (Date date = start;date.before(end);date = DateUtil.modify(date,0,0,1,0,0,0)){
             String time = DateUtils.formatDateByMidLine1(date);
             dates.add(time);
+
         }
         map.put("dates",dates);
         map.put("start",(pageNum-1)*pageSize);

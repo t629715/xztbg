@@ -32,7 +32,6 @@ import com.github.pagehelper.PageInfo;
 @Controller
 @RequestMapping("/dealOrder")
 public class DealOrderController {
-
     @Resource
     DealOrderService dealOrderService;
 

@@ -10,7 +10,7 @@
       (#{dt,jdbcType=TIMESTAMP})
     </foreach>
     ;
-    SELECT t.time time,format(t1.realGoldAmount,2) realGoldAmount,t1.realGoldCount,format(t2.goldRightAmount,2) goldRightAmount,t2.goldRightCount,format(t3.financeAmount,2) financeAmount,t3.financeCount,format(t4.goldUpAmount,2) goldUpAmount,t4.goldUpCount
+    SELECT t.time time,format(t1.realGoldAmount/100,2) realGoldAmount,t1.realGoldCount,format(t2.goldRightAmount/100,2) goldRightAmount,t2.goldRightCount,format(t3.financeAmount/100,2) financeAmount,t3.financeCount,format(t4.goldUpAmount/100,2) goldUpAmount,t4.goldUpCount
     FROM tmp_table t
     LEFT JOIN (
           SELECT DATE_FORMAT(rgo.buy_time,'%y-%m-%d') AS realGoldTime, COUNT(rgo.id) AS realGoldCount, SUM(rmb_amount) AS realGoldAmount
@@ -109,7 +109,7 @@
       (#{dt,jdbcType=TIMESTAMP})
     </foreach>
     ;
-    SELECT t.time time,format(t1.realGoldAmount,2) realGoldAmount,t1.realGoldCount,format(t2.goldRightAmount/100,2) goldRightAmount,t2.goldRightCount,format(t3.financeAmount,2) financeAmount,t3.financeCount,format(t4.goldUpAmount,2) goldUpAmount,t4.goldUpCount
+    SELECT t.time time,format(t1.realGoldAmount/100,2) realGoldAmount,t1.realGoldCount,format(t2.goldRightAmount/100,2) goldRightAmount,t2.goldRightCount,format(t3.financeAmount/100,2) financeAmount,t3.financeCount,format(t4.goldUpAmount/100,2) goldUpAmount,t4.goldUpCount
     FROM tmp_table t
     LEFT JOIN (
     SELECT DATE_FORMAT(rgo.buy_time,'%y-%m-%d') AS realGoldTime, COUNT(rgo.id) AS realGoldCount, SUM(rmb_amount) AS realGoldAmount
@@ -204,10 +204,12 @@
       (#{dt,jdbcType=TIMESTAMP})
     </foreach>
     ;
-    SELECT sum(a.realGoldAmount) realGoldAmountTotal,sum(a.realGoldCount) realGoldCountTotal,
-            sum(a.goldRightAmount) goldRightAmountTotal,sum(a.goldRightCount) goldRightCountTotal,
-            sum(a.financeAmount) financeAmountTotal,sum(a.financeCount) financeCountTotal,
-            sum(a.goldUpAmount) goldUpAmountTotal,sum(a.goldUpCount) goldUpCountTotal
+    SELECT  format((sum(a.realGoldAmount)+sum(a.goldRightAmount)+sum(a.financeAmount)+sum(a.goldUpAmount))/100,2) amountTotal,
+    sum(a.realGoldCount)+sum(a.goldRightCount)+sum(a.financeCount)+sum(a.goldUpCount) userTotal,
+    format(sum(a.realGoldAmount)/100,2) realGoldAmountTotal,sum(a.realGoldCount) realGoldCountTotal,
+            format(sum(a.goldRightAmount)/100,2) goldRightAmountTotal,sum(a.goldRightCount) goldRightCountTotal,
+            format(sum(a.financeAmount)/100,2) financeAmountTotal,sum(a.financeCount) financeCountTotal,
+            format(sum(a.goldUpAmount)/100,2) goldUpAmountTotal,sum(a.goldUpCount) goldUpCountTotal
     FROM
     (SELECT *
     FROM tmp_table t
