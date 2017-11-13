@@ -15,12 +15,15 @@ import java.util.Map;
 public interface OrderAnalysisService {
 
     PageInfo<Map<String, Object>> orderAnalysis(String startTime, String endTime, String agentName,
-                                                Short upOrDown,Short orderState, Short profitLoss,Long agentId,
+                                                Integer upOrDown,Integer orderState, Integer profitLoss,Long agentId,
                                                 Integer pageNum, Integer pageSize) throws ParseException;
     Map orderAnalysisCount(String startTime, String endTime,
-                                                 Short upOrDown,Short orderState, Short profitLoss,Long agentId,
+                           Integer upOrDown,Integer orderState, Integer profitLoss,Long agentId,
                                                  Integer pageNum, Integer pageSize);
 
+    List<Map<String, Object>> exportAnalysis(String startTime, String endTime, String agentName,
+                                             Integer upOrDown,Integer orderState, Integer profitLoss,Long agentId
+                                                );
 
 
 }

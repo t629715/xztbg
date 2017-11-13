@@ -23,6 +23,14 @@ public interface AnalysisOrderMapper extends BaseMapper<Integer>{
      * @Date:11:54 2017/10/19
      */
     List<Map<String, Object>> getAnalysis(Map<String, Object> map);
+    /**
+     * 导出交易分析
+     * @param map
+     * @return
+     * @Author:  tianliya
+     * @Date:11:54 2017/10/19
+     */
+    List<Map<String, Object>> exportAnalysis(Map<String, Object> map);
 
     /**
      * 交易分析统计
