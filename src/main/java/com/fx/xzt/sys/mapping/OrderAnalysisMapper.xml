@@ -18,8 +18,11 @@
           LEFT JOIN User_Info ui
           ON ui.UserID = rgo.user_id
             <where>
-              <if test="agentId != null and agentId != ''">
-                AND ui.agent_id = #{agentId,jdbcType=BININT}
+              <if test="agentId != null and agentId != '' and agentId == 1">
+                AND ui.agent_id = #{agentId,jdbcType=BIGINT}
+              </if>
+              <if test="agentId != null and agentId != '' and agentId != 1">
+                AND ui.agent_id != 1
               </if>
             </where>
           GROUP BY DATE_FORMAT(rgo.buy_time,'%m-%d-%Y')
@@ -31,8 +34,11 @@
         LEFT JOIN User_Info ui
         ON ui.UserID = dor.user_id
           <where>
-            <if test="agentId != null and agentId != ''">
-              AND ui.agent_id = #{agentId,jdbcType=BININT}
+            <if test="agentId != null and agentId != '' and agentId == 1">
+              AND ui.agent_id = #{agentId,jdbcType=BIGINT}
+            </if>
+            <if test="agentId != null and agentId != '' and agentId != 1">
+              AND ui.agent_id != 1
             </if>
             <if test="profitLoss != null and profitLoss != ''">
               AND dor.profit_loss = #{profitLoss,jdbcType=INTEGER}
@@ -54,8 +60,11 @@
         ON ui.UserID = fof.user_id
           <where>
             fof.type = 1
-            <if test="agentId != null and agentId != ''">
-              AND ui.agent_id = #{agentId,jdbcType=BININT}
+            <if test="agentId != null and agentId != '' and agentId == 1">
+              AND ui.agent_id = #{agentId,jdbcType=BIGINT}
+            </if>
+            <if test="agentId != null and agentId != '' and agentId != 1">
+              AND ui.agent_id != 1
             </if>
           </where>
         GROUP BY DATE_FORMAT(fof.buy_time,'%m-%d-%Y')
@@ -68,8 +77,11 @@
         ON ui.UserID = fog.user_id
         <where>
             fog.type = 2
-          <if test="agentId != null and agentId != ''">
-            AND ui.agent_id = #{agentId,jdbcType=BININT}
+          <if test="agentId != null and agentId != '' and agentId == 1">
+            AND ui.agent_id = #{agentId,jdbcType=BIGINT}
+          </if>
+          <if test="agentId != null and agentId != '' and agentId != 1">
+            AND ui.agent_id != 1
           </if>
         </where>
         GROUP BY DATE_FORMAT(fog.buy_time,'%m-%d-%Y')
@@ -79,8 +91,6 @@
     <where>
       realGoldAmount is not null or goldRightAmount is not null
       or financeAmount is not null or goldUpAmount is not null
-
-
     </where>
     ORDER BY time desc
     limit #{start}, #{size}
@@ -107,8 +117,11 @@
     LEFT JOIN User_Info ui
     ON ui.UserID = rgo.user_id
     <where>
-      <if test="agentId != null and agentId != ''">
-        AND ui.agent_id = #{agentId,jdbcType=BININT}
+      <if test="agentId != null and agentId != '' and agentId == 1">
+        AND ui.agent_id = #{agentId,jdbcType=BIGINT}
+      </if>
+      <if test="agentId != null and agentId != '' and agentId != 1">
+        AND ui.agent_id != 1
       </if>
     </where>
     GROUP BY DATE_FORMAT(rgo.buy_time,'%m-%d-%Y')
@@ -120,8 +133,11 @@
     LEFT JOIN User_Info ui
     ON ui.UserID = dor.user_id
     <where>
-      <if test="agentId != null and agentId != ''">
-        AND ui.agent_id = #{agentId,jdbcType=BININT}
+      <if test="agentId != null and agentId != '' and agentId == 1">
+        AND ui.agent_id = #{agentId,jdbcType=BIGINT}
+      </if>
+      <if test="agentId != null and agentId != '' and agentId != 1">
+        AND ui.agent_id != 1
       </if>
       <if test="profitLoss != null and profitLoss != ''">
         AND dor.profit_loss = #{profitLoss,jdbcType=INTEGER}
@@ -143,8 +159,11 @@
     ON ui.UserID = fof.user_id
     <where>
       fof.type = 1
-      <if test="agentId != null and agentId != ''">
-        AND ui.agent_id = #{agentId,jdbcType=BININT}
+      <if test="agentId != null and agentId != '' and agentId == 1">
+        AND ui.agent_id = #{agentId,jdbcType=BIGINT}
+      </if>
+      <if test="agentId != null and agentId != '' and agentId != 1">
+        AND ui.agent_id != 1
       </if>
     </where>
     GROUP BY DATE_FORMAT(fof.buy_time,'%m-%d-%Y')
@@ -157,8 +176,11 @@
     ON ui.UserID = fog.user_id
     <where>
       fog.type = 2
-      <if test="agentId != null and agentId != ''">
-        AND ui.agent_id = #{agentId,jdbcType=BININT}
+      <if test="agentId != null and agentId != '' and agentId == 1">
+        AND ui.agent_id = #{agentId,jdbcType=BIGINT}
+      </if>
+      <if test="agentId != null and agentId != '' and agentId != 1">
+        AND ui.agent_id != 1
       </if>
     </where>
     GROUP BY DATE_FORMAT(fog.buy_time,'%m-%d-%Y')
@@ -195,8 +217,11 @@
     LEFT JOIN User_Info ui
     ON ui.UserID = rgo.user_id
     <where>
-      <if test="agentId != null and agentId != ''">
-        AND ui.agent_id = #{agentId,jdbcType=BININT}
+      <if test="agentId != null and agentId != '' and agentId == 1">
+        AND ui.agent_id = #{agentId,jdbcType=BIGINT}
+      </if>
+      <if test="agentId != null and agentId != '' and agentId != 1">
+        AND ui.agent_id != 1
       </if>
     </where>
     GROUP BY DATE_FORMAT(rgo.buy_time,'%m-%d-%Y')
@@ -208,13 +233,16 @@
     LEFT JOIN User_Info ui
     ON ui.UserID = dor.user_id
     <where>
-      <if test="agentId != null and agentId != ''">
-        AND ui.agent_id = #{agentId,jdbcType=BININT}
+      <if test="agentId != null and agentId != '' and agentId == 1">
+        AND ui.agent_id = #{agentId,jdbcType=BIGINT}
+      </if>
+      <if test="agentId != null and agentId != '' and agentId != 1">
+        AND ui.agent_id != 1
       </if>
       <if test="profitLoss != null and profitLoss != ''">
         AND dor.profit_loss = #{profitLoss,jdbcType=INTEGER}
       </if>
-      <if test="upOrDown != null and upOrDown != ''">
+      <if test="upOrDown != null">
         AND dor.up_or_down = #{upOrDown,jdbcType=INTEGER}
       </if>
       <if test="orderState != null and upOrDown != ''">
@@ -231,8 +259,11 @@
     ON ui.UserID = fof.user_id
     <where>
       fof.type = 1
-      <if test="agentId != null and agentId != ''">
-        AND ui.agent_id = #{agentId,jdbcType=BININT}
+      <if test="agentId != null and agentId != '' and agentId == 1">
+        AND ui.agent_id = #{agentId,jdbcType=BIGINT}
+      </if>
+      <if test="agentId != null and agentId != '' and agentId != 1">
+        AND ui.agent_id != 1
       </if>
     </where>
     GROUP BY DATE_FORMAT(fof.buy_time,'%m-%d-%Y')
@@ -245,8 +276,11 @@
     ON ui.UserID = fog.user_id
     <where>
       fog.type = 2
-      <if test="agentId != null and agentId != ''">
-        AND ui.agent_id = #{agentId,jdbcType=BININT}
+      <if test="agentId != null and agentId != '' and agentId == 1">
+        AND ui.agent_id = #{agentId,jdbcType=BIGINT}
+      </if>
+      <if test="agentId != null and agentId != '' and agentId != 1">
+        AND ui.agent_id != 1
       </if>
     </where>
     GROUP BY DATE_FORMAT(fog.buy_time,'%m-%d-%Y')
@@ -279,8 +313,11 @@
     LEFT JOIN User_Info ui
     ON ui.UserID = rgo.user_id
     <where>
-      <if test="agentId != null and agentId != ''">
-        AND ui.agent_id = #{agentId,jdbcType=BININT}
+      <if test="agentId != null and agentId != '' and agentId == 1">
+        AND ui.agent_id = #{agentId,jdbcType=BIGINT}
+      </if>
+      <if test="agentId != null and agentId != '' and agentId != 1">
+        AND ui.agent_id != 1
       </if>
     </where>
     GROUP BY DATE_FORMAT(rgo.buy_time,'%m-%d-%Y')
@@ -292,8 +329,11 @@
     LEFT JOIN User_Info ui
     ON ui.UserID = dor.user_id
     <where>
-      <if test="agentId != null and agentId != ''">
-        AND ui.agent_id = #{agentId,jdbcType=BININT}
+      <if test="agentId != null and agentId != '' and agentId == 1">
+        AND ui.agent_id = #{agentId,jdbcType=BIGINT}
+      </if>
+      <if test="agentId != null and agentId != '' and agentId != 1">
+        AND ui.agent_id != 1
       </if>
       <if test="profitLoss != null and profitLoss != ''">
         AND dor.profit_loss = #{profitLoss,jdbcType=INTEGER}
@@ -315,8 +355,11 @@
     ON ui.UserID = fof.user_id
     <where>
       fof.type = 1
-      <if test="agentId != null and agentId != ''">
-        AND ui.agent_id = #{agentId,jdbcType=BININT}
+      <if test="agentId != null and agentId != '' and agentId == 1">
+        AND ui.agent_id = #{agentId,jdbcType=BIGINT}
+      </if>
+      <if test="agentId != null and agentId != '' and agentId != 1">
+        AND ui.agent_id != 1
       </if>
     </where>
     GROUP BY DATE_FORMAT(fof.buy_time,'%m-%d-%Y')
@@ -329,8 +372,11 @@
     ON ui.UserID = fog.user_id
     <where>
       fog.type = 2
-      <if test="agentId != null and agentId != ''">
-        AND ui.agent_id = #{agentId,jdbcType=BININT}
+      <if test="agentId != null and agentId != '' and agentId == 1">
+        AND ui.agent_id = #{agentId,jdbcType=BIGINT}
+      </if>
+      <if test="agentId != null and agentId != '' and agentId != 1">
+        AND ui.agent_id != 1
       </if>
     </where>
     GROUP BY DATE_FORMAT(fog.buy_time,'%m-%d-%Y')

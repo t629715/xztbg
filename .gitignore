@@ -50,3 +50,4 @@ proguard/
 .settings/
 .project
 .classpath
+src/main/java/com/fx/xzt/sys/mapping/UserVoucher.xml

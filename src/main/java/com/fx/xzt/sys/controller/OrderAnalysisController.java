@@ -47,56 +47,44 @@ public class OrderAnalysisController {
     @RequestMapping(value="/orderAnalysis")
     @ResponseBody
     public CommonResponse orderAnalysis(HttpServletRequest request, Integer time,String startTime,
-                                            String endTime,  String agentName,Short upOrDown,
-                                            Short orderState, Short profitLoss,Long agentId,
+                                            String endTime,  String agentName,Integer upOrDown,
+                                        Integer orderState, Integer profitLoss,Long agentId,
                                             Integer pageNum, Integer pageSize){
         CommonResponse response = new CommonResponse();
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
-            /*if (users != null) {
+            if (users != null){
+                if (startTime == "" && endTime == ""){
+                    long current=System.currentTimeMillis();//当前时间毫秒数
+                    long zero=current/(1000*3600*24)*(1000*3600*24)- TimeZone.getDefault().getRawOffset();
+                    if (time == 1){
+                        startTime = new Timestamp(zero).toString();
+                        endTime = (new Timestamp(zero).getTime()+24*3600*1000)+"";
+
+                    }else if (time == 2){
+                        Date start = DateUtil.modify(new Timestamp(zero),0,0,-1,0,0,0);
+                        startTime = start.getTime()+"";
+                        endTime = new Timestamp(zero).getTime()+"";
+
+                    }else if (time == 3){
+                        Date start = DateUtil.modify(new Timestamp(zero),0,0,-7,0,0,0);
+                        startTime = start.getTime()+"";
+                        endTime = new Timestamp(zero).getTime()+"";
+
+                    }else {
+                        Date start = DateUtil.modify(new Timestamp(zero),0,0,-30,0,0,0);
+                        startTime = start.getTime()+"";
+                        endTime = new Timestamp(zero).getTime()+"";
+                    }
+                }
                 PageInfo<Map<String, Object>> pageInfo = orderAnalysisService.orderAnalysis(startTime,endTime,
-                                                                        agentName,upOrDown,orderState,profitLoss,
-                                                                        pageNum, pageSize);
+                        agentName,upOrDown,orderState,profitLoss,agentId,
+                        pageNum, pageSize);
                 response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 response.setData(pageInfo);
                 response.setMsg("操作成功！");
-            } else {
-                response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
-                response.setData("{}");
-                response.setMsg("操作失败！");
-            }*/
-            if (startTime == "" && endTime == ""){
-                long current=System.currentTimeMillis();//当前时间毫秒数
-                long zero=current/(1000*3600*24)*(1000*3600*24)- TimeZone.getDefault().getRawOffset();
-                if (time == 1){
-                    startTime = new Timestamp(zero).toString();
-                    endTime = (new Timestamp(zero).getTime()+24*3600*1000)+"";
-
-                }else if (time == 2){
-                    Date start = DateUtil.modify(new Timestamp(zero),0,0,-1,0,0,0);
-                    startTime = start.getTime()+"";
-                    endTime = new Timestamp(zero).getTime()+"";
-
-                }else if (time == 3){
-                    Date start = DateUtil.modify(new Timestamp(zero),0,0,-7,0,0,0);
-                    startTime = start.getTime()+"";
-                    endTime = new Timestamp(zero).getTime()+"";
-
-                }else {
-                    Date start = DateUtil.modify(new Timestamp(zero),0,0,-30,0,0,0);
-                    startTime = start.getTime()+"";
-                    endTime = new Timestamp(zero).getTime()+"";
-
-                }
-
             }
-            PageInfo<Map<String, Object>> pageInfo = orderAnalysisService.orderAnalysis(startTime,endTime,
-                    agentName,upOrDown,orderState,profitLoss,agentId,
-                    pageNum, pageSize);
-            response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
-            response.setData(pageInfo);
-            response.setMsg("操作成功！");
         } catch (Exception e) {
             response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
             response.setData("{}");
@@ -108,59 +96,50 @@ public class OrderAnalysisController {
     @RequestMapping(value="/orderAnalysisCount")
     @ResponseBody
     public String orderAnalysisCount(HttpServletRequest request, Integer time,String startTime,
-                                             String endTime,  String agentName,Short upOrDown,
-                                             Short orderState, Short profitLoss,Long agentId,
+                                             String endTime,  String agentName,Integer upOrDown,
+                                     Integer orderState, Integer profitLoss,Long agentId,
                                              Integer pageNum, Integer pageSize){
         CommonResponse response = new CommonResponse();
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
-            /*if (users != null) {
-                PageInfo<Map<String, Object>> pageInfo = orderAnalysisService.orderAnalysis(startTime,endTime,
-                                                                        agentName,upOrDown,orderState,profitLoss,
-                                                                        pageNum, pageSize);
-                response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
-                response.setData(pageInfo);
-                response.setMsg("操作成功！");
-            } else {
-                response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
-                response.setData("{}");
-                response.setMsg("操作失败！");
-            }*/
-            if (startTime == "" && endTime == ""){
+            if (users != null){
+                if (startTime == "" && endTime == ""){
 
-                long current=System.currentTimeMillis();//当前时间毫秒数
-                long zero=current/(1000*3600*24)*(1000*3600*24)- TimeZone.getDefault().getRawOffset();
-                Long mills = new Timestamp(zero).getTime();
-                if (time == 1){
-                    startTime = mills.toString();
-                    endTime = (mills+24*3600*1000)+"";
+                    long current=System.currentTimeMillis();//当前时间毫秒数
+                    long zero=current/(1000*3600*24)*(1000*3600*24)- TimeZone.getDefault().getRawOffset();
+                    Long mills = new Timestamp(zero).getTime();
+                    if (time == 1){
+                        startTime = mills.toString();
+                        endTime = (mills+24*3600*1000)+"";
 
-                }else if (time == 2){
-                    Date start = DateUtil.modify(new Timestamp(zero),0,0,-1,0,0,0);
-                    startTime = start.getTime()+"";
-                    endTime = mills+"";
+                    }else if (time == 2){
+                        Date start = DateUtil.modify(new Timestamp(zero),0,0,-1,0,0,0);
+                        startTime = start.getTime()+"";
+                        endTime = mills+"";
 
-                }else if (time == 3){
-                    Date start = DateUtil.modify(new Timestamp(zero),0,0,-7,0,0,0);
-                    startTime = start.getTime()+"";
-                    endTime = mills+"";
+                    }else if (time == 3){
+                        Date start = DateUtil.modify(new Timestamp(zero),0,0,-7,0,0,0);
+                        startTime = start.getTime()+"";
+                        endTime = mills+"";
 
-                }else {
-                    Date start = DateUtil.modify(new Timestamp(zero),0,0,-30,0,0,0);
-                    startTime = start.getTime()+"";
-                    endTime = mills+"";
+                    }else {
+                        Date start = DateUtil.modify(new Timestamp(zero),0,0,-30,0,0,0);
+                        startTime = start.getTime()+"";
+                        endTime = mills+"";
+
+                    }
 
                 }
-
+                Map map = orderAnalysisService.orderAnalysisCount(startTime,
+                        endTime,  upOrDown,
+                        orderState,  profitLoss,agentId,
+                        pageNum,  pageSize);
+                response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+                response.setData(map);
+                response.setMsg("操作成功！");
             }
-            Map map = orderAnalysisService.orderAnalysisCount(startTime,
-                     endTime,  upOrDown,
-                     orderState,  profitLoss,agentId,
-                     pageNum,  pageSize);
-            response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
-            response.setData(map);
-            response.setMsg("操作成功！");
+
         } catch (Exception e) {
             response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
             response.setData("{}");
@@ -173,60 +152,51 @@ public class OrderAnalysisController {
     @RequestMapping(value="/exportAnalysis")
     @ResponseBody
     public void exportAnalysis(HttpServletRequest request, HttpServletResponse response,Integer time, String startTime,
-                               String endTime, String agentName, Short upOrDown,
-                               Short orderState, Short profitLoss, Long agentId,
+                               String endTime, String agentName, Integer upOrDown,
+                               Integer orderState, Integer profitLoss, Long agentId,
                                Integer pageNum, Integer pageSize){
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
-            /*if (users != null) {
-                PageInfo<Map<String, Object>> pageInfo = orderAnalysisService.orderAnalysis(startTime,endTime,
-                                                                        agentName,upOrDown,orderState,profitLoss,
-                                                                        pageNum, pageSize);
-                response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
-                response.setData(pageInfo);
-                response.setMsg("操作成功！");
-            } else {
-                response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
-                response.setData("{}");
-                response.setMsg("操作失败！");
-            }*/
-            String tieleName = "黄金赎回记录";
-            String excelName = "黄金赎回记录";
-            if (startTime == "" && endTime == ""){
-                long current=System.currentTimeMillis();//当前时间毫秒数
-                long zero=current/(1000*3600*24)*(1000*3600*24)- TimeZone.getDefault().getRawOffset();
-                if (time == 1){
-                    startTime = new Timestamp(zero).toString();
-                    endTime = (new Timestamp(zero).getTime()+24*3600*1000)+"";
+            if (users != null){
+                String tieleName = "黄金赎回记录";
+                String excelName = "黄金赎回记录";
+                if (startTime == "" && endTime == ""){
+                    long current=System.currentTimeMillis();//当前时间毫秒数
+                    long zero=current/(1000*3600*24)*(1000*3600*24)- TimeZone.getDefault().getRawOffset();
+                    if (time == 1){
+                        startTime = new Timestamp(zero).toString();
+                        endTime = (new Timestamp(zero).getTime()+24*3600*1000)+"";
 
-                }else if (time == 2){
-                    Date start = DateUtil.modify(new Timestamp(zero),0,0,-1,0,0,0);
-                    startTime = start.getTime()+"";
-                    endTime = new Timestamp(zero).getTime()+"";
+                    }else if (time == 2){
+                        Date start = DateUtil.modify(new Timestamp(zero),0,0,-1,0,0,0);
+                        startTime = start.getTime()+"";
+                        endTime = new Timestamp(zero).getTime()+"";
 
-                }else if (time == 3){
-                    Date start = DateUtil.modify(new Timestamp(zero),0,0,-7,0,0,0);
-                    startTime = start.getTime()+"";
-                    endTime = new Timestamp(zero).getTime()+"";
+                    }else if (time == 3){
+                        Date start = DateUtil.modify(new Timestamp(zero),0,0,-7,0,0,0);
+                        startTime = start.getTime()+"";
+                        endTime = new Timestamp(zero).getTime()+"";
 
-                }else {
-                    Date start = DateUtil.modify(new Timestamp(zero),0,0,-30,0,0,0);
-                    startTime = start.getTime()+"";
-                    endTime = new Timestamp(zero).getTime()+"";
+                    }else {
+                        Date start = DateUtil.modify(new Timestamp(zero),0,0,-30,0,0,0);
+                        startTime = start.getTime()+"";
+                        endTime = new Timestamp(zero).getTime()+"";
+
+                    }
 
                 }
-
+                List list = orderAnalysisService.exportAnalysis(startTime,endTime,
+                        agentName,upOrDown,orderState,profitLoss,agentId
+                );
+                POIUtils poi = new POIUtils();
+                String[] heads = {"时间", "黄金稳赚交易用户",  "黄金稳赚交易金额", "随意存交易用户", "随意存交易金额", "金权交易用户",
+                        "金权交易金额","实物黄金交易用户","实物黄金交易金额"};
+                String[] colums = {"time", "goldUpCount", "goldUpAmount", "financeCount", "financeAmount", "goldRightCount",
+                        "goldRightAmount","realGoldCount","realGoldAmount"};
+                poi.doExport(request, response, list, tieleName, excelName, heads, colums);
             }
-            List list = orderAnalysisService.exportAnalysis(startTime,endTime,
-                    agentName,upOrDown,orderState,profitLoss,agentId
-                    );
-            POIUtils poi = new POIUtils();
-            String[] heads = {"时间", "黄金稳赚交易用户",  "黄金稳赚交易金额", "随意存交易用户", "随意存交易金额", "金权交易用户",
-                    "金权交易金额","实物黄金交易用户","实物黄金交易金额"};
-            String[] colums = {"time", "goldUpCount", "goldUpAmount", "financeCount", "financeAmount", "goldRightCount",
-                    "goldRightAmount","realGoldCount","realGoldAmount"};
-            poi.doExport(request, response, list, tieleName, excelName, heads, colums);
+
         } catch (Exception e) {
 
         }
