@@ -41,7 +41,7 @@ public class RabbitmqService {
         directive.setDirective(1);
         directive.setOperator(userName);
         directive.setDirectiveDate(new Date());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         logger.info("{}在{}对{}发送了平仓指令", directive.getOperator(), sdf.format(directive.getDirectiveDate()), directive.getContractCode());
 
         //携带确认数据 因为是手动强平，所以不用
