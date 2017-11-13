@@ -43,7 +43,7 @@
       o.close_position_price closePositionPrice,
       o.create_time  createTime, o.end_time endTime, o.profit_loss_number profitLossNumber, o.order_state orderState,
       o.buy_pre_rmb buyPreRmb, o.buy_after_rmb buyAfterRmb,o.voucher_value voucherValue, o.voucher_deductible voucherDeductible,
-      s.share_amount shareAmount  
+      o.cost,s.share_amount shareAmount  
       FROM deal_order o
       LEFT JOIN User_Login u ON o.user_id = u.UserID
       LEFT JOIN User_Info i ON u.UserID = i.UserID
