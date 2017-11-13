@@ -41,7 +41,7 @@ public class UserVoucherServiceImpl extends BaseService<UserVoucher> implements 
         map.put("useEndTime", useEndTime);
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
-        map.put("useState", useState);
+        map.put("useStatus", useState);
         PageHelper.startPage(pageNum,pageSize);
         List<Map<String, Object>> list = userVoucherMapper.selectByUserVoucher(map);
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);

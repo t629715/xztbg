@@ -1,5 +1,6 @@
 package com.fx.xzt.sys.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,13 +102,14 @@ public class UserRechargeController {
 	* @param rechargechannel 渠道
 	* @param status    设定文件 
 	* @return void    返回类型 
+	 * @throws Exception 
 	* @throws 
 	* @author htt
 	 */
 	@RequestMapping(value="/excelUserRecharge")
     @ResponseBody
     public void excelUserRecharge(HttpServletRequest request, HttpServletResponse response, String userName, String startTime, String endTime, String agentName,
-			String brokerName, String rechargechannel, Integer status){
+			String brokerName, String rechargechannel, Integer status) throws Exception{
         try {
             String tieleName = "现金充值";
             String excelName = "现金充值";
@@ -117,8 +119,15 @@ public class UserRechargeController {
                 String agentNameStr = agentName;
                 List<Map<String, Object>> list = userRechargeService.excelRecharge(userName, startTime, endTime, agentNameStr, brokerName, rechargechannel, status);
                 if (list != null && list.size() > 0) {
+                	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     for (Map<String, Object> map : list) {
                     	Object RMBAmtObj =  map.get("RMBAmt");
+                    	Object RechargeTimeObj = map.get("RechargeTime");
+                    	
+               		 	if (RechargeTimeObj != null && RechargeTimeObj != "") {
+               		 		map.put("RechargeTime", sdf.format(sdf.parse(RechargeTimeObj.toString())));
+                        }
+                    	
                     	if (RMBAmtObj != null && RMBAmtObj != "") {
                         	Double RMBAmt = Double.valueOf(RMBAmtObj.toString());
                         	map.put("RMBAmt", RMBAmt/100);

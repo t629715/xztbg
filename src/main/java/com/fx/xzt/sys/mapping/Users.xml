@@ -179,12 +179,12 @@
     <!--根据代理商id删除经纪人 tianliya-->
     <!--获取代理商列表开始-->
     <select id="selectByAgentMessage" resultType="java.util.Map">
-      SELECT id,user_name agentName FROM users WHERE STATUS=1 AND pid=1 ORDER  by create_time desc
+      SELECT CAST(id as CHAR) id,user_name agentName FROM users WHERE STATUS=1 AND pid=1 ORDER  by create_time desc
     </select>
     <!--获取代理商列表结束-->
     <!--获取经纪人列表开始-->
     <select id="selectByBrokerMessage" resultType="java.util.Map" parameterType="java.util.Map">
-        SELECT id,user_name brokerName,pid,phone,create_time createTime FROM users
+        SELECT CAST(id as CHAR) id,user_name brokerName,CAST(pid as CHAR) pid,phone,create_time createTime FROM users
         <where>
             <if test="pid != null and pid!='' ">
                 and pid = #{pid,jdbcType=BIGINT}

@@ -1,5 +1,6 @@
 package com.fx.xzt.sys.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -115,10 +115,17 @@ public class GoldRedeemController {
             if (users != null) {
                 List<Map<String, Object>> list = goldRedeemService.excelGoldRedeem(userName, startTime, endTime, channelName);
                 if (list != null && list.size() > 0) {
+                	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     for (Map<String, Object> map : list) {
                     	Object priceObj =  map.get("price");
                     	Object amountObj =  map.get("amount");
                     	Object poundageObj =  map.get("poundage");
+                    	Object createTimeObj = map.get("createTme");
+                    	
+	               		if (createTimeObj != null && createTimeObj != "") {
+	               			map.put("createTme", sdf.format(sdf.parse(createTimeObj.toString())));
+	                    }
+                    	
                         if (priceObj != null && priceObj != "") {
                         	Double price = Double.valueOf(priceObj.toString());
                         	map.put("price", price/100);
@@ -134,7 +141,7 @@ public class GoldRedeemController {
                     }
                     POIUtils poi = new POIUtils();
                     String[] heads = {"用户账号", "赎回克重",  "赎回价格", "赎回金额", "手续费", "赎回时间", "渠道商账号"};
-                    String[] colums = {"userName", "gram", "price", "amount", "poundage", "createTime", "channelName"};
+                    String[] colums = {"userName", "gram", "price", "amount", "poundage", "createTme", "channelName"};
                     poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                 }
             }

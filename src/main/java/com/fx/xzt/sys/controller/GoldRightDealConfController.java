@@ -2,6 +2,7 @@ package com.fx.xzt.sys.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.fx.xzt.rabbitmq.OrderCloseDirective;
+import com.fx.xzt.rabbitmq.RabbitmqService;
 import com.fx.xzt.redis.RedisService;
 import com.fx.xzt.sys.entity.*;
 import com.fx.xzt.sys.service.GoldRightDealConfService;
@@ -11,8 +12,6 @@ import com.fx.xzt.util.JsonUtils;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.core.TopicExchange;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,13 +39,8 @@ public class GoldRightDealConfController {
     RedisService redisService;
     @Resource
     GoldRightDealConfService goldRightDealConfService;
-
     @Resource
-    private RabbitTemplate rabbitTemplate;
-    @Resource
-    private TopicExchange exchange;
-    private final static String goldRoutingKey = "FX.SGE.AUTD";
-    private final static String routingKey = "FX.SGE.AUTD.FORCE.CLOSE.REPOSITORY";
+    private RabbitmqService rabbitmqService;
 
     @RequestMapping(value = "/getAllGoldRight",method= RequestMethod.POST)
     @ResponseBody
@@ -151,18 +145,7 @@ public class GoldRightDealConfController {
         HttpSession httpSession = request.getSession();
         Users users = (Users) httpSession.getAttribute("currentUser");
 
-        OrderCloseDirective directive = new OrderCloseDirective();
-        directive.setContractCode(goldRoutingKey);
-        directive.setDirective(1);
-        directive.setOperator(users.getUserName());
-        directive.setDirectiveDate(new Date());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:dd");
-        logger.info("{}在{}对{}发送了平仓指令", directive.getOperator(), sdf.format(directive.getDirectiveDate()), directive.getContractCode());
-
-        //携带确认数据 因为是手动强平，所以不用
-        CorrelationData correlationData = new CorrelationData(JSON.toJSONString(directive));
-
-        rabbitTemplate.convertAndSend(exchange.getName(), routingKey, directive, correlationData);
+        rabbitmqService.sendForceCloseDirectiveByUserName(users.getUserName());
 
         return result;
     }

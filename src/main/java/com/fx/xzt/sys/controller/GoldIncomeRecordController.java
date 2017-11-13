@@ -1,6 +1,7 @@
 package com.fx.xzt.sys.controller;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -153,11 +154,23 @@ public class GoldIncomeRecordController {
                 List<Map<String, Object>> list = goldIncomeRecordService.excelGoldIncome(userName, startTime, endTime, 
                 		startTypeTime, endTypeTime, agentName, brokerName, type);
                 if (list != null && list.size() > 0) {
+                	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     for (Map<String, Object> map : list) {
                     	Object incomeObj =  map.get("income");
                     	Object totalIncomObj =  map.get("totalIncom");
                     	//Object priceObj =  map.get("price");
                     	Object incomePercentObj = map.get("incomePercent");
+                    	Object registerTimeObj = map.get("registerTime");
+                    	Object createTimeObj = map.get("createTime");
+                    	
+               		 	if (registerTimeObj != null && registerTimeObj != "") {
+               		 		map.put("registerTime", sdf.format(sdf.parse(registerTimeObj.toString())));
+                        }
+               		 	
+	               		if (createTimeObj != null && createTimeObj != "") {
+	               			map.put("createTime", sdf.format(sdf.parse(createTimeObj.toString())));
+	                    }
+                    	
                         if (incomeObj != null && incomeObj != "") {
                         	Double income = Double.valueOf(incomeObj.toString());
                         	map.put("income", income/100);

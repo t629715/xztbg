@@ -1,5 +1,6 @@
 package com.fx.xzt.sys.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -96,11 +97,12 @@ public class DealOrderController {
      * @param agentName
      * @param brokerName
      * @param orderState
+     * @throws Exception 
      */
     @RequestMapping(value="/excelDealOrderMessage")
     @ResponseBody
     public void excelDealOrderMessage(HttpServletRequest request, HttpServletResponse response, String userName, String orderNo, String startTime, String endTime, 
-    		String regStartTime, String regEndTime,  String agentName, String brokerName, Integer orderState, Integer isUseCard){
+    		String regStartTime, String regEndTime,  String agentName, String brokerName, Integer orderState, Integer isUseCard) throws Exception{
         try {
             String tieleName = "金权交易";
             String excelName = "金权交易";
@@ -113,6 +115,7 @@ public class DealOrderController {
                 }
                 List<Map<String, Object>> list = dealOrderService.excelDealOrderMessage(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName, orderState, isUseCard);
                 if (list != null && list.size() > 0) {
+                	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     for (Map<String, Object> map : list) {
                         map.put("upOrDown", ConstantUtil.dealOrderUpOrDown.toMap().get(map.get("upOrDown").toString()));
                         
@@ -122,6 +125,21 @@ public class DealOrderController {
                         Object profitLossNumberObj =  map.get("profitLossNumber");
                         Object voucherValueObj =  map.get("voucherValue");
                         Object shareAmountObj = map.get("shareAmount");
+                        Object registerTimeObj = map.get("registerTime");
+                    	Object createTimeObj = map.get("createTime");
+                    	Object endTimeObj = map.get("endTime");
+                    	
+               		 	if (registerTimeObj != null && registerTimeObj != "") {
+               		 		map.put("registerTime", sdf.format(sdf.parse(registerTimeObj.toString())));
+                        }
+               		 	
+	               		if (createTimeObj != null && createTimeObj != "") {
+	               			map.put("createTime", sdf.format(sdf.parse(createTimeObj.toString())));
+	                    }
+	               		
+	               		if (endTimeObj != null && endTimeObj != "") {
+	               			map.put("endTime", sdf.format(sdf.parse(endTimeObj.toString())));
+	                    }
                         
                         if (buyPreRmbObj != null && buyPreRmbObj != "") {
                         	Double buyPreRmb = Double.valueOf(buyPreRmbObj.toString());

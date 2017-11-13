@@ -2,6 +2,7 @@ package com.fx.xzt.sys.controller;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -122,6 +123,7 @@ public class FinanceOrderController {
                 List<Map<String, Object>> list = financeOrderService.excelFinanceOrder(userName, orderNo, startTime, endTime, regStartTime, regEndTime, 
                 		redeemStartTime, redeemEndTime, agentNameStr, brokerName, status, type, nper);
                 if (list != null && list.size() > 0) {
+                	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     for (Map<String, Object> map : list) {
                     	if (map.get("status") != null && map.get("status") != "") {
                     		map.put("status", ConstantUtil.financeOrderStatus.toMap().get(map.get("status").toString()));
@@ -131,6 +133,22 @@ public class FinanceOrderController {
                     	Object incomeObj =  map.get("income");
                     	Object yearIncomPercentObj =  map.get("yearIncomPercent");
                     	Object shareAmountObj = map.get("shareAmount");
+                    	Object registerTimeObj = map.get("registerTime");
+                    	Object buyTimeObj = map.get("buyTime");
+                    	Object redeemTimeObj = map.get("redeemTime");
+                    	
+               		 	if (registerTimeObj != null && registerTimeObj != "") {
+               		 		map.put("registerTime", sdf.format(sdf.parse(registerTimeObj.toString())));
+                        }
+               		 	
+	               		if (buyTimeObj != null && buyTimeObj != "") {
+	               			map.put("buyTime", sdf.format(sdf.parse(buyTimeObj.toString())));
+	                    }
+	               		
+	               		if (redeemTimeObj != null && redeemTimeObj != "") {
+	               			map.put("redeemTime", sdf.format(sdf.parse(redeemTimeObj.toString())));
+	               		}
+                    	
                     	if (buyAmountObj != null && buyAmountObj != "") {
                         	Double buyAmount = Double.valueOf(buyAmountObj.toString());
                         	map.put("buyAmount", buyAmount/100);
@@ -328,6 +346,7 @@ public class FinanceOrderController {
                 List<Map<String, Object>> list = financeOrderService.excelGoldFinanceOrder(userName, orderNo, startTime, endTime, regStartTime, regEndTime, 
                 		redeemStartTime, redeemEndTime, agentNameStr, brokerName, status, type, nper);
                 if (list != null && list.size() > 0) {
+                	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     for (Map<String, Object> map : list) {
                     	if (map.get("status") != null && map.get("status") != "") {
                     		map.put("status", ConstantUtil.financeOrderStatus.toMap().get(map.get("status").toString()));
@@ -337,6 +356,22 @@ public class FinanceOrderController {
                     	Object incomeObj =  map.get("income");
                     	Object yearIncomPercentObj =  map.get("yearIncomPercent");
                     	Object shareAmountObj = map.get("shareAmount");
+                    	Object registerTimeObj = map.get("registerTime");
+                    	Object buyTimeObj = map.get("buyTime");
+                    	Object redeemTimeObj = map.get("redeemTime");
+                    	
+               		 	if (registerTimeObj != null && registerTimeObj != "") {
+               		 		map.put("registerTime", sdf.format(sdf.parse(registerTimeObj.toString())));
+                        }
+               		 	
+	               		if (buyTimeObj != null && buyTimeObj != "") {
+	               			map.put("buyTime", sdf.format(sdf.parse(buyTimeObj.toString())));
+	                    }
+	               		
+	               		if (redeemTimeObj != null && redeemTimeObj != "") {
+	               			map.put("redeemTime", sdf.format(sdf.parse(redeemTimeObj.toString())));
+	               		}
+	               		
                     	if (buyAmountObj != null && buyAmountObj != "") {
                         	Double buyAmount = Double.valueOf(buyAmountObj.toString());
                         	map.put("buyAmount", buyAmount/100);

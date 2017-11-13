@@ -1,5 +1,6 @@
 package com.fx.xzt.sys.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -114,9 +115,21 @@ public class GoldWithdrawController {
                 List<Map<String, Object>> list = goldWithdrawService.excelGoldWithdraw(userName, startTime, endTime, 
                 		agentName, brokerName, status);
                 if (list != null && list.size() > 0) {
+                	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     for (Map<String, Object> map : list) {
                     	Object insuranceObj =  map.get("insurance");
                     	Object logisticsFeeObj =  map.get("logisticsFee");
+                    	Object applyTimeObj = map.get("applyTime");
+                    	Object sendTimeObj = map.get("sendTime");
+                    	
+               		 	if (applyTimeObj != null && applyTimeObj != "") {
+               		 		map.put("applyTime", sdf.format(sdf.parse(applyTimeObj.toString())));
+                        }
+               		 	
+	               		if (sendTimeObj != null && sendTimeObj != "") {
+	               			map.put("sendTime", sdf.format(sdf.parse(sendTimeObj.toString())));
+	                    }
+	               		
                         if (insuranceObj != null && insuranceObj != "") {
                         	Double insurance = Double.valueOf(insuranceObj.toString());
                         	map.put("insurance", insurance/100);

@@ -31,7 +31,7 @@ public class InOutGoldServiceImpl extends BaseService<InOutGold> implements InOu
 	/**
 	 * 出入金查询
 	 */
-	public PageInfo<Map<String, Object>> selectByDealOrder(String userName,
+	public PageInfo<Map<String, Object>> selectByInOutGold(String userName,
 			String agentName, String brokerName, Integer pageNum, Integer pageSize) {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
@@ -46,7 +46,7 @@ public class InOutGoldServiceImpl extends BaseService<InOutGold> implements InOu
 	/**
 	 * 出入金查询--导出
 	 */
-	public List<Map<String, Object>> excelDealOrder(String userName,
+	public List<Map<String, Object>> excelInOutGold(String userName,
 			String agentName, String brokerName) {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
@@ -54,6 +54,42 @@ public class InOutGoldServiceImpl extends BaseService<InOutGold> implements InOu
         map.put("brokerName", brokerName);
         List<Map<String, Object>> list = inOutGoldMapper.selectByInOutGold(map);
         return list;
+	}
+
+	/**
+	 * 出入金分析--支付渠道分析
+	 */
+	public List<Map<String, Object>> selectByRechargeChannel(String type,
+			String startTime, String endTime) {
+		Map<String, Object> map = new HashMap<String, Object>();
+        map.put("type", type);
+        map.put("startTime", startTime);
+        map.put("endTime", endTime);
+		return inOutGoldMapper.selectByRechargeChannel(map);
+	}
+
+	/**
+	 * 出入金分析--运营商出入金分析
+	 */
+	public List<Map<String, Object>> selectByAgent(String type,
+			String startTime, String endTime) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("type", type);
+        map.put("startTime", startTime);
+        map.put("endTime", endTime);
+		return inOutGoldMapper.selectByAgent(map);
+	}
+
+	/**
+	 * 出入金分析-运营商净入金分析
+	 */
+	public List<Map<String, Object>> selectByAgentNet(String type,
+			String startTime, String endTime) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("type", type);
+        map.put("startTime", startTime);
+        map.put("endTime", endTime);
+		return inOutGoldMapper.selectByAgentNet(map);
 	}
 
 

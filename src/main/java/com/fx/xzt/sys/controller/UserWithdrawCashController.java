@@ -1,5 +1,6 @@
 package com.fx.xzt.sys.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -131,13 +132,14 @@ public class UserWithdrawCashController {
 	* @param brokerName 经纪人用户名
 	* @param status    状态 0：审核中 1：已完成
 	* @return void    返回类型 
+	 * @throws Exception 
 	* @throws 
 	* @author htt
 	 */
 	@RequestMapping(value="/excelWithdrawCash")
     @ResponseBody
     public void excelWithdrawCash(HttpServletRequest request, HttpServletResponse response, String userName, String startTime, String endTime, 
-			String agentName, String brokerName, Integer status){
+			String agentName, String brokerName, Integer status) throws Exception{
         try {
             String tieleName = "现金提取";
             String excelName = "现金提取";
@@ -147,10 +149,27 @@ public class UserWithdrawCashController {
                 String agentNameStr = agentName;
                 List<Map<String, Object>> list = userWithdrawCashService.excelWithdrawCash(userName, startTime, endTime, agentNameStr, brokerName, status);
                 if (list != null && list.size() > 0) {
+                	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     for (Map<String, Object> map : list) {
                         map.put("status", ConstantUtil.withdrawCashStatus.toMap().get(map.get("status").toString()));
                         Object amtObj =  map.get("withdrawAmt");
                         Object poundageObj = map.get("poundage");
+                        Object registerTimeObj = map.get("registerTime");
+                    	Object withdrawTimeObj = map.get("withdrawTime");
+                    	Object finishTimeObj = map.get("finishTime");
+                    	
+               		 	if (registerTimeObj != null && registerTimeObj != "") {
+               		 		map.put("registerTime", sdf.format(sdf.parse(registerTimeObj.toString())));
+                        }
+               		 	
+	               		if (withdrawTimeObj != null && withdrawTimeObj != "") {
+	               			map.put("withdrawTime", sdf.format(sdf.parse(withdrawTimeObj.toString())));
+	                    }
+	               		
+	               		if (finishTimeObj != null && finishTimeObj != "") {
+	               			map.put("finishTime", sdf.format(sdf.parse(finishTimeObj.toString())));
+	                    }
+                        
                         if (amtObj != null && amtObj != "") {
                         	Double amt = Double.valueOf(amtObj.toString());
                         	map.put("withdrawAmt", amt/100);
