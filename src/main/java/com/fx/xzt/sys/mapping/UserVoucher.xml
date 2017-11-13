@@ -13,7 +13,7 @@
       LEFT JOIN users ua ON i.agent_id = ua.id
       LEFT JOIN users ub ON i.broker_id = ub.id
       <where>
-          
+
           and u.Status = 1
           <if test="userName != null and userName != '' ">
             and u.UserName = #{userName,jdbcType=VARCHAR}
