@@ -21,4 +21,16 @@ public interface UserAccountRecordMapper extends BaseMapper<UserAccountRecord>{
 	 * 修改
 	 */
 	int updateByIdSelective(UserAccountRecord userAccountRecord);
+	
+	/**
+	 * 
+	* @Title: updateByWithdrawId 
+	* @Description: 提现审核后更新用户账户记录记录状态
+	* @param userAccountRecord
+	* @return    设定文件 
+	* @return int    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	int updateByWithdrawId(UserAccountRecord userAccountRecord);
 }

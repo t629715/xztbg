@@ -76,6 +76,13 @@
   </insert>
   <!-- 用户账户记录新增结束-htt -->
   
+  <!-- 提现审核后更新用户账户记录记录状态-开始-htt -->
+  <update id="updateByWithdrawId" parameterType="com.fx.xzt.sys.entity.UserAccountRecord" >
+    update user_account_record set status = 1
+    where withdraw_id = #{withdrawId,jdbcType=CHAR}
+  </update>
+  <!-- 提现审核后更新用户账户记录记录状态-结束-htt -->
+  
   
   <!-- <sql id="Base_Column_List" >
     SerialNo, UserID, UserName, Side, Action, RMBAtm, UAmt, CreateTime, Status

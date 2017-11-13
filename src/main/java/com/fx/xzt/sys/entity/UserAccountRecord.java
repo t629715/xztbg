@@ -23,6 +23,7 @@ public class UserAccountRecord implements Serializable {
     private Date createTime;  //创建时间
     private Integer status;   //状态  0：未审核；1：已审核
     private String description;//描述
+    private String withdrawId; //提现号
     
 	public Long getId() {
 		return id;
@@ -94,6 +95,14 @@ public class UserAccountRecord implements Serializable {
 	
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getWithdrawId() {
+		return withdrawId;
+	}
+
+	public void setWithdrawId(String withdrawId) {
+		this.withdrawId = withdrawId;
 	}
     
 }

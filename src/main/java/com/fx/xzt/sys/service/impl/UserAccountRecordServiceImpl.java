@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fx.xzt.sys.entity.UserAccountRecord;
 import com.fx.xzt.sys.mapper.UserAccountRecordMapper;
@@ -87,6 +88,14 @@ public class UserAccountRecordServiceImpl extends BaseService<UserAccountRecord>
 
 	public int updateByIdSelective(UserAccountRecord userAccountRecord) {
 		return userAccountRecordMapper.updateByIdSelective(userAccountRecord);
+	}
+
+	/**
+	 * 提现审核后更新用户账户记录记录状态
+	 */
+	@Transactional
+	public int updateByWithdrawId(UserAccountRecord userAccountRecord) {
+		return userAccountRecordMapper.updateByWithdrawId(userAccountRecord);
 	}
 	
 	

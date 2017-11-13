@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fx.xzt.sys.entity.UserAccountRecord;
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.model.UserWithdrawCashModel;
+import com.fx.xzt.sys.service.UserAccountRecordService;
 import com.fx.xzt.sys.service.UserWithdrawCashService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
@@ -28,6 +30,8 @@ import com.github.pagehelper.PageInfo;
 public class UserWithdrawCashController {
 	@Resource
 	UserWithdrawCashService userWithdrawCashService;
+	@Resource
+	UserAccountRecordService userAccountRecordService;
 	
 	/**
 	 * 出金管理 集合 
@@ -235,6 +239,18 @@ public class UserWithdrawCashController {
         return cr;
     }
 	
+	/**
+	 * 
+	* @Title: auditPassedById 
+	* @Description: 提现审核
+	* @param request
+	* @param withdrawid
+	* @return
+	* @throws Exception    设定文件 
+	* @return Object    返回类型 
+	* @throws 
+	* @author htt
+	 */
 	@RequestMapping(value="/auditPassedById")
 	@ResponseBody
 	public Object auditPassedById(HttpServletRequest request,  String withdrawid) throws Exception{
@@ -243,9 +259,12 @@ public class UserWithdrawCashController {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
-                Map<String, Object> map = new HashMap<String, Object>();
                 int flag = userWithdrawCashService.auditPassedById(withdrawid);
                 if (flag > 0) {
+                	UserAccountRecord record = new UserAccountRecord();
+                	record.setWithdrawId(withdrawid);
+                	userAccountRecordService.updateByWithdrawId(record);
+                	
                 	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);
                 	cr.setData("{}");
                 	cr.setMsg("操作成功！");
