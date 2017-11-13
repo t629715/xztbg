@@ -131,7 +131,7 @@ public class UserInfoController {
 		cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
 		cr.setMsg("操作失败！");
 		try {
-			if (/*status > 0 && */userId > 0) {
+			if (status > 0 && userId > 0) {
 				UserLogin u = new UserLogin();
 				u.setStatus(status);
 				u.setUserid(userId);

@@ -103,4 +103,5 @@
 	<import resource="classpath:redis-cluster.xml" />
 	<import resource="classpath:Spring-freemarker.xml" />
 	<import resource="classpath:Spring-shiro.xml" />
+	<import resource="classpath:spring-rabbitmq.xml" />
 </beans>
