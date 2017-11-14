@@ -34,5 +34,16 @@ public interface UserLoginMapper extends BaseMapper<UserLogin>{
 	* @author htt
 	 */
 	List<Map<String, Object>> getByAccount(Map<String,Object> map);
+	
+	/**
+	 * 
+	* @Title: getByAttributionPro 
+	* @Description: 注册信息查询-归属地获取
+	* @return    设定文件 
+	* @return List<Map<String,Object>>    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	List<Map<String, Object>> getByAttributionPro();
 
 }

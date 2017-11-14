@@ -4,6 +4,7 @@ import com.fx.xzt.sys.entity.UserInfo;
 import com.fx.xzt.sys.model.UserInfoModel;
 import com.github.pagehelper.PageInfo;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -34,8 +35,9 @@ public interface UserInfoService extends IService<UserInfo> {
      *
      * @param type 修改的类型 1 通过 0 不通过
      * @return
+     * @throws ParseException 
      */
-    int editUserInfo(int type, Long userId);
+    int editUserInfo(int type, Long userId, String IDCard) throws ParseException;
 
     //以下是 优顾认证 type 修改的类型 1 通过 0 不通过
 

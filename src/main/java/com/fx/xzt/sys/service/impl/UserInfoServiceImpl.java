@@ -1,5 +1,7 @@
 package com.fx.xzt.sys.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +15,7 @@ import com.fx.xzt.sys.entity.UserInfo;
 import com.fx.xzt.sys.mapper.UserInfoMapper;
 import com.fx.xzt.sys.model.UserInfoModel;
 import com.fx.xzt.sys.service.UserInfoService;
+import com.fx.xzt.sys.util.StringUtil;
 import com.fx.xzt.sys.util.UserInfoApproveStateEnum;
 import com.fx.xzt.sys.util.UsersInfoAuthStatus;
 import com.github.pagehelper.PageHelper;
@@ -39,11 +42,27 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 	}
 
 	@Transactional
-	public int editUserInfo(int type,Long userId) {
+	public int editUserInfo(int type,Long userId, String IDCard) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		UserInfo u = new UserInfo();
 		u.setUserid(userId);
-		u.setRealnameauthapprovetime(new Date());
+		u.setRealnameauthapprovetime(sdf.parse(sdf.format(new Date())));
 		if(type==1){
+			if (StringUtil.isNotEmpty(IDCard) && IDCard.length() == 15) {
+				Integer n = Integer.parseInt(IDCard.substring(IDCard.length() - 1));
+				if (n % 2 == 0) {
+					u.setSex(Short.valueOf("2"));//女
+				} else if (n % 2 == 1) {
+					u.setSex(Short.valueOf("1"));//男
+				}
+			} else if (StringUtil.isNotEmpty(IDCard) && IDCard.length() == 18) {
+				Integer n = Integer.parseInt(IDCard.substring(IDCard.length() - 2, IDCard.length() - 1));
+				if (n % 2 == 0) {
+					u.setSex(Short.valueOf("2"));//女
+				} else if (n % 2 == 1) {
+					u.setSex(Short.valueOf("1"));//男
+				}
+			}
 			u.setRealnameauthapprovestate((short)UserInfoApproveStateEnum.AuthApproveStatePass.getIndex());
 			u.setRealnameauthstatus((short)UsersInfoAuthStatus.AuthstatusPass.getIndex());
 		}else if(type==-1){

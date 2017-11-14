@@ -23,11 +23,19 @@
         <result column="broker_id" property="brokerId" jdbcType="BIGINT" />
         <result column="broker_name" property="brokerName" jdbcType="VARCHAR" />
     </resultMap>
+    
+    <!-- 注册信息查询-归属地开始-htt -->
+    <select id="getByAttributionPro" resultType="java.util.Map" >
+        SELECT DISTINCT attribution_province province FROM User_Info
+        order by attribution_province 
+    </select>
+    <!-- 注册信息查询-归属地结束-htt -->
+    
     <!--注册信息查询开始-htt-->
     <select id="getByRegisterMessage" resultType="java.util.Map" parameterType="java.util.Map" >
-        SELECT l.UserID , l.UserName ,i.agent_id agentId, u.user_name agentName, i.broker_id brokerId, u1.user_name brokerName ,
+        SELECT cast(l.UserID as CHAR) UserID , l.UserName ,i.agent_id agentId, u.user_name agentName, i.broker_id brokerId, u1.user_name brokerName ,
         l.Status ,i.RegisterTime, i.RegisterFrom, i.RegisterIp, i.attribution,
-        m.lastlogintime, m.lastloginfrom, m.lastfromip
+        m.lastlogintime, m.lastloginfrom, m.lastfromip, i.attribution_province attributionProvince 
         FROM User_Login l LEFT JOIN User_Info i ON l.UserID = i.UserID
         LEFT JOIN users u ON i.agent_id = u.id
         LEFT JOIN users u1 ON i.broker_id = u1.id
@@ -65,8 +73,8 @@
             <if test="brokerName != null and brokerName !='' ">
                 and u1.id = #{brokerName,jdbcType=BIGINT}
             </if>
-            <if test="attribution != null and attribution !='' ">
-                and i.attribution = #{attribution,jdbcType=VARCHAR}
+            <if test="attributionProvince != null and attributionProvince !='' ">
+                and i.attribution_province = #{attributionProvince,jdbcType=VARCHAR}
             </if>
         </where>
         order by i.RegisterTime DESC

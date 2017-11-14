@@ -41,7 +41,7 @@ public class UserLoginServiceImpl extends BaseService<UserLogin> implements User
         map.put("lastLoginFrom", lastLoginFrom);
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
-        map.put("attribution", attribution);
+        map.put("attributionProvince", attribution);//归属地省份
         PageHelper.startPage(pageNum, pageSize);
         List<Map<String, Object>> list = userLoginMapper.getByRegisterMessage(map);
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<Map<String, Object>>(list);
@@ -76,6 +76,13 @@ public class UserLoginServiceImpl extends BaseService<UserLogin> implements User
         map.put("userName", userName);
         List<Map<String, Object>> list = userLoginMapper.getByAccount(map);
 		return list;
+	}
+
+	/**
+	 * 注册信息查询-归属地获取
+	 */
+	public List<Map<String, Object>> getByAttributionPro() {
+		return userLoginMapper.getByAttributionPro();
 	}
 
     

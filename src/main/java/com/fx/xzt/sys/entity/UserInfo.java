@@ -32,6 +32,7 @@ public class UserInfo implements Serializable {
     private String brokerId;
     private String attribution;
     private String registerIp;
+    private Short sex;
 
     private static final long serialVersionUID = 1L;
 
@@ -186,4 +187,13 @@ public class UserInfo implements Serializable {
     public void setRegisterIp(String registerIp) {
         this.registerIp = registerIp;
     }
+
+	public Short getSex() {
+		return sex;
+	}
+
+	public void setSex(Short sex) {
+		this.sex = sex;
+	}
+    
 }

@@ -58,16 +58,17 @@ public class UserInfoController {
 	 * @param type 1 通过  -1 不通过
 	 * @param userId
 	 * @return 1成功 0失败
+	 * @throws Exception 
 	 */
 	@RequestMapping(value="/certification")
 	@ResponseBody
-	public Object certification(@RequestParam  Integer type,@RequestParam  Long userId){
+	public Object certification(@RequestParam  Integer type,@RequestParam  Long userId, @RequestParam String IDCard) throws Exception{
 		CommonResponse cr = new CommonResponse();
 		cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
 		cr.setMsg("操作失败！");
 		try {
 			if (type > 0 && userId > 0) {
-				int flag = userInfoService.editUserInfo(type, userId);
+				int flag = userInfoService.editUserInfo(type, userId, IDCard);
 				if (flag > 0) {
 					cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);
 					cr.setMsg("操作成功！");
@@ -107,6 +108,34 @@ public class UserInfoController {
 					lastStartTime, lastEndTime, lastLoginFrom, agentName, brokerName, attribution, pageNum, pageSize);
 			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 			cr.setData(pageInfo);
+			cr.setMsg("操作成功！");
+		} catch (Exception e) {
+			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+			cr.setData("{}");
+			cr.setMsg("操作失败！");
+			throw e;
+			// e.printStackTrace();
+		}
+		return cr;
+	}
+	
+	/**
+	 * 
+	* @Title: getByAttributionPro 
+	* @Description: 注册信息查询-归属地获取
+	* @return    设定文件 
+	* @return Object    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	@RequestMapping(value="/getByAttributionPro")
+	@ResponseBody
+	public Object getByAttributionPro() {
+		CommonResponse cr = new CommonResponse();
+		try {
+			List<Map<String, Object>> list = userLoginService.getByAttributionPro();
+			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+			cr.setData(list);
 			cr.setMsg("操作成功！");
 		} catch (Exception e) {
 			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);

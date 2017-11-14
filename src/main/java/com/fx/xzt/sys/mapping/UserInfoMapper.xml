@@ -39,7 +39,7 @@
 	<!--实名认证查询开始-htt -->
 	<select id="getByRealNameAuth" resultType="java.util.Map"
 		parameterType="java.util.Map">
-		SELECT l.userName ,u.UserID , RealName, IDCard,
+		SELECT l.userName ,cast(u.UserID as CHAR) UserID , RealName, IDCard,
 		IDCardPath,IDCardBackPath, RealNameAuthApplyTime,
 		RealNameAuthApproveTime, RealNameAuthApproveState,RealNameAuthStatus
 		FROM User_Info u
@@ -225,6 +225,9 @@
 			</if>
 			<if test="registerIp != null">
 				RegisterIp = #{registerIp,jdbcType=TIMESTAMP},
+			</if>
+			<if test="sex != null">
+				sex = #{sex,jdbcType=SMALLINT},
 			</if>
 		</set>
 		where UserID = #{userid,jdbcType=BIGINT}
