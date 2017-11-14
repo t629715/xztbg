@@ -24,4 +24,10 @@ public interface InfoNoticeMapper extends BaseMapper<InfoNotice> {
 	List<InfoNotice> getInfoNoticeAll(Map<String, Object> map);
 
 	InfoNotice getBySerialNo(Long serialNo);
+
+	/**
+	 * 获取所有的发布人 tianliya
+	 * @return
+	 */
+	List<Map<String, Object>> selectOperators();
 }

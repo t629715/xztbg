@@ -3,6 +3,9 @@ package com.fx.xzt.sys.service;
 import com.fx.xzt.sys.entity.InfoNotice;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+import java.util.Map;
+
 public interface InfoNoticeService extends IService<InfoNotice>{
 	int add(InfoNotice infoNotice);
 
@@ -15,6 +18,12 @@ public interface InfoNoticeService extends IService<InfoNotice>{
 	InfoNotice getBySerialNo(Long serialNo);
 	
 	int upDown(Long upSerialNo,Long downSerialNo);
+
+	/**
+	 * 获取所有发布人
+	 * @return
+	 */
+	List<Map<String, Object>> getOperators();
 	
 	
 }
