@@ -2,6 +2,7 @@ package com.fx.xzt.sys.service.impl;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -70,5 +71,13 @@ public class InfoNoticeServiceImpl extends BaseService<InfoNotice> implements In
 		}
 		return msg;
 	}
-
+	/**
+	 * 获取所有的发布人  tianliya
+	 * @return
+	 */
+	@Override
+	public List<Map<String, Object>> getOperators() {
+		List<Map<String, Object>> map = infoNoticeMapper.selectOperators();
+		return map;
+	}
 }

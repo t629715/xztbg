@@ -155,6 +155,10 @@
         delete from Info_Notice
         where SerialNo = #{serialNo,jdbcType=BIGINT}
     </delete>
+
+    <select id="selectOperators" resultType="java.util.Map">
+        SELECT DISTINCT(operator) from Info_Notice
+    </select>
     <!-- <sql id="Example_Where_Clause" >
         <where >
             <foreach collection="oredCriteria" item="criteria" separator="or" >

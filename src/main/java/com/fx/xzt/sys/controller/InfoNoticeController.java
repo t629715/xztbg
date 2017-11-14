@@ -1,11 +1,15 @@
 package com.fx.xzt.sys.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.fx.xzt.sys.util.CommonResponse;
+import com.fx.xzt.sys.util.ConstantUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,9 +36,14 @@ public class InfoNoticeController {
 	public Map<String,Object> add(InfoNotice infoNotice,HttpSession httpSession){
 		Map<String,Object> map = new HashMap<String,Object>();
 		Users u=(Users) httpSession.getAttribute("currentUser");
-		infoNotice.setOperator(u.getPhone()+"");
-		int msg = infoNoticeService.add(infoNotice);
-		map.put("msg", msg);
+		if (u != null){
+			infoNotice.setOperator(u.getUserName()+"");
+			int msg = infoNoticeService.add(infoNotice);
+			map.put("msg", msg);
+		}else{
+			map.put("msg",-1);
+		}
+
 		return map;
 	}
 	
@@ -49,24 +58,32 @@ public class InfoNoticeController {
 	public Map<String,Object> edit(InfoNotice infoNotice,HttpSession httpSession){
 		Map<String,Object> map = new HashMap<String,Object>();
 		Users u=(Users) httpSession.getAttribute("currentUser");
-		infoNotice.setOperator(u.getPhone()+"");
-		int msg = infoNoticeService.edit(infoNotice);
-		map.put("msg", msg);
+		if (u != null){
+			infoNotice.setOperator(u.getUserName()+"");
+			int msg = infoNoticeService.edit(infoNotice);
+			map.put("msg", msg);
+		}else{
+			map.put("msg",-1);
+		}
+
 		return map;
 	}
 	
 	/**
 	 * 删除
-	 * @param infoNotice
-	 * @param httpSession
 	 * @return
 	 */
 	@RequestMapping(value="/delete")
 	@ResponseBody
-	public Map<String,Object> delete(Long serialNo){
+	public Map<String,Object> delete(HttpSession session,Long serialNo){
 		Map<String,Object> map = new HashMap<String,Object>();
-		int msg = infoNoticeService.deleteById(serialNo);
-		map.put("msg", msg);
+		Users users = (Users) session.getAttribute("currentUser");
+		if (users != null){
+			int msg = infoNoticeService.deleteById(serialNo);
+			map.put("msg", msg);
+		}else{
+			map.put("msg",-1);
+		}
 		return map;
 	}
 	
@@ -82,9 +99,14 @@ public class InfoNoticeController {
 	 */
 	@RequestMapping(value="/seelctAll")
 	@ResponseBody
-	public PageInfo<InfoNotice> seelctAll(String title, String startTime, String endTime, String operator,
+	public PageInfo<InfoNotice> seelctAll(HttpSession session,String title, String startTime, String endTime, String operator,
 			Integer pageNum, Integer pageSize){
-		return infoNoticeService.getInfoNoticeAll(title, startTime, endTime, operator, pageNum, pageSize);
+		Users users = (Users) session.getAttribute("currentUser");
+		PageInfo pageInfo = new PageInfo();
+		if (users != null){
+			pageInfo = infoNoticeService.getInfoNoticeAll(title, startTime, endTime, operator, pageNum, pageSize);
+		}
+		return pageInfo;
 	}
 	/**
 	 * 
@@ -102,5 +124,43 @@ public class InfoNoticeController {
 	@ResponseBody
 	public InfoNotice selectBySerialNo(Long serialNo){
 		return infoNoticeService.getBySerialNo(serialNo);
+	}
+
+	/**
+	 * 获取发布人
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/getOperators")
+	@ResponseBody
+	public CommonResponse getOperators(HttpServletRequest request){
+		CommonResponse response = new CommonResponse();
+		try {
+			HttpSession httpSession = request.getSession();
+			Users users = (Users) httpSession.getAttribute("currentUser");
+			if (users != null) {
+				List list = infoNoticeService.getOperators();
+				if (list != null && list.size() != 0){
+					response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+					response.setData(list);
+					response.setMsg("操作成功！");
+				}else {
+					response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+					response.setData(list);
+					response.setMsg("操作失败！");
+				}
+
+			} else {
+				response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+				response.setData("{}");
+				response.setMsg("操作失败！");
+			}
+		} catch (Exception e) {
+			response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+			response.setData("{}");
+			response.setMsg("操作失败！");
+			throw e;
+		}
+		return response;
 	}
 }

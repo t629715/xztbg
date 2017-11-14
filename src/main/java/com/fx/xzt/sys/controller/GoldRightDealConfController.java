@@ -144,8 +144,11 @@ public class GoldRightDealConfController {
         //TODO:权限用户判断
         HttpSession httpSession = request.getSession();
         Users users = (Users) httpSession.getAttribute("currentUser");
+        if (users != null){
+            rabbitmqService.sendForceCloseDirectiveByUserName(users.getUserName());
+        }
 
-        rabbitmqService.sendForceCloseDirectiveByUserName(users.getUserName());
+
 
         return result;
     }
