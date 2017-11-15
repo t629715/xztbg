@@ -11,6 +11,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.util.*;
 
@@ -27,6 +28,8 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
     public PageInfo<Map<String, Object>> orderAnalysis(String startTime, String endTime,  String agentName,
                                                        Integer upOrDown,Integer orderState, Integer profitLoss,Long agentId,
                                                        Integer pageNum, Integer pageSize) throws ParseException {
+        java.text.DecimalFormat   df   =new   java.text.DecimalFormat("#0.00");
+        //df.setRoundingMode(RoundingMode.FLOOR);
         Map map = new HashMap();
         map.put("upOrDown",upOrDown);
         map.put("orderState",orderState);
@@ -70,6 +73,8 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
     public Map orderAnalysisCount(String startTime, String endTime,
                                                         Integer upOrDown,Integer orderState, Integer profitLoss, Long agentId,
                                                         Integer pageNum, Integer pageSize) {
+        java.text.DecimalFormat   df   =new   java.text.DecimalFormat("#0.00");
+        //df.setRoundingMode(RoundingMode.FLOOR);
         Map map = new HashMap();
         map.put("upOrDown",upOrDown);
         map.put("orderState",orderState);
@@ -95,6 +100,24 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
         Map map1 = new HashMap();
         try{
             map1 = analysisOrderMapper.getAnalysisCount(map);
+            double amountTotal = 0;
+            amountTotal = Double.parseDouble((map1.get("realGoldAmountTotal")==null?0.0:map1.get("realGoldAmountTotal")).toString())+
+                    Double.parseDouble((map1.get("goldRightAmountTotal")==null?0.0:map1.get("goldRightAmountTotal")).toString())+
+                    Double.parseDouble((map1.get("financeAmountTotal")==null?0.0:map1.get("financeAmountTotal")).toString())+
+                    Double.parseDouble((map1.get("goldUpAmountTotal")==null?0.0:map1.get("goldUpAmountTotal")).toString())
+                    ;
+            int userTotal = 0;
+            userTotal = Integer.valueOf((map1.get("realGoldCountTotal")==null?0:map1.get("realGoldCountTotal")).toString())+
+                    Integer.valueOf((map1.get("goldRightCountTotal")==null?0:map1.get("goldRightCountTotal")).toString())+
+                    Integer.valueOf((map1.get("financeCountTotal")==null?0:map1.get("financeCountTotal")).toString())+
+                    Integer.valueOf((map1.get("goldUpCountTotal")==null?0:map1.get("goldUpCountTotal")).toString())
+            ;
+
+
+            map1.put("amountTotal",df.format(amountTotal));
+            map1.put("userTotal",userTotal);
+
+
         }catch (Exception e){
             e.printStackTrace();
         }

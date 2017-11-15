@@ -1,6 +1,11 @@
 package com.fx.xzt.util;
 
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.DESKeySpec;
 import java.security.MessageDigest;
+import java.security.SecureRandom;
 
 /**
  * 
@@ -46,14 +51,46 @@ public class MD5Utils {
 	            e.printStackTrace();  
 	            return null;  
 	        }
-	    }  
-	 
+	    }
+
+	/**
+	 * MD5解密
+	 * @param password
+	 * @return
+	 *//*
+	public static String convertMD5(String password){
+		 char[] a = password.toCharArray();
+		 for (int i = 0; i < a.length; i++){
+			 a[i] = (char) (a[i] ^ 't');
+		 }
+		 String s = new String(a);
+		 return s;
+	 }
 //	    public static void main(String[] args) {  
 //	        String str = "123456"+salt;
 //	        String encryptStr = encrypt(str);
 //	        System.out.println("加密前：" + str);
 //	        System.out.println("加密后：" + encryptStr);  
 //	    }
+private static byte[] decrypt(byte[] data, byte[] key) throws Exception {
+	// 生成一个可信任的随机数源
+	SecureRandom sr = new SecureRandom();
 
-    
+	// 从原始密钥数据创建DESKeySpec对象
+	DESKeySpec dks = new DESKeySpec(key);
+
+	// 创建一个密钥工厂，然后用它把DESKeySpec转换成SecretKey对象
+	SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
+	SecretKey securekey = keyFactory.generateSecret(dks);
+
+	// Cipher对象实际完成解密操作
+	Cipher cipher = Cipher.getInstance("DES");
+
+	// 用密钥初始化Cipher对象
+	cipher.init(Cipher.DECRYPT_MODE, securekey, sr);
+
+	return cipher.doFinal(data);
+}*/
+
+
 }  

@@ -1,8 +1,9 @@
 package com.fx.xzt.sys.controller;
 
-import java.text.DecimalFormat;
-import java.util.Date;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -11,24 +12,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.fx.xzt.sys.util.DateUtil;
+import com.fx.xzt.sys.util.*;
 import com.fx.xzt.util.MD5Utils;
 import com.fx.xzt.util.POIUtils;
-import org.springframework.http.HttpStatus;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.model.UsersModel;
 import com.fx.xzt.sys.service.UsersService;
-import com.fx.xzt.sys.util.CommonResponse;
-import com.fx.xzt.sys.util.ConstantUtil;
-import com.fx.xzt.sys.util.StringUtil;
 import com.github.pagehelper.PageInfo;
 
 /**
@@ -370,5 +371,38 @@ public class UserController {
 			}catch (Exception e){
 				e.printStackTrace();
 		}
+	}
+	/**
+	 * 生成二维码
+	 */
+	@RequestMapping(value = "/generateQRCode")
+	@ResponseBody
+	/*public Boolean createCode(String text){
+		int width = 100;
+		int height = 100;
+		String format = "png";
+		try {
+			String path = GenerateQRCodeUtil.generateQRCode(text,width,height,format);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}*/
+	public void createCode(String text,HttpServletResponse response){
+		int width = 500;
+		int height = 500;
+		String format = "png";
+		Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
+		hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
+		try {
+			BitMatrix bitMatrix = new MultiFormatWriter().encode(text, BarcodeFormat.QR_CODE, width, height, hints);
+			GenerateQRCodeUtil.writeToStream(response,bitMatrix,format);
+		} catch (WriterException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 }

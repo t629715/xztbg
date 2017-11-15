@@ -77,6 +77,16 @@ public class UsersRoleServiceImpl extends BaseService<UsersRole> implements User
 			if(pids!=null&&!pids.isEmpty()){
 				msg = usersRolePermissionService.deleteByRid(rid);
 				if(msg>0){
+					Set<Integer> set = new HashSet();
+					for (Integer pid : pids) {
+						set.add(usersPermissionMapper.getByPid(pid));
+					}
+					for (Integer i:set){
+						UsersRolePermission urp = new UsersRolePermission();
+						urp.setRid(rid);
+						urp.setPid(i);
+						msg = usersRolePermissionService.insertUsersRolePermission(urp);
+					}
 					for (Integer pid : pids) {
 						UsersRolePermission urp = new UsersRolePermission();
 						urp.setRid(rid);
