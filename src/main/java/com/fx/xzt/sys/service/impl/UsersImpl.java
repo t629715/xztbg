@@ -5,7 +5,10 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 
+import com.fx.xzt.sys.entity.UsersRole;
+import com.fx.xzt.sys.entity.UsersUserRole;
 import com.fx.xzt.sys.mapper.UsersPermissionMapper;
+import com.fx.xzt.sys.mapper.UsersRolePermissionMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,7 +45,7 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 	@Resource
 	private UsersUserRoleService usersUserRoleService;
 	@Resource
-	private UsersPermissionMapper usersPermissionMapper;
+	UsersRolePermissionMapper usersRolePermissionMapper;
 	public static final String USER_INFO = "uid";
 
 	public Users getUserInfo(Long uid) {
@@ -129,6 +132,11 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		int i = 0;
 		usersMapper.deleteByPid(id);
 		i = usersMapper.deleteById(id);
+		if (i>0){
+			UsersUserRole usersUserRole = new UsersUserRole();
+			usersUserRole.setUid(id.intValue());
+			i = usersUserRoleService.deleteByUserRole(usersUserRole);
+		}
 		return i;
 	}
 
@@ -151,6 +159,9 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		map.put("phone", phone);
 		PageHelper.startPage(pageNum,pageSize);
 		List<UsersModel> list = usersMapper.selectByUsersModel(map);
+		for (UsersModel usersModel:list){
+			usersModel.setPassword(MD5Utils.convertMD5(MD5Utils.convertMD5(usersModel.getPassword())));
+		}
 		PageInfo<UsersModel> pageInfo = new PageInfo<UsersModel>(list);
 
 		if (list.size() == 0){
