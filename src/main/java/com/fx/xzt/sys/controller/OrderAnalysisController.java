@@ -58,8 +58,9 @@ public class OrderAnalysisController {
                 if (startTime == "" && endTime == ""){
                     long current=System.currentTimeMillis();//当前时间毫秒数
                     long zero=current/(1000*3600*24)*(1000*3600*24)- TimeZone.getDefault().getRawOffset();
+                    Long mills = new Timestamp(zero).getTime()+24*3600*1000;
                     if (time == 1){
-                        startTime = new Timestamp(zero).toString();
+                        startTime = new Timestamp(zero).getTime()+"";
                         endTime = (new Timestamp(zero).getTime()+24*3600*1000)+"";
 
                     }else if (time == 2){
@@ -70,12 +71,12 @@ public class OrderAnalysisController {
                     }else if (time == 3){
                         Date start = DateUtil.modify(new Timestamp(zero),0,0,-7,0,0,0);
                         startTime = start.getTime()+"";
-                        endTime = new Timestamp(zero).getTime()+"";
+                        endTime = mills+"";
 
                     }else {
                         Date start = DateUtil.modify(new Timestamp(zero),0,0,-30,0,0,0);
                         startTime = start.getTime()+"";
-                        endTime = new Timestamp(zero).getTime()+"";
+                        endTime = mills+"";
                     }
                 }
                 PageInfo<Map<String, Object>> pageInfo = orderAnalysisService.orderAnalysis(startTime,endTime,
@@ -108,10 +109,10 @@ public class OrderAnalysisController {
 
                     long current=System.currentTimeMillis();//当前时间毫秒数
                     long zero=current/(1000*3600*24)*(1000*3600*24)- TimeZone.getDefault().getRawOffset();
-                    Long mills = new Timestamp(zero).getTime();
+                    Long mills = new Timestamp(zero).getTime()+24*3600*1000;
                     if (time == 1){
-                        startTime = mills.toString();
-                        endTime = (mills+24*3600*1000)+"";
+                        startTime = new Timestamp(zero).getTime()+"";
+                        endTime = (new Timestamp(zero).getTime()+24*3600*1000)+"";
 
                     }else if (time == 2){
                         Date start = DateUtil.modify(new Timestamp(zero),0,0,-1,0,0,0);
@@ -164,8 +165,9 @@ public class OrderAnalysisController {
                 if (startTime == "" && endTime == ""){
                     long current=System.currentTimeMillis();//当前时间毫秒数
                     long zero=current/(1000*3600*24)*(1000*3600*24)- TimeZone.getDefault().getRawOffset();
+                    Long mills = new Timestamp(zero).getTime()+24*3600*1000;
                     if (time == 1){
-                        startTime = new Timestamp(zero).toString();
+                        startTime = new Timestamp(zero).getTime()+"";
                         endTime = (new Timestamp(zero).getTime()+24*3600*1000)+"";
 
                     }else if (time == 2){
@@ -176,12 +178,12 @@ public class OrderAnalysisController {
                     }else if (time == 3){
                         Date start = DateUtil.modify(new Timestamp(zero),0,0,-7,0,0,0);
                         startTime = start.getTime()+"";
-                        endTime = new Timestamp(zero).getTime()+"";
+                        endTime = mills+"";
 
                     }else {
                         Date start = DateUtil.modify(new Timestamp(zero),0,0,-30,0,0,0);
                         startTime = start.getTime()+"";
-                        endTime = new Timestamp(zero).getTime()+"";
+                        endTime = mills+"";
 
                     }
 
