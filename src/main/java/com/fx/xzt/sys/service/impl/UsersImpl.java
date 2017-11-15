@@ -135,7 +135,7 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		if (i>0){
 			UsersUserRole usersUserRole = new UsersUserRole();
 			usersUserRole.setUid(id.intValue());
-			i = usersUserRoleService.deleteByUserRole(usersUserRole);
+			usersUserRoleService.deleteByUserRole(usersUserRole);
 		}
 		return i;
 	}
@@ -159,9 +159,6 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		map.put("phone", phone);
 		PageHelper.startPage(pageNum,pageSize);
 		List<UsersModel> list = usersMapper.selectByUsersModel(map);
-		for (UsersModel usersModel:list){
-			usersModel.setPassword(MD5Utils.convertMD5(MD5Utils.convertMD5(usersModel.getPassword())));
-		}
 		PageInfo<UsersModel> pageInfo = new PageInfo<UsersModel>(list);
 
 		if (list.size() == 0){
