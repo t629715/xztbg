@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fx.xzt.sys.entity.UserInfo;
 import com.fx.xzt.sys.mapper.UserInfoMapper;
@@ -20,7 +21,6 @@ import com.fx.xzt.sys.util.UserInfoApproveStateEnum;
 import com.fx.xzt.sys.util.UsersInfoAuthStatus;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserInfoService{
@@ -230,5 +230,87 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		map.put("userId",userId);
 		map.put("brokerId",brokerId);
 		return userInfoMapper.updateUserInfoBrokerId(map);
+	}
+
+	/**
+	 * 用户分析查询
+	 */
+	public PageInfo<Map<String, Object>> getByUserAnalysis(String startTime, String endTime, String loginFrom, String agentName,
+			Integer pageNum, Integer pageSize) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("startTime", startTime);
+		map.put("endTime", endTime);
+		map.put("loginFrom", loginFrom);
+		map.put("agentName", agentName);
+		List<Map<String, Object>> list = userInfoMapper.getByUserAnalysis(map);
+		PageInfo<Map<String, Object>> pagehelper = new PageInfo<Map<String, Object>>(list);
+		return pagehelper;
+	}
+	
+	/**
+	 * 用户分析查询--导出
+	 */
+	public List<Map<String, Object>> excelByUserAnalysis(String startTime, String endTime, String loginFrom, String agentName) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("startTime", startTime);
+		map.put("endTime", endTime);
+		map.put("loginFrom", loginFrom);
+		map.put("agentName", agentName);
+		List<Map<String, Object>> list = userInfoMapper.getByUserAnalysis(map);
+		return list;
+	}
+
+	/**
+	 * 用户分析查询--统计
+	 */
+	public List<Map<String, Object>> getByUserAnalysisCount(String startTime, String endTime, String loginFrom, String agentName) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("startTime", startTime);
+		map.put("endTime", endTime);
+		map.put("loginFrom", loginFrom);
+		map.put("agentName", agentName);
+		List<Map<String, Object>> list = userInfoMapper.getByUserAnalysisCount(map);
+		return list;
+	}
+
+	/**
+	 * 用户属性查询
+	 */
+	public PageInfo<Map<String, Object>> getByUserAttribute(String startTime, String endTime, String loginFrom, String agentName,
+			Integer pageNum, Integer pageSize) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("startTime", startTime);
+		map.put("endTime", endTime);
+		map.put("loginFrom", loginFrom);
+		map.put("agentName", agentName);
+		List<Map<String, Object>> list = userInfoMapper.getByUserAttribute(map);
+		PageInfo<Map<String, Object>> pagehelper = new PageInfo<Map<String, Object>>(list);
+		return pagehelper;
+	}
+
+	/**
+	 * 用户属性查询--统计
+	 */
+	public List<Map<String, Object>> getByUserAttributeCount(String startTime, String endTime, String loginFrom, String agentName) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("startTime", startTime);
+		map.put("endTime", endTime);
+		map.put("loginFrom", loginFrom);
+		map.put("agentName", agentName);
+		List<Map<String, Object>> list = userInfoMapper.getByUserAttributeCount(map);
+		return list;
+	}
+
+	/**
+	 * 用户属性查询--导出
+	 */
+	public List<Map<String, Object>> excelByUserAttribute(String startTime, String endTime, String loginFrom, String agentName) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("startTime", startTime);
+		map.put("endTime", endTime);
+		map.put("loginFrom", loginFrom);
+		map.put("agentName", agentName);
+		List<Map<String, Object>> list = userInfoMapper.getByUserAttribute(map);
+		return list;
 	}
 }

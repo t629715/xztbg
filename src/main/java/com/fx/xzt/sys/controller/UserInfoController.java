@@ -1,5 +1,6 @@
 package com.fx.xzt.sys.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,9 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.fx.xzt.sys.entity.UserInfo;
-import com.fx.xzt.sys.entity.Users;
-import org.springframework.aop.target.CommonsPool2TargetSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,11 +17,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.fx.xzt.sys.entity.UserLogin;
+import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.model.UserInfoModel;
 import com.fx.xzt.sys.service.UserInfoService;
 import com.fx.xzt.sys.service.UserLoginService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
+import com.fx.xzt.sys.util.DateUtil;
+import com.fx.xzt.sys.util.StringUtil;
 import com.fx.xzt.util.POIUtils;
 import com.github.pagehelper.PageInfo;
 
@@ -392,4 +393,396 @@ public class UserInfoController {
 		}
 		return response;
 	 }
+	
+	/**
+	 * 
+	* @Title: getByUserAnalysis 
+	* @Description: 用户分析查询
+	* @param request
+	* @param startTime  开始时间
+	* @param endTime  结束时间
+	* @param loginFrom  登录来源
+	* @param agentName 代理商id
+	* @param pageNum
+	* @param pageSize
+	* @return    设定文件 
+	* @return Object    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	@RequestMapping(value="/getByUserAnalysis")
+	@ResponseBody
+	public Object getByUserAnalysis(HttpServletRequest request, String type, String startTime, String endTime, String loginFrom, String agentName,
+			 @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+		CommonResponse cr = new CommonResponse();
+        try {
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            String sTime = "";
+            String eTime = "";
+            Date today = DateUtil.getTodayZeroDate();
+            if (users != null) {
+            	if (type != null && type.equals(ConstantUtil.USER_NPER_JT)) {
+            		Date tomorrow = DateUtil.modify(today, 0, 0, 1, 0, 0, 0);
+            		sTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");;
+            		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd HH:mm:ss");
+            	} else if (type != null && type.equals(ConstantUtil.USER_NPER_ZT)) {
+            		Date yesterday = DateUtil.modify(today, 0, 0, -1, 0, 0, 0);
+            		sTime = DateUtil.convertDateToString(yesterday, "yyyy-MM-dd HH:mm:ss");
+            		eTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");
+            	} else if (type != null && type.equals(ConstantUtil.USER_NPER_JQT)) {
+            		Date jqt = DateUtil.modify(today, 0, 0, -6, 0, 0, 0);
+            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd HH:mm:ss");
+            	} else if (type != null && type.equals(ConstantUtil.USER_NPER_JSST)) {
+            		Date jqt = DateUtil.modify(today, 0, 0, -29, 0, 0, 0);
+            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd HH:mm:ss");
+            	}
+            	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
+            		sTime = startTime;
+            		eTime = endTime;
+            	}
+                PageInfo<Map<String, Object>> pageInfo = userInfoService.getByUserAnalysis(sTime, eTime, loginFrom, agentName, pageNum, pageSize);
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+                cr.setData(pageInfo);
+                cr.setMsg("操作成功！");
+            } else {
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("操作失败！");
+            }
+
+        } catch (Exception e) {
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("操作失败！");
+            throw e;
+            // e.printStackTrace();
+        }
+        return cr;
+	}
+	
+	/**
+	 * 
+	* @Title: getByUserAnalysisCount 
+	* @Description: 用户分析查询--统计
+	* @param request
+	* @param startTime  开始时间
+	* @param endTime  结束时间
+	* @param loginFrom  登录来源
+	* @param agentName 代理商id
+	* @param pageNum
+	* @param pageSize
+	* @return    设定文件 
+	* @return Object    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	@RequestMapping(value="/getByUserAnalysisCount")
+	@ResponseBody
+	public Object getByUserAnalysisCount(HttpServletRequest request, String type, String startTime, String endTime, String loginFrom, String agentName) {
+		CommonResponse cr = new CommonResponse();
+        try {
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            String sTime = "";
+            String eTime = "";
+            Date today = DateUtil.getTodayZeroDate();
+            if (users != null) {
+            	if (type != null && type.equals(ConstantUtil.USER_NPER_JT)) {
+            		Date tomorrow = DateUtil.modify(today, 0, 0, 1, 0, 0, 0);
+            		sTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");;
+            		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd HH:mm:ss");
+            	} else if (type != null && type.equals(ConstantUtil.USER_NPER_ZT)) {
+            		Date yesterday = DateUtil.modify(today, 0, 0, -1, 0, 0, 0);
+            		sTime = DateUtil.convertDateToString(yesterday, "yyyy-MM-dd HH:mm:ss");
+            		eTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");
+            	} else if (type != null && type.equals(ConstantUtil.USER_NPER_JQT)) {
+            		Date jqt = DateUtil.modify(today, 0, 0, -6, 0, 0, 0);
+            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd HH:mm:ss");
+            	} else if (type != null && type.equals(ConstantUtil.USER_NPER_JSST)) {
+            		Date jqt = DateUtil.modify(today, 0, 0, -29, 0, 0, 0);
+            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd HH:mm:ss");
+            	}
+            	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
+            		sTime = startTime;
+            		eTime = endTime;
+            	}
+                List<Map<String, Object>> list = userInfoService.getByUserAnalysisCount(sTime, eTime, loginFrom, agentName);
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+                cr.setData(list);
+                cr.setMsg("操作成功！");
+            } else {
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("操作失败！");
+            }
+
+        } catch (Exception e) {
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("操作失败！");
+            throw e;
+            // e.printStackTrace();
+        }
+        return cr;
+	}
+	
+	/**
+	 * 
+	* @Title: excelByUserAnalysis 
+	* @Description: 用户分析查询--导出
+	* @param request
+	* @param response
+	* @param startTime  开始时间
+	* @param endTime  结束时间
+	* @param loginFrom 来源
+	* @param agentName 代理商id
+	* @throws Exception    设定文件 
+	* @return void    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	@RequestMapping(value = "/excelByUserAnalysis")
+	@ResponseBody
+	public void excelByUserAnalysis(HttpServletRequest request, HttpServletResponse response, String type, String startTime, String endTime,
+			String loginFrom, String agentName) throws Exception {
+		try {
+			String tieleName = "用户分析";
+			String excelName = "用户分析";
+			HttpSession httpSession = request.getSession();
+			Users users = (Users) httpSession.getAttribute("currentUser");
+			String sTime = "";
+            String eTime = "";
+            Date today = DateUtil.getTodayZeroDate();
+			if (users != null) {
+				if (type != null && type.equals(ConstantUtil.USER_NPER_JT)) {
+            		Date tomorrow = DateUtil.modify(today, 0, 0, 1, 0, 0, 0);
+            		sTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");;
+            		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd HH:mm:ss");
+            	} else if (type != null && type.equals(ConstantUtil.USER_NPER_ZT)) {
+            		Date yesterday = DateUtil.modify(today, 0, 0, -1, 0, 0, 0);
+            		sTime = DateUtil.convertDateToString(yesterday, "yyyy-MM-dd HH:mm:ss");
+            		eTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");
+            	} else if (type != null && type.equals(ConstantUtil.USER_NPER_JQT)) {
+            		Date jqt = DateUtil.modify(today, 0, 0, -6, 0, 0, 0);
+            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd HH:mm:ss");
+            	} else if (type != null && type.equals(ConstantUtil.USER_NPER_JSST)) {
+            		Date jqt = DateUtil.modify(today, 0, 0, -29, 0, 0, 0);
+            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd HH:mm:ss");
+            	}
+            	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
+            		sTime = startTime;
+            		eTime = endTime;
+            	}
+				List<Map<String, Object>> list = userInfoService.excelByUserAnalysis(sTime, eTime, loginFrom, agentName);
+				POIUtils poi = new POIUtils();
+				String[] heads = { "日期", "合计入金用户", "新入金用户", "新入金用户比例", "新注册用户",
+						"金权交易合计交易用户", "金权交易新交易用户", "金权交易新交易用户比例", "黄金稳赚合计交易用户",
+						"黄金稳赚新交易用户", "黄金稳赚新交易用户比例", "实物黄金合计交易用户", "实物黄金新交易用户",
+						"实物黄金新交易用户比例", "随意存合计交易用户", "随意存新交易用户", "随意存新交易用户比例",
+						"总用户", "总交易用户", "总入金用户" };
+				String[] colums = { "date", "rjNum", "xrjNum", "xrjbl",
+						"xzcNum", "jqjyNum", "jqxjyNum", "jqxjybl", "wzjyNum",
+						"wzxjyNum", "wzxjybl", "sjjyNum", "sjxjyNum",
+						"sjxjybl", "sycjyNum", "sjcxjyNum", "sycxjybl",
+						"zyhNum", "zjyyhNum", "zrjyhNum" };
+				poi.doExport(request, response, list, tieleName, excelName,
+						heads, colums);
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	/**
+	 * 
+	* @Title: getByUserAttribute 
+	* @Description: 用户属性查询
+	* @param request
+	* @param startTime  开始时间
+	* @param endTime  结束时间
+	* @param loginFrom  登录来源
+	* @param agentName 代理商id
+	* @param pageNum
+	* @param pageSize
+	* @return    设定文件 
+	* @return Object    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	@RequestMapping(value="/getByUserAttribute")
+	@ResponseBody
+	public Object getByUserAttribute(HttpServletRequest request, String type, String startTime, String endTime, String loginFrom, String agentName,
+			 @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+		CommonResponse cr = new CommonResponse();
+        try {
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            String sTime = "";
+            String eTime = "";
+            Date today = DateUtil.getTodayZeroDate();
+            if (users != null) {
+            	if (type != null && type.equals(ConstantUtil.USER_NPER_JT)) {
+            		Date tomorrow = DateUtil.modify(today, 0, 0, 1, 0, 0, 0);
+            		sTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");;
+            		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd HH:mm:ss");
+            	} else if (type != null && type.equals(ConstantUtil.USER_NPER_ZT)) {
+            		Date yesterday = DateUtil.modify(today, 0, 0, -1, 0, 0, 0);
+            		sTime = DateUtil.convertDateToString(yesterday, "yyyy-MM-dd HH:mm:ss");
+            		eTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");
+            	} else if (type != null && type.equals(ConstantUtil.USER_NPER_JQT)) {
+            		Date jqt = DateUtil.modify(today, 0, 0, -6, 0, 0, 0);
+            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd HH:mm:ss");
+            	} else if (type != null && type.equals(ConstantUtil.USER_NPER_JSST)) {
+            		Date jqt = DateUtil.modify(today, 0, 0, -29, 0, 0, 0);
+            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd HH:mm:ss");
+            	}
+            	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
+            		sTime = startTime;
+            		eTime = endTime;
+            	}
+                PageInfo<Map<String, Object>> pageInfo = userInfoService.getByUserAttribute(sTime, eTime, loginFrom, agentName, pageNum, pageSize);
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+                cr.setData(pageInfo);
+                cr.setMsg("操作成功！");
+            } else {
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("操作失败！");
+            }
+
+        } catch (Exception e) {
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("操作失败！");
+            throw e;
+            // e.printStackTrace();
+        }
+        return cr;
+	}
+	
+	/**
+	 * 
+	* @Title: getByUserAttributeCount 
+	* @Description: 用户属性查询--统计
+	* @param request
+	* @param startTime  开始时间
+	* @param endTime  结束时间
+	* @param loginFrom  登录来源
+	* @param agentName 代理商id
+	* @param pageNum
+	* @param pageSize
+	* @return    设定文件 
+	* @return Object    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	@RequestMapping(value="/getByUserAttributeCount")
+	@ResponseBody
+	public Object getByUserAttributeCount(HttpServletRequest request, String type, String startTime, String endTime, String loginFrom, String agentName) {
+		CommonResponse cr = new CommonResponse();
+        try {
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            String sTime = "";
+            String eTime = "";
+            Date today = DateUtil.getTodayZeroDate();
+            if (users != null) {
+            	if (type != null && type.equals(ConstantUtil.USER_NPER_JT)) {
+            		Date tomorrow = DateUtil.modify(today, 0, 0, 1, 0, 0, 0);
+            		sTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");;
+            		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd HH:mm:ss");
+            	} else if (type != null && type.equals(ConstantUtil.USER_NPER_ZT)) {
+            		Date yesterday = DateUtil.modify(today, 0, 0, -1, 0, 0, 0);
+            		sTime = DateUtil.convertDateToString(yesterday, "yyyy-MM-dd HH:mm:ss");
+            		eTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");
+            	} else if (type != null && type.equals(ConstantUtil.USER_NPER_JQT)) {
+            		Date jqt = DateUtil.modify(today, 0, 0, -6, 0, 0, 0);
+            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd HH:mm:ss");
+            	} else if (type != null && type.equals(ConstantUtil.USER_NPER_JSST)) {
+            		Date jqt = DateUtil.modify(today, 0, 0, -29, 0, 0, 0);
+            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd HH:mm:ss");
+            	}
+            	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
+            		sTime = startTime;
+            		eTime = endTime;
+            	}
+                List<Map<String, Object>> list = userInfoService.getByUserAttributeCount(sTime, eTime, loginFrom, agentName);
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+                cr.setData(list);
+                cr.setMsg("操作成功！");
+            } else {
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("操作失败！");
+            }
+
+        } catch (Exception e) {
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("操作失败！");
+            throw e;
+            // e.printStackTrace();
+        }
+        return cr;
+	}
+	
+	/**
+	 * 
+	* @Title: excelByUserAttribute 
+	* @Description: 用户属性查询--导出
+	* @param request
+	* @param response
+	* @param startTime  开始时间
+	* @param endTime  结束时间
+	* @param loginFrom 来源
+	* @param agentName 代理商id
+	* @throws Exception    设定文件 
+	* @return void    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	@RequestMapping(value = "/excelByUserAttribute")
+	@ResponseBody
+	public void excelByUserAttribute(HttpServletRequest request, HttpServletResponse response, String type, String startTime, String endTime,
+			String loginFrom, String agentName) throws Exception {
+		try {
+			String tieleName = "用户分析";
+			String excelName = "用户分析";
+			HttpSession httpSession = request.getSession();
+			Users users = (Users) httpSession.getAttribute("currentUser");
+			String sTime = "";
+            String eTime = "";
+            Date today = DateUtil.getTodayZeroDate();
+			if (users != null) {
+				if (type != null && type.equals(ConstantUtil.USER_NPER_JT)) {
+            		Date tomorrow = DateUtil.modify(today, 0, 0, 1, 0, 0, 0);
+            		sTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");;
+            		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd HH:mm:ss");
+            	} else if (type != null && type.equals(ConstantUtil.USER_NPER_ZT)) {
+            		Date yesterday = DateUtil.modify(today, 0, 0, -1, 0, 0, 0);
+            		sTime = DateUtil.convertDateToString(yesterday, "yyyy-MM-dd HH:mm:ss");
+            		eTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");
+            	} else if (type != null && type.equals(ConstantUtil.USER_NPER_JQT)) {
+            		Date jqt = DateUtil.modify(today, 0, 0, -6, 0, 0, 0);
+            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd HH:mm:ss");
+            	} else if (type != null && type.equals(ConstantUtil.USER_NPER_JSST)) {
+            		Date jqt = DateUtil.modify(today, 0, 0, -29, 0, 0, 0);
+            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd HH:mm:ss");
+            	}
+            	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
+            		sTime = startTime;
+            		eTime = endTime;
+            	}
+				List<Map<String, Object>> list = userInfoService.excelByUserAttribute(sTime, eTime, loginFrom, agentName);
+				POIUtils poi = new POIUtils();
+				String[] heads = { "日期", "登录用户", "总用户", "男", "女", "性别未确定", "苹果用户", "安卓用户", "其他" };
+				String[] colums = { "date", "dlNum", "zNum", "nNum", "nvNum", "wqdNum", "pgNUm", "azNum", "QtNum" };
+				poi.doExport(request, response, list, tieleName, excelName,
+						heads, colums);
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+	}
 }

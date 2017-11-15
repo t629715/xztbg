@@ -263,6 +263,7 @@ public class GoldRedeemController {
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
             	goldRedeem.setId(IdUtil.generateyymmddhhMMssSSSAnd4Random());
+            	goldRedeem.setUserId(Long.parseLong(goldRedeem.getUserIdString()));
             	int flag = goldRedeemService.insertGoldRedeem(goldRedeem);
             	if (flag > 0) {
             		cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);

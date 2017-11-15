@@ -128,7 +128,7 @@ public class UserVoucherController {
                         Object useTime = map.get("useTime");
                         Object createTime = map.get("createTime");
                         if (useStatusObje != null && useStatusObje != "") {
-                        	//map.put("useStatus", ConstantUtil.userVoucherUseStatus.toMap().get(useStatusObje.toString()));
+                        	map.put("useStatus", ConstantUtil.useStatus.toMap().get(useStatusObje.toString()));
                         }
                         if (useTime != null && useTime != "") {
                         	map.put("useTime", sdf.format(sdf.parse(useTime.toString())));

@@ -99,7 +99,7 @@
   
   	<!--获取用户账户开始-htt-->
     <select id="getByAccount" resultType="java.util.Map" parameterType="java.util.Map" >
-    	SELECT l.UserID , l.UserName ,a.id id,a.rmb
+    	SELECT cast(l.UserID as CHAR) UserID , l.UserName ,cast(a.id as CHAR) id,a.rmb
         FROM User_Login l 
         LEFT JOIN user_account a ON l.UserID = a.user_id
         <where>

@@ -11,7 +11,7 @@
 
 	<!--黄金赎回配置查询开始-htt-->
 	<select id="selectByGoldRedeemConf" resultType="java.util.Map" parameterType="java.util.Map">
-	    SELECT  id, price, poundage_percent poundagePercent, create_time createTime, is_enable isEnable 
+	    SELECT  cast(id as CHAR) id, price, poundage_percent poundagePercent, create_time createTime, is_enable isEnable 
 	    from gold_redeem_conf
 	    <where>
 	      <if test="isEnable != null">

@@ -21,8 +21,9 @@ public class GoldRedeem implements Serializable {
 	private Long amount; //赎回金额
 	private Date createTime;//赎回时间
 	private Long poundage;  //赎回手续
-	private Long accountId; //用户账户id
+	private String accountId; //用户账户id
 	private String userName;
+	private String userIdString;
 	
 	public Long getId() {
 		return id;
@@ -80,11 +81,11 @@ public class GoldRedeem implements Serializable {
 		this.poundage = poundage;
 	}
 
-	public Long getAccountId() {
+	public String getAccountId() {
 		return accountId;
 	}
 
-	public void setAccountId(Long accountId) {
+	public void setAccountId(String accountId) {
 		this.accountId = accountId;
 	}
 
@@ -94,6 +95,14 @@ public class GoldRedeem implements Serializable {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getUserIdString() {
+		return userIdString;
+	}
+
+	public void setUserIdString(String userIdString) {
+		this.userIdString = userIdString;
 	}
 	
 }

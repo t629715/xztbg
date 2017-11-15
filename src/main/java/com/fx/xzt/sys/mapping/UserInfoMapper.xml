@@ -105,7 +105,7 @@
 		order by RegisterTime DESC
 	</select>
 	<!--账户信息查询结束 -->
-	<!--账户信息查询金额统计开始 -->
+	<!--账户信息查询金额统计开始 -htt -->
 	<select id="getByAccountCount" resultType="java.util.Map"
 		parameterType="java.util.Map">
 		SELECT SUM(rmb) rmbSum, SUM(finance) finaceSum, SUM(frozen_rmb)
@@ -137,6 +137,26 @@
 		</where>
 	</select>
 	<!--账户信息查询金额统计结束 -->
+	
+	<!-- 用户分析查询开始-htt -->
+	<select id="getByUserAnalysis" resultType="java.util.Map" parameterType="java.util.Map">
+	</select>
+	<!-- 用户分析查询结束-htt -->
+	
+	<!-- 用户分析查询统计开始-htt -->
+	<select id="getByUserAnalysisCount" resultType="java.util.Map" parameterType="java.util.Map">
+	</select>
+	<!-- 用户分析查询统计结束-htt -->
+	
+	<!-- 用户属性查询开始-htt -->
+	<select id="getByUserAttribute" resultType="java.util.Map" parameterType="java.util.Map">
+	</select>
+	<!-- 用户属性查询结束-htt -->
+	
+	<!-- 用户属性查询统计开始-htt -->
+	<select id="getByUserAttributeCount" resultType="java.util.Map" parameterType="java.util.Map">
+	</select>
+	<!-- 用户属性查询统计结束-htt -->
 
 	<select id="getByAll" resultType="com.fx.xzt.sys.model.UserInfoModel"
 		parameterType="java.util.Map">

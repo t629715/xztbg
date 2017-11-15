@@ -134,7 +134,7 @@ public class UserVoucherFinanceController {
                         	map.put("deductionPercent", df.format(deductionPercent));
                         }
                         if (useStatusObje != null && useStatusObje != "") {
-                        	//map.put("useStatus", ConstantUtil.userVoucherUseStatus.toMap().get(useStatusObje.toString()));
+                        	map.put("useStatus", ConstantUtil.useStatus.toMap().get(useStatusObje.toString()));
                         }
                         if (useTime != null && useTime != "") {
                         	map.put("useTime", sdf.format(sdf.parse(map.get("useTime").toString())));

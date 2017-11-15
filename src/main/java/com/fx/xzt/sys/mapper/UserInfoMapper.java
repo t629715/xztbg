@@ -67,5 +67,53 @@ public interface UserInfoMapper extends BaseMapper<UserInfo>{
 	 * @return
 	 */
 	int updateUserInfoBrokerId(Map<String,Object> map);
+	
+	/**
+	 * 
+	* @Title: getByUserAnalysis 
+	* @Description: 用户分析
+	* @param map
+	* @return    设定文件 
+	* @return List<Map<String,Object>>    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	List<Map<String, Object>> getByUserAnalysis(Map<String,Object> map);
+	
+	/**
+	 * 
+	* @Title: getByUserAnalysisCount 
+	* @Description: 用户分析-统计
+	* @param map
+	* @return    设定文件 
+	* @return List<Map<String,Object>>    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	List<Map<String, Object>> getByUserAnalysisCount(Map<String,Object> map);
+	
+	/**
+	 * 
+	* @Title: getByUserAttribute 
+	* @Description: 用户属性
+	* @param map
+	* @return    设定文件 
+	* @return List<Map<String,Object>>    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	List<Map<String, Object>> getByUserAttribute(Map<String,Object> map);
+	
+	/**
+	 * 
+	* @Title: getByUserAttributeCount 
+	* @Description: 用户属性--统计
+	* @param map
+	* @return    设定文件 
+	* @return List<Map<String,Object>>    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	List<Map<String, Object>> getByUserAttributeCount(Map<String,Object> map);
 
 }

@@ -78,6 +78,14 @@ public class ConstantUtil {
     public final static String IN_OUT_GOLD_NPER_JQT = "3";  //出入金统计分析周期-近七天
     public final static String IN_OUT_GOLD_NPER_BY = "4";   //出入金统计分析周期-本月
     
+    /**
+     * 用户统计分析、属性周期
+     */
+    public final static String USER_NPER_JT = "1";   //用户统计分析周期-今天
+    public final static String USER_NPER_ZT = "2";   //用户统计分析周期-昨天
+    public final static String USER_NPER_JQT = "3";  //用户统计分析周期-近七天
+    public final static String USER_NPER_JSST = "4";   //用户统计分析周期-近三十天
+    
 
     /**
      * 客户信息-状态
@@ -298,6 +306,36 @@ public class ConstantUtil {
         	goldWithdrawStatus[] ds = goldWithdrawStatus.values();
             Map<String, String> rlt = new Hashtable<String, String>();
             for (goldWithdrawStatus d : ds) {
+                rlt.put(d.index, d.name);
+            }
+            return rlt;
+        }
+    }
+    
+    /**
+     * 
+    * @ClassName: useStatus 
+    * @Description: 优惠券使用状态
+    * @author htt
+    * @date 2017-11-15 下午6:03:23 
+    *
+     */
+    public static enum useStatus {
+        WSY("未使用","0"),
+        YSY("已使用","1");
+        private String name;
+        private String index;
+        private useStatus(String name,String index){
+            this.name = name;
+            this.index = index;
+        }
+        public String toString() {
+            return this.index;
+        }
+        public static Map<String, String> toMap() {
+        	useStatus[] ds = useStatus.values();
+            Map<String, String> rlt = new Hashtable<String, String>();
+            for (useStatus d : ds) {
                 rlt.put(d.index, d.name);
             }
             return rlt;

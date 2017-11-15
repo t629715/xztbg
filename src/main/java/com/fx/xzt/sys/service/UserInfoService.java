@@ -112,4 +112,98 @@ public interface UserInfoService extends IService<UserInfo> {
      * @return
      */
     int changeBroker(Long userId, Long brokerId);
+    
+    /**
+     * 
+    * @Title: getByUserAnalysis 
+    * @Description: 用户分析查询
+    * @param startTime  开始时间
+    * @param endTime    结束时间
+    * @param loginFrom  登录来源
+    * @param agentName  代理商id
+    * @param pageNum
+    * @param pageSize
+    * @return    设定文件 
+    * @return PageInfo<Map<String,Object>>    返回类型 
+    * @throws 
+    * @author htt
+     */
+    PageInfo<Map<String, Object>> getByUserAnalysis(String startTime, String endTime, String loginFrom, String agentName, Integer pageNum, Integer pageSize);
+    
+    /**
+     * 
+    * @Title: getByUserAnalysis 
+    * @Description: 用户分析查询--导出
+    * @param startTime  开始时间
+    * @param endTime    结束时间
+    * @param loginFrom  登录来源
+    * @param agentName  代理商id
+    * @return    设定文件 
+    * @return PageInfo<Map<String,Object>>    返回类型 
+    * @throws 
+    * @author htt
+     */
+    List<Map<String, Object>> excelByUserAnalysis(String startTime, String endTime, String loginFrom, String agentName);
+    
+    /**
+     * 
+    * @Title: getByUserAnalysisCount 
+    * @Description: 用户分析查询--统计
+    * @param startTime
+    * @param endTime
+    * @param loginFrom
+    * @param agentName
+    * @return    设定文件 
+    * @return List<Map<String,Object>>    返回类型 
+    * @throws 
+    * @author htt
+     */
+    List<Map<String, Object>> getByUserAnalysisCount(String startTime, String endTime, String loginFrom, String agentName);
+	
+    /**
+     * 
+    * @Title: getByUserAttribute 
+    * @Description: 用户属性查询
+    * @param startTime  开始时间
+    * @param endTime    结束时间
+    * @param loginFrom  登录来源
+    * @param agentName  代理商id
+    * @param pageNum
+    * @param pageSize
+    * @return    设定文件 
+    * @return PageInfo<Map<String,Object>>    返回类型 
+    * @throws 
+    * @author htt
+     */
+    PageInfo<Map<String, Object>> getByUserAttribute(String startTime, String endTime, String loginFrom, String agentName, Integer pageNum, Integer pageSize);
+    
+    /**
+     * 
+    * @Title: excelByUserAttribute 
+    * @Description: 用户属性查询--导出
+    * @param startTime  开始时间
+    * @param endTime    结束时间
+    * @param loginFrom  登录来源
+    * @param agentName  代理商id
+    * @return    设定文件 
+    * @return PageInfo<Map<String,Object>>    返回类型 
+    * @throws 
+    * @author htt
+     */
+    List<Map<String, Object>> excelByUserAttribute(String startTime, String endTime, String loginFrom, String agentName);
+    
+    /**
+     * 
+    * @Title: getByUserAttributeCount 
+    * @Description: 用户属性查询--统计
+    * @param startTime  开始时间
+    * @param endTime    结束时间
+    * @param loginFrom  登录来源
+    * @param agentName  代理商id
+    * @return    设定文件 
+    * @return List<Map<String,Object>>    返回类型 
+    * @throws 
+    * @author htt
+     */
+    List<Map<String, Object>> getByUserAttributeCount(String startTime, String endTime, String loginFrom, String agentName);
 }
