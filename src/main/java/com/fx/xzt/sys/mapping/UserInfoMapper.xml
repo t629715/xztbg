@@ -237,9 +237,7 @@
 			<if test="agentId != null">
 				agent_id = #{agentId,jdbcType=VARCHAR},
 			</if>
-			<if test="brokerId != null">
 				broker_id = #{brokerId,jdbcType=TIMESTAMP},
-			</if>
 			<if test="attribution != null">
 				Attribution = #{attribution,jdbcType=TIMESTAMP},
 			</if>
@@ -281,7 +279,10 @@
 			order by RegisterTime DESC
 	</select>
 	<!--合作伙伴-获取下级客户信息 tianliya-->
-
+	<!--根据代理商获取客户信息 -tianliya-->
+	<select id="selectUserInfoByAgentId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		select * from User_Info where agent_id = #{agentId,jdbcType=BIGINT}
+	</select>
 	<!--下级客户-财产信息统计 tianliya-->
 	<select id="getSubClientsAccountCount" resultType="java.util.Map"
 			parameterType="java.util.Map">

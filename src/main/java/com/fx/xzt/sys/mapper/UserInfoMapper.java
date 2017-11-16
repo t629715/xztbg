@@ -116,4 +116,9 @@ public interface UserInfoMapper extends BaseMapper<UserInfo>{
 	 */
 	List<Map<String, Object>> getByUserAttributeCount(Map<String,Object> map);
 
+	/**
+	 * 根据代理商id获取客户信息
+	 */
+	List<UserInfo> selectUserInfoByAgentId(Long agentId);
+
 }

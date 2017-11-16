@@ -8,4 +8,8 @@
     <result column="Description" property="description" jdbcType="VARCHAR" />
     <result column="CacheRegion" property="cacheRegion" jdbcType="SMALLINT" />
   </resultMap>
+  <!--根据主键获取数据-->
+  <select id="selectConfigParamByKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select ParamValue from Config_Param where ParamName=#{parmName,jdbcType=VARCHAR} order BY ParamValue DESC
+  </select>
 </mapper>
