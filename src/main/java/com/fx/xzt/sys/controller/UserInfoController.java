@@ -777,7 +777,7 @@ public class UserInfoController {
 				List<Map<String, Object>> list = userInfoService.excelByUserAttribute(sTime, eTime, loginFrom, agentName);
 				POIUtils poi = new POIUtils();
 				String[] heads = { "日期", "登录用户", "总用户", "男", "女", "性别未确定", "苹果用户", "安卓用户", "其他" };
-				String[] colums = { "date", "dlNum", "zNum", "nNum", "nvNum", "wqdNum", "pgNUm", "azNum", "QtNum" };
+				String[] colums = { "date", "dlNum", "zNum", "nNum", "nvNum", "wqdNum", "pgNum", "azNum", "qtNum" };
 				poi.doExport(request, response, list, tieleName, excelName,
 						heads, colums);
 			}
