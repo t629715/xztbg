@@ -90,6 +90,9 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		int msg = 0;
 		if(selectUser==null){
 			List<Integer> uids = new ArrayList<Integer>();
+			if (users.getPassword() == null){
+				users.setPassword("123456");
+			}
 			users.setPassword(MD5Utils.encrypt(users.getPassword()));
 			users.setCreateTime(new Date());
 			users.setUpdateTime(new Date());
@@ -113,7 +116,12 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		Users selectUser = usersMapper.selectByPhone(phone);
 		int msg = 0;
 		if(selectUser==null||users.getPhone().equals(selectUserId.getPhone())){
-			users.setPassword(MD5Utils.encrypt(users.getPassword()));
+			if (users.getPassword() != null && users.getPassword() != ""){
+				users.setPassword(MD5Utils.encrypt(users.getPassword()));
+			}
+			else {
+				users.setPassword(null);
+			}
 			users.setUpdateTime(new Date());
 			msg=usersMapper.updateByIdSelective(users);
 			if(msg>0&&rids!=null&&!rids.isEmpty()){

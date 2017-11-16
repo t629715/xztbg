@@ -146,6 +146,7 @@ public class GoldRightDealConfController {
         Users users = (Users) httpSession.getAttribute("currentUser");
         if (users != null){
             rabbitmqService.sendForceCloseDirectiveByUserName(users.getUserName());
+            result.setData(true);
         }
 
 
