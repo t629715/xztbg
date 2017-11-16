@@ -57,6 +57,10 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
            list  = analysisOrderMapper.getAnalysis(map);
            for (Map m:list){
                m.put("time",DateUtils.formatDateByMidLine1((Date)m.get("time")));
+               m.put("financeAmount",df.format(Double.parseDouble((m.get("financeAmount")==null?0:m.get("financeAmount")).toString())));
+               m.put("goldRightAmount",df.format(Double.parseDouble((m.get("goldRightAmount")==null?0:m.get("goldRightAmount")).toString())));
+               m.put("realGoldAmount",df.format(Double.parseDouble((m.get("realGoldAmount")==null?0:m.get("realGoldAmount")).toString())));
+               m.put("goldUpAmount",df.format(Double.parseDouble((m.get("goldUpAmount")==null?0:m.get("goldUpAmount")).toString())));
            }
         }catch(Exception e){
             e.printStackTrace();
@@ -113,7 +117,10 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
                     Integer.valueOf((map1.get("goldUpCountTotal")==null?0:map1.get("goldUpCountTotal")).toString())
             ;
 
-
+            map1.put("realGoldAmountTotal",df.format(Double.parseDouble((map1.get("realGoldAmountTotal")==null?0:map1.get("realGoldAmountTotal")).toString())));
+            map1.put("goldRightAmountTotal",df.format(Double.parseDouble((map1.get("goldRightAmountTotal")==null?0:map1.get("goldRightAmountTotal")).toString())));
+            map1.put("financeAmountTotal",df.format(Double.parseDouble((map1.get("financeAmountTotal")==null?0:map1.get("financeAmountTotal")).toString())));
+            map1.put("goldUpAmountTotal",df.format(Double.parseDouble((map1.get("goldUpAmountTotal")==null?0:map1.get("goldUpAmountTotal")).toString())));
             map1.put("amountTotal",df.format(amountTotal));
             map1.put("userTotal",userTotal);
 
@@ -140,6 +147,8 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
     public List<Map<String, Object>> exportAnalysis(String startTime, String endTime,  String agentName,
                                                     Integer upOrDown,Integer orderState, Integer profitLoss,Long agentId
                                                        ) {
+        java.text.DecimalFormat   df   =new   java.text.DecimalFormat("#0.00");
+        //df.setRoundingMode(RoundingMode.FLOOR);
         Map map = new HashMap();
         map.put("upOrDown",upOrDown);
         map.put("orderState",orderState);
@@ -164,6 +173,10 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
             list  = analysisOrderMapper.exportAnalysis(map);
             for (Map m:list){
                 m.put("time",DateUtils.formatDateByMidLine1((Date)m.get("time")));
+                m.put("financeAmount",df.format(Double.parseDouble((m.get("financeAmount")==null?0:m.get("financeAmount")).toString())));
+                m.put("goldRightAmount",df.format(Double.parseDouble((m.get("goldRightAmount")==null?0:m.get("goldRightAmount")).toString())));
+                m.put("realGoldAmount",df.format(Double.parseDouble((m.get("realGoldAmount")==null?0:m.get("realGoldAmount")).toString())));
+                m.put("goldUpAmount",df.format(Double.parseDouble((m.get("goldUpAmount")==null?0:m.get("goldUpAmount")).toString())));
             }
         }catch(Exception e){
             e.printStackTrace();

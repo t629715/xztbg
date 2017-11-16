@@ -5,16 +5,12 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 
-import com.fx.xzt.sys.entity.UsersRole;
-import com.fx.xzt.sys.entity.UsersUserRole;
-import com.fx.xzt.sys.mapper.UsersPermissionMapper;
-import com.fx.xzt.sys.mapper.UsersRolePermissionMapper;
+import com.fx.xzt.sys.entity.*;
+import com.fx.xzt.sys.mapper.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fx.xzt.redis.RedisService;
-import com.fx.xzt.sys.entity.Users;
-import com.fx.xzt.sys.mapper.UsersMapper;
 import com.fx.xzt.sys.model.UsersModel;
 import com.fx.xzt.sys.service.UsersService;
 import com.fx.xzt.sys.service.UsersUserRoleService;
@@ -35,7 +31,8 @@ import com.github.pagehelper.PageInfo;
  */
 @Service
 public class UsersImpl extends BaseService<Users> implements UsersService {
-	
+	@Resource
+	private UserInfoMapper userInfoMapper;
 	@Resource
 	private UsersMapper usersMapper;
 	
@@ -44,6 +41,8 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 	
 	@Resource
 	private UsersUserRoleService usersUserRoleService;
+	@Resource
+	private ConfigParamMapper configParamMapper;
 	@Resource
 	UsersRolePermissionMapper usersRolePermissionMapper;
 	public static final String USER_INFO = "uid";
@@ -91,6 +90,9 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		int msg = 0;
 		if(selectUser==null){
 			List<Integer> uids = new ArrayList<Integer>();
+			if (users.getPassword() == null){
+				users.setPassword("123456");
+			}
 			users.setPassword(MD5Utils.encrypt(users.getPassword()));
 			users.setCreateTime(new Date());
 			users.setUpdateTime(new Date());
@@ -114,7 +116,12 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		Users selectUser = usersMapper.selectByPhone(phone);
 		int msg = 0;
 		if(selectUser==null||users.getPhone().equals(selectUserId.getPhone())){
-			users.setPassword(MD5Utils.encrypt(users.getPassword()));
+			if (users.getPassword() != null && users.getPassword() != ""){
+				users.setPassword(MD5Utils.encrypt(users.getPassword()));
+			}
+			else {
+				users.setPassword(null);
+			}
 			users.setUpdateTime(new Date());
 			msg=usersMapper.updateByIdSelective(users);
 			if(msg>0&&rids!=null&&!rids.isEmpty()){
@@ -130,7 +137,31 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 	@Transactional
 	public int deleteById(Long id) {
 		int i = 0;
-		usersMapper.deleteByPid(id);
+
+		try{
+			List<UserInfo> userInfos = userInfoMapper.selectUserInfoByAgentId(id);
+			if (userInfos.get(0).getBrokerId() == null){
+				List<ConfigParam> configParams = configParamMapper.selectConfigParamByKey("BROKER_ID");
+				if (userInfos != null && userInfos.size() != 0){
+					for (UserInfo userInfo1:userInfos){
+						userInfo1.setAgentId(configParams.get(0).getParamValue());
+						userInfo1.setBrokerId(null);
+						userInfoMapper.editUserInfo(userInfo1);
+					}
+				}
+			}
+			else {
+				if (userInfos != null && userInfos.size() != 0){
+					for (UserInfo userInfo1:userInfos){
+						userInfo1.setBrokerId(null);
+						userInfoMapper.editUserInfo(userInfo1);
+					}
+				}
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		usersMapper.deleteByPid(id);//删除经纪人
 		i = usersMapper.deleteById(id);
 		if (i>0){
 			UsersUserRole usersUserRole = new UsersUserRole();

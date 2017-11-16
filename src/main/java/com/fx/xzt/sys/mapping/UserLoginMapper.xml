@@ -111,6 +111,8 @@
     </select>
     <!--获取用户账户结束-->
 
+
+
   <!-- <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
