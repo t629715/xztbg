@@ -120,7 +120,7 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 				users.setPassword(MD5Utils.encrypt(users.getPassword()));
 			}
 			else {
-				users.setPassword(null);
+				users.setPassword("");
 			}
 			users.setUpdateTime(new Date());
 			msg=usersMapper.updateByIdSelective(users);
@@ -140,7 +140,8 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 
 		try{
 			List<UserInfo> userInfos = userInfoMapper.selectUserInfoByAgentId(id);
-			if (userInfos.get(0).getBrokerId() == null){
+			Users users = usersMapper.selectById(id);
+			if (users.getPid() == 1){
 				List<ConfigParam> configParams = configParamMapper.selectConfigParamByKey("BROKER_ID");
 				if (userInfos != null && userInfos.size() != 0){
 					for (UserInfo userInfo1:userInfos){
