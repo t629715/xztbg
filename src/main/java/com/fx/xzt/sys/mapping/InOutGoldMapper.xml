@@ -49,7 +49,7 @@
               and DATE_FORMAT(RechargeTime,'%Y-%c-%d') &lt;#{endTime,jdbcType=TIMESTAMP}
            </if>
 		</where>
-		GROUP BY RechargeChannel,DATE_FORMAT(RechargeTime,'%Y-%c-%d')
+		GROUP BY RechargeChannel,DATE_FORMAT(RechargeTime,'%Y-%m-%d')
 	</select>
 	<!--出入金分析-支付渠道分析结束 -->
 	
@@ -72,10 +72,10 @@
 							r. STATUS = 1
 						AND r.UserID = i.UserID
 						<if test="startTime !=null and startTime !='' ">
-							 and DATE_FORMAT(RechargeTime,'%Y-%c-%d %H:%i:%s') &gt;=#{startTime,jdbcType=TIMESTAMP}
+							 and DATE_FORMAT(RechargeTime,'%Y-%m-%d %H:%i:%s') &gt;=#{startTime,jdbcType=TIMESTAMP}
 						</if>
 						<if test="endTime !=null and endTime != '' ">
-			              and DATE_FORMAT(RechargeTime,'%Y-%c-%d %H:%i:%s') &lt;#{endTime,jdbcType=TIMESTAMP}
+			              and DATE_FORMAT(RechargeTime,'%Y-%m-%d %H:%i:%s') &lt;#{endTime,jdbcType=TIMESTAMP}
 			           </if>
 					) rjSum,
 					(
@@ -87,10 +87,10 @@
 							c. STATUS = 1
 						AND c.UserID = i.UserID
 						<if test="startTime !=null and startTime !='' ">
-							 and DATE_FORMAT(WithdrawTime,'%Y-%c-%d %H:%i:%s') &gt;=#{startTime,jdbcType=TIMESTAMP}
+							 and DATE_FORMAT(WithdrawTime,'%Y-%m-%d %H:%i:%s') &gt;=#{startTime,jdbcType=TIMESTAMP}
 						</if>
 						<if test="endTime !=null and endTime != '' ">
-			              and DATE_FORMAT(WithdrawTime,'%Y-%c-%d %H:%i:%s') &lt;#{endTime,jdbcType=TIMESTAMP}
+			              and DATE_FORMAT(WithdrawTime,'%Y-%m-%d %H:%i:%s') &lt;#{endTime,jdbcType=TIMESTAMP}
 			           </if>
 					) cjSum
 				FROM
@@ -127,10 +127,10 @@
 							r. STATUS = 1
 						AND r.UserID = i.UserID
 						<if test="startTime !=null and startTime !='' ">
-							 and DATE_FORMAT(RechargeTime,'%Y-%c-%d %H:%i:%s') &gt;=#{startTime,jdbcType=TIMESTAMP}
+							 and DATE_FORMAT(RechargeTime,'%Y-%m-%d %H:%i:%s') &gt;=#{startTime,jdbcType=TIMESTAMP}
 						</if>
 						<if test="endTime !=null and endTime != '' ">
-			              and DATE_FORMAT(RechargeTime,'%Y-%c-%d %H:%i:%s') &lt;#{endTime,jdbcType=TIMESTAMP}
+			              and DATE_FORMAT(RechargeTime,'%Y-%m-%d %H:%i:%s') &lt;#{endTime,jdbcType=TIMESTAMP}
 			           </if>
 					) rjSum,
 					(
@@ -142,10 +142,10 @@
 							c. STATUS = 1
 						AND c.UserID = i.UserID
 						<if test="startTime !=null and startTime !='' ">
-							 and DATE_FORMAT(WithdrawTime,'%Y-%c-%d %H:%i:%s') &gt;=#{startTime,jdbcType=TIMESTAMP}
+							 and DATE_FORMAT(WithdrawTime,'%Y-%m-%d %H:%i:%s') &gt;=#{startTime,jdbcType=TIMESTAMP}
 						</if>
 						<if test="endTime !=null and endTime != '' ">
-			              and DATE_FORMAT(WithdrawTime,'%Y-%c-%d %H:%i:%s') &lt;#{endTime,jdbcType=TIMESTAMP}
+			              and DATE_FORMAT(WithdrawTime,'%Y-%m-%d %H:%i:%s') &lt;#{endTime,jdbcType=TIMESTAMP}
 			           </if>
 					) cjSum
 				FROM

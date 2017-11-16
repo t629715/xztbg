@@ -85,7 +85,7 @@
 		LEFT JOIN user_account a ON a.user_id = u.UserID
 		left join user_gold_account g on g.user_id = u.UserID
 		<where>
-			and l.Status = 1
+			<!-- and l.Status = 1  -->
 			<if test="userName != null and userName != '' ">
 				and l.UserName = #{userName,jdbcType=VARCHAR}
 			</if>
@@ -150,11 +150,72 @@
 	
 	<!-- 用户属性查询开始-htt -->
 	<select id="getByUserAttribute" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT a.date, 
+			IFNULL((SELECT COUNT(DISTINCT l.UserID) FROM User_LoginInfo l LEFT JOIN User_Info i ON l.UserID = i.UserID
+			LEFT JOIN users u ON i.agent_id = u.id WHERE DATE_FORMAT(l.LoginTime,'%Y-%m-%d') = a.date 
+			<if test="agentName != null and agentName !=''">
+				and i.agent_id = #{agentName,jdbcType=VARCHAR},
+			</if>
+			), 0) dlNum,
+			IFNULL((SELECT COUNT(i.UserID) FROM User_Info i WHERE DATE_FORMAT(i.RegisterTime,'%Y-%m-%d') &lt;= a.date 
+			<if test="agentName != null and agentName !=''">
+				and i.agent_id = #{agentName,jdbcType=VARCHAR},
+			</if>
+			), 0) zNum,
+			SUM(a.nvNum) nvNum,SUM(a.nNum) nNum,SUM(a.wzNum) wzNum,SUM(a.pgNum) pgNum,SUM(a.azNum) azNum,SUM(a.qtNum) qtNum 
+			FROM 
+				(SELECT DATE_FORMAT(l.LoginTime,'%Y-%m-%d') DATE,
+				IFNULL((SELECT COUNT(DISTINCT l.UserID) FROM DUAL WHERE i.sex = 2), 0) nvNum,
+				IFNULL((SELECT COUNT(DISTINCT l.UserID) FROM DUAL WHERE i.sex = 1), 0) nNum,
+				IFNULL((SELECT COUNT(DISTINCT l.UserID) FROM DUAL WHERE i.sex = 0), 0) wzNum,
+				IFNULL((SELECT COUNT(DISTINCT l.UserID) FROM DUAL WHERE l.LoginFrom = 'iOS'), 0) pgNum,
+				IFNULL((SELECT COUNT(DISTINCT l.UserID) FROM DUAL WHERE l.LoginFrom = 'Android'), 0) azNum,
+				IFNULL((SELECT COUNT(DISTINCT l.UserID) FROM DUAL WHERE l.LoginFrom != 'Android' AND l.LoginFrom != 'iOS'), 0) qtNum 
+				FROM User_LoginInfo l 
+				LEFT JOIN User_Info i ON l.UserID = i.UserID
+				where 1=1
+				<if test="startTime !=null and startTime !='' ">
+					and DATE_FORMAT(l.LoginTime,'%Y-%m-%d') &gt;=#{startTime,jdbcType=TIMESTAMP}
+				</if>
+				<if test="endTime !=null and endTime != '' ">
+					and DATE_FORMAT(l.LoginTime,'%Y-%m-%d') &lt;#{endTime,jdbcType=TIMESTAMP}
+				</if>
+				<if test="agentName != null and agentName !=''">
+					i.agent_id = #{agentName,jdbcType=VARCHAR},
+				</if>
+				GROUP BY DATE_FORMAT(l.LoginTime,'%Y-%m-%d'),l.UserID,l.LoginFrom) a
+		GROUP BY a.date
+		ORDER BY a.date DESC
+	
 	</select>
 	<!-- 用户属性查询结束-htt -->
 	
 	<!-- 用户属性查询统计开始-htt -->
 	<select id="getByUserAttributeCount" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT IFNULL((SELECT COUNT(DISTINCT l.UserID) FROM User_LoginInfo l), 0) dlNum,
+			IFNULL((SELECT COUNT(i.UserID) FROM User_Info i), 0) zNum,
+			SUM(a.nvNum) nvNum,SUM(a.nNum) nNum,SUM(a.wzNum) wzNum,SUM(a.pgNum) pgNum,SUM(a.azNum) azNum,SUM(a.qtNum) qtNum 
+			FROM 
+				(SELECT DATE_FORMAT(l.LoginTime,'%Y-%m-%d') DATE,
+				IFNULL((SELECT COUNT(DISTINCT l.UserID) FROM DUAL WHERE i.sex = 2), 0) nvNum,
+				IFNULL((SELECT COUNT(DISTINCT l.UserID) FROM DUAL WHERE i.sex = 1), 0) nNum,
+				IFNULL((SELECT COUNT(DISTINCT l.UserID) FROM DUAL WHERE i.sex = 0), 0) wzNum,
+				IFNULL((SELECT COUNT(DISTINCT l.UserID) FROM DUAL WHERE l.LoginFrom = 'iOS'), 0) pgNum,
+				IFNULL((SELECT COUNT(DISTINCT l.UserID) FROM DUAL WHERE l.LoginFrom = 'Android'), 0) azNum,
+				IFNULL((SELECT COUNT(DISTINCT l.UserID) FROM DUAL WHERE l.LoginFrom != 'Android' AND l.LoginFrom != 'iOS'), 0) qtNum 
+				FROM User_LoginInfo l 
+				LEFT JOIN User_Info i ON l.UserID = i.UserID
+				where 1=1
+				<if test="startTime !=null and startTime !='' ">
+					and DATE_FORMAT(l.LoginTime,'%Y-%m-%d') &gt;=#{startTime,jdbcType=TIMESTAMP}
+				</if>
+				<if test="endTime !=null and endTime != '' ">
+					and DATE_FORMAT(l.LoginTime,'%Y-%m-%d') &lt;#{endTime,jdbcType=TIMESTAMP}
+				</if>
+				<if test="agentName != null and agentName !=''">
+					i.agent_id = #{agentName,jdbcType=VARCHAR},
+				</if>
+				GROUP BY DATE_FORMAT(l.LoginTime,'%Y-%m-%d'),l.UserID,l.LoginFrom) a
 	</select>
 	<!-- 用户属性查询统计结束-htt -->
 

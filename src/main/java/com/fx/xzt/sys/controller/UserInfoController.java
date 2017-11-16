@@ -424,18 +424,18 @@ public class UserInfoController {
             if (users != null) {
             	if (type != null && type.equals(ConstantUtil.USER_NPER_JT)) {
             		Date tomorrow = DateUtil.modify(today, 0, 0, 1, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");;
-            		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(today, "yyyy-MM-dd");;
+            		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.USER_NPER_ZT)) {
             		Date yesterday = DateUtil.modify(today, 0, 0, -1, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(yesterday, "yyyy-MM-dd HH:mm:ss");
-            		eTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(yesterday, "yyyy-MM-dd");
+            		eTime = DateUtil.convertDateToString(today, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.USER_NPER_JQT)) {
             		Date jqt = DateUtil.modify(today, 0, 0, -6, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.USER_NPER_JSST)) {
             		Date jqt = DateUtil.modify(today, 0, 0, -29, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd");
             	}
             	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
             		sTime = startTime;
@@ -490,18 +490,18 @@ public class UserInfoController {
             if (users != null) {
             	if (type != null && type.equals(ConstantUtil.USER_NPER_JT)) {
             		Date tomorrow = DateUtil.modify(today, 0, 0, 1, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");;
-            		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(today, "yyyy-MM-dd");;
+            		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.USER_NPER_ZT)) {
             		Date yesterday = DateUtil.modify(today, 0, 0, -1, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(yesterday, "yyyy-MM-dd HH:mm:ss");
-            		eTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(yesterday, "yyyy-MM-dd");
+            		eTime = DateUtil.convertDateToString(today, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.USER_NPER_JQT)) {
             		Date jqt = DateUtil.modify(today, 0, 0, -6, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.USER_NPER_JSST)) {
             		Date jqt = DateUtil.modify(today, 0, 0, -29, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd");
             	}
             	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
             		sTime = startTime;
@@ -557,18 +557,18 @@ public class UserInfoController {
 			if (users != null) {
 				if (type != null && type.equals(ConstantUtil.USER_NPER_JT)) {
             		Date tomorrow = DateUtil.modify(today, 0, 0, 1, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");;
-            		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(today, "yyyy-MM-dd");;
+            		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.USER_NPER_ZT)) {
             		Date yesterday = DateUtil.modify(today, 0, 0, -1, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(yesterday, "yyyy-MM-dd HH:mm:ss");
-            		eTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(yesterday, "yyyy-MM-dd");
+            		eTime = DateUtil.convertDateToString(today, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.USER_NPER_JQT)) {
             		Date jqt = DateUtil.modify(today, 0, 0, -6, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.USER_NPER_JSST)) {
             		Date jqt = DateUtil.modify(today, 0, 0, -29, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd");
             	}
             	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
             		sTime = startTime;
@@ -624,18 +624,18 @@ public class UserInfoController {
             if (users != null) {
             	if (type != null && type.equals(ConstantUtil.USER_NPER_JT)) {
             		Date tomorrow = DateUtil.modify(today, 0, 0, 1, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");;
-            		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(today, "yyyy-MM-dd");;
+            		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.USER_NPER_ZT)) {
             		Date yesterday = DateUtil.modify(today, 0, 0, -1, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(yesterday, "yyyy-MM-dd HH:mm:ss");
-            		eTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(yesterday, "yyyy-MM-dd");
+            		eTime = DateUtil.convertDateToString(today, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.USER_NPER_JQT)) {
             		Date jqt = DateUtil.modify(today, 0, 0, -6, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.USER_NPER_JSST)) {
             		Date jqt = DateUtil.modify(today, 0, 0, -29, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd");
             	}
             	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
             		sTime = startTime;
@@ -690,18 +690,18 @@ public class UserInfoController {
             if (users != null) {
             	if (type != null && type.equals(ConstantUtil.USER_NPER_JT)) {
             		Date tomorrow = DateUtil.modify(today, 0, 0, 1, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");;
-            		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(today, "yyyy-MM-dd");;
+            		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.USER_NPER_ZT)) {
             		Date yesterday = DateUtil.modify(today, 0, 0, -1, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(yesterday, "yyyy-MM-dd HH:mm:ss");
-            		eTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(yesterday, "yyyy-MM-dd");
+            		eTime = DateUtil.convertDateToString(today, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.USER_NPER_JQT)) {
             		Date jqt = DateUtil.modify(today, 0, 0, -6, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.USER_NPER_JSST)) {
             		Date jqt = DateUtil.modify(today, 0, 0, -29, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd");
             	}
             	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
             		sTime = startTime;
@@ -757,18 +757,18 @@ public class UserInfoController {
 			if (users != null) {
 				if (type != null && type.equals(ConstantUtil.USER_NPER_JT)) {
             		Date tomorrow = DateUtil.modify(today, 0, 0, 1, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");;
-            		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(today, "yyyy-MM-dd");;
+            		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.USER_NPER_ZT)) {
             		Date yesterday = DateUtil.modify(today, 0, 0, -1, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(yesterday, "yyyy-MM-dd HH:mm:ss");
-            		eTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(yesterday, "yyyy-MM-dd");
+            		eTime = DateUtil.convertDateToString(today, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.USER_NPER_JQT)) {
             		Date jqt = DateUtil.modify(today, 0, 0, -6, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.USER_NPER_JSST)) {
             		Date jqt = DateUtil.modify(today, 0, 0, -29, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd");
             	}
             	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
             		sTime = startTime;
