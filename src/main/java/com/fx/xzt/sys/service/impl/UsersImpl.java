@@ -45,6 +45,10 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 	private ConfigParamMapper configParamMapper;
 	@Resource
 	UsersRolePermissionMapper usersRolePermissionMapper;
+
+	@Resource
+
+	IncomeSharingConfMapper incomeSharingConfMapper;
 	public static final String USER_INFO = "uid";
 
 	public Users getUserInfo(Long uid) {
@@ -85,7 +89,7 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 	
 	@Transactional
 	public int insertUsers(Users users,List<Integer> rids) {
-		String phone = users.getPhone();
+		String phone = users.getUserName();
 		Users selectUser = usersMapper.selectByPhone(phone);
 		int msg = 0;
 		if(selectUser==null){
@@ -99,6 +103,13 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 			users.setStatus("1");
 			msg=usersMapper.insertUsers(users);
 			if(msg>0&&rids!=null&&!rids.isEmpty()){
+				Users selectUser1 = usersMapper.selectByPhone(phone);
+				IncomeSharingConf incomeSharingConf = new IncomeSharingConf();
+				incomeSharingConf.setGoldPercent(0d);
+				incomeSharingConf.setGoldRightPercent(0d);
+				incomeSharingConf.setAgentId(selectUser1.getId());
+
+				incomeSharingConfMapper.insertIncomeSharingConf(incomeSharingConf);
 				Integer uid = users.getId().intValue();
 				uids.add(uid);
 				msg = usersUserRoleService.insertSelective(rids, uids);
