@@ -11,7 +11,7 @@ import java.util.Date;
  */
 public class Riskaccess implements Serializable {
 
-    private Integer accessId;   //风险ID
+    private Long accessId;   //风险ID
     private Long userId;        //用户ID
     private Integer accessMark; //评估得分
     private String accessLevel; //评估等级
@@ -32,7 +32,7 @@ public class Riskaccess implements Serializable {
         super();
     }
 
-    public Riskaccess(Integer accessId, Long userId, Integer accessMark, String accessLevel, Integer mark1, Integer mark2, Integer mark3, Integer mark4, Integer mark5, Integer mark6, Integer mark7, Integer mark8, Integer mark9, Integer mark10, Date accessTime, Integer accessState) {
+    public Riskaccess(Long accessId, Long userId, Integer accessMark, String accessLevel, Integer mark1, Integer mark2, Integer mark3, Integer mark4, Integer mark5, Integer mark6, Integer mark7, Integer mark8, Integer mark9, Integer mark10, Date accessTime, Integer accessState) {
         this.accessId = accessId;
         this.userId = userId;
         this.accessMark = accessMark;
@@ -51,11 +51,11 @@ public class Riskaccess implements Serializable {
         this.accessState = accessState;
     }
 
-    public Integer getAccessId() {
+    public Long getAccessId() {
         return accessId;
     }
 
-    public void setAccessId(Integer accessId) {
+    public void setAccessId(Long accessId) {
         this.accessId = accessId;
     }
 

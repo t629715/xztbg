@@ -42,7 +42,7 @@
         LEFT JOIN (SELECT userid useridm,MAX(loginTime) lastlogintime,loginFrom lastloginfrom,fromIp lastfromip FROM User_LoginInfo GROUP BY  useridm) m
         ON l.UserID = m.useridm
         <where>
-        	and l.Status = 1
+        	<!-- and l.Status = 1 -->
             <if test="userName != null and userName != '' ">
                 and l.UserName = #{userName,jdbcType=VARCHAR}
             </if>

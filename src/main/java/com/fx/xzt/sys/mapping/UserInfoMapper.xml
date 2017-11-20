@@ -82,8 +82,8 @@
 		LEFT JOIN (SELECT * FROM User_BankCard WHERE State=1) ub ON u.UserID =
 		ub.UserID
 		LEFT JOIN Bank b ON ub.BankNo = b.BankNo
-		LEFT JOIN user_account a ON a.user_id = u.UserID
-		left join user_gold_account g on g.user_id = u.UserID
+		LEFT JOIN user_account a ON a.user_id = l.UserID
+		left join user_gold_account g on g.user_id = l.UserID
 		<where>
 			<!-- and l.Status = 1  -->
 			<if test="userName != null and userName != '' ">
@@ -118,7 +118,7 @@
 		LEFT JOIN users ua ON u.agent_id = ua.id
 		LEFT JOIN users ub ON u.broker_id = ub.id
 		<where>
-			and l.Status = 1
+			<!-- and l.Status = 1 -->
 			<if test="userName != null and userName != '' ">
 				and l.UserName = #{userName,jdbcType=VARCHAR}
 			</if>

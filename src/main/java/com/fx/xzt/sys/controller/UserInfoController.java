@@ -68,7 +68,7 @@ public class UserInfoController {
 		cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
 		cr.setMsg("操作失败！");
 		try {
-			if (type > 0 && userId > 0) {
+			if (type != 0 && userId > 0) {
 				int flag = userInfoService.editUserInfo(type, userId, IDCard);
 				if (flag > 0) {
 					cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);
@@ -156,15 +156,15 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/updateRegisterStatusById")
 	@ResponseBody
-	public Object updateRegisterStatusById(@RequestParam  Short status,@RequestParam  Long userId){
+	public Object updateRegisterStatusById(@RequestParam  Short status,@RequestParam  String userId){
 		CommonResponse cr = new CommonResponse();
 		cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
 		cr.setMsg("操作失败！");
 		try {
-			if (status > 0 && userId > 0) {
+			if (status != null && StringUtil.isNotEmpty(userId)) {
 				UserLogin u = new UserLogin();
 				u.setStatus(status);
-				u.setUserid(userId);
+				u.setUserid(Long.parseLong(userId));
 				int flag = userLoginService.updateByIdSelective(u);
 				if (flag > 0) {
 					cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);

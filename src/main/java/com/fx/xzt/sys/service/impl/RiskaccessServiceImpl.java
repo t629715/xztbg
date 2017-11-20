@@ -54,10 +54,10 @@ public class RiskaccessServiceImpl extends BaseService<Riskaccess> implements Ri
     }
 
     @Transactional
-    public int updateLevelById(String level, Integer accessId) {
+    public int updateLevelById(String level, String accessId) {
         Riskaccess r = new Riskaccess();
         r.setAccessLevel(level);
-        r.setAccessId(accessId);
+        r.setAccessId(Long.parseLong(accessId));
         return riskaccessMapper.updateById(r);
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fx.xzt.sys.service.RiskaccessService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
+import com.fx.xzt.sys.util.StringUtil;
 import com.github.pagehelper.PageInfo;
 
 /**
@@ -65,12 +66,12 @@ public class RiskaccessController {
      */
     @RequestMapping(value="/updateLevelById")
     @ResponseBody
-    public Object updateLevelById(@RequestParam String level, @RequestParam Integer accessId) {
+    public Object updateLevelById(@RequestParam String level, @RequestParam String accessId) {
         CommonResponse cr = new CommonResponse();
         cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
         cr.setMsg("操作失败！");
         try {
-            if (level != null && !level.equals("") && level.length() > 0 && accessId > 0) {
+            if (StringUtil.isNotEmpty(level) && StringUtil.isNotEmpty(accessId)) {
                 int flag = riskaccessService.updateLevelById(level, accessId);
                 if (flag > 0) {
                     cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);

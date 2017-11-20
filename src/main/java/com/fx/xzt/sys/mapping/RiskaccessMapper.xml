@@ -42,7 +42,7 @@
       <if test="endTime !=null and endTime !='' ">
         and r.access_time &lt;=#{endTime,jdbcType=TIMESTAMP}
       </if>
-      <if test="accessLevel != null and realName !=''">
+      <if test="accessLevel != null and accessLevel !=''">
         and r.access_level = #{accessLevel,jdbcType=VARCHAR}
       </if>
     </where>
