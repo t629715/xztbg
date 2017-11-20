@@ -90,11 +90,12 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 	@Transactional
 	public int insertUsers(Users users,List<Integer> rids) {
 		String phone = users.getUserName();
+		users.setPhone(users.getUserName());
 		Users selectUser = usersMapper.selectByPhone(phone);
 		int msg = 0;
 		if(selectUser==null){
 			List<Integer> uids = new ArrayList<Integer>();
-			if (users.getPassword() == null){
+			if (users.getPassword() == ""){
 				users.setPassword("123456");
 			}
 			users.setPassword(MD5Utils.encrypt(users.getPassword()));
@@ -108,8 +109,10 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 				incomeSharingConf.setGoldPercent(0d);
 				incomeSharingConf.setGoldRightPercent(0d);
 				incomeSharingConf.setAgentId(selectUser1.getId());
+				if (selectUser1.getPid() == 1){
+					incomeSharingConfMapper.insertIncomeSharingConf(incomeSharingConf);
+				}
 
-				incomeSharingConfMapper.insertIncomeSharingConf(incomeSharingConf);
 				Integer uid = users.getId().intValue();
 				uids.add(uid);
 				msg = usersUserRoleService.insertSelective(rids, uids);
@@ -152,20 +155,27 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		try{
 			List<UserInfo> userInfos = userInfoMapper.selectUserInfoByAgentId(id);
 			Users users = usersMapper.selectById(id);
-			if (users.getPid() == 1){
+			if (users.getPid() == 1){//如果删除的用户是代理商
 				List<ConfigParam> configParams = configParamMapper.selectConfigParamByKey("BROKER_ID");
 				if (userInfos != null && userInfos.size() != 0){
 					for (UserInfo userInfo1:userInfos){
+						//设置客户代理商id为2
 						userInfo1.setAgentId(configParams.get(0).getParamValue());
+						//设置客户经纪人为null
 						userInfo1.setBrokerId(null);
+						//删除代理商的分成信息
+						incomeSharingConfMapper.deleteByAgentId(id);
+						//修改客户信息
 						userInfoMapper.editUserInfo(userInfo1);
 					}
 				}
 			}
-			else {
+			else {//如果删除的用户是经纪人
 				if (userInfos != null && userInfos.size() != 0){
 					for (UserInfo userInfo1:userInfos){
+						//客户的经纪人设为null
 						userInfo1.setBrokerId(null);
+						//修改客户信息
 						userInfoMapper.editUserInfo(userInfo1);
 					}
 				}
@@ -177,7 +187,9 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		i = usersMapper.deleteById(id);
 		if (i>0){
 			UsersUserRole usersUserRole = new UsersUserRole();
+			//获取设置用户角色实体类对象
 			usersUserRole.setUid(id.intValue());
+			//删除用户-角色关联表对应的数据
 			usersUserRoleService.deleteByUserRole(usersUserRole);
 		}
 		return i;

@@ -57,10 +57,18 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
            list  = analysisOrderMapper.getAnalysis(map);
            for (Map m:list){
                m.put("time",DateUtils.formatDateByMidLine1((Date)m.get("time")));
-               m.put("financeAmount",df.format(Double.parseDouble((m.get("financeAmount")==null?0:m.get("financeAmount")).toString())));
-               m.put("goldRightAmount",df.format(Double.parseDouble((m.get("goldRightAmount")==null?0:m.get("goldRightAmount")).toString())));
-               m.put("realGoldAmount",df.format(Double.parseDouble((m.get("realGoldAmount")==null?0:m.get("realGoldAmount")).toString())));
-               m.put("goldUpAmount",df.format(Double.parseDouble((m.get("goldUpAmount")==null?0:m.get("goldUpAmount")).toString())));
+               if (m.get("financeAmount") != null){
+                   m.put("financeAmount",df.format(Double.parseDouble((m.get("financeAmount")==null?0:m.get("financeAmount")).toString())));
+               }
+               if (m.get("goldRightAmount")!= null){
+                   m.put("goldRightAmount",df.format(Double.parseDouble((m.get("goldRightAmount")==null?0:m.get("goldRightAmount")).toString())));
+               }
+               if (m.get("realGoldAmount")!= null){
+                   m.put("realGoldAmount",df.format(Double.parseDouble((m.get("realGoldAmount")==null?0:m.get("realGoldAmount")).toString())));
+               }
+               if (m.get("goldUpAmount")!= null){
+                   m.put("goldUpAmount",df.format(Double.parseDouble((m.get("goldUpAmount")==null?0:m.get("goldUpAmount")).toString())));
+               }
            }
         }catch(Exception e){
             e.printStackTrace();
