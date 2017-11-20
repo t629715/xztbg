@@ -10,7 +10,10 @@
       (#{dt,jdbcType=TIMESTAMP})
     </foreach>
     ;
-    SELECT t.time time,TRUNCATE(t1.realGoldAmount/100,2) realGoldAmount,t1.realGoldCount,TRUNCATE(t2.goldRightAmount/100,2) goldRightAmount,t2.goldRightCount,TRUNCATE(t3.financeAmount/100,2) financeAmount,t3.financeCount,format(t4.goldUpAmount/100,2) goldUpAmount,t4.goldUpCount
+    SELECT t.time time,TRUNCATE(t1.realGoldAmount/100,2) realGoldAmount,t1.realGoldCount,
+    TRUNCATE(t2.goldRightAmount/100,2) goldRightAmount,t2.goldRightCount,
+    TRUNCATE(t3.financeAmount/100,2) financeAmount,t3.financeCount,
+    TRUNCATE(t4.goldUpAmount/100,2) goldUpAmount,t4.goldUpCount
     FROM tmp_table t
     LEFT JOIN (
           SELECT DATE_FORMAT(rgo.buy_time,'%y-%m-%d') AS realGoldTime, COUNT(rgo.id) AS realGoldCount, SUM(rmb_amount) AS realGoldAmount
