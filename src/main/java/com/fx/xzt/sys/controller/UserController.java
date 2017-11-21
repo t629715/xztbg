@@ -1,13 +1,19 @@
 package com.fx.xzt.sys.controller;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -31,6 +37,8 @@ import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.model.UsersModel;
 import com.fx.xzt.sys.service.UsersService;
 import com.github.pagehelper.PageInfo;
+
+import static com.fx.xzt.sys.util.GenerateQRCodeUtil.toBufferedImage;
 
 /**
  * 
@@ -377,18 +385,16 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/generateQRCode")
 	@ResponseBody
-	public Boolean createCode(String text){
-		int width = 100;
-		int height = 100;
-		String format = "png";
-		/*try {
-			String path = GenerateQRCodeUtil.generateQRCode(text,width,height,format);
-			return true;
+	public void createCode(HttpServletResponse response,String text){
+		try {
+			GenerateQRCodeUtil.generateQRCode(response,text);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}*/
-		return false;
+		}
 	}
+	/**
+	 * 生成二维码  并返回到浏览器
+	 */
 	/*public void createCode(String text,HttpServletResponse response){
 		int width = 500;
 		int height = 500;
