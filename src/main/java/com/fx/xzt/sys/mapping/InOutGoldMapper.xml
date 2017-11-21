@@ -16,10 +16,10 @@
 		LEFT JOIN (SELECT user_id,SUM(rmb_amount) sjAmount FROM real_gold_order GROUP BY user_id) sj ON sj.user_id = a.user_id
 		LEFT JOIN (
 		SELECT cbf.user_id,SUM(cbf.cbf) cbf FROM (SELECT user_id, fee cbf FROM real_gold_order 
-		UNION
+		UNION ALL
 		SELECT user_id, poundage cbf FROM gold_redeem
-		UNION
-		SELECT user_id,fee+insurance cbf FROM gold_withdraw) cbf GROUP BY cbf.user_id) cb ON cb.user_id = a.user_id
+		UNION ALL
+		SELECT user_id,fee+insurance+logistics_fee cbf FROM gold_withdraw) cbf GROUP BY cbf.user_id) cb ON cb.user_id = a.user_id
 		<where>
 			and l.Status = 1
 			<if test="userName != null and userName!='' ">
