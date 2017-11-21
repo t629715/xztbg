@@ -30,10 +30,14 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
                                                        Integer pageNum, Integer pageSize) throws ParseException {
         java.text.DecimalFormat   df   =new   java.text.DecimalFormat("#0.00");
         //df.setRoundingMode(RoundingMode.FLOOR);
+        //获取四位随机数
+        Random random = new Random();
+        String fourRandom = "tmp"+random.nextInt(10000);
         Map map = new HashMap();
         map.put("upOrDown",upOrDown);
         map.put("orderState",orderState);
         map.put("profitLoss",profitLoss);
+        map.put("tableName",fourRandom);
 
         Date start = null;
         Date end = null;
@@ -87,11 +91,14 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
                                                         Integer pageNum, Integer pageSize) {
         java.text.DecimalFormat   df   =new   java.text.DecimalFormat("#0.00");
         //df.setRoundingMode(RoundingMode.FLOOR);
+        Random random = new Random();
+        String fourRandom = "tmp"+random.nextInt(10000);
         Map map = new HashMap();
         map.put("upOrDown",upOrDown);
         map.put("orderState",orderState);
         map.put("profitLoss",profitLoss);
         map.put("agentId",agentId);
+        map.put("tableName",fourRandom);
         Date start = null;
         Date end = null;
         if (startTime != null && startTime !=""){
@@ -161,6 +168,9 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
         map.put("upOrDown",upOrDown);
         map.put("orderState",orderState);
         map.put("profitLoss",profitLoss);
+        Random random = new Random();
+        String fourRandom = "tmp"+random.nextInt(10000);
+        map.put("tableName",fourRandom);
         Date start = null;
         Date end = null;
         if (startTime != null && startTime !=""){
