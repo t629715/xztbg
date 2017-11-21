@@ -71,17 +71,18 @@ public class GenerateQRCodeUtil {
         format = "png";
         hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
         BitMatrix bitMatrix = new MultiFormatWriter().encode(text, BarcodeFormat.QR_CODE, width, height, hints);
-        /*BufferedImage image = toBufferedImage(bitMatrix);
+        BufferedImage image = toBufferedImage(bitMatrix);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
-        ImageIO.write(image,"npg",os);
-        sos.close();
+        ImageIO.write(image,"png",os);
+        os.close();
         InputStream is = new ByteArrayInputStream(os.toByteArray());
-        String childDirectory = "qrCode/" + text + "/";
+        String childDirectory = "qrCode/";
         String fileName = text;
         ChannelSftp sftp = connect();
         boolean success = false;
         try {
             sftp.cd(Constant.IMGUPLOAD_PATH + "/" + childDirectory);
+            //home/ftpuser/www/images/qrCode/text.png
             sftp.put(is, fileName);
             success = true;
         } catch (Exception e) {
@@ -107,7 +108,7 @@ public class GenerateQRCodeUtil {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
             }
-        }*/
+        }
         String pathName = "F:/new.png";
         File outputFile = new File(pathName);
         GenerateQRCodeUtil.writeToFile(bitMatrix, format, outputFile);

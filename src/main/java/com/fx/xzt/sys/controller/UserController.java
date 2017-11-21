@@ -377,19 +377,19 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/generateQRCode")
 	@ResponseBody
-	/*public Boolean createCode(String text){
+	public Boolean createCode(String text){
 		int width = 100;
 		int height = 100;
 		String format = "png";
-		try {
+		/*try {
 			String path = GenerateQRCodeUtil.generateQRCode(text,width,height,format);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 		return false;
-	}*/
-	public void createCode(String text,HttpServletResponse response){
+	}
+	/*public void createCode(String text,HttpServletResponse response){
 		int width = 500;
 		int height = 500;
 		String format = "png";
@@ -404,5 +404,5 @@ public class UserController {
 			e.printStackTrace();
 		}
 
-	}
+	}*/
 }
