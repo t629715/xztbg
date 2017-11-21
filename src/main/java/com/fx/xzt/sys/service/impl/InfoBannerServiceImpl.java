@@ -108,7 +108,7 @@ public class InfoBannerServiceImpl extends BaseService<InfoBanner> implements In
 		List list = new ArrayList();
 		for (int i=0;i<capacity;i++){
 			Map map = new HashMap();
-			map.put("picturePath","");
+			map.put("SerialNo",-1);
 			list.add(map);
 		}
 		if (infoBannerMapper.selectAdPic(page).size()!=0 && infoBannerMapper.selectAdPic(page) != null){
