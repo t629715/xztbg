@@ -8,16 +8,19 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.service.GoldRedeemConfService;
 import com.fx.xzt.sys.service.UserLoginInfoService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
+import com.fx.xzt.sys.util.StringUtil;
 
 /**
  * 
@@ -35,6 +38,8 @@ public class GoldRedeemConfController {
 	GoldRedeemConfService goldRedeemConfService;
 	@Resource
 	UserLoginInfoService userLoginInfoService;
+	@Resource
+	RedisTemplate redisTemplate;
 	
 	/**
 	 * 
@@ -55,11 +60,22 @@ public class GoldRedeemConfController {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
+            	//获取黄金实时价格
+            	String price = "";
+            	String marketString = (String)redisTemplate.opsForValue().get("gold_latest_market");
+                if (StringUtil.isNotEmpty(marketString)) {
+                	JSONObject  json = JSONObject.parseObject(marketString);
+                    price = json.getString("price");
+                }
             	Integer isEnable = ConstantUtil.GOLD_REDEEM_CONF_ISENABLE_QY;
                 List<Map<String, Object>> list = goldRedeemConfService.selectByGoldRedeemConf(isEnable);
                 if (list != null && list.size() == 1) {
+                	Map<String, Object> data = list.get(0);
+                	if (StringUtil.isNotEmpty(price)) {
+                		data.put("price", price);
+                	}
                 	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
-                    cr.setData(list.get(0));
+                    cr.setData(data);
                     cr.setMsg("操作成功！");
                 } else {
                 	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
