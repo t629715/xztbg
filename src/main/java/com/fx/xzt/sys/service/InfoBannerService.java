@@ -43,6 +43,6 @@ public interface InfoBannerService extends IService<InfoBanner>{
 	 * @param page
 	 * @return
 	 */
-	List<Map<String, Object>> getAdPic(Short page);
+	List<Map<String, Object>> getAdPic(Short page,Integer capacity);
 
 }

@@ -51,7 +51,7 @@ public class GenerateQRCodeUtil {
 
         // 将图像输出到Servlet输出流中。
         ServletOutputStream sos = response.getOutputStream();
-        ImageIO.write(image, "jpeg", sos);
+        ImageIO.write(image, "png", sos);
         sos.close();
     }
 
@@ -64,8 +64,8 @@ public class GenerateQRCodeUtil {
      */
     public static void generateQRCode(HttpServletResponse response,String text) throws Exception {
         Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
-        int width = 100;
-        int height = 100;
+        int width = 500;
+        int height = 500;
         String format = "png";
         hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
         BitMatrix bitMatrix = new MultiFormatWriter().encode(text, BarcodeFormat.QR_CODE, width, height, hints);

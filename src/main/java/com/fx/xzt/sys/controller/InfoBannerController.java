@@ -192,12 +192,12 @@ public class InfoBannerController {
 	@RequestMapping(value="/getAdPic1",method=RequestMethod.POST)
 	@ResponseBody
 	public List<Map<String, Object>> getAdPic1(Short page){
-		return infoBannerService.getAdPic(page);
+		return infoBannerService.getAdPic(page,8);
 	}
 	@RequestMapping(value="/getAdPic2",method=RequestMethod.POST)
 	@ResponseBody
 	public List<Map<String, Object>> getAdPic2(Short page){
-		return infoBannerService.getAdPic(page);
+		return infoBannerService.getAdPic(page,1);
 	}
 
 	@RequestMapping(value="/getOneBySerialNo",method=RequestMethod.POST)
