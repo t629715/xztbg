@@ -156,6 +156,8 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 			List<UserInfo> userInfos = userInfoMapper.selectUserInfoByAgentId(id);
 			Users users = usersMapper.selectById(id);
 			if (users.getPid() == 1){//如果删除的用户是代理商
+				//删除代理商的分成信息
+				incomeSharingConfMapper.deleteByAgentId(id);
 				List<ConfigParam> configParams = configParamMapper.selectConfigParamByKey("BROKER_ID");
 				if (userInfos != null && userInfos.size() != 0){
 					for (UserInfo userInfo1:userInfos){
@@ -163,8 +165,6 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 						userInfo1.setAgentId(configParams.get(0).getParamValue());
 						//设置客户经纪人为null
 						userInfo1.setBrokerId(null);
-						//删除代理商的分成信息
-						incomeSharingConfMapper.deleteByAgentId(id);
 						//修改客户信息
 						userInfoMapper.editUserInfo(userInfo1);
 					}

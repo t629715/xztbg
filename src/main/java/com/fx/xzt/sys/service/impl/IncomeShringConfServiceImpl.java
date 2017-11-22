@@ -21,6 +21,18 @@ public class IncomeShringConfServiceImpl extends BaseService<IncomeSharingConf> 
     @Override
     @Transactional
     public int insertIncomeShringConf(IncomeSharingConf incomeSharingConf) {
+        if (incomeSharingConf.getGoldRightPercent() != null){
+            incomeSharingConf.setGoldRightPercent(incomeSharingConf.getGoldRightPercent()/100);
+        }
+        if (incomeSharingConf.getGoldPercent() != null){
+            incomeSharingConf.setGoldPercent(incomeSharingConf.getGoldPercent()/100);
+        }
+        if (incomeSharingConf.getRandomPercent() != null){
+            incomeSharingConf.setRandomPercent(incomeSharingConf.getRandomPercent()/100);
+        }
+        if (incomeSharingConf.getRealGoldPercent() != null){
+            incomeSharingConf.setRealGoldPercent(incomeSharingConf.getRealGoldPercent()/100);
+        }
         return incomeSharingConfMapper.insertIncomeSharingConf(incomeSharingConf);
     }
 
@@ -32,8 +44,27 @@ public class IncomeShringConfServiceImpl extends BaseService<IncomeSharingConf> 
     @Override
     @Transactional
     public int updateIncomeShringConf(IncomeSharingConf incomeSharingConf) {
-        incomeSharingConfMapper.deleteByAgentId(incomeSharingConf.getAgentId());
-        return incomeSharingConfMapper.insertIncomeSharingConf(incomeSharingConf);
+        IncomeSharingConf incomeSharingConf1 = incomeSharingConfMapper.selectIncomeSharingConfByAgentId(incomeSharingConf.getAgentId());
+        if (incomeSharingConf.getGoldRightPercent() != null){
+            incomeSharingConf.setGoldRightPercent(incomeSharingConf.getGoldRightPercent()/100);
+        }
+        if (incomeSharingConf.getGoldPercent() != null){
+            incomeSharingConf.setGoldPercent(incomeSharingConf.getGoldPercent()/100);
+        }
+        if (incomeSharingConf.getRandomPercent() != null){
+            incomeSharingConf.setRandomPercent(incomeSharingConf.getRandomPercent()/100);
+        }
+        if (incomeSharingConf.getRealGoldPercent() != null){
+            incomeSharingConf.setRealGoldPercent(incomeSharingConf.getRealGoldPercent()/100);
+        }
+        if (incomeSharingConf1 != null){
+            return incomeSharingConfMapper.updateIncomeSharingConf(incomeSharingConf);
+        }
+
+        else {
+            return incomeSharingConfMapper.insertIncomeSharingConf(incomeSharingConf);
+        }
+
     }
 
     /**
@@ -43,6 +74,11 @@ public class IncomeShringConfServiceImpl extends BaseService<IncomeSharingConf> 
      */
     @Override
     public IncomeSharingConf getIncomeSharingConf(Long userId) {
-        return incomeSharingConfMapper.selectIncomeSharingConf(userId);
+        IncomeSharingConf incomeSharingConf = incomeSharingConfMapper.selectIncomeSharingConf(userId);
+        incomeSharingConf.setGoldRightPercent(incomeSharingConf.getGoldPercent()*100);
+        incomeSharingConf.setGoldPercent(incomeSharingConf.getGoldPercent()*100);
+        incomeSharingConf.setRandomPercent(incomeSharingConf.getRandomPercent()*100);
+        incomeSharingConf.setRealGoldPercent(incomeSharingConf.getRealGoldPercent()*100);
+        return incomeSharingConf;
     }
 }

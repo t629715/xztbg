@@ -7,12 +7,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IncomeSharingConfMapper extends BaseMapper<IncomeSharingConf> {
 
-    int deleteByAgentId(Long id);
+    int deleteByAgentId(Long agentId);
 
 
     int insertIncomeSharingConf(IncomeSharingConf record);
 
     IncomeSharingConf selectIncomeSharingConf(Long id);
+    IncomeSharingConf selectIncomeSharingConfByAgentId(Long agentId);
 
     int updateIncomeSharingConf(IncomeSharingConf record);
 

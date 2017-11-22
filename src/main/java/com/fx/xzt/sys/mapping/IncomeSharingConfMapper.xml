@@ -18,6 +18,14 @@
     from income_sharing_conf
     where id = #{id,jdbcType=BIGINT}
   </select>
+
+  <!--根据agentId查询-->
+  <select id="selectIncomeSharingConfByAgentId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from income_sharing_conf
+    where agent_id = #{agentId,jdbcType=BIGINT}
+  </select>
 <delete id="deleteByAgentId" parameterType="java.lang.Long">
   delete FROM income_sharing_conf where agent_id = #{agentId,jdbcType=BIGINT}
 </delete>
@@ -83,7 +91,7 @@
         agent_id = #{agentId,jdbcType=BIGINT},
       </if>
     </set>
-    where id = #{id,jdbcType=BIGINT}
+    where agent_id = #{agentId,jdbcType=BIGINT}
   </update>
 
 </mapper>
