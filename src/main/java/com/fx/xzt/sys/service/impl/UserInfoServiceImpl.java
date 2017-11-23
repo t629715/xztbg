@@ -242,6 +242,7 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		map.put("endTime", endTime);
 		map.put("loginFrom", loginFrom);
 		map.put("agentName", agentName);
+		PageHelper.startPage(pageNum,pageSize);
 		List<Map<String, Object>> list = userInfoMapper.getByUserAnalysis(map);
 		PageInfo<Map<String, Object>> pagehelper = new PageInfo<Map<String, Object>>(list);
 		return pagehelper;
@@ -283,6 +284,7 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		map.put("endTime", endTime);
 		map.put("loginFrom", loginFrom);
 		map.put("agentName", agentName);
+		PageHelper.startPage(pageNum,pageSize);
 		List<Map<String, Object>> list = userInfoMapper.getByUserAttribute(map);
 		PageInfo<Map<String, Object>> pagehelper = new PageInfo<Map<String, Object>>(list);
 		return pagehelper;

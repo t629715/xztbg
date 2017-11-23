@@ -1,5 +1,6 @@
 package com.fx.xzt.sys.controller;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -407,13 +408,14 @@ public class UserInfoController {
 	* @param pageSize
 	* @return    设定文件 
 	* @return Object    返回类型 
+	 * @throws Exception 
 	* @throws 
 	* @author htt
 	 */
 	@RequestMapping(value="/getByUserAnalysis")
 	@ResponseBody
 	public Object getByUserAnalysis(HttpServletRequest request, String type, String startTime, String endTime, String loginFrom, String agentName,
-			 @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+			 @RequestParam Integer pageNum, @RequestParam Integer pageSize) throws Exception {
 		CommonResponse cr = new CommonResponse();
         try {
             HttpSession httpSession = request.getSession();
@@ -421,9 +423,9 @@ public class UserInfoController {
             String sTime = "";
             String eTime = "";
             Date today = DateUtil.getTodayZeroDate();
+            Date tomorrow = DateUtil.modify(today, 0, 0, 1, 0, 0, 0);
             if (users != null) {
             	if (type != null && type.equals(ConstantUtil.USER_NPER_JT)) {
-            		Date tomorrow = DateUtil.modify(today, 0, 0, 1, 0, 0, 0);
             		sTime = DateUtil.convertDateToString(today, "yyyy-MM-dd");;
             		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.USER_NPER_ZT)) {
@@ -433,13 +435,15 @@ public class UserInfoController {
             	} else if (type != null && type.equals(ConstantUtil.USER_NPER_JQT)) {
             		Date jqt = DateUtil.modify(today, 0, 0, -6, 0, 0, 0);
             		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd");
+            		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.USER_NPER_JSST)) {
             		Date jqt = DateUtil.modify(today, 0, 0, -29, 0, 0, 0);
             		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd");
+            		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd");
             	}
             	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
-            		sTime = startTime;
-            		eTime = endTime;
+            		sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
             	}
                 PageInfo<Map<String, Object>> pageInfo = userInfoService.getByUserAnalysis(sTime, eTime, loginFrom, agentName, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
@@ -474,12 +478,13 @@ public class UserInfoController {
 	* @param pageSize
 	* @return    设定文件 
 	* @return Object    返回类型 
+	 * @throws Exception 
 	* @throws 
 	* @author htt
 	 */
 	@RequestMapping(value="/getByUserAnalysisCount")
 	@ResponseBody
-	public Object getByUserAnalysisCount(HttpServletRequest request, String type, String startTime, String endTime, String loginFrom, String agentName) {
+	public Object getByUserAnalysisCount(HttpServletRequest request, String type, String startTime, String endTime, String loginFrom, String agentName) throws Exception {
 		CommonResponse cr = new CommonResponse();
         try {
             HttpSession httpSession = request.getSession();
@@ -504,8 +509,8 @@ public class UserInfoController {
             		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd");
             	}
             	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
-            		sTime = startTime;
-            		eTime = endTime;
+            		sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
             	}
                 List<Map<String, Object>> list = userInfoService.getByUserAnalysisCount(sTime, eTime, loginFrom, agentName);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
@@ -571,21 +576,56 @@ public class UserInfoController {
             		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd");
             	}
             	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
-            		sTime = startTime;
-            		eTime = endTime;
+            		sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
             	}
 				List<Map<String, Object>> list = userInfoService.excelByUserAnalysis(sTime, eTime, loginFrom, agentName);
+				if (list != null && list.size() > 0) {
+					for (Map<String, Object> map : list) {
+						Object xrjblObj = map.get("xrjbl");
+						Object xjqjyblObj = map.get("xjqjybl");
+						Object xhjwzblObj = map.get("xhjwzbl");
+						Object xsycblObj = map.get("xsycbl");
+						Object xswhjblObj = map.get("xswhjbl");
+						
+						if (xrjblObj != null && xrjblObj != "") {
+	                    	Double xrjbl = Double.valueOf(xrjblObj.toString());
+	                    	DecimalFormat df = new DecimalFormat("0.00%");
+	                    	map.put("xrjbl", df.format(xrjbl));
+	                    }
+						if (xjqjyblObj != null && xjqjyblObj != "") {
+	                    	Double xjqjybl = Double.valueOf(xjqjyblObj.toString());
+	                    	DecimalFormat df = new DecimalFormat("0.00%");
+	                    	map.put("xjqjybl", df.format(xjqjybl));
+	                    }
+						if (xhjwzblObj != null && xhjwzblObj != "") {
+	                    	Double xhjwzbl = Double.valueOf(xhjwzblObj.toString());
+	                    	DecimalFormat df = new DecimalFormat("0.00%");
+	                    	map.put("xhjwzbl", df.format(xhjwzbl));
+	                    }
+						if (xsycblObj != null && xsycblObj != "") {
+	                    	Double xsycbl = Double.valueOf(xsycblObj.toString());
+	                    	DecimalFormat df = new DecimalFormat("0.00%");
+	                    	map.put("xsycbl", df.format(xsycbl));
+	                    }
+						if (xswhjblObj != null && xswhjblObj != "") {
+	                    	Double xswhjbl = Double.valueOf(xswhjblObj.toString());
+	                    	DecimalFormat df = new DecimalFormat("0.00%");
+	                    	map.put("xswhjbl", df.format(xswhjbl));
+	                    }
+					}
+				}
 				POIUtils poi = new POIUtils();
-				String[] heads = { "日期", "合计入金用户", "新入金用户", "新入金用户比例", "新注册用户",
+				String[] heads = { "日期", "合计入金用户", "新入金用户", "新入金用户比例", 
 						"金权交易合计交易用户", "金权交易新交易用户", "金权交易新交易用户比例", "黄金稳赚合计交易用户",
 						"黄金稳赚新交易用户", "黄金稳赚新交易用户比例", "实物黄金合计交易用户", "实物黄金新交易用户",
 						"实物黄金新交易用户比例", "随意存合计交易用户", "随意存新交易用户", "随意存新交易用户比例",
-						"总用户", "总交易用户", "总入金用户" };
-				String[] colums = { "date", "rjNum", "xrjNum", "xrjbl",
-						"xzcNum", "jqjyNum", "jqxjyNum", "jqxjybl", "wzjyNum",
-						"wzxjyNum", "wzxjybl", "sjjyNum", "sjxjyNum",
-						"sjxjybl", "sycjyNum", "sjcxjyNum", "sycxjybl",
-						"zyhNum", "zjyyhNum", "zrjyhNum" };
+						"新注册用户", "总用户", "总入金用户" };
+				String[] colums = { "date", "hjrj", "xrj", "xrjbl",
+						"hjjqjy", "xjqjy", "xjqjybl", "hjhjwz",
+						"xhjwz", "xhjwzbl", "hjswhj", "xswhj",
+						"xswhjbl", "hjsyc", "xsyc", "xsycbl",
+						"xzc", "zzc", "zrj" };
 				poi.doExport(request, response, list, tieleName, excelName,
 						heads, colums);
 			}
@@ -607,13 +647,14 @@ public class UserInfoController {
 	* @param pageSize
 	* @return    设定文件 
 	* @return Object    返回类型 
+	 * @throws Exception 
 	* @throws 
 	* @author htt
 	 */
 	@RequestMapping(value="/getByUserAttribute")
 	@ResponseBody
 	public Object getByUserAttribute(HttpServletRequest request, String type, String startTime, String endTime, String loginFrom, String agentName,
-			 @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+			 @RequestParam Integer pageNum, @RequestParam Integer pageSize) throws Exception {
 		CommonResponse cr = new CommonResponse();
         try {
             HttpSession httpSession = request.getSession();
@@ -624,7 +665,7 @@ public class UserInfoController {
             if (users != null) {
             	if (type != null && type.equals(ConstantUtil.USER_NPER_JT)) {
             		Date tomorrow = DateUtil.modify(today, 0, 0, 1, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(today, "yyyy-MM-dd");;
+            		sTime = DateUtil.convertDateToString(today, "yyyy-MM-dd");
             		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.USER_NPER_ZT)) {
             		Date yesterday = DateUtil.modify(today, 0, 0, -1, 0, 0, 0);
@@ -638,8 +679,8 @@ public class UserInfoController {
             		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd");
             	}
             	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
-            		sTime = startTime;
-            		eTime = endTime;
+            		sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
             	}
                 PageInfo<Map<String, Object>> pageInfo = userInfoService.getByUserAttribute(sTime, eTime, loginFrom, agentName, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
@@ -674,12 +715,13 @@ public class UserInfoController {
 	* @param pageSize
 	* @return    设定文件 
 	* @return Object    返回类型 
+	 * @throws Exception 
 	* @throws 
 	* @author htt
 	 */
 	@RequestMapping(value="/getByUserAttributeCount")
 	@ResponseBody
-	public Object getByUserAttributeCount(HttpServletRequest request, String type, String startTime, String endTime, String loginFrom, String agentName) {
+	public Object getByUserAttributeCount(HttpServletRequest request, String type, String startTime, String endTime, String loginFrom, String agentName) throws Exception {
 		CommonResponse cr = new CommonResponse();
         try {
             HttpSession httpSession = request.getSession();
@@ -704,8 +746,8 @@ public class UserInfoController {
             		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd");
             	}
             	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
-            		sTime = startTime;
-            		eTime = endTime;
+            		sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
             	}
                 List<Map<String, Object>> list = userInfoService.getByUserAttributeCount(sTime, eTime, loginFrom, agentName);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
@@ -771,8 +813,8 @@ public class UserInfoController {
             		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd");
             	}
             	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
-            		sTime = startTime;
-            		eTime = endTime;
+            		sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
             	}
 				List<Map<String, Object>> list = userInfoService.excelByUserAttribute(sTime, eTime, loginFrom, agentName);
 				POIUtils poi = new POIUtils();

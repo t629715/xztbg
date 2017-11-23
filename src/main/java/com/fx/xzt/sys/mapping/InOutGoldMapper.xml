@@ -57,8 +57,8 @@
 	<select id="selectByAgent" resultType="java.util.Map" parameterType="java.util.Map">
 		SELECT
 			a.agentName,
-			SUM(a.rjSum),
-			SUM(a.cjSum)
+			SUM(a.rjSum) rjSum,
+			SUM(a.cjSum) cjSum
 		FROM
 			(
 				SELECT
@@ -113,7 +113,7 @@
 	<select id="selectByAgentNet" resultType="java.util.Map" parameterType="java.util.Map">
 		SELECT
 			a.agentName,
-			IFNULL(SUM(a.rjSum),0)-IFNULL(SUM(a.cjSum),0)
+			IFNULL(SUM(a.rjSum),0)-IFNULL(SUM(a.cjSum),0) jrjSum 
 		FROM
 			(
 				SELECT
