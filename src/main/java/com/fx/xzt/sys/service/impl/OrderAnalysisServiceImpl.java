@@ -30,29 +30,18 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
                                                        Integer pageNum, Integer pageSize) throws ParseException {
         java.text.DecimalFormat   df   =new   java.text.DecimalFormat("#0.00");
         //df.setRoundingMode(RoundingMode.FLOOR);
-        //获取四位随机数
-        Random random = new Random();
-        String fourRandom = "tmp"+random.nextInt(10000);
         Map map = new HashMap();
         map.put("upOrDown",upOrDown);
         map.put("orderState",orderState);
         map.put("profitLoss",profitLoss);
-        map.put("tableName",fourRandom);
-
-        Date start = null;
-        Date end = null;
-        if (startTime != null && startTime !=""){
-            start = DateUtil.convertTimeMillisToDate(Long.valueOf(startTime));
+        if (startTime != null && startTime != ""){
+            startTime = DateUtils.formatDateByMidLine(DateUtil.convertTimeMillisToDate(Long.valueOf(startTime)));
         }
-        if (endTime != null && endTime !=""){
-            end = DateUtil.convertTimeMillisToDate(Long.valueOf(endTime));
+        if (endTime != null && endTime != ""){
+            endTime = DateUtils.formatDateByMidLine(DateUtil.convertTimeMillisToDate(Long.valueOf(endTime)));
         }
-        List<String> dates = new ArrayList<String>();
-        for (Date date = start;date.before(end);date = DateUtil.modify(date,0,0,1,0,0,0)){
-            String time = DateUtils.formatDateByMidLine1(date);
-            dates.add(time);
-        }
-        map.put("dates",dates);
+        map.put("startTime",startTime);
+        map.put("endTime",endTime);
         map.put("start",(pageNum-1)*pageSize);
         map.put("size",pageSize);
         map.put("agentId",agentId);
@@ -60,19 +49,39 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
         try{
            list  = analysisOrderMapper.getAnalysis(map);
            for (Map m:list){
-               m.put("time",DateUtils.formatDateByMidLine1((Date)m.get("time")));
+               int perCount = 0;
+               Double perAmount = 0d;
+               m.put("date",DateUtils.formatDateByMidLine1((Date)m.get("date")));
                if (m.get("financeAmount") != null){
+                   perAmount = perAmount+Double.parseDouble((m.get("financeAmount")==null?0:m.get("financeAmount")).toString());
                    m.put("financeAmount",df.format(Double.parseDouble((m.get("financeAmount")==null?0:m.get("financeAmount")).toString())));
                }
                if (m.get("goldRightAmount")!= null){
+                   perAmount = perAmount+Double.parseDouble((m.get("goldRightAmount")==null?0:m.get("goldRightAmount")).toString());
                    m.put("goldRightAmount",df.format(Double.parseDouble((m.get("goldRightAmount")==null?0:m.get("goldRightAmount")).toString())));
                }
                if (m.get("realGoldAmount")!= null){
+                   perAmount = perAmount+Double.parseDouble((m.get("realGoldAmount")==null?0:m.get("realGoldAmount")).toString());
                    m.put("realGoldAmount",df.format(Double.parseDouble((m.get("realGoldAmount")==null?0:m.get("realGoldAmount")).toString())));
                }
                if (m.get("goldUpAmount")!= null){
+                   perAmount = perAmount+Double.parseDouble((m.get("goldUpAmount")==null?0:m.get("goldUpAmount")).toString());
                    m.put("goldUpAmount",df.format(Double.parseDouble((m.get("goldUpAmount")==null?0:m.get("goldUpAmount")).toString())));
                }
+               if (m.get("financeCount") != null){
+                   perCount = perCount+Integer.parseInt((m.get("financeCount")==null?0:m.get("financeCount")).toString());
+               }
+               if (m.get("goldRightCount")!= null){
+                   perCount = perCount+Integer.parseInt((m.get("goldRightCount")==null?0:m.get("goldRightCount")).toString());
+               }
+               if (m.get("realGoldCount")!= null){
+                   perCount = perCount+Integer.parseInt((m.get("realGoldCount")==null?0:m.get("realGoldCount")).toString());
+               }
+               if (m.get("goldUpCount")!= null){
+                   perCount = perCount+Integer.parseInt((m.get("goldUpCount")==null?0:m.get("goldUpCount")).toString());
+               }
+               m.put("perCount",perCount);
+               m.put("perAmount",df.format(perAmount));
            }
         }catch(Exception e){
             e.printStackTrace();
@@ -91,29 +100,19 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
                                                         Integer pageNum, Integer pageSize) {
         java.text.DecimalFormat   df   =new   java.text.DecimalFormat("#0.00");
         //df.setRoundingMode(RoundingMode.FLOOR);
-        Random random = new Random();
-        String fourRandom = "tmp"+random.nextInt(10000);
         Map map = new HashMap();
+        if (startTime != null && startTime != ""){
+            startTime = DateUtils.formatDateByMidLine(DateUtil.convertTimeMillisToDate(Long.valueOf(startTime)));
+        }
+        if (endTime != null && endTime != ""){
+            endTime = DateUtils.formatDateByMidLine(DateUtil.convertTimeMillisToDate(Long.valueOf(endTime)));
+        }
+        map.put("startTime",startTime);
+        map.put("endTime",endTime);
         map.put("upOrDown",upOrDown);
         map.put("orderState",orderState);
         map.put("profitLoss",profitLoss);
         map.put("agentId",agentId);
-        map.put("tableName",fourRandom);
-        Date start = null;
-        Date end = null;
-        if (startTime != null && startTime !=""){
-            start = DateUtil.convertTimeMillisToDate(Long.valueOf(startTime));
-        }
-        if (endTime != null && endTime !=""){
-            end = DateUtil.convertTimeMillisToDate(Long.valueOf(endTime));
-        }
-        List<String> dates = new ArrayList<String>();
-        for (Date date = start;date.before(end);date = DateUtil.modify(date,0,0,1,0,0,0)){
-            String time = DateUtils.formatDateByMidLine1(date);
-            dates.add(time);
-
-        }
-        map.put("dates",dates);
         map.put("start",(pageNum-1)*pageSize);
         map.put("size",pageSize);
         Map map1 = new HashMap();
@@ -168,33 +167,52 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
         map.put("upOrDown",upOrDown);
         map.put("orderState",orderState);
         map.put("profitLoss",profitLoss);
-        Random random = new Random();
-        String fourRandom = "tmp"+random.nextInt(10000);
-        map.put("tableName",fourRandom);
-        Date start = null;
-        Date end = null;
-        if (startTime != null && startTime !=""){
-            start = DateUtil.convertTimeMillisToDate(Long.valueOf(startTime));
+        if (startTime != null && startTime != ""){
+            startTime = DateUtils.formatDateByMidLine(DateUtil.convertTimeMillisToDate(Long.valueOf(startTime)));
         }
-        if (endTime != null && endTime !=""){
-            end = DateUtil.convertTimeMillisToDate(Long.valueOf(endTime));
+        if (endTime != null && endTime != ""){
+            endTime = DateUtils.formatDateByMidLine(DateUtil.convertTimeMillisToDate(Long.valueOf(endTime)));
         }
-        List<String> dates = new ArrayList<String>();
-        for (Date date = start;date.before(end);date = DateUtil.modify(date,0,0,1,0,0,0)){
-            String time = DateUtils.formatDateByMidLine1(date);
-            dates.add(time);
-        }
-        map.put("dates",dates);
+        map.put("startTime",startTime);
+        map.put("endTime",endTime);
         map.put("agentId",agentId);
         List<Map<String, Object>> list = new ArrayList();
         try{
             list  = analysisOrderMapper.exportAnalysis(map);
             for (Map m:list){
-                m.put("time",DateUtils.formatDateByMidLine1((Date)m.get("time")));
-                m.put("financeAmount",df.format(Double.parseDouble((m.get("financeAmount")==null?0:m.get("financeAmount")).toString())));
-                m.put("goldRightAmount",df.format(Double.parseDouble((m.get("goldRightAmount")==null?0:m.get("goldRightAmount")).toString())));
-                m.put("realGoldAmount",df.format(Double.parseDouble((m.get("realGoldAmount")==null?0:m.get("realGoldAmount")).toString())));
-                m.put("goldUpAmount",df.format(Double.parseDouble((m.get("goldUpAmount")==null?0:m.get("goldUpAmount")).toString())));
+                int perCount = 0;
+                Double perAmount = 0d;
+                m.put("date",DateUtils.formatDateByMidLine1((Date)m.get("date")));
+                if (m.get("financeAmount") != null){
+                    perAmount = perAmount+Double.parseDouble((m.get("financeAmount")==null?0:m.get("financeAmount")).toString());
+                    m.put("financeAmount",df.format(Double.parseDouble((m.get("financeAmount")==null?0:m.get("financeAmount")).toString())));
+                }
+                if (m.get("goldRightAmount")!= null){
+                    perAmount = perAmount+Double.parseDouble((m.get("goldRightAmount")==null?0:m.get("goldRightAmount")).toString());
+                    m.put("goldRightAmount",df.format(Double.parseDouble((m.get("goldRightAmount")==null?0:m.get("goldRightAmount")).toString())));
+                }
+                if (m.get("realGoldAmount")!= null){
+                    perAmount = perAmount+Double.parseDouble((m.get("realGoldAmount")==null?0:m.get("realGoldAmount")).toString());
+                    m.put("realGoldAmount",df.format(Double.parseDouble((m.get("realGoldAmount")==null?0:m.get("realGoldAmount")).toString())));
+                }
+                if (m.get("goldUpAmount")!= null){
+                    perAmount = perAmount+Double.parseDouble((m.get("goldUpAmount")==null?0:m.get("goldUpAmount")).toString());
+                    m.put("goldUpAmount",df.format(Double.parseDouble((m.get("goldUpAmount")==null?0:m.get("goldUpAmount")).toString())));
+                }
+                if (m.get("financeCount") != null){
+                    perCount = perCount+Integer.parseInt((m.get("financeCount")==null?0:m.get("financeCount")).toString());
+                }
+                if (m.get("goldRightCount")!= null){
+                    perCount = perCount+Integer.parseInt((m.get("goldRightCount")==null?0:m.get("goldRightCount")).toString());
+                }
+                if (m.get("realGoldCount")!= null){
+                    perCount = perCount+Integer.parseInt((m.get("realGoldCount")==null?0:m.get("realGoldCount")).toString());
+                }
+                if (m.get("goldUpCount")!= null){
+                    perCount = perCount+Integer.parseInt((m.get("goldUpCount")==null?0:m.get("goldUpCount")).toString());
+                }
+                m.put("perCount",perCount);
+                m.put("perAmount",df.format(perAmount));
             }
         }catch(Exception e){
             e.printStackTrace();
