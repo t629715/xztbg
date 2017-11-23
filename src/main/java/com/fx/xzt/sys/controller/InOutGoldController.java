@@ -154,7 +154,7 @@ public class InOutGoldController {
 	 */
 	@RequestMapping(value="/selectByRechargeChannel")
     @ResponseBody
-    public Object selectByRechargeChannel(HttpServletRequest request, String type, String startTime, String endTime) throws Exception {
+    public Object selectByRechargeChannel(HttpServletRequest request, String type, String startTime, String endTime, String channel) throws Exception {
         CommonResponse cr = new CommonResponse();
         try {
             HttpSession httpSession = request.getSession();
@@ -165,23 +165,23 @@ public class InOutGoldController {
             if (users != null) {
             	if (type != null && type.equals(ConstantUtil.IN_OUT_GOLD_NPER_JT)) {
             		Date tomorrow = DateUtil.modify(today, 0, 0, 1, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");;
-            		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(today, "yyyy-MM-dd");;
+            		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.IN_OUT_GOLD_NPER_ZT)) {
             		Date yesterday = DateUtil.modify(today, 0, 0, -1, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(yesterday, "yyyy-MM-dd HH:mm:ss");
-            		eTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(yesterday, "yyyy-MM-dd");
+            		eTime = DateUtil.convertDateToString(today, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.IN_OUT_GOLD_NPER_JQT)) {
             		Date jqt = DateUtil.modify(today, 0, 0, -6, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.IN_OUT_GOLD_NPER_BY)) {
-            		sTime = DateUtil.getFirstDateOfMonth(DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss"), "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.getFirstDateOfMonth(DateUtil.convertDateToString(today, "yyyy-MM-dd"), "yyyy-MM-dd");
             	}
             	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
-            		sTime = startTime;
-            		eTime = endTime;
+            		sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
             	}
-            	List<Map<String, Object>> list = inOutGoldService.selectByRechargeChannel(type, sTime, eTime);
+            	List<Map<String, Object>> list = inOutGoldService.selectByRechargeChannel(type, sTime, eTime, channel);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(list);
                 cr.setMsg("操作成功！");
@@ -228,21 +228,21 @@ public class InOutGoldController {
             if (users != null) {
             	if (type != null && type.equals(ConstantUtil.IN_OUT_GOLD_NPER_JT)) {
             		Date tomorrow = DateUtil.modify(today, 0, 0, 1, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");;
-            		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(today, "yyyy-MM-dd");;
+            		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.IN_OUT_GOLD_NPER_ZT)) {
             		Date yesterday = DateUtil.modify(today, 0, 0, -1, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(yesterday, "yyyy-MM-dd HH:mm:ss");
-            		eTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(yesterday, "yyyy-MM-dd");
+            		eTime = DateUtil.convertDateToString(today, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.IN_OUT_GOLD_NPER_JQT)) {
             		Date jqt = DateUtil.modify(today, 0, 0, -6, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.IN_OUT_GOLD_NPER_BY)) {
-            		sTime = DateUtil.getFirstDateOfMonth(DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss"), "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.getFirstDateOfMonth(DateUtil.convertDateToString(today, "yyyy-MM-dd"), "yyyy-MM-dd");
             	}
             	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
-            		sTime = startTime;
-            		eTime = endTime;
+            		sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
             	}
             	List<Map<String, Object>> list = inOutGoldService.selectByAgent(type, sTime, eTime);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
@@ -291,21 +291,21 @@ public class InOutGoldController {
             if (users != null) {
             	if (type != null && type.equals(ConstantUtil.IN_OUT_GOLD_NPER_JT)) {
             		Date tomorrow = DateUtil.modify(today, 0, 0, 1, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");;
-            		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(today, "yyyy-MM-dd");;
+            		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.IN_OUT_GOLD_NPER_ZT)) {
             		Date yesterday = DateUtil.modify(today, 0, 0, -1, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(yesterday, "yyyy-MM-dd HH:mm:ss");
-            		eTime = DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(yesterday, "yyyy-MM-dd");
+            		eTime = DateUtil.convertDateToString(today, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.IN_OUT_GOLD_NPER_JQT)) {
             		Date jqt = DateUtil.modify(today, 0, 0, -6, 0, 0, 0);
-            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd");
             	} else if (type != null && type.equals(ConstantUtil.IN_OUT_GOLD_NPER_BY)) {
-            		sTime = DateUtil.getFirstDateOfMonth(DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss"), "yyyy-MM-dd HH:mm:ss");
+            		sTime = DateUtil.getFirstDateOfMonth(DateUtil.convertDateToString(today, "yyyy-MM-dd"), "yyyy-MM-dd");
             	}
             	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
-            		sTime = startTime;
-            		eTime = endTime;
+            		sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
             	}
             	List<Map<String, Object>> list = inOutGoldService.selectByAgentNet(type, sTime, eTime);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);

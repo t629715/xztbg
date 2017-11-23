@@ -58,7 +58,7 @@ public interface InOutGoldService {
 	* @throws 
 	* @author htt
 	 */
-	List<Map<String, Object>> selectByRechargeChannel(String type, String startTime, String endTime);
+	List<Map<String, Object>> selectByRechargeChannel(String type, String startTime, String endTime, String channel);
 	
 	/**
 	 * 

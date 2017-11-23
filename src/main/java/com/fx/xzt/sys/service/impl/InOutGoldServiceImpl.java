@@ -60,11 +60,12 @@ public class InOutGoldServiceImpl extends BaseService<InOutGold> implements InOu
 	 * 出入金分析--支付渠道分析
 	 */
 	public List<Map<String, Object>> selectByRechargeChannel(String type,
-			String startTime, String endTime) {
+			String startTime, String endTime, String channel) {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("type", type);
         map.put("startTime", startTime);
         map.put("endTime", endTime);
+        map.put("channel", channel);
 		return inOutGoldMapper.selectByRechargeChannel(map);
 	}
 
