@@ -1,9 +1,6 @@
 package com.fx.xzt.sys.service.impl;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
 
@@ -107,7 +104,21 @@ public class InfoBannerServiceImpl extends BaseService<InfoBanner> implements In
 	 * @return
 	 */
 	@Override
-	public List<Map<String, Object>> getAdPic(Short page) {
-		return infoBannerMapper.selectAdPic(page);
+	public List<Map<String, Object>> getAdPic(Short page,Integer capacity) {
+		List list = new ArrayList();
+		for (int i=0;i<capacity;i++){
+			Map map = new HashMap();
+			map.put("SerialNo",-1);
+			list.add(map);
+		}
+		if (infoBannerMapper.selectAdPic(page).size()!=0 && infoBannerMapper.selectAdPic(page) != null){
+			List<Map<String,Object>> list1 = infoBannerMapper.selectAdPic(page);
+			int i = 0;
+			for (Map<String,Object> map:list1){
+				list.set(i,map);
+				i++;
+			}
+		}
+		return list;
 	}
 }

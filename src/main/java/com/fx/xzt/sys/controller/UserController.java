@@ -395,9 +395,11 @@ public class UserController {
 	/**
 	 * 生成二维码  并返回到浏览器
 	 */
-	/*public void createCode(String text,HttpServletResponse response){
-		int width = 500;
-		int height = 500;
+	@RequestMapping(value = "/createQRCode")
+	@ResponseBody
+	public void createCode(String text,HttpServletResponse response){
+		int width = 300;
+		int height = 300;
 		String format = "png";
 		Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
 		hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
@@ -410,5 +412,5 @@ public class UserController {
 			e.printStackTrace();
 		}
 
-	}*/
+	}
 }

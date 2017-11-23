@@ -216,8 +216,8 @@
 
     <!--根据代理商名字，经纪人名字、创建时间、类型查询 tianliya start-->
         <select id="getByAgentNameAndType" resultType="java.util.Map" parameterType="java.util.Map">
-            select u1.id id , u1.user_name userName,u1.pid, u1.phone phone,u1.create_time createTime,if(u2.pid is not null,u2.user_name,null) as agentName,isc.real_gold_percent goldSharing,isc.random_percent financeSharing,
-            isc.gold_right_percent goldRightSharing,isc.gold_percent goldUpSharing
+            select u1.id id , u1.user_name userName,u1.pid, u1.phone phone,u1.create_time createTime,if(u2.pid is not null,u2.user_name,null) as agentName,isc.real_gold_percent*100 goldSharing,isc.random_percent*100 financeSharing,
+            isc.gold_right_percent*100 goldRightSharing,isc.gold_percent*100 goldUpSharing
             from users u1
             left join users u2
             on u1.pid=u2.id
