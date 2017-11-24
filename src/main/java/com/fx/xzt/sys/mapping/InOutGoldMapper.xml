@@ -3,7 +3,7 @@
 <mapper namespace="com.fx.xzt.sys.mapper.InOutGoldMapper">
 	<!--出入金查询开始-htt -->
 	<select id="selectByInOutGold" resultType="java.util.Map" parameterType="java.util.Map">
-		SELECT a.user_id userId,l.UserName userName,i.RealName realName,
+		SELECT a.user_id userId,l.UserName userName,i.RealName realName,i.RegisterTime registerTime,
 		i.agent_id AS agentId, ua.user_name AS agentName, i.broker_id AS brokerId, ub.user_name AS brokerName,
 		a.finance,a.total_income totalIncome,r.rj,c.cj,sj.sjAmount,cb.cbf
 		FROM User_Login l

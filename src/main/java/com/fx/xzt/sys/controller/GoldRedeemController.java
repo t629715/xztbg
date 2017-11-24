@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -256,7 +257,7 @@ public class GoldRedeemController {
 	 */
 	@RequestMapping(value="/saveGoldRedeem")
     @ResponseBody
-	public Object saveGoldRedeem(HttpServletRequest request, GoldRedeem goldRedeem) throws Exception {
+	public Object saveGoldRedeem(HttpServletRequest request, @ModelAttribute GoldRedeem goldRedeem) throws Exception {
         CommonResponse cr = new CommonResponse();
         try {
             HttpSession httpSession = request.getSession();
@@ -264,6 +265,8 @@ public class GoldRedeemController {
             if (users != null) {
             	goldRedeem.setId(IdUtil.generateyymmddhhMMssSSSAnd4Random());
             	goldRedeem.setUserId(Long.parseLong(goldRedeem.getUserIdString()));
+            	/*goldRedeem.setAmount(goldRedeem.getAmount() * 100);
+            	goldRedeem.setPoundage(goldRedeem.getPoundage() * 100);*/
             	int flag = goldRedeemService.insertGoldRedeem(goldRedeem);
             	if (flag > 0) {
             		cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);

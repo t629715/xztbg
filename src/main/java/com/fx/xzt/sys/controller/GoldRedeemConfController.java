@@ -1,5 +1,6 @@
 package com.fx.xzt.sys.controller;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -121,13 +122,14 @@ public class GoldRedeemConfController {
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
             	if (price > 0 && gram > 0 && poundagePercent > 0) {
-            		Double amount = price * gram * 100;
+            		DecimalFormat df = new DecimalFormat("#.00");
+            		Double amount = price * gram;
             		Double poundage = amount * poundagePercent;
             		Double total = amount - poundage;
             		Map<String, Object> map = new HashMap<String, Object>();
-            		map.put("amount", amount);
-            		map.put("poundage", poundage);
-            		map.put("total", total);
+            		map.put("amount", df.format(amount));
+            		map.put("poundage", df.format(poundage));
+            		map.put("total", df.format(total));
             		cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                     cr.setData(map);
                     cr.setMsg("操作成功！");

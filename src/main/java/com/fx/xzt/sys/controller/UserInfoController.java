@@ -195,8 +195,9 @@ public class UserInfoController {
 			}
 		}
 		POIUtils poi = new POIUtils();
-		String[] heads = {"用户账号","代理商","经纪人","注册时间","注册来源","注册IP","归属地","最后一次登录时间","最后一次登录方式","最后一次登录IP","状态"};
-		String[] colums = {"UserName","agentsName","brokerName","RegisterTime","RegisterFrom","RegisterIp","attribution","lastlogintime","lastloginfrom","lastfromIp","Status"};
+		String[] heads = {"用户账号","代理商","经纪人","注册时间","注册来源","注册IP","归属地省","归属地市","最后一次登录时间","最后一次登录方式","最后一次登录IP","状态"};
+		String[] colums = {"UserName","agentsName","brokerName","RegisterTime","RegisterFrom","RegisterIp","attributionProvince",
+				"attribution","lastlogintime","lastloginfrom","lastfromip","Status"};
 		poi.doExport(request, response, list, "注册信息", "注册信息", heads, colums);
 	}
 
@@ -256,8 +257,8 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/excelAccountMessage")
 	@ResponseBody
-	public void excelAccountMessage(HttpServletRequest request, HttpServletResponse response,String userName,String agentName, String brokerName,String startTime,String endTime){
-		List<Map<String, Object>> list = userInfoService.getExcelAccount(userName,agentName, brokerName,startTime,endTime);
+	public void excelAccountMessage(HttpServletRequest request, HttpServletResponse response,String userName,String agentsName, String brokerName,String startTime,String endTime){
+		List<Map<String, Object>> list = userInfoService.getExcelAccount(userName,agentsName, brokerName,startTime,endTime);
 		POIUtils poi = new POIUtils();
 		String[] heads = {"用户账号","姓名","注册时间","代理商","经纪人","身份证号","银行卡","人民币余额","人民币冻结","人民币理财","利息","黄金"};
 		String[] colums = {"userName","realname","registertime","agentName","brokerName","idcard","accountNum","rmb","frozenRmb","finance","totalIncome","gold"};
@@ -270,11 +271,11 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/selectAccountCount")
 	@ResponseBody
-	public String selectAccountCount(String userName,String agentName, String brokerName,String startTime,String endTime){
+	public String selectAccountCount(String userName,String agentsName, String brokerName,String startTime,String endTime){
 		CommonResponse cr = new CommonResponse();
 		try {
 			Map<String,Object> map = new HashMap<String,Object>();
-			map = userInfoService.getByAccountCount(userName,agentName, brokerName,startTime,endTime);
+			map = userInfoService.getByAccountCount(userName,agentsName, brokerName,startTime,endTime);
 			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 			cr.setData(map);
 			cr.setMsg("操作成功！");

@@ -142,10 +142,10 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 	 * @param endTime  注册结束时间
 	 * @return
 	 */
-	public List<Map<String, Object>> getExcelAccount(String userName, String agentName, String brokerName, String startTime, String endTime) {
+	public List<Map<String, Object>> getExcelAccount(String userName, String agentsName, String brokerName, String startTime, String endTime) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
-		map.put("agentName", agentName);
+		map.put("agentsName", agentsName);
 		map.put("brokerName", brokerName);
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
@@ -157,10 +157,10 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 	 * 获取账户信息列表金额黄金统计
 	 * @return
 	 */
-	public Map<String,Object> getByAccountCount(String userName, String agentName, String brokerName, String startTime, String endTime) {
+	public Map<String,Object> getByAccountCount(String userName, String agentsName, String brokerName, String startTime, String endTime) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
-		map.put("agentName", agentName);
+		map.put("agentsName", agentsName);
 		map.put("brokerName", brokerName);
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);

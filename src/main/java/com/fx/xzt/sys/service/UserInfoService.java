@@ -76,7 +76,7 @@ public interface UserInfoService extends IService<UserInfo> {
      * 获取账户信息列表金额黄金统计
      * @return
      */
-    Map<String,Object> getByAccountCount(String userName, String agentName, String brokerName, String startTime, String endTime);
+    Map<String,Object> getByAccountCount(String userName, String agentsName, String brokerName, String startTime, String endTime);
 
     /**
      * 获取下级客户信息
