@@ -38,6 +38,7 @@ public class GoldRightDealConfServiceImpl extends BaseService<GoldRightDealConf>
 
         for (Map m:goldRightDealConfs){
             m.put("id",m.get("id").toString());
+
         }
         return new PageInfo<Map<String, Object>>(goldRightDealConfs);
     }
@@ -62,6 +63,7 @@ public class GoldRightDealConfServiceImpl extends BaseService<GoldRightDealConf>
     @Transactional
     public Boolean updateByPrimaryKey(Long id, String name, Integer contract,
                                       Float buyPercent, Double pointCount, Double volatility,
+                                      Double stopLossSet,Float minLossPercent, Double volatilityProfitLoss,
                                       Integer minGramPerOrder, Integer maxGramPerOrder, Integer maxPositionCount,
                                       Integer maxBuyCountPerDay, Double stopProfitSet, Integer blowingUpSet,Integer status) {
         Map map = new HashMap();
@@ -77,6 +79,9 @@ public class GoldRightDealConfServiceImpl extends BaseService<GoldRightDealConf>
         map.put("maxBuyCountPerDay",maxBuyCountPerDay);//
         map.put("stopProfitSet",stopProfitSet);//止盈设置
         map.put("blowingUpSet",blowingUpSet);//止损设置
+        map.put("stopLossSet",stopLossSet);//最大止损设置
+        map.put("minLossPercent",minLossPercent);//最小止损设置
+        map.put("volatilityProfitLoss",volatilityProfitLoss);//最小波动盈亏
         map.put("status",status);
         int i = goldRightDealConfMapper.modifyGoldRightCong(map);
         if (i != 0){

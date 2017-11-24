@@ -93,6 +93,7 @@ public class GoldRightDealConfController {
     @ResponseBody
     public Object modifyGoldRightDealConf(HttpServletRequest request, String id, String name, Integer contract,
                                     Float  buyPercent, Double pointCount, Double volatility,
+                                          Double stopLossSet,Float minLossPercent, Double volatilityProfitLoss,
                                     Integer minGramPerOrder, Integer maxGramPerOrder, Integer maxPositionCount,
                                     Integer maxBuyCountPerDay, Double stopProfitSet, Integer blowingUpSet,Integer status) {
         logger.debug("获取修改进群规则信息接口");
@@ -104,16 +105,14 @@ public class GoldRightDealConfController {
                 Long ids = new Long(id);
                 Boolean b = goldRightDealConfService.updateByPrimaryKey(ids, name, contract,
                          buyPercent, pointCount, volatility,
+                        stopLossSet, minLossPercent, volatilityProfitLoss,
                          minGramPerOrder, maxGramPerOrder, maxPositionCount,
                          maxBuyCountPerDay, stopProfitSet, blowingUpSet, status);
                 if (b){
                     GoldRightDealConf goldRightDealConf = goldRightDealConfService.getGoldRight(new Long(id));
                     String key = "fx_xzt_gold_right_deal_cofing_"+goldRightDealConf.getId();
                     String goldRightConf = JsonUtils.toJSONString(goldRightDealConf);
-                    System.out.println(key+"---------"+goldRightConf);
-                    System.out.println(redisService.get(key));
                     redisService.put(key,goldRightConf);
-                    System.out.println(redisService.get(key));
                     response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                     response.setData(b);
                     response.setMsg("操作成功！");
