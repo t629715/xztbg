@@ -443,8 +443,14 @@ public class UserInfoController {
             		eTime = DateUtil.convertDateToString(tomorrow, "yyyy-MM-dd");
             	}
             	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
-            		sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
-            		eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		sTime = "";
+            		eTime = "";
+            		if (StringUtil.isNotEmpty(startTime)) {
+            			sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		}
+            		if (StringUtil.isNotEmpty(endTime)) {
+            			eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		}
             	}
                 PageInfo<Map<String, Object>> pageInfo = userInfoService.getByUserAnalysis(sTime, eTime, loginFrom, agentName, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
@@ -510,8 +516,14 @@ public class UserInfoController {
             		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd");
             	}
             	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
-            		sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
-            		eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		sTime = "";
+            		eTime = "";
+            		if (StringUtil.isNotEmpty(startTime)) {
+            			sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		}
+            		if (StringUtil.isNotEmpty(endTime)) {
+            			eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		}
             	}
                 List<Map<String, Object>> list = userInfoService.getByUserAnalysisCount(sTime, eTime, loginFrom, agentName);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
@@ -577,8 +589,14 @@ public class UserInfoController {
             		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd");
             	}
             	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
-            		sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
-            		eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		sTime = "";
+            		eTime = "";
+            		if (StringUtil.isNotEmpty(startTime)) {
+            			sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		}
+            		if (StringUtil.isNotEmpty(endTime)) {
+            			eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		}
             	}
 				List<Map<String, Object>> list = userInfoService.excelByUserAnalysis(sTime, eTime, loginFrom, agentName);
 				if (list != null && list.size() > 0) {
@@ -680,8 +698,14 @@ public class UserInfoController {
             		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd");
             	}
             	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
-            		sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
-            		eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		sTime = "";
+            		eTime = "";
+            		if (StringUtil.isNotEmpty(startTime)) {
+            			sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		}
+            		if (StringUtil.isNotEmpty(endTime)) {
+            			eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		}
             	}
                 PageInfo<Map<String, Object>> pageInfo = userInfoService.getByUserAttribute(sTime, eTime, loginFrom, agentName, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
@@ -747,8 +771,14 @@ public class UserInfoController {
             		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd");
             	}
             	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
-            		sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
-            		eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		sTime = "";
+            		eTime = "";
+            		if (StringUtil.isNotEmpty(startTime)) {
+            			sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		}
+            		if (StringUtil.isNotEmpty(endTime)) {
+            			eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		}
             	}
                 List<Map<String, Object>> list = userInfoService.getByUserAttributeCount(sTime, eTime, loginFrom, agentName);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
@@ -814,8 +844,14 @@ public class UserInfoController {
             		sTime = DateUtil.convertDateToString(jqt, "yyyy-MM-dd");
             	}
             	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
-            		sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
-            		eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		sTime = "";
+            		eTime = "";
+            		if (StringUtil.isNotEmpty(startTime)) {
+            			sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		}
+            		if (StringUtil.isNotEmpty(endTime)) {
+            			eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		}
             	}
 				List<Map<String, Object>> list = userInfoService.excelByUserAttribute(sTime, eTime, loginFrom, agentName);
 				POIUtils poi = new POIUtils();

@@ -38,7 +38,7 @@
 	
 	<!--出入金分析-支付渠道分析开始-htt -->
 	<select id="selectByRechargeChannel" resultType="java.util.Map" parameterType="java.util.Map">
-		SELECT RechargeChannel rechargeChannel, DATE_FORMAT(RechargeTime,'%Y-%c-%d') rechargeTime, SUM(RMBAmt) rmbAmt
+		SELECT RechargeChannel rechargeChannel, unix_timestamp(DATE_FORMAT(RechargeTime,'%Y-%c-%d')) rechargeTime, SUM(RMBAmt) rmbAmt
 		FROM User_Recharge 
 		<where>
 			and STATUS = 1 

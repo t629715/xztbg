@@ -178,8 +178,14 @@ public class InOutGoldController {
             		sTime = DateUtil.getFirstDateOfMonth(DateUtil.convertDateToString(today, "yyyy-MM-dd"), "yyyy-MM-dd");
             	}
             	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
-            		sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
-            		eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		sTime = "";
+            		eTime = "";
+            		if (StringUtil.isNotEmpty(startTime)) {
+            			sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		}
+            		if (StringUtil.isNotEmpty(endTime)) {
+            			eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		}
             	}
             	List<Map<String, Object>> list = inOutGoldService.selectByRechargeChannel(type, sTime, eTime, channel);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
@@ -241,8 +247,14 @@ public class InOutGoldController {
             		sTime = DateUtil.getFirstDateOfMonth(DateUtil.convertDateToString(today, "yyyy-MM-dd"), "yyyy-MM-dd");
             	}
             	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
-            		sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
-            		eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		sTime = "";
+            		eTime = "";
+            		if (StringUtil.isNotEmpty(startTime)) {
+            			sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		}
+            		if (StringUtil.isNotEmpty(endTime)) {
+            			eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		}
             	}
             	List<Map<String, Object>> list = inOutGoldService.selectByAgent(type, sTime, eTime);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
@@ -304,8 +316,14 @@ public class InOutGoldController {
             		sTime = DateUtil.getFirstDateOfMonth(DateUtil.convertDateToString(today, "yyyy-MM-dd"), "yyyy-MM-dd");
             	}
             	if (StringUtil.isNotEmpty(startTime) || StringUtil.isNotEmpty(endTime)) {
-            		sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
-            		eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		sTime = "";
+            		eTime = "";
+            		if (StringUtil.isNotEmpty(startTime)) {
+            			sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		}
+            		if (StringUtil.isNotEmpty(endTime)) {
+            			eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+            		}
             	}
             	List<Map<String, Object>> list = inOutGoldService.selectByAgentNet(type, sTime, eTime);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
