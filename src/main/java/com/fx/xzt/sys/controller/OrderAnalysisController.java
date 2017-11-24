@@ -192,9 +192,9 @@ public class OrderAnalysisController {
                         agentName,upOrDown,orderState,profitLoss,agentId
                 );
                 POIUtils poi = new POIUtils();
-                String[] heads = {"时间", "黄金稳赚交易用户",  "黄金稳赚交易金额", "随意存交易用户", "随意存交易金额", "金权交易用户",
+                String[] heads = {"时间", "交易用户","交易金额","黄金稳赚交易用户",  "黄金稳赚交易金额", "随意存交易用户", "随意存交易金额", "金权交易用户",
                         "金权交易金额","实物黄金交易用户","实物黄金交易金额"};
-                String[] colums = {"time", "goldUpCount", "goldUpAmount", "financeCount", "financeAmount", "goldRightCount",
+                String[] colums = {"date", "perCount","perAmount","goldUpCount", "goldUpAmount", "financeCount", "financeAmount", "goldRightCount",
                         "goldRightAmount","realGoldCount","realGoldAmount"};
                 poi.doExport(request, response, list, tieleName, excelName, heads, colums);
             }
