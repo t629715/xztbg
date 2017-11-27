@@ -404,7 +404,7 @@ public class UserController {
 		Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
 		hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
 		try {
-			BitMatrix bitMatrix = new MultiFormatWriter().encode(text, BarcodeFormat.QR_CODE, width, height, hints);
+			BitMatrix bitMatrix = new MultiFormatWriter().encode("http://www.baidu.com", BarcodeFormat.QR_CODE, width, height, hints);
 			GenerateQRCodeUtil.writeToStream(response,bitMatrix,format);
 		} catch (WriterException e) {
 			e.printStackTrace();
