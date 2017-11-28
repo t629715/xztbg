@@ -34,10 +34,10 @@
 	    	and Title like concat(concat('%',#{title,jdbcType=VARCHAR}),'%')
 		    </if>
 		    <if test="startTime !=null and startTime !='' ">
-				and ReleaseTime &gt;=#{startTime,jdbcType=TIMESTAMP}
+				and CreateTime &gt;=#{startTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="endTime !=null and endTime !='' ">
-				and ReleaseTime &lt;=#{endTime,jdbcType=TIMESTAMP}
+				and CreateTime &lt;=#{endTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="operator != null and operator !='' ">
 				and Operator = #{operator,jdbcType=VARCHAR}

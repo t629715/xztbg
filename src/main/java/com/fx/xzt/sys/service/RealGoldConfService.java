@@ -21,14 +21,9 @@ public interface RealGoldConfService extends IService<RealGoldConf>{
     /**
      * 编辑实金买卖设定 tianliya
      * @param id
-     * @param name
-     * @param buyPoundage
      * @param insurance
      * @param logisticsFee
-     * @param sellPoundage
-     * @param maxBuyCount
      * @return
      */
-    int edit(Long id, String name,Integer buyPoundage, Integer insurance, Integer logisticsFee,
-             Integer sellPoundage, Long maxBuyCount);
+    int edit(Long id, Integer insurance, Integer logisticsFee);
 }

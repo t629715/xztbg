@@ -27,4 +27,6 @@ public interface RealGoldBuyConfMapper extends BaseMapper<RealGoldBuyConf>{
      * @return
      */
     int updateById(Map<String,Object> map);
+
+    Map<String, Object> selectRealGoldBuyConf();
 }

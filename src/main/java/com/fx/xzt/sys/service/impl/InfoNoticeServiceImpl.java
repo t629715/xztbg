@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.fx.xzt.sys.util.DateUtil;
+import com.fx.xzt.sys.util.DateUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +45,17 @@ public class InfoNoticeServiceImpl extends BaseService<InfoNotice> implements In
 	public PageInfo<InfoNotice> getInfoNoticeAll(String title, String startTime, String endTime, String operator,
 			Integer pageNum, Integer pageSize) {
 		Map<String,Object> map = new HashMap<String,Object>();
+		if (startTime != null && startTime != ""){
+			Date startDate = null;
+			startDate = DateUtil.convertTimeMillisToDate(Long.parseLong(startTime));
+			startTime = DateUtils.formatDateByMidLine1(startDate);
+		}
+
+		if (endTime != null && endTime != ""){
+			Date endDate = null;
+			endDate = DateUtil.convertTimeMillisToDate(Long.parseLong(endTime));
+			endTime = DateUtils.formatDateByMidLine1(endDate);
+		}
 		map.put("title", title);
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);

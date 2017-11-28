@@ -2,6 +2,7 @@ package com.fx.xzt.sys.controller;
 
 import com.fx.xzt.sys.entity.RealGoldConf;
 import com.fx.xzt.sys.entity.Users;
+import com.fx.xzt.sys.service.RealGoldBuyConfService;
 import com.fx.xzt.sys.service.RealGoldConfService;
 import com.fx.xzt.sys.service.RealGoldOrderService;
 import com.fx.xzt.sys.util.CommonResponse;
@@ -34,6 +35,8 @@ public class RealGoldConfController {
 
     @Resource
     RealGoldConfService realGoldConfService;
+    @Resource
+    RealGoldBuyConfService realGoldBuyConfService;
 
     /**
      * 获取实金买卖设定
@@ -88,17 +91,16 @@ public class RealGoldConfController {
      */
     @RequestMapping(value="/editRealGoldConf",method=RequestMethod.POST)
     @ResponseBody
-    public Object eidtRealGoldConf(HttpServletRequest request, Long id, String name, Integer buyPoundage,
+    public Object eidtRealGoldConf(HttpServletRequest request, Long id,Long sid, String name,
                                    Integer insurance, Integer logisticsFee,
-                                   Integer sellPoundage, Long maxBuyCount) {
+                                   Float sellPoundage, Float buyPoundage,Double maxBuyCount,Double minBuyCount) {
         CommonResponse cr = new CommonResponse();
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
-                int i = realGoldConfService.edit(id, name, buyPoundage,
-                         insurance, logisticsFee,
-                         sellPoundage, maxBuyCount);
+                int i = realGoldConfService.edit(sid,insurance, logisticsFee);
+                realGoldBuyConfService.modify(id,name,buyPoundage,sellPoundage,maxBuyCount,minBuyCount);
                 if (i != 0){
                     cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                     cr.setData(i);
