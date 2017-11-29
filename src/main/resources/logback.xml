@@ -56,7 +56,7 @@
 		<appender-ref ref="AUDIT_LOG" />
 	</appender>
 
-	<logger name="com.fx.xzt.util.log.AuditLog" level="INFO" additivity="false">
+	<logger name="com.fx.xzt.sys.util.log.AuditLog" level="INFO" additivity="false">
 		<appender-ref ref="AUDIT_LOG" />
 	</logger>
 	
