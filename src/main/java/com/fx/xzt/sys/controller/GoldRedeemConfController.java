@@ -1,6 +1,8 @@
 package com.fx.xzt.sys.controller;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,12 +18,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
+import com.fx.xzt.sys.entity.LogRecord;
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.service.GoldRedeemConfService;
+import com.fx.xzt.sys.service.LogRecordService;
 import com.fx.xzt.sys.service.UserLoginInfoService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
+import com.fx.xzt.sys.util.IPUtil;
 import com.fx.xzt.sys.util.StringUtil;
+import com.fx.xzt.sys.util.log.AuditLog;
 
 /**
  * 
@@ -41,6 +47,8 @@ public class GoldRedeemConfController {
 	UserLoginInfoService userLoginInfoService;
 	@Resource
 	RedisTemplate redisTemplate;
+	@Resource
+    LogRecordService logRecordService;
 	
 	/**
 	 * 
@@ -57,6 +65,15 @@ public class GoldRedeemConfController {
     @ResponseBody
 	public Object selectByGoldRedeemConfEnable(HttpServletRequest request) throws Exception {
         CommonResponse cr = new CommonResponse();
+        //操作日志
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("获取已启用的黄金赎回配置");
+        log.setContent("获取失败");
+        log.setModuleName(ConstantUtil.logRecordModule.HJSHJL.getName());
+        log.setType(ConstantUtil.logRecordType.CK.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
@@ -78,6 +95,8 @@ public class GoldRedeemConfController {
                 	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                     cr.setData(data);
                     cr.setMsg("操作成功！");
+                    log.setUserId(users.getId());
+                    log.setContent("获取成功");
                 } else {
                 	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
                     cr.setData("{}");
@@ -95,6 +114,8 @@ public class GoldRedeemConfController {
             throw e;
             // e.printStackTrace();
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
         return cr;
     }
 	
@@ -117,6 +138,15 @@ public class GoldRedeemConfController {
 	public Object calculationGoldRedeem(HttpServletRequest request, @RequestParam Double price, @RequestParam Double gram, 
 			@RequestParam Double poundagePercent) throws Exception {
         CommonResponse cr = new CommonResponse();
+        //操作日志
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("黄金赎回计算");
+        log.setContent("计算失败");
+        log.setModuleName(ConstantUtil.logRecordModule.HJSHJL.getName());
+        log.setType(ConstantUtil.logRecordType.CK.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
@@ -133,6 +163,8 @@ public class GoldRedeemConfController {
             		cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                     cr.setData(map);
                     cr.setMsg("操作成功！");
+                    log.setUserId(users.getId());
+                    log.setContent("计算成功；信息：amount:" + amount + ";;poundage:" + poundage + ";;total:" + total);
             	} else {
             		cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
                     cr.setData("{}");
@@ -150,6 +182,8 @@ public class GoldRedeemConfController {
             throw e;
             // e.printStackTrace();
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
         return cr;
     }
 	

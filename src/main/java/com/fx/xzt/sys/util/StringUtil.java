@@ -46,6 +46,24 @@ public class StringUtil {
 	
 	/**
 	 * 
+	* @Title: isBlank 
+	* @Description: 判断字符串为空
+	* @param s
+	* @return    设定文件 
+	* @return boolean    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	public static boolean isBlank (String s) {
+		boolean b = false;
+		if (s == null || s.equals("") || s.length() == 0) {
+			b = true;
+		}
+		return b;
+	}
+	
+	/**
+	 * 
 	* @Title: fundsHandle 
 	* @Description: 金额处理（分转为圆，为空处理为0）
 	* @param object

@@ -1,7 +1,9 @@
 package com.fx.xzt.sys.controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,15 +13,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fx.xzt.sys.entity.LogRecord;
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.service.DealOrderService;
+import com.fx.xzt.sys.service.LogRecordService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
+import com.fx.xzt.sys.util.IPUtil;
+import com.fx.xzt.sys.util.log.AuditLog;
 import com.fx.xzt.util.POIUtils;
 import com.github.pagehelper.PageInfo;
 
@@ -32,8 +40,11 @@ import com.github.pagehelper.PageInfo;
 @Controller
 @RequestMapping("/dealOrder")
 public class DealOrderController {
+	
     @Resource
     DealOrderService dealOrderService;
+    @Resource
+    LogRecordService logRecordService;
 
     /**
      * 金权交易查询
@@ -47,14 +58,26 @@ public class DealOrderController {
      * @param pageNum
      * @param pageSize
      * @return
+     * @throws ParseException 
      */
     @RequestMapping(value="/selectByDealOrder")
     @ResponseBody
     public Object selectByDealOrder(HttpServletRequest request, String userName, String orderNo, String startTime, String endTime, 
     		String regStartTime, String regEndTime, String agentName, String brokerName, Integer orderState, Integer isUseCard,
-    		@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+    		@RequestParam Integer pageNum, @RequestParam Integer pageSize) throws ParseException {
 
         CommonResponse cr = new CommonResponse();
+        
+        //操作日志
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("金权交易交易查询");
+        log.setContent("查询失败");
+        log.setModuleName(ConstantUtil.logRecordModule.JQJY.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
+        
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
@@ -67,6 +90,8 @@ public class DealOrderController {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
+                log.setUserId(users.getId());
+                log.setContent("查询成功");
             } else {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 cr.setData("{}");
@@ -80,6 +105,8 @@ public class DealOrderController {
             throw e;
             // e.printStackTrace();
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
         return cr;
     }
 
@@ -102,7 +129,17 @@ public class DealOrderController {
     @ResponseBody
     public void excelDealOrderMessage(HttpServletRequest request, HttpServletResponse response, String userName, String orderNo, String startTime, String endTime, 
     		String regStartTime, String regEndTime,  String agentName, String brokerName, Integer orderState, Integer isUseCard) throws Exception{
-        try {
+    	//操作日志
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("金权交易导出");
+        log.setContent("导出失败");
+        log.setModuleName(ConstantUtil.logRecordModule.JQJY.getName());
+        log.setType(ConstantUtil.logRecordType.DC.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
+        
+    	try {
             String tieleName = "金权交易";
             String excelName = "金权交易";
             HttpSession httpSession = request.getSession();
@@ -114,7 +151,6 @@ public class DealOrderController {
                 }
                 List<Map<String, Object>> list = dealOrderService.excelDealOrderMessage(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName, orderState, isUseCard);
                 if (list != null && list.size() > 0) {
-                	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     for (Map<String, Object> map : list) {
                         map.put("upOrDown", ConstantUtil.dealOrderUpOrDown.toMap().get(map.get("upOrDown").toString()));
                         
@@ -180,22 +216,36 @@ public class DealOrderController {
                                 "ensureAmount", "ensureAmount", "ensureAmount", "openPositionPrice", "closePositionPrice", "createTime", "endTime", "profitLossNumber"};
                         poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                     }
+                    log.setUserId(users.getId());
+                    log.setContent("导出成功，共：" + list.size() + "条数据");
                 }
             }
         } catch (Exception e) {
             throw e;
         }
+    	logRecordService.add(log);
+        AuditLog.info(log.toString());
     }
 
     /**
      *  金权交易查询-金额统计
      * @return
+     * @throws ParseException 
      */
     @RequestMapping(value="/selectByDealOrderCount")
     @ResponseBody
     public Object selectByDealOrderCount(HttpServletRequest request, String userName, String orderNo, String startTime, String endTime, 
-    		String regStartTime, String regEndTime,  String agentName, String brokerName, Integer orderState, Integer isUseCard){
+    		String regStartTime, String regEndTime,  String agentName, String brokerName, Integer orderState, Integer isUseCard) throws ParseException{
         CommonResponse cr = new CommonResponse();
+      //操作日志
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("金权交易统计查询");
+        log.setContent("查询失败");
+        log.setModuleName(ConstantUtil.logRecordModule.JQJY.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
@@ -209,6 +259,8 @@ public class DealOrderController {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(map);
                 cr.setMsg("查询成功！");
+                log.setUserId(users.getId());
+                log.setContent("查询成功");
             } else {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 cr.setData("{}");
@@ -221,6 +273,8 @@ public class DealOrderController {
             throw e;
             // e.printStackTrace();
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
         return cr;
     }
 

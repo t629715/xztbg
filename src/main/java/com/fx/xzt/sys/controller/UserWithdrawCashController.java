@@ -1,6 +1,8 @@
 package com.fx.xzt.sys.controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,13 +17,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fx.xzt.sys.entity.LogRecord;
 import com.fx.xzt.sys.entity.UserAccountRecord;
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.model.UserWithdrawCashModel;
+import com.fx.xzt.sys.service.LogRecordService;
 import com.fx.xzt.sys.service.UserAccountRecordService;
 import com.fx.xzt.sys.service.UserWithdrawCashService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
+import com.fx.xzt.sys.util.IPUtil;
+import com.fx.xzt.sys.util.log.AuditLog;
 import com.fx.xzt.util.POIUtils;
 import com.github.pagehelper.PageInfo;
 
@@ -32,6 +38,8 @@ public class UserWithdrawCashController {
 	UserWithdrawCashService userWithdrawCashService;
 	@Resource
 	UserAccountRecordService userAccountRecordService;
+	@Resource
+    LogRecordService logRecordService;
 	
 	/**
 	 * 出金管理 集合 
@@ -90,6 +98,7 @@ public class UserWithdrawCashController {
 	* @param pageSize
 	* @return    设定文件 
 	* @return Object    返回类型 
+	 * @throws ParseException 
 	* @throws 
 	* @author htt
 	 */
@@ -97,8 +106,17 @@ public class UserWithdrawCashController {
     @ResponseBody
     public Object selectByWithdrawCash(HttpServletRequest request, String userName, String startTime, String endTime, 
 			String agentName, String brokerName, Integer status, 
-			@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+			@RequestParam Integer pageNum, @RequestParam Integer pageSize) throws ParseException {
         CommonResponse cr = new CommonResponse();
+        //操作日志
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("现金提取查询");
+        log.setContent("查询失败");
+        log.setModuleName(ConstantUtil.logRecordModule.XJTQ.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
@@ -108,6 +126,8 @@ public class UserWithdrawCashController {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
+                log.setUserId(users.getId());
+                log.setContent("查询成功");
             } else {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 cr.setData("{}");
@@ -120,6 +140,8 @@ public class UserWithdrawCashController {
             throw e;
             // e.printStackTrace();
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
         return cr;
     }
 	
@@ -144,6 +166,15 @@ public class UserWithdrawCashController {
     @ResponseBody
     public void excelWithdrawCash(HttpServletRequest request, HttpServletResponse response, String userName, String startTime, String endTime, 
 			String agentName, String brokerName, Integer status) throws Exception{
+		//操作日志
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("现金提取导出");
+        log.setContent("导出失败");
+        log.setModuleName(ConstantUtil.logRecordModule.XJTQ.getName());
+        log.setType(ConstantUtil.logRecordType.DC.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             String tieleName = "现金提取";
             String excelName = "现金提取";
@@ -153,7 +184,6 @@ public class UserWithdrawCashController {
                 String agentNameStr = agentName;
                 List<Map<String, Object>> list = userWithdrawCashService.excelWithdrawCash(userName, startTime, endTime, agentNameStr, brokerName, status);
                 if (list != null && list.size() > 0) {
-                	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     for (Map<String, Object> map : list) {
                         map.put("status", ConstantUtil.withdrawCashStatus.toMap().get(map.get("status").toString()));
                         Object amtObj =  map.get("withdrawAmt");
@@ -187,11 +217,15 @@ public class UserWithdrawCashController {
                     String[] heads = {"用户账号","代理商","经纪人","提取金额","手续费","银行卡号","申请提取时间", "审核时间",  "状态"};
                     String[] colums = {"userName", "agentName", "brokerName", "withdrawAmt", "poundage", "accountNum", "withdrawTime", "finishTime", "status"};
                     poi.doExport(request, response, list, tieleName, excelName, heads, colums);
+                    log.setUserId(users.getId());
+                    log.setContent("导出成功，共：" + list.size() + "条数据");
                 }
             }
         } catch (Exception e) {
             throw e;
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
     }
 	
 	/**
@@ -207,14 +241,24 @@ public class UserWithdrawCashController {
 	* @param status 状态 0：审核中 1：已完成
 	* @return    设定文件 
 	* @return Object    返回类型 
+	 * @throws ParseException 
 	* @throws 
 	* @author htt
 	 */
 	@RequestMapping(value="/selectByWithdrawCashCount")
     @ResponseBody
     public Object selectByWithdrawCashCount(HttpServletRequest request, String userName, String startTime, String endTime, String agentName,
-			String brokerName, Integer status){
+			String brokerName, Integer status) throws ParseException{
         CommonResponse cr = new CommonResponse();
+        //操作日志
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("现金提取统计查询");
+        log.setContent("查询失败");
+        log.setModuleName(ConstantUtil.logRecordModule.XJTQ.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
@@ -224,6 +268,8 @@ public class UserWithdrawCashController {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(map);
                 cr.setMsg("操作成功！");
+                log.setUserId(users.getId());
+                log.setContent("查询成功");
             } else {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 cr.setData("{}");
@@ -236,6 +282,8 @@ public class UserWithdrawCashController {
             throw e;
             // e.printStackTrace();
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
         return cr;
     }
 	
@@ -255,6 +303,15 @@ public class UserWithdrawCashController {
 	@ResponseBody
 	public Object auditPassedById(HttpServletRequest request,  String withdrawid) throws Exception{
 		CommonResponse cr = new CommonResponse();
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("现金提取审核");
+		log.setContent("审核通过失败");
+		log.setModuleName(ConstantUtil.logRecordModule.XJTQ.getName());
+		log.setType(ConstantUtil.logRecordType.SH.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
@@ -264,10 +321,11 @@ public class UserWithdrawCashController {
                 	UserAccountRecord record = new UserAccountRecord();
                 	record.setWithdrawId(withdrawid);
                 	userAccountRecordService.updateByWithdrawId(record);
-                	
                 	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);
                 	cr.setData("{}");
                 	cr.setMsg("操作成功！");
+                	log.setUserId(users.getId());
+                    log.setContent("审核通过成功；信息：withdrawid:" + withdrawid);
                 } else {
                 	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
                 	cr.setData("{}");
@@ -285,6 +343,8 @@ public class UserWithdrawCashController {
             throw e;
             // e.printStackTrace();
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
         return cr;
 	}
 }

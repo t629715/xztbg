@@ -1,7 +1,9 @@
 package com.fx.xzt.sys.controller;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -15,10 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fx.xzt.sys.entity.LogRecord;
 import com.fx.xzt.sys.entity.Users;
+import com.fx.xzt.sys.service.LogRecordService;
 import com.fx.xzt.sys.service.UserVoucherFinanceService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
+import com.fx.xzt.sys.util.IPUtil;
+import com.fx.xzt.sys.util.log.AuditLog;
 import com.fx.xzt.util.POIUtils;
 import com.github.pagehelper.PageInfo;
 
@@ -36,6 +42,8 @@ public class UserVoucherFinanceController {
 
     @Resource
     UserVoucherFinanceService userVoucherFinanceService;
+    @Resource
+    LogRecordService logRecordService;
 
     /**
      * 
@@ -54,6 +62,7 @@ public class UserVoucherFinanceController {
     * @param pageSize
     * @return    设定文件 
     * @return Object    返回类型 
+     * @throws ParseException 
     * @throws 
     * @author htt
      */
@@ -61,9 +70,18 @@ public class UserVoucherFinanceController {
     @ResponseBody
     public Object selectByUserVoucherFinance(HttpServletRequest request, String userName, String startTime, String endTime, 
     		String useStartTime, String useEndTime, String agentName, String brokerName, Integer useStatus,
-    		@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+    		@RequestParam Integer pageNum, @RequestParam Integer pageSize) throws ParseException {
 
         CommonResponse cr = new CommonResponse();
+      //操作日志
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("加息券查询查询");
+        log.setContent("查询失败");
+        log.setModuleName(ConstantUtil.logRecordModule.JXQ.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
@@ -74,6 +92,8 @@ public class UserVoucherFinanceController {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
+                log.setUserId(users.getId());
+                log.setContent("查询成功");
             } else {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 cr.setData("{}");
@@ -87,6 +107,8 @@ public class UserVoucherFinanceController {
             throw e;
             // e.printStackTrace();
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
         return cr;
     }
 
@@ -113,6 +135,15 @@ public class UserVoucherFinanceController {
     @ResponseBody
     public void excelUserVoucherFinance(HttpServletRequest request, HttpServletResponse response, String userName, String startTime, String endTime, 
     		String useStartTime, String useEndTime, String agentName, String brokerName, Integer useState) throws Exception{
+    	//操作日志
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("加息券导出");
+        log.setContent("导出失败");
+        log.setModuleName(ConstantUtil.logRecordModule.JXQ.getName());
+        log.setType(ConstantUtil.logRecordType.DC.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             String tieleName = "加息券信息";
             String excelName = "加息券信息";
@@ -122,7 +153,6 @@ public class UserVoucherFinanceController {
                 List<Map<String, Object>> list = userVoucherFinanceService.excelUserVoucherFinance(userName, startTime, endTime, 
                 		useStartTime, useEndTime, agentName, brokerName, useState);
                 if (list != null && list.size() > 0) {
-                	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     for (Map<String, Object> map : list) {
                     	Object useStatusObje = map.get("useStatus");
                     	Object deductionPercentObj =  map.get("deductionPercent");
@@ -147,11 +177,15 @@ public class UserVoucherFinanceController {
                     String[] heads = {"用户账号", "代理商",  "经纪人", "加息券名称", "加息券收益", "加息券天数", "使用时间", "发放时间", "来源","状态"};
                     String[] colums = {"userName", "agentName", "brokerName", "description", "deductionPercent", "validateDays", "useTime", "createTime", "source", "useStatus"};
                     poi.doExport(request, response, list, tieleName, excelName, heads, colums);
+                    log.setUserId(users.getId());
+                    log.setContent("导出成功，共：" + list.size() + "条数据");
                 }
             }
         } catch (Exception e) {
             throw e;
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
     }
 
 }

@@ -86,7 +86,6 @@ public class ConstantUtil {
     public final static String USER_NPER_JQT = "3";  //用户统计分析周期-近七天
     public final static String USER_NPER_JSST = "4";   //用户统计分析周期-近三十天
     
-
     /**
      * 客户信息-状态
      */
@@ -342,6 +341,111 @@ public class ConstantUtil {
         }
     }
     
+    /**
+     * 操作日志记录-类型
+     */
+    public static enum logRecordType {
+        CK("查看",1),
+        XZ("新增",2),
+        XG("修改",3),
+        LJSC("逻辑删除",4),
+        WLSC("物理删除",5),
+        DR("导入",6),
+        DC("导出",7),
+        SQ("授权",8),
+        SH("审核",9),
+        DL("登录",10),
+        MMCZ("充值密码",11),
+        CX("查询",11);
+        private String name;
+        private Integer index;
+        private logRecordType(String name,Integer index){
+            this.name = name;
+            this.index = index;
+        }
+        public Integer getIndex() {
+        	return this.index;
+        }
+        public String getName() {
+            return this.name;
+        }
+        public static Map<Integer, String> toMap() {
+        	logRecordType[] ds = logRecordType.values();
+            Map<Integer, String> rlt = new Hashtable<Integer, String>();
+            for (logRecordType d : ds) {
+                rlt.put(d.index, d.name);
+            }
+            return rlt;
+        }
+    }
     
+    /**
+     * 
+    * @ClassName: logRecordModule 
+    * @Description: 操作日志记录--模块
+    * @author htt
+    * @date 2017-11-28 下午4:04:44 
+    *
+     */
+    public static enum logRecordModule {
+        KHFX("客户分析","1"),
+        ZCXX("注册信息","2"),
+        ZHXX("账户信息","3"),
+        FXPC("风险评测","4"),
+        SMRZ("实名认证","5"),
+        KHSX("客户属性","6"),
+        JQJY("金权交易","7"),
+        SJJY("实金交易","8"),
+        LCJY("理财交易","9"),
+        HJWZJY("黄金稳赚交易","10"),
+        JYFX("交易分析","11"),
+        JQGZSD("金权规则设定","12"),
+        LCCPSD("理财产品设定","13"),
+        SJMMSD("实金买卖设定","14"),
+        DCTL("对冲套利","15"),
+        CRJCX("出入金查询","16"),
+        CRJFX("出入金分析","17"),
+        HJSYJS("黄金收益结算","18"),
+        LCSYJS("理财收益结算","19"),
+        HJWZJS("黄金稳赚看涨结算","20"),
+        HJTQ("黄金提取","21"),
+        XJTQ("现金提取","22"),
+        XJCZ("现金充值","23"),
+        GGGL("公告管理","24"),
+        GGWGL("广告位管理","25"),
+        HJKT("黄金课堂","26"),
+        XODZX("希欧德中心","27"),
+        ZXGL("咨询管理","28"),
+        HDGL("活动管理","29"),
+        SHGLYY("商户管理(运营商视角)","30"),
+        SHGL("商户管理","31"),
+        XJKH("下级客户","32"),
+        ZHGL("注册管理","33"),
+        JSGL("角色管理","34"),
+        HJSHJL("黄金赎回记录","35"),
+        HJSHJS("黄金赎回计算","36"),
+        YHQ("优惠券","37"),
+        JXQ("加息券","38");
+        private String name;
+        private String index;
+        private logRecordModule(String name,String index){
+            this.name = name;
+            this.index = index;
+        }
+        public String getIndex() {
+        	return this.index;
+        }
+        public String getName() {
+            return this.name;
+        }
+        public static Map<String, String> toMap() {
+        	logRecordModule[] ds = logRecordModule.values();
+            Map<String, String> rlt = new Hashtable<String, String>();
+            for (logRecordModule d : ds) {
+                rlt.put(d.index, d.name);
+            }
+            return rlt;
+        }
+    }
 
 }

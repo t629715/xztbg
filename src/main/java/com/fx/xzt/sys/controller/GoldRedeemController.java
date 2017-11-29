@@ -1,6 +1,7 @@
 package com.fx.xzt.sys.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,12 +18,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fx.xzt.sys.entity.GoldRedeem;
+import com.fx.xzt.sys.entity.LogRecord;
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.service.GoldRedeemService;
+import com.fx.xzt.sys.service.LogRecordService;
 import com.fx.xzt.sys.service.UserLoginService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
+import com.fx.xzt.sys.util.IPUtil;
 import com.fx.xzt.sys.util.StringUtil;
+import com.fx.xzt.sys.util.log.AuditLog;
 import com.fx.xzt.util.IdUtil;
 import com.fx.xzt.util.POIUtils;
 import com.github.pagehelper.PageInfo;
@@ -43,6 +48,8 @@ public class GoldRedeemController {
 	GoldRedeemService goldRedeemService;
 	@Resource
 	UserLoginService userLoginService;
+	@Resource
+    LogRecordService logRecordService;
 	
 	/**
 	 * 
@@ -66,6 +73,15 @@ public class GoldRedeemController {
 	public Object selectByGoldRedeem(HttpServletRequest request, String userName, String startTime, String endTime, String channelName,
 			@RequestParam Integer pageNum, @RequestParam Integer pageSize) throws Exception {
         CommonResponse cr = new CommonResponse();
+        //操作日志
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("黄金赎回查询");
+        log.setContent("查询失败");
+        log.setModuleName(ConstantUtil.logRecordModule.HJSHJL.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
@@ -74,6 +90,8 @@ public class GoldRedeemController {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
+                log.setUserId(users.getId());
+                log.setContent("查询成功");
             } else {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 cr.setData("{}");
@@ -86,6 +104,8 @@ public class GoldRedeemController {
             throw e;
             // e.printStackTrace();
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
         return cr;
     }
 	
@@ -108,6 +128,15 @@ public class GoldRedeemController {
     @ResponseBody
     public void excelGoldRedeem(HttpServletRequest request, HttpServletResponse response, String userName, String startTime, String endTime, 
     		String channelName) throws Exception{
+		//操作日志
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("黄金赎回记录导出");
+        log.setContent("导出失败");
+        log.setModuleName(ConstantUtil.logRecordModule.HJSHJL.getName());
+        log.setType(ConstantUtil.logRecordType.DC.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		try {
             String tieleName = "黄金赎回记录";
             String excelName = "黄金赎回记录";
@@ -116,7 +145,6 @@ public class GoldRedeemController {
             if (users != null) {
                 List<Map<String, Object>> list = goldRedeemService.excelGoldRedeem(userName, startTime, endTime, channelName);
                 if (list != null && list.size() > 0) {
-                	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     for (Map<String, Object> map : list) {
                     	Object priceObj =  map.get("price");
                     	Object amountObj =  map.get("amount");
@@ -144,11 +172,15 @@ public class GoldRedeemController {
                     String[] heads = {"用户账号", "赎回克重",  "赎回价格", "赎回金额", "手续费", "赎回时间", "渠道商账号"};
                     String[] colums = {"userName", "gram", "price", "amount", "poundage", "createTme", "channelName"};
                     poi.doExport(request, response, list, tieleName, excelName, heads, colums);
+                    log.setUserId(users.getId());
+                    log.setContent("导出成功，共：" + list.size() + "条数据");
                 }
             }
         } catch (Exception e) {
             throw e;
         }
+		logRecordService.add(log);
+        AuditLog.info(log.toString());
 	}
 	
 	/**
@@ -171,6 +203,15 @@ public class GoldRedeemController {
     public Object selectByGoldRedeemCount(HttpServletRequest request, String userName, String startTime, String endTime, 
     		String channelName) throws Exception{
         CommonResponse cr = new CommonResponse();
+        //操作日志
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("黄金赎回记录统计查询");
+        log.setContent("查询失败");
+        log.setModuleName(ConstantUtil.logRecordModule.HJSHJL.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
@@ -180,6 +221,8 @@ public class GoldRedeemController {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(map);
                 cr.setMsg("操作成功！");
+                log.setUserId(users.getId());
+                log.setContent("查询成功");
             } else {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 cr.setData("{}");
@@ -192,6 +235,8 @@ public class GoldRedeemController {
             throw e;
             // e.printStackTrace();
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
         return cr;
     }
 	
@@ -211,6 +256,15 @@ public class GoldRedeemController {
     @ResponseBody
 	public Object checkUserName(HttpServletRequest request, @RequestParam String userName) throws Exception {
         CommonResponse cr = new CommonResponse();
+        //操作日志
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("黄金赎回计算验证用户名是否存在");
+        log.setContent("验证失败");
+        log.setModuleName(ConstantUtil.logRecordModule.HJWZJY.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             HttpSession httpSession = request.getSession();
             cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
@@ -225,7 +279,9 @@ public class GoldRedeemController {
             			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                         cr.setData(list.get(0));
                         cr.setMsg("操作成功！");
-            		}
+                        log.setUserId(users.getId());
+                        log.setContent("验证成功；信息：userName:" + userName);
+            		} 
             	} 
             } else {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
@@ -239,6 +295,8 @@ public class GoldRedeemController {
             throw e;
             // e.printStackTrace();
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
         return cr;
     }
 	
@@ -259,6 +317,15 @@ public class GoldRedeemController {
     @ResponseBody
 	public Object saveGoldRedeem(HttpServletRequest request, @ModelAttribute GoldRedeem goldRedeem) throws Exception {
         CommonResponse cr = new CommonResponse();
+        //操作日志
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("黄金赎回记录新增");
+        log.setContent("新增失败；信息：" + goldRedeem.toString());
+        log.setModuleName(ConstantUtil.logRecordModule.HJSHJL.getName());
+        log.setType(ConstantUtil.logRecordType.XZ.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
@@ -272,6 +339,8 @@ public class GoldRedeemController {
             		cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);
                     cr.setData("{}");
                     cr.setMsg("操作成功！");
+                    log.setUserId(users.getId());
+                    log.setContent("新增成功；信息：" + goldRedeem.toString());
             	} else {
             		cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
                     cr.setData("{}");
@@ -289,6 +358,8 @@ public class GoldRedeemController {
             throw e;
             // e.printStackTrace();
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
         return cr;
     }
 

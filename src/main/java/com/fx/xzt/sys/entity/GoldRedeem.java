@@ -104,5 +104,13 @@ public class GoldRedeem implements Serializable {
 	public void setUserIdString(String userIdString) {
 		this.userIdString = userIdString;
 	}
+
+	public String toString() {
+		return "GoldRedeem [id=" + id + ", userId=" + userId + ", gram=" + gram
+				+ ", price=" + price + ", amount=" + amount + ", createTime="
+				+ createTime + ", poundage=" + poundage + ", accountId="
+				+ accountId + ", userName=" + userName + ", userIdString="
+				+ userIdString + "]";
+	}
 	
 }
