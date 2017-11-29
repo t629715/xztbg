@@ -1,10 +1,26 @@
 package com.fx.xzt.sys.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.fx.xzt.rabbitmq.OrderCloseDirective;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.fx.xzt.rabbitmq.RabbitmqService;
 import com.fx.xzt.redis.RedisService;
-import com.fx.xzt.sys.entity.*;
+import com.fx.xzt.sys.entity.GoldRightDealConf;
+import com.fx.xzt.sys.entity.LogRecord;
+import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.service.GoldRightDealConfService;
 import com.fx.xzt.sys.service.LogRecordService;
 import com.fx.xzt.sys.util.CommonResponse;
@@ -13,23 +29,6 @@ import com.fx.xzt.sys.util.IPUtil;
 import com.fx.xzt.sys.util.log.AuditLog;
 import com.fx.xzt.util.JsonUtils;
 import com.github.pagehelper.PageInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.amqp.rabbit.support.CorrelationData;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
-
-import static com.sun.webpane.platform.ConfigManager.log;
 
 /**
  * @author tianliya
