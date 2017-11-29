@@ -23,6 +23,11 @@
             calc_method calcMethod, clac_start_point calcStartPoint
     from real_gold_buy_conf
   </select>
+  <select id="selectRealGoldBuyConf" resultType="java.util.Map">
+    select id, name, year_incom_percent yearIncomPercent,product_no productNo, cycle, redeem_method redeemMethod, settle_method settleMethod,
+    calc_method calcMethod, clac_start_point calcStartPoint, buy_poundage buyPoundage,sell_poundage sellPoundage,max_buy_count maxBuyCount,min_buy_count minBuyCount
+    from real_gold_buy_conf
+  </select>
 
   <!--根据主键删除一条贵金属信息 tianliya-->
   <delete id="deleteById" parameterType="java.lang.Long" >

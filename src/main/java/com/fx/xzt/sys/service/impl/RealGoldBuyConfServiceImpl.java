@@ -58,7 +58,25 @@ public class RealGoldBuyConfServiceImpl extends BaseService<RealGoldBuyConf> imp
         map.put("calcStartPoint",calcStartPoint);
         return realGoldBuyConfMapper.updateById(map);
     }
+    /**
+     * 修改所有的贵金属信息
+     * @param id
+     * @param name
+     * @return
+     */
+    @Override
+    public int modify(Long id, String name,Float buyPoundage,Float sellPoundage,Double maxBuyCount,Double minBuyCount
 
+                      ) {
+        Map map = new HashMap();
+        map.put("id",id);
+        map.put("name",name);
+        map.put("buyPoundage",buyPoundage);
+        map.put("sellPoundage",sellPoundage);
+        map.put("maxBuyCount",maxBuyCount);
+        map.put("minBuyCount",minBuyCount);
+        return realGoldBuyConfMapper.updateById(map);
+    }
     /**
      * 根据主键删除贵金属信息
      * @param id

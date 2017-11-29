@@ -2,6 +2,7 @@ package com.fx.xzt.sys.service;
 
 import com.fx.xzt.sys.entity.RealGoldBuyConf;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,5 +39,9 @@ public interface RealGoldBuyConfService extends IService<RealGoldBuyConf> {
      * @return
      */
     public int deleteById(Long id);
+
+
+    public int modify(Long id, String name,Float buyPoundage,Float sellPoundage,
+                      Double maxBuyCount,Double minBuyCount);
 
 }
