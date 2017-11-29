@@ -2,11 +2,15 @@ package com.fx.xzt.sys.controller;
 
 import com.fx.xzt.redis.RedisService;
 import com.fx.xzt.sys.entity.FinanceConf;
+import com.fx.xzt.sys.entity.LogRecord;
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.service.FinanceConfService;
 import com.fx.xzt.sys.service.FinanceOrderService;
+import com.fx.xzt.sys.service.LogRecordService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
+import com.fx.xzt.sys.util.IPUtil;
+import com.fx.xzt.sys.util.log.AuditLog;
 import com.fx.xzt.util.POIUtils;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
@@ -23,10 +27,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author tianliya
@@ -44,6 +46,8 @@ public class FinanceConfController {
     FinanceConfService financeConfService;
     @Resource
     private RedisTemplate redisTemplate;
+    @Resource
+    LogRecordService logRecordService;
 
     /**
      * 获取所有的理财产品信息
@@ -54,9 +58,18 @@ public class FinanceConfController {
      */
     @RequestMapping(value = "/getAllFinanceConf",method= RequestMethod.POST)
     @ResponseBody
-    public Object getAllFinanceConf(HttpServletRequest request, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+    public Object getAllFinanceConf(HttpServletRequest request, @RequestParam Integer pageNum, @RequestParam Integer pageSize) throws ParseException {
         logger.debug("获取理财产品信息接口");
         CommonResponse response = new CommonResponse();
+        //操作日志
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("获取理财产品信息");
+        log.setContent("查询失败");
+        log.setModuleName(ConstantUtil.logRecordModule.HJTQ.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
@@ -65,12 +78,14 @@ public class FinanceConfController {
                 response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 response.setData(pageInfo);
                 response.setMsg("操作成功！");
+                log.setUserId(users.getId());
+                log.setContent("查询成功");
             } else {
-                logger.debug("没有登录");
                 response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 response.setData("{}");
                 response.setMsg("操作失败！");
             }
+
         } catch (Exception e) {
             logger.debug("没有登录");
             response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
@@ -78,6 +93,8 @@ public class FinanceConfController {
             response.setMsg("操作失败！");
             throw e;
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
         return response;
     }
 
@@ -89,9 +106,18 @@ public class FinanceConfController {
      */
     @RequestMapping(value = "/removeFinanceConfById",method=RequestMethod.POST)
     @ResponseBody
-    public Object removeFinanceConfByProductNo(HttpServletRequest request, Long id,Integer type) {
+    public Object removeFinanceConfByProductNo(HttpServletRequest request, Long id,Integer type) throws ParseException {
         logger.debug("获取删除理财产品信息接口");
         CommonResponse response = new CommonResponse();
+        //操作日志
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("删除理财产品信息");
+        log.setContent("删除失败");
+        log.setModuleName(ConstantUtil.logRecordModule.HJTQ.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
@@ -101,6 +127,8 @@ public class FinanceConfController {
                     response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                     response.setData(b);
                     response.setMsg("操作成功！");
+                    log.setUserId(users.getId());
+                    log.setContent("删除成功");
                 }else {
                     response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                     response.setData(b);
@@ -139,9 +167,18 @@ public class FinanceConfController {
     @ResponseBody
     public Object modifyFinanceConf(HttpServletRequest request, Integer id, String productNo, String productName,
                                     Float yearIncomPercent, Integer cycle, Float minMoney,
-                                    Integer calcMethod, Short redeemMethod, Short settleMethod,Integer type) {
+                                    Integer calcMethod, Short redeemMethod, Short settleMethod,Integer type) throws ParseException {
         logger.debug("获取修改理财产品信息接口");
         CommonResponse response = new CommonResponse();
+        //操作日志
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("修改理财产品信息");
+        log.setContent("修改失败");
+        log.setModuleName(ConstantUtil.logRecordModule.HJTQ.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
@@ -153,6 +190,8 @@ public class FinanceConfController {
                     response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                     response.setData(b);
                     response.setMsg("操作成功！");
+                    log.setUserId(users.getId());
+                    log.setContent("修改成功");
                 }else {
                     response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                     response.setData(b);
@@ -170,6 +209,8 @@ public class FinanceConfController {
             response.setMsg("操作失败！");
             throw e;
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
         return response;
     }
 }

@@ -6,8 +6,11 @@ import com.fx.xzt.rabbitmq.RabbitmqService;
 import com.fx.xzt.redis.RedisService;
 import com.fx.xzt.sys.entity.*;
 import com.fx.xzt.sys.service.GoldRightDealConfService;
+import com.fx.xzt.sys.service.LogRecordService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
+import com.fx.xzt.sys.util.IPUtil;
+import com.fx.xzt.sys.util.log.AuditLog;
 import com.fx.xzt.util.JsonUtils;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
@@ -21,9 +24,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+
+import static com.sun.webpane.platform.ConfigManager.log;
 
 /**
  * @author tianliya
@@ -41,12 +47,23 @@ public class GoldRightDealConfController {
     GoldRightDealConfService goldRightDealConfService;
     @Resource
     private RabbitmqService rabbitmqService;
+    @Resource
+    LogRecordService logRecordService;
 
     @RequestMapping(value = "/getAllGoldRight",method= RequestMethod.POST)
     @ResponseBody
-    public Object getAllGoldRight(HttpServletRequest request) {
+    public Object getAllGoldRight(HttpServletRequest request) throws ParseException {
         logger.debug("获取金权规则接口");
         CommonResponse response = new CommonResponse();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //操作日志
+        LogRecord log = new LogRecord();
+        log.setTitle("获取金权规则");
+        log.setContent("查询失败");
+        log.setModuleName(ConstantUtil.logRecordModule.LCJY.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
@@ -55,6 +72,8 @@ public class GoldRightDealConfController {
                 response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 response.setData(pageInfo);
                 response.setMsg("操作成功！");
+                log.setUserId(users.getId());
+                log.setContent("查询成功");
             } else {
                 logger.debug("没有登录");
                 response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
@@ -68,6 +87,8 @@ public class GoldRightDealConfController {
             response.setMsg("操作失败！");
             throw e;
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
         return response;
     }
 
@@ -95,9 +116,18 @@ public class GoldRightDealConfController {
                                     Float  buyPercent, Double pointCount, Double volatility,
                                           Double stopLossSet,Float minLossPercent, Double volatilityProfitLoss,
                                     Integer minGramPerOrder, Integer maxGramPerOrder, Integer maxPositionCount,
-                                    Integer maxBuyCountPerDay, Double stopProfitSet, Integer blowingUpSet,Integer status) {
+                                    Integer maxBuyCountPerDay, Double stopProfitSet, Integer blowingUpSet,Integer status) throws ParseException {
         logger.debug("获取修改进群规则信息接口");
         CommonResponse response = new CommonResponse();
+        //操作日志
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("黄金提取查询");
+        log.setContent("查询失败");
+        log.setModuleName(ConstantUtil.logRecordModule.HJTQ.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
@@ -133,13 +163,24 @@ public class GoldRightDealConfController {
             response.setMsg("操作失败！");
             throw e;
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
         return response;
     }
 
     @RequestMapping("/force-close-repository")
     @ResponseBody
-    public CommonResponse forceCloseRepository(HttpServletRequest request) {
+    public CommonResponse forceCloseRepository(HttpServletRequest request) throws ParseException {
         CommonResponse result = new CommonResponse();
+        //操作日志
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("黄金提取查询");
+        log.setContent("查询失败");
+        log.setModuleName(ConstantUtil.logRecordModule.HJTQ.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         //TODO:权限用户判断
         HttpSession httpSession = request.getSession();
         Users users = (Users) httpSession.getAttribute("currentUser");
@@ -149,7 +190,8 @@ public class GoldRightDealConfController {
         }
 
 
-
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
         return result;
     }
 }
