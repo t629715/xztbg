@@ -6,10 +6,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
@@ -18,7 +17,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.fx.xzt.sys.entity.LogRecord;
+import com.fx.xzt.sys.service.LogRecordService;
 import com.fx.xzt.sys.util.*;
+import com.fx.xzt.sys.util.log.AuditLog;
 import com.fx.xzt.util.MD5Utils;
 import com.fx.xzt.util.POIUtils;
 import com.google.zxing.BarcodeFormat;
@@ -54,6 +56,8 @@ public class UserController {
 	
 	@Resource
 	private UsersService userService;
+	@Resource
+	LogRecordService logRecordService;
 	
 	/**
 	 * 插入新用户
@@ -63,14 +67,32 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="/insert", method=RequestMethod.POST)
-	public String insert(@RequestBody Users userInfo){
+	public String insert(@RequestBody Users userInfo,HttpServletRequest request) throws ParseException {
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("添加用户");
+		log.setContent("添加失败");
+		log.setModuleName(ConstantUtil.logRecordModule.YHQ.getName());
+		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
+		HttpSession httpSession = request.getSession();
+		Users users = (Users) httpSession.getAttribute("currentUser");
 		if(userInfo.getStatus()==null){
+
 			userInfo.setStatus("1");
 		}
 		Integer count = userService.save(userInfo);
 		if(count>0){
+			log.setUserId(users.getId());
+			log.setContent("获取成功");
+			logRecordService.add(log);
+			AuditLog.info(log.toString());
 			return "保存用户信息成功";
 		}
+		logRecordService.add(log);
+		AuditLog.info(log.toString());
 		return "保存用户信息失败";
 	}
 	
@@ -82,11 +104,28 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="/select", method=RequestMethod.GET)
-	public String select(@RequestParam Long uid){
+	public String select(@RequestParam Long uid,HttpServletRequest request) throws ParseException {
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("查询用户信息");
+		log.setContent("查询失败");
+		log.setModuleName(ConstantUtil.logRecordModule.YHQ.getName());
+		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		Users userInfo = userService.selectByKey(uid);
+		HttpSession httpSession = request.getSession();
+		Users users = (Users) httpSession.getAttribute("currentUser");
 		if(userInfo!=null){
+			logRecordService.add(log);
+			AuditLog.info(log.toString());
 			return "您要查找的用户名是:"+userInfo.getUserName();
 		}
+		log.setUserId(users.getId());
+		log.setContent("获取成功");
+		logRecordService.add(log);
+		AuditLog.info(log.toString());
 		return "查找用户失败";
 	}
 	
@@ -98,11 +137,24 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="/delete", method=RequestMethod.DELETE)
-	public String delete(@RequestParam Long uid){
+	public String delete(@RequestParam Long uid,HttpServletRequest request) throws ParseException {
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("优惠券查询查询");
+		log.setContent("查询失败");
+		log.setModuleName(ConstantUtil.logRecordModule.YHQ.getName());
+		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		Integer count = userService.delete(uid);
 		if(count>0){
+			logRecordService.add(log);
+			AuditLog.info(log.toString());
 			return "删除用户信息成功";
 		}
+		logRecordService.add(log);
+		AuditLog.info(log.toString());
 		return "删除用户信息失败";
 	}
 	/**
@@ -123,10 +175,21 @@ public class UserController {
 	 */
 	@RequestMapping(value="/deleteUser")
 	@ResponseBody
-	public Map<String,Object> deleteUser(Long id){
+	public Map<String,Object> deleteUser(Long id,HttpServletRequest request) throws ParseException {
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("删除用户");
+		log.setContent("删除失败");
+		log.setModuleName(ConstantUtil.logRecordModule.YHQ.getName());
+		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		Map<String,Object> map = new HashMap<String,Object>();
 		int msg = userService.deleteById(id);
 		map.put("msg", msg);
+		logRecordService.add(log);
+		AuditLog.info(log.toString());
 		return map;
 	}
 	/**
@@ -146,7 +209,7 @@ public class UserController {
 	@RequestMapping(value="/selectByUsers")
 	@ResponseBody
 	public PageInfo<UsersModel> selectByUsers(String phone, String startTime, String endTime, Integer pageNum,
-			Integer pageSize){
+			Integer pageSize,HttpServletRequest request){
 		return userService.selectByUsersModel(phone, startTime, endTime, pageNum, pageSize);
 	}
 
@@ -196,6 +259,7 @@ public class UserController {
             	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(list);
                 cr.setMsg("操作成功！");
+
             } else {
             	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 cr.setData("{}");
@@ -223,8 +287,17 @@ public class UserController {
 	 */
 	@RequestMapping(value="/sightOfCarrieroperator")
 	@ResponseBody
-	public Object sightOfCarrieroperator(HttpServletRequest request, Long pid, String startTime, String endTime, Integer pageNum, Integer pageSize){
+	public Object sightOfCarrieroperator(HttpServletRequest request, Long pid, String startTime, String endTime, Integer pageNum, Integer pageSize) throws ParseException {
 		CommonResponse cr = new CommonResponse();
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("代理商视角");
+		log.setContent("查询失败");
+		log.setModuleName(ConstantUtil.logRecordModule.YHQ.getName());
+		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		try {
 			HttpSession httpSession = request.getSession();
 			Users users = (Users) httpSession.getAttribute("currentUser");
@@ -234,6 +307,9 @@ public class UserController {
 				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 				cr.setData(list);
 				cr.setMsg("操作成功！");
+
+				log.setUserId(users.getId());
+				log.setContent("查询成功");
 			}
 
 		} catch (Exception e) {
@@ -243,6 +319,8 @@ public class UserController {
 			throw e;
 			// e.printStackTrace();
 		}
+		logRecordService.add(log);
+		AuditLog.info(log.toString());
 		return cr;
 	}
 
@@ -256,8 +334,17 @@ public class UserController {
 	 */
 	@RequestMapping(value="/insertAgent",method = RequestMethod.POST)
 	@ResponseBody
-	public Object insertAgent(HttpServletRequest request,Users usersInfo){
+	public Object insertAgent(HttpServletRequest request,Users usersInfo) throws ParseException {
 		CommonResponse cr = new CommonResponse();
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("新建代理商");
+		log.setContent("新建失败");
+		log.setModuleName(ConstantUtil.logRecordModule.YHQ.getName());
+		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		try {
 			HttpSession httpSession = request.getSession();
 			Users users = (Users) httpSession.getAttribute("currentUser");
@@ -270,6 +357,8 @@ public class UserController {
 				if (i != 0){
 					cr.setData(i);
 					cr.setMsg("操作成功！");
+					log.setUserId(users.getId());
+					log.setContent("新建成功");
 				}
 				else{
 					cr.setData(i);
@@ -283,6 +372,8 @@ public class UserController {
 			cr.setMsg("操作失败！");
 			throw e;
 		}
+		logRecordService.add(log);
+		AuditLog.info(log.toString());
 		return cr;
 	}
 
@@ -305,6 +396,7 @@ public class UserController {
         	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
             cr.setData(list);
             cr.setMsg("操作成功！");
+
         } catch (Exception e) {
             cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
             cr.setData("{}");
@@ -312,6 +404,7 @@ public class UserController {
             throw e;
             // e.printStackTrace();
         }
+
         return cr;
 	}
 
@@ -326,8 +419,17 @@ public class UserController {
 	 */
 	@RequestMapping(value="/sightOfElephant")
 	@ResponseBody
-	public Object sightOfsightOfElephant(HttpServletRequest request, Long agentName ,Long brokerName, String startTime, String endTime, Integer pageNum, Integer pageSize){
+	public Object sightOfsightOfElephant(HttpServletRequest request, Long agentName ,Long brokerName, String startTime, String endTime, Integer pageNum, Integer pageSize) throws ParseException {
 		CommonResponse cr = new CommonResponse();
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("小象管理視角");
+		log.setContent("查询失败");
+		log.setModuleName(ConstantUtil.logRecordModule.YHQ.getName());
+		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		try {
 			HttpSession httpSession = request.getSession();
 			Users users = (Users) httpSession.getAttribute("currentUser");
@@ -336,6 +438,8 @@ public class UserController {
 				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 				cr.setData(list);
 				cr.setMsg("操作成功！");
+				log.setUserId(users.getId());
+				log.setContent("查询成功");
 			}
 
 		} catch (Exception e) {
@@ -345,6 +449,8 @@ public class UserController {
 			throw e;
 			// e.printStackTrace();
 		}
+		logRecordService.add(log);
+		AuditLog.info(log.toString());
 		return cr;
 	}
 
@@ -363,10 +469,19 @@ public class UserController {
 	public void excelSightOfElephant(HttpServletRequest request,HttpServletResponse response,
 									 Long agentName , Long brokerName, String startTime,
 									 String endTime) throws Exception{
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("导出小想管理视角查询结果");
+		log.setContent("导出失败");
+		log.setModuleName(ConstantUtil.logRecordModule.YHQ.getName());
+		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 
 		try {
 			String tieleName = "小象管理视角";
-			String excelName = "想管理视角";
+			String excelName = "小象管理视角";
 			HttpSession httpSession = request.getSession();
 			Users users = (Users) httpSession.getAttribute("currentUser");
 			if (users != null) {
@@ -375,22 +490,38 @@ public class UserController {
 					String[] heads = {"商户名", "姓名", "类型", "代理商", "创建时间"};
 					String[] colums = {"userName", "userName",  "type", "agentName", "createTime"};
 					poi.doExport(request, response, list, tieleName, excelName, heads, colums);
+				log.setUserId(users.getId());
+				log.setContent("导出成功");
 				}
 			}catch (Exception e){
 				e.printStackTrace();
 		}
+		logRecordService.add(log);
+		AuditLog.info(log.toString());
 	}
 	/**
 	 * 生成二维码
 	 */
 	@RequestMapping(value = "/generateQRCode")
 	@ResponseBody
-	public void createCode(HttpServletResponse response,String text){
+	public void createCode(HttpServletRequest request,HttpServletResponse response,String text) throws ParseException {
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("生成二维码");
+		log.setContent("生成失败");
+		log.setModuleName(ConstantUtil.logRecordModule.YHQ.getName());
+		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		try {
 			GenerateQRCodeUtil.generateQRCode(response,text);
+			log.setContent("生成成功");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		logRecordService.add(log);
+		AuditLog.info(log.toString());
 	}
 	/**
 	 * 生成二维码  并返回到浏览器
@@ -411,6 +542,5 @@ public class UserController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 }
