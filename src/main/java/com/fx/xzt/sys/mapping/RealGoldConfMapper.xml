@@ -20,7 +20,7 @@
   <select id="getRealGoldConf" resultType="java.util.Map" >
     select id, name, buy_poundage AS buyPoundage, insurance, logistics_fee AS logisticsFee,
               sell_poundage AS sellPoundage, max_buy_count AS maxBuyCount
-    from real_gold_conf
+    from real_gold_conf order by id limit 0,1
   </select>
   <!--获取实金买卖设定-end-tianliya-->
 
