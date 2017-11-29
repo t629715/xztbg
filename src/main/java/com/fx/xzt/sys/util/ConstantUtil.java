@@ -87,6 +87,11 @@ public class ConstantUtil {
     public final static String USER_NPER_JSST = "4";   //用户统计分析周期-近三十天
     
     /**
+     * 图片服务器地址
+     */
+    public final static String PHOTO_URL = "PHOTO_URL";   //用户统计分析周期-近三十天
+
+    /**
      * 客户信息-状态
      */
     public static enum userStatus {

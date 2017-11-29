@@ -125,11 +125,12 @@ public class InOutGoldController {
                     	map.put("totalIncome", StringUtil.fundsHandle(map.get("totalIncome")));
                     	map.put("sjAmount", StringUtil.fundsHandle(map.get("sjAmount")));
                     	map.put("cbf", StringUtil.fundsHandle(map.get("cbf")));
+                    	map.put("rmb", StringUtil.fundsHandle(map.get("rmb")));
                     }
                     POIUtils poi = new POIUtils();
                     //判断是否为代理商账户
-                    String[] heads = {"姓名", "用户账号",  "代理商", "经纪人", "注册时间", "入金", "出金", "成本", "利息", "理财", "买入黄金资金"};
-                    String[] colums = {"realName", "userName", "agentName", "brokerName", "registerTime", "cj", "rj", "cbf", "totalIncome", "finance","sjAmount"};
+                    String[] heads = {"姓名", "用户账号",  "代理商", "经纪人", "注册时间", "入金", "出金", "成本", "账户余额", "利息", "理财", "买入黄金资金"};
+                    String[] colums = {"realName", "userName", "agentName", "brokerName", "registerTime", "cj", "rj", "cbf", "rmb", "totalIncome", "finance","sjAmount"};
                     poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                 }
             }

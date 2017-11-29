@@ -44,7 +44,7 @@
         <where>
         	<!-- and l.Status = 1 -->
             <if test="userName != null and userName != '' ">
-                and l.UserName = #{userName,jdbcType=VARCHAR}
+                and l.UserName like CONCAT('%',#{userName,jdbcType=VARCHAR})
             </if>
             <if test="startTime !=null and startTime !='' ">
                 and i.RegisterTime &gt;=#{startTime,jdbcType=TIMESTAMP}
@@ -56,7 +56,7 @@
                 and i.RegisterFrom = #{registerFrom,jdbcType=VARCHAR}
             </if>
             <if test="registerIp != null and registerIp !='' ">
-                and i.RegisterIP = #{registerIp,jdbcType=VARCHAR}
+                and i.RegisterIP like CONCAT('%',#{registerIp,jdbcType=VARCHAR})
             </if>
             <if test="lastStartTime !=null and lastStartTime !='' ">
                 and m.lastlogintime &gt;=#{lastStartTime,jdbcType=TIMESTAMP}

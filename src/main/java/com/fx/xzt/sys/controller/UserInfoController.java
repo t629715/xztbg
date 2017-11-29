@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
+import com.fx.xzt.sys.entity.ConfigParam;
 import com.fx.xzt.sys.entity.LogRecord;
 import com.fx.xzt.sys.entity.UserLogin;
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.model.UserInfoModel;
+import com.fx.xzt.sys.service.ConfigParamService;
 import com.fx.xzt.sys.service.LogRecordService;
 import com.fx.xzt.sys.service.UserInfoService;
 import com.fx.xzt.sys.service.UserLoginService;
@@ -54,6 +56,8 @@ public class UserInfoController {
 	UserLoginService userLoginService;
 	@Resource
     LogRecordService logRecordService;
+	@Resource
+	ConfigParamService configParamService;
 	
 	/**
 	 * 获取认证集合
@@ -134,7 +138,7 @@ public class UserInfoController {
 	@ResponseBody
 	public Object selectByRegisterMessage(HttpServletRequest request, String userName, String startTime, String endTime,
 		String registerFrom, String registerIp, String lastStartTime, String lastEndTime, String lastLoginFrom,
-		String agentName, String brokerName, String attribution, @RequestParam Integer pageNum, @RequestParam Integer pageSize) throws ParseException {
+		String agentName, String brokerName, String attribution, String attributionProvince, @RequestParam Integer pageNum, @RequestParam Integer pageSize) throws ParseException {
 		CommonResponse cr = new CommonResponse();
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -332,8 +336,25 @@ public class UserInfoController {
 			HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
+            	//获取图片地址
+            	ConfigParam configParam = configParamService.selectConfigParamByKey(ConstantUtil.PHOTO_URL);
+            	String purl = "";
+            	if (configParam != null) {
+            		purl = configParam.getParamValue();
+            	}
             	PageInfo<Map<String, Object>> pageInfo = userInfoService.getByRealNameAuth(userName, realName, applyTimeStart, applyTimeEnd, pageNum, pageSize);
-    			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+            	List<Map<String, Object>> list = pageInfo.getList();
+    			if (list != null && list.size() > 0) {
+    				for (Map<String, Object> map : list) {
+    					if (map.get("IDCardPath") != null && map.get("IDCardPath") != "") {
+    						map.put("IDCardPath", purl + map.get("IDCardPath"));
+    					}
+    					if (map.get("IDCardBackPath") != null && map.get("IDCardBackPath") != "") {
+    						map.put("IDCardBackPath", purl + map.get("IDCardBackPath"));
+    					}
+    				}
+    			}
+            	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
     			cr.setData(pageInfo);
     			cr.setMsg("操作成功！");
     			log.setUserId(users.getId());

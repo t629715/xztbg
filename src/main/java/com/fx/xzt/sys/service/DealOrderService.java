@@ -27,7 +27,9 @@ public interface DealOrderService {
      * @param pageSize
      * @return
      */
-    PageInfo<Map<String, Object>> selectByDealOrder(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName, Integer orderState, Integer isUseCard, Integer pageNum, Integer pageSize);
+    PageInfo<Map<String, Object>> selectByDealOrder(String userName, String orderNo, String startTime, String endTime, 
+    		String regStartTime, String regEndTime, String agentName, String brokerName, Integer orderState, 
+    		Integer isUseCard,String upOrDown, Integer pageNum, Integer pageSize);
 
     /**
      *
@@ -42,7 +44,9 @@ public interface DealOrderService {
      * @param orderState
      * @return
      */
-    List<Map<String, Object>> excelDealOrderMessage(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName, Integer orderState, Integer isUseCard);
+    List<Map<String, Object>> excelDealOrderMessage(String userName, String orderNo, String startTime, String endTime, 
+    		String regStartTime, String regEndTime, String agentName, String brokerName, 
+    		Integer orderState, Integer isUseCard, String upOrDown);
 
     /**
      *
@@ -57,7 +61,9 @@ public interface DealOrderService {
      * @param orderState
      * @return
      */
-    Map<String, Object> selectByDealOrderCount(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName, Integer orderState, Integer isUseCard);
+    Map<String, Object> selectByDealOrderCount(String userName, String orderNo, String startTime, String endTime, 
+    		String regStartTime, String regEndTime, String agentName, String brokerName, 
+    		Integer orderState, Integer isUseCard, String upOrDown);
 
     /**
      * 获取对冲套利的信息

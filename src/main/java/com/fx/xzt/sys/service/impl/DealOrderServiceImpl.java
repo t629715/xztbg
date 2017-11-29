@@ -48,7 +48,7 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
      */
     public PageInfo<Map<String, Object>> selectByDealOrder(String userName, String orderNo, String startTime, String endTime, 
     		String regStartTime, String regEndTime, String agentName, String brokerName, Integer orderState, Integer isUseCard,
-    		Integer pageNum, Integer pageSize) {
+    		String upOrDown, Integer pageNum, Integer pageSize) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("orderNo", orderNo);
@@ -60,6 +60,7 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
         map.put("brokerName", brokerName);
         map.put("orderState", orderState);
         map.put("isUseCard", isUseCard);
+        map.put("upOrDown", upOrDown);
         PageHelper.startPage(pageNum,pageSize);
         List<Map<String, Object>> list = dealOrderMapper.selectByDealOrder(map);
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
@@ -80,7 +81,8 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
      * @return
      */
     public List<Map<String, Object>> excelDealOrderMessage(String userName, String orderNo, String startTime, String endTime, 
-    		String regStartTime, String regEndTime, String agentName, String brokerName, Integer orderState, Integer isUseCard) {
+    		String regStartTime, String regEndTime, String agentName, String brokerName, 
+    		Integer orderState, Integer isUseCard, String upOrDown) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("orderNo", orderNo);
@@ -92,6 +94,7 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
         map.put("brokerName", brokerName);
         map.put("orderState", orderState);
         map.put("isUseCard", isUseCard);
+        map.put("upOrDown", upOrDown);
         List<Map<String, Object>> list = dealOrderMapper.selectByDealOrder(map);
         return list;
     }
@@ -110,7 +113,8 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
      * @return
      */
     public Map<String, Object> selectByDealOrderCount(String userName, String orderNo, String startTime, String endTime, 
-    		String regStartTime, String regEndTime, String agentName, String brokerName, Integer orderState, Integer isUseCard) {
+    		String regStartTime, String regEndTime, String agentName, String brokerName, 
+    		Integer orderState, Integer isUseCard, String upOrDown) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("orderNo", orderNo);
@@ -122,6 +126,7 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
         map.put("brokerName", brokerName);
         map.put("orderState", orderState);
         map.put("isUseCard", isUseCard);
+        map.put("upOrDown", upOrDown);
         return dealOrderMapper.selectByDealOrderCount(map);
     }
 

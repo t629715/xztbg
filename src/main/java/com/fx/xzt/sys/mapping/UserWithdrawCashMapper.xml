@@ -23,12 +23,15 @@
 		w.AccountNum accountNum,w.WithdrawTime withdrawTime,w.FinishTime finishTime,w.Status status,w.type,w.poundage,
 		i.agent_id AS agentId, ua.user_name AS agentName, i.broker_id AS
 		brokerId,
-		ub.user_name AS brokerName
+		ub.user_name AS brokerName,
+		i.RealName realName,b.BankName bankName
 		FROM User_WithdrawCash w
 		LEFT JOIN User_Login u ON w.UserID = u.UserID
 		LEFT JOIN User_Info i ON w.UserID = i.UserID
 		LEFT JOIN users ua ON i.agent_id = ua.id
 		LEFT JOIN users ub ON i.broker_id = ub.id
+		LEFT JOIN User_BankCard c on w.AccountNum = c.AccountNum
+		LEFT JOIN Bank b on c.BankNo = b.BankNo
 		<where>
 			and u.Status = 1
 			<if test="userName != null and userName != '' ">

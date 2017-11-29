@@ -21,4 +21,9 @@ public interface ConfigParamService extends IService<ConfigParam>{
 	 * @date 2017年8月10日 下午2:36:44
 	 */
 	public List<ConfigParam> selectAll();
+	
+	/**
+     * 根据主键查询数据
+     */
+    ConfigParam selectConfigParamByKey(String key);
 }

@@ -13,8 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -64,7 +62,7 @@ public class DealOrderController {
     @ResponseBody
     public Object selectByDealOrder(HttpServletRequest request, String userName, String orderNo, String startTime, String endTime, 
     		String regStartTime, String regEndTime, String agentName, String brokerName, Integer orderState, Integer isUseCard,
-    		@RequestParam Integer pageNum, @RequestParam Integer pageSize) throws ParseException {
+    		String upOrDown, @RequestParam Integer pageNum, @RequestParam Integer pageSize) throws ParseException {
 
         CommonResponse cr = new CommonResponse();
         
@@ -86,7 +84,8 @@ public class DealOrderController {
                 if (users.getPid() != null &&  users.getPid() == 1) {
                     agentNameStr = users.getId().toString();
                 }
-                PageInfo<Map<String, Object>> pageInfo = dealOrderService.selectByDealOrder(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName, orderState, isUseCard, pageNum, pageSize);
+                PageInfo<Map<String, Object>> pageInfo = dealOrderService.selectByDealOrder(userName, orderNo, startTime, endTime, 
+                		regStartTime, regEndTime, agentNameStr, brokerName, orderState, isUseCard, upOrDown, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
@@ -128,7 +127,8 @@ public class DealOrderController {
     @RequestMapping(value="/excelDealOrderMessage")
     @ResponseBody
     public void excelDealOrderMessage(HttpServletRequest request, HttpServletResponse response, String userName, String orderNo, String startTime, String endTime, 
-    		String regStartTime, String regEndTime,  String agentName, String brokerName, Integer orderState, Integer isUseCard) throws Exception{
+    		String regStartTime, String regEndTime,  String agentName, String brokerName, 
+    		Integer orderState, Integer isUseCard, String upOrDown) throws Exception{
     	//操作日志
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         LogRecord log = new LogRecord();
@@ -149,7 +149,8 @@ public class DealOrderController {
                 if (users.getPid() != null &&  users.getPid() == 1) {
                     agentNameStr = users.getId().toString();
                 }
-                List<Map<String, Object>> list = dealOrderService.excelDealOrderMessage(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName, orderState, isUseCard);
+                List<Map<String, Object>> list = dealOrderService.excelDealOrderMessage(userName, orderNo, startTime, endTime, 
+                		regStartTime, regEndTime, agentNameStr, brokerName, orderState, isUseCard, upOrDown);
                 if (list != null && list.size() > 0) {
                     for (Map<String, Object> map : list) {
                         map.put("upOrDown", ConstantUtil.dealOrderUpOrDown.toMap().get(map.get("upOrDown").toString()));
@@ -235,7 +236,8 @@ public class DealOrderController {
     @RequestMapping(value="/selectByDealOrderCount")
     @ResponseBody
     public Object selectByDealOrderCount(HttpServletRequest request, String userName, String orderNo, String startTime, String endTime, 
-    		String regStartTime, String regEndTime,  String agentName, String brokerName, Integer orderState, Integer isUseCard) throws ParseException{
+    		String regStartTime, String regEndTime,  String agentName, String brokerName, 
+    		Integer orderState, Integer isUseCard, String upOrDown) throws ParseException{
         CommonResponse cr = new CommonResponse();
       //操作日志
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -255,7 +257,8 @@ public class DealOrderController {
                     agentNameStr = users.getId().toString();
                 }
                 Map<String, Object> map = new HashMap<String, Object>();
-                map = dealOrderService.selectByDealOrderCount(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName, orderState, isUseCard);
+                map = dealOrderService.selectByDealOrderCount(userName, orderNo, startTime, endTime, 
+                		regStartTime, regEndTime, agentNameStr, brokerName, orderState, isUseCard, upOrDown);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(map);
                 cr.setMsg("查询成功！");

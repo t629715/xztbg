@@ -86,6 +86,9 @@
           <if test="isUseCard != null and isUseCard == 1 ">
               and o.voucher_id IS not null
           </if>
+          <if test="upOrDown != null">
+              and o.up_or_down = #{upOrDown,jdbcType=INTEGER}
+          </if>
       </where>
         order by o.create_time DESC
     </select>
@@ -134,6 +137,9 @@
           </if>
           <if test="isUseCard != null and isUseCard == 1 ">
               and o.voucher_id IS not null
+          </if>
+          <if test="upOrDown != null">
+              and o.up_or_down = #{upOrDown,jdbcType=INTEGER}
           </if>
     	</where>
     </select>

@@ -33,4 +33,15 @@ public class ConfigParamServiceImpl extends BaseService<ConfigParam> implements 
 		return configParamMapper.selectAll();
 	}
 	
+	/**
+     * 根据主键查询数据
+     */
+    public ConfigParam selectConfigParamByKey(String key) {
+    	ConfigParam configParam = null;
+    	List<ConfigParam> list = configParamMapper.selectConfigParamByKey(key);
+    	if (list != null && list.size() == 1) {
+    		configParam = list.get(0);
+    	}
+    	return configParam;
+    }
 }
