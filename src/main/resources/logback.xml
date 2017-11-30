@@ -9,13 +9,10 @@
 	<!-- <property name="DEBUG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
 	<property name="AUDIT_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - @%replace(%msg){'::','@'}%n"/> -->
 	
-	<property name="DEBUG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS}@%ip@%-5level@%instance@%C@%M@%t@%L@%msg%n"/>
-	<property name="AUDIT_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS}@%ip@%-5level@%instance@%replace(%msg){'::','@'}%n"/>
+	<property name="DEBUG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS}@%-5level@%C@%M@%t@%L@%msg%n"/>
+	<property name="AUDIT_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS}@%-5level@%replace(%msg){'::','@'}%n"/>
 	
-	<conversionRule conversionWord="ip" converterClass="com.fx.jyg.util.log.converter.IPConverter" />
-	<conversionRule conversionWord="instance" converterClass="com.fx.jyg.util.log.converter.InstanceConverter" />
-	
-	
+
 	<!--<conversionRule conversionWord="ip" converterClass="com.fx.jyg.util.log.converter.IPConverter" />
 	<conversionRule conversionWord="title" converterClass="com.fx.jyg.util.log.converter.TitleConverter" />
 	<conversionRule conversionWord="instance" converterClass="com.fx.jyg.util.log.converter.InstanceConverter" />-->
@@ -31,7 +28,7 @@
 	<appender name="DEBUG_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<File>${LOG_HOME}/debug.log</File>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-   		    <fileNamePattern>${LOG_HOME}/debug_${instance}_%d{yyyy-MM-dd}.log</fileNamePattern>
+   		    <fileNamePattern>${LOG_HOME}/debug_%d{yyyy-MM-dd}.log</fileNamePattern>
  			<maxHistory>7</maxHistory>	
 		</rollingPolicy>
 		<encoder>
@@ -42,7 +39,7 @@
 	<appender name="AUDIT_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<File>${LOG_HOME}/audit.log</File>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-   		    <fileNamePattern>${LOG_HOME}/audit_${instance}_%d{yyyy-MM-dd}.log</fileNamePattern>
+   		    <fileNamePattern>${LOG_HOME}/audit_%d{yyyy-MM-dd}.log</fileNamePattern>
  			<maxHistory>30</maxHistory>	
 		</rollingPolicy>
 		<encoder>
