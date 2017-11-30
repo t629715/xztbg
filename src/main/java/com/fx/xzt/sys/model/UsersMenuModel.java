@@ -16,7 +16,7 @@ import com.fx.xzt.sys.util.StringUtil;
 public class UsersMenuModel {
 	private Integer id;    //菜单id
 	private Integer pid;   //菜单pid
-	private String index;  //菜单跳转路径
+	private String index;  //菜单跳转地址
 	private String icon;   //菜单图标
 	private String title;  //菜单名称
 	private List<UsersMenuModel> subs = new ArrayList<UsersMenuModel>();

@@ -117,4 +117,6 @@ public interface UsersService extends IService<Users>{
 														   String startTime, String endTime
 	);
 
+	public Users getUser(Long id);
+
 }

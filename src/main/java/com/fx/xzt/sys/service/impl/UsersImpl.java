@@ -327,5 +327,10 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		return list;
 	}
 
+	@Override
+	public Users getUser(Long id) {
+		return usersMapper.selectById(id);
+	}
+
 
 }

@@ -31,7 +31,7 @@ public class InfoBanner implements Serializable {
      */
     private Short page;
     /**
-     * @Fields picturePath 图片路径
+     * @Fields picturePath 图片地址
      */
     private String picturePath;
     /**
@@ -39,7 +39,7 @@ public class InfoBanner implements Serializable {
      */
     private String appID;
     /**
-     * @Fields skipPath 跳转路径
+     * @Fields skipPath 跳转地址
      */
     private String skipPath;
     /**

@@ -9,7 +9,7 @@
 	    <param-value>jygbg</param-value>
 	</context-param>
 
-	<!-- 设置Spring容器加载所有的配置文件的路径 --> 
+	<!-- 设置Spring容器加载所有的配置文件的地址 -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath:Spring-config.xml</param-value>

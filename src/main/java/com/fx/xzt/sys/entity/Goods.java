@@ -57,7 +57,7 @@ public class Goods implements Serializable {
      */
     private Date expiryTime;
     /**
-     * @Fields imgPath 图片路径
+     * @Fields imgPath 图片地址
      */
     private String imgPath;
     /**
