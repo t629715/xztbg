@@ -3,6 +3,9 @@ package com.fx.xzt.sys.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fx.xzt.sys.util.ConstantUtil;
+import com.fx.xzt.sys.util.DateUtil;
+
 /**
  * 
 * @ClassName: LogRecoed 
@@ -89,10 +92,11 @@ public class LogRecord implements Serializable {
 	}
 
 	public String toString() {
-		return "LogRecord [id=" + id + ":: title=" + title + ":: content="
-				+ content + ":: moduleName=" + moduleName + ":: type=" + type
-				+ ":: ip=" + ip + ":: userId=" + userId + ":: createTime="
-				+ createTime + "]";
+		return "LogRecord [ID=" + id + "::标题=" + title + "::内容="
+				+ content + "::模块=" + moduleName
+				+ "::类型=" + ConstantUtil.logRecordType.toMap().get(type)
+				+ "::操作IP=" + ip + "::操作用户ID=" + userId + "::操作时间="
+				+ DateUtil.convertDateToString(createTime, "yyyy-MM-dd HH:mm:ss") + "]";
 	}
 
 	

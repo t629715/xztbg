@@ -1,8 +1,8 @@
 package com.fx.xzt.sys.util;
 
 public enum UsersInfoAuthStatus {
-	AuthstatusPass(1,"以实名"),
-	AuthstatusNoPass(0,"未实名");
+	AuthstatusPass(1,"已实名"),
+	AuthstatusNoPass(3,"未通过");
 	private UsersInfoAuthStatus(int index, String name) {
 		this.index = index;
 		this.name = name;

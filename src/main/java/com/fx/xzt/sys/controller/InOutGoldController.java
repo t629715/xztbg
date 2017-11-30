@@ -1,5 +1,6 @@
 package com.fx.xzt.sys.controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -15,12 +16,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fx.xzt.sys.entity.LogRecord;
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.service.InOutGoldService;
+import com.fx.xzt.sys.service.LogRecordService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
 import com.fx.xzt.sys.util.DateUtil;
+import com.fx.xzt.sys.util.IPUtil;
 import com.fx.xzt.sys.util.StringUtil;
+import com.fx.xzt.sys.util.log.AuditLog;
 import com.fx.xzt.util.POIUtils;
 import com.github.pagehelper.PageInfo;
 
@@ -38,6 +43,8 @@ public class InOutGoldController {
 
 	@Resource
 	InOutGoldService inOutGoldService;
+	@Resource
+    LogRecordService logRecordService;
 	
 	/**
 	 * 
@@ -51,14 +58,24 @@ public class InOutGoldController {
 	* @param pageSize
 	* @return    设定文件 
 	* @return Object    返回类型 
+	 * @throws ParseException 
 	* @throws 
 	* @author htt
 	 */
 	@RequestMapping(value="/selectByInOutGold")
     @ResponseBody
     public Object selectByInOutGold(HttpServletRequest request, String userName,  String agentName, String brokerName, 
-    		@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+    		@RequestParam Integer pageNum, @RequestParam Integer pageSize) throws ParseException {
         CommonResponse cr = new CommonResponse();
+        //操作日志
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("出入金查询查询");
+        log.setContent("查询失败");
+        log.setModuleName(ConstantUtil.logRecordModule.CRJCX.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
@@ -67,6 +84,8 @@ public class InOutGoldController {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
+                log.setUserId(users.getId());
+                log.setContent("查询成功");
             } else {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 cr.setData("{}");
@@ -80,6 +99,8 @@ public class InOutGoldController {
             throw e;
             // e.printStackTrace();
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
         return cr;
     }
 
@@ -100,7 +121,16 @@ public class InOutGoldController {
 	@RequestMapping(value="/excelInOutGold")
     @ResponseBody
     public void excelInOutGold(HttpServletRequest request, HttpServletResponse response, String userName, String agentName, String brokerName) throws Exception{
-        try {
+		//操作日志
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("出入金查询导出");
+        log.setContent("导出失败");
+        log.setModuleName(ConstantUtil.logRecordModule.CRJCX.getName());
+        log.setType(ConstantUtil.logRecordType.DC.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
+		try {
             String tieleName = "出入金查询";
             String excelName = "出入金查询";
             HttpSession httpSession = request.getSession();
@@ -112,7 +142,6 @@ public class InOutGoldController {
                 }
                 List<Map<String, Object>> list = inOutGoldService.excelInOutGold(userName, agentNameStr, brokerName);
                 if (list != null && list.size() > 0) {
-                	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     for (Map<String, Object> map : list) {
                     	Object registerTimeObj = map.get("registerTime");
                     	
@@ -132,11 +161,15 @@ public class InOutGoldController {
                     String[] heads = {"姓名", "用户账号",  "代理商", "经纪人", "注册时间", "入金", "出金", "成本", "账户余额", "利息", "理财", "买入黄金资金"};
                     String[] colums = {"realName", "userName", "agentName", "brokerName", "registerTime", "cj", "rj", "cbf", "rmb", "totalIncome", "finance","sjAmount"};
                     poi.doExport(request, response, list, tieleName, excelName, heads, colums);
+                    log.setUserId(users.getId());
+                    log.setContent("导出成功，共：" + list.size() + "条数据");
                 }
             }
         } catch (Exception e) {
             throw e;
         }
+		logRecordService.add(log);
+        AuditLog.info(log.toString());
     }
 	
 	/**
@@ -157,6 +190,15 @@ public class InOutGoldController {
     @ResponseBody
     public Object selectByRechargeChannel(HttpServletRequest request, String type, String startTime, String endTime, String channel) throws Exception {
         CommonResponse cr = new CommonResponse();
+        //操作日志
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("出入金分析-支付渠道分析查询");
+        log.setContent("查询失败");
+        log.setModuleName(ConstantUtil.logRecordModule.CRJFX.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
@@ -192,6 +234,8 @@ public class InOutGoldController {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(list);
                 cr.setMsg("操作成功！");
+                log.setUserId(users.getId());
+                log.setContent("查询成功");
             } else {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 cr.setData("{}");
@@ -205,6 +249,8 @@ public class InOutGoldController {
             throw e;
             // e.printStackTrace();
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
         return cr;
     }
 	
@@ -226,6 +272,15 @@ public class InOutGoldController {
     @ResponseBody
     public Object selectByAgent(HttpServletRequest request, String type, String startTime, String endTime) throws Exception {
         CommonResponse cr = new CommonResponse();
+      //操作日志
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("出入金分析-运营商出入金分析查询");
+        log.setContent("查询失败");
+        log.setModuleName(ConstantUtil.logRecordModule.CRJFX.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
@@ -261,6 +316,8 @@ public class InOutGoldController {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(list);
                 cr.setMsg("操作成功！");
+                log.setUserId(users.getId());
+                log.setContent("查询成功");
             } else {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 cr.setData("{}");
@@ -274,6 +331,8 @@ public class InOutGoldController {
             throw e;
             // e.printStackTrace();
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
         return cr;
     }
 	
@@ -295,6 +354,15 @@ public class InOutGoldController {
     @ResponseBody
     public Object selectByAgentNet(HttpServletRequest request, String type, String startTime, String endTime) throws Exception {
         CommonResponse cr = new CommonResponse();
+        //操作日志
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("出入金分析-运营商净入金分析查询");
+        log.setContent("查询失败");
+        log.setModuleName(ConstantUtil.logRecordModule.CRJFX.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
@@ -330,6 +398,8 @@ public class InOutGoldController {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(list);
                 cr.setMsg("操作成功！");
+                log.setUserId(users.getId());
+                log.setContent("查询成功");
             } else {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 cr.setData("{}");
@@ -343,6 +413,8 @@ public class InOutGoldController {
             throw e;
             // e.printStackTrace();
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
         return cr;
     }
 

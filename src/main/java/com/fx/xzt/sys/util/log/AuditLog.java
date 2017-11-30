@@ -15,7 +15,6 @@ private static final Logger logger = LoggerFactory.getLogger(AuditLog.class);
      */
     public static void info(String msg) {
       //  logger.info(msg);
-    	System.out.println("==================msg:" + msg);
         logger.info(msg);
     }
     

@@ -86,7 +86,7 @@
           <if test="isUseCard != null and isUseCard == 1 ">
               and o.voucher_id IS not null
           </if>
-          <if test="upOrDown != null">
+          <if test="upOrDown != null and upOrDown!= ''">
               and o.up_or_down = #{upOrDown,jdbcType=INTEGER}
           </if>
       </where>
@@ -138,7 +138,7 @@
           <if test="isUseCard != null and isUseCard == 1 ">
               and o.voucher_id IS not null
           </if>
-          <if test="upOrDown != null">
+          <if test="upOrDown != null and upOrDown!= ''">
               and o.up_or_down = #{upOrDown,jdbcType=INTEGER}
           </if>
     	</where>

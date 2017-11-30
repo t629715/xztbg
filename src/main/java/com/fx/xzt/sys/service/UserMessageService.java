@@ -1,8 +1,5 @@
 package com.fx.xzt.sys.service;
 
-import java.util.List;
-import java.util.Map;
-
 import com.fx.xzt.sys.entity.UserMessage;
 import com.fx.xzt.sys.model.UserMessageModel;
 import com.github.pagehelper.PageInfo;
@@ -14,4 +11,16 @@ public interface UserMessageService extends IService<UserMessage>{
 	 * @return
 	 */
 	PageInfo<UserMessageModel> selectByAll(Integer pageNum, Integer pageSize);
+	
+	/**
+	 * 
+	* @Title: add 
+	* @Description: 新增
+	* @param userMessage
+	* @return    设定文件 
+	* @return int    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	int add(UserMessage userMessage);
 }

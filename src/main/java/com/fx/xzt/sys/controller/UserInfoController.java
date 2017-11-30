@@ -22,18 +22,21 @@ import com.alibaba.fastjson.JSON;
 import com.fx.xzt.sys.entity.ConfigParam;
 import com.fx.xzt.sys.entity.LogRecord;
 import com.fx.xzt.sys.entity.UserLogin;
+import com.fx.xzt.sys.entity.UserMessage;
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.model.UserInfoModel;
 import com.fx.xzt.sys.service.ConfigParamService;
 import com.fx.xzt.sys.service.LogRecordService;
 import com.fx.xzt.sys.service.UserInfoService;
 import com.fx.xzt.sys.service.UserLoginService;
+import com.fx.xzt.sys.service.UserMessageService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
 import com.fx.xzt.sys.util.DateUtil;
 import com.fx.xzt.sys.util.IPUtil;
 import com.fx.xzt.sys.util.StringUtil;
 import com.fx.xzt.sys.util.log.AuditLog;
+import com.fx.xzt.util.IdUtil;
 import com.fx.xzt.util.POIUtils;
 import com.github.pagehelper.PageInfo;
 
@@ -58,6 +61,8 @@ public class UserInfoController {
     LogRecordService logRecordService;
 	@Resource
 	ConfigParamService configParamService;
+	@Resource
+	UserMessageService userMessageService;
 	
 	/**
 	 * 获取认证集合
@@ -81,8 +86,15 @@ public class UserInfoController {
 		cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
 		cr.setMsg("操作失败！");
 		
-		//操作日志
+		//系统消息
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		UserMessage message = new UserMessage();
+		message.setMsgID(IdUtil.generateyyyymmddhhMMssSSSAnd2Random());
+		message.setMsgTypeID(ConstantUtil.USER_MESSAGE_TYPE_XT);
+		message.setMsgTime(sdf.parse(sdf.format(new Date())));
+		message.setUserID(userId);
+		
+		//操作日志
         LogRecord log = new LogRecord();
         log.setTitle("实名认证审核");
         log.setContent("审核失败");
@@ -99,6 +111,14 @@ public class UserInfoController {
 						if (flag > 0) {
 							cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);
 							cr.setMsg("操作成功！");
+							//系统消息
+							if (type == 1) {
+								message.setMsgContent("您的资料审核已通过！");
+							} else if (type == -1) {
+								message.setMsgContent("您的资料审核未通过，上传信息不符合标准，请重新上传！");
+							}
+							userMessageService.add(message);
+							//操作日志
 							log.setUserId(users.getId());
 			                log.setContent("审核成功；信息：userId：" + userId + ";;type:" + type + ";;IDCard:" + IDCard);
 						}
@@ -634,6 +654,15 @@ public class UserInfoController {
 	public Object getByUserAnalysis(HttpServletRequest request, String type, String startTime, String endTime, String loginFrom, String agentName,
 			 @RequestParam Integer pageNum, @RequestParam Integer pageSize) throws Exception {
 		CommonResponse cr = new CommonResponse();
+		//操作日志
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("客户分析查询");
+        log.setContent("查询失败");
+        log.setModuleName(ConstantUtil.logRecordModule.KHFX.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
@@ -672,6 +701,8 @@ public class UserInfoController {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
+                log.setUserId(users.getId());
+                log.setContent("查询成功");
             } else {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 cr.setData("{}");
@@ -685,6 +716,8 @@ public class UserInfoController {
             throw e;
             // e.printStackTrace();
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
         return cr;
 	}
 	
@@ -709,6 +742,15 @@ public class UserInfoController {
 	@ResponseBody
 	public Object getByUserAnalysisCount(HttpServletRequest request, String type, String startTime, String endTime, String loginFrom, String agentName) throws Exception {
 		CommonResponse cr = new CommonResponse();
+		//操作日志
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("客户分析统计查询");
+        log.setContent("查询失败");
+        log.setModuleName(ConstantUtil.logRecordModule.KHFX.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
@@ -745,6 +787,8 @@ public class UserInfoController {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(list);
                 cr.setMsg("操作成功！");
+                log.setUserId(users.getId());
+                log.setContent("查询成功");
             } else {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 cr.setData("{}");
@@ -758,6 +802,8 @@ public class UserInfoController {
             throw e;
             // e.printStackTrace();
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
         return cr;
 	}
 	
@@ -780,6 +826,15 @@ public class UserInfoController {
 	@ResponseBody
 	public void excelByUserAnalysis(HttpServletRequest request, HttpServletResponse response, String type, String startTime, String endTime,
 			String loginFrom, String agentName) throws Exception {
+		//操作日志
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("客户分析导出");
+        log.setContent("导出失败");
+        log.setModuleName(ConstantUtil.logRecordModule.KHFX.getName());
+        log.setType(ConstantUtil.logRecordType.DC.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		try {
 			String tieleName = "用户分析";
 			String excelName = "用户分析";
@@ -863,10 +918,14 @@ public class UserInfoController {
 						"xzc", "zzc", "zrj" };
 				poi.doExport(request, response, list, tieleName, excelName,
 						heads, colums);
+				log.setUserId(users.getId());
+                log.setContent("导出成功，共：" + list.size() + "条数据");
 			}
 		} catch (Exception e) {
 			throw e;
 		}
+		logRecordService.add(log);
+        AuditLog.info(log.toString());
 	}
 	
 	/**
@@ -891,6 +950,15 @@ public class UserInfoController {
 	public Object getByUserAttribute(HttpServletRequest request, String type, String startTime, String endTime, String loginFrom, String agentName,
 			 @RequestParam Integer pageNum, @RequestParam Integer pageSize) throws Exception {
 		CommonResponse cr = new CommonResponse();
+		//操作日志
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("客户属性查询");
+        log.setContent("查询失败");
+        log.setModuleName(ConstantUtil.logRecordModule.KHSX.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
@@ -927,6 +995,8 @@ public class UserInfoController {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
+                log.setUserId(users.getId());
+                log.setContent("查询成功");
             } else {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 cr.setData("{}");
@@ -940,6 +1010,8 @@ public class UserInfoController {
             throw e;
             // e.printStackTrace();
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
         return cr;
 	}
 	
@@ -964,6 +1036,15 @@ public class UserInfoController {
 	@ResponseBody
 	public Object getByUserAttributeCount(HttpServletRequest request, String type, String startTime, String endTime, String loginFrom, String agentName) throws Exception {
 		CommonResponse cr = new CommonResponse();
+		//操作日志
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("客户属性统计查询");
+        log.setContent("查询失败");
+        log.setModuleName(ConstantUtil.logRecordModule.KHSX.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
@@ -1000,6 +1081,8 @@ public class UserInfoController {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(list);
                 cr.setMsg("操作成功！");
+                log.setUserId(users.getId());
+                log.setContent("查询成功");
             } else {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 cr.setData("{}");
@@ -1013,6 +1096,8 @@ public class UserInfoController {
             throw e;
             // e.printStackTrace();
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
         return cr;
 	}
 	
@@ -1035,9 +1120,18 @@ public class UserInfoController {
 	@ResponseBody
 	public void excelByUserAttribute(HttpServletRequest request, HttpServletResponse response, String type, String startTime, String endTime,
 			String loginFrom, String agentName) throws Exception {
+		//操作日志
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("客户属性导出");
+        log.setContent("导出失败");
+        log.setModuleName(ConstantUtil.logRecordModule.KHSX.getName());
+        log.setType(ConstantUtil.logRecordType.DC.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		try {
-			String tieleName = "用户分析";
-			String excelName = "用户分析";
+			String tieleName = "客户属性分析";
+			String excelName = "客户属性分析";
 			HttpSession httpSession = request.getSession();
 			Users users = (Users) httpSession.getAttribute("currentUser");
 			String sTime = "";
@@ -1072,12 +1166,16 @@ public class UserInfoController {
 				List<Map<String, Object>> list = userInfoService.excelByUserAttribute(sTime, eTime, loginFrom, agentName);
 				POIUtils poi = new POIUtils();
 				String[] heads = { "日期", "登录用户", "总用户", "男", "女", "性别未确定", "苹果用户", "安卓用户", "其他" };
-				String[] colums = { "date", "dlNum", "zNum", "nNum", "nvNum", "wqdNum", "pgNum", "azNum", "qtNum" };
+				String[] colums = { "date", "dlNum", "zNum", "nNum", "nvNum", "wzNum", "pgNum", "azNum", "qtNum" };
 				poi.doExport(request, response, list, tieleName, excelName,
 						heads, colums);
+				log.setUserId(users.getId());
+		        log.setContent("导出成功，共：" + list.size() + "条数据");
 			}
 		} catch (Exception e) {
 			throw e;
 		}
+		logRecordService.add(log);
+        AuditLog.info(log.toString());
 	}
 }

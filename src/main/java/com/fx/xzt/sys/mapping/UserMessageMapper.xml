@@ -2,15 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.fx.xzt.sys.mapper.UserMessageMapper" >
   <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.UserMessage" >
-    <result column="msgID" property="msgID" jdbcType="BIGINT" />
-    <result column="userID" property="userID" jdbcType="BIGINT" />
-    <result column="msgTypeID" property="msgTypeID" jdbcType="CHAR" />
-    <result column="msgTime" property="msgTime" jdbcType="TIMESTAMP" />
-    <result column="msgContent" property="msgContent" jdbcType="VARCHAR" />
-    <result column="appID" property="appID" jdbcType="VARCHAR" />
-    <result column="skipPath" property="skipPath" jdbcType="VARCHAR" />
-    <result column="skipType" property="skipType" jdbcType="SMALLINT" />
-    <result column="msgFrom" property="msgFrom" jdbcType="VARCHAR" />
+    <id column="MsgID" jdbcType="BIGINT" property="msgID" />
+    <result column="UserID" jdbcType="BIGINT" property="userID" />
+    <result column="MsgTypeID" jdbcType="CHAR" property="msgTypeID" />
+    <result column="MsgTime" jdbcType="TIMESTAMP" property="msgTime" />
+    <result column="MsgContent" jdbcType="VARCHAR" property="msgContent" />
+    <result column="AppID" jdbcType="VARCHAR" property="appID" />
+    <result column="SkipPath" jdbcType="VARCHAR" property="skipPath" />
+    <result column="SkipType" jdbcType="SMALLINT" property="skipType" />
+    <result column="MsgFrom" jdbcType="VARCHAR" property="msgFrom" />
   </resultMap>
   <select id="selectByAll" resultType="com.fx.xzt.sys.model.UserMessageModel" parameterType="map" >
     select t.MsgType as msgType,i.UserName as userName,m.*
@@ -18,6 +18,74 @@
 	left join User_Login i on m.UserID = i.UserID
 	left join Message_Type t on t.MsgTypeID = m.MsgTypeID
   </select>
+  
+  <!-- 消息新增开始-htt -->
+  <insert id="add" parameterType="com.fx.xzt.sys.entity.UserMessage" >
+    insert into User_Message
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="msgID != null" >
+        MsgID,
+      </if>
+      <if test="userID != null" >
+        UserID,
+      </if>
+      <if test="msgTypeID != null" >
+        MsgTypeID,
+      </if>
+      <if test="msgTime != null" >
+        MsgTime,
+      </if>
+      <if test="msgContent != null" >
+        MsgContent,
+      </if>
+      <if test="appID != null" >
+        AppID,
+      </if>
+      <if test="skipPath != null" >
+        SkipPath,
+      </if>
+      <if test="skipType != null" >
+        SkipType,
+      </if>
+      <if test="msgFrom != null" >
+        MsgFrom,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="msgID != null" >
+        #{msgID,jdbcType=BIGINT},
+      </if>
+      <if test="userID != null" >
+        #{userID,jdbcType=BIGINT},
+      </if>
+      <if test="msgTypeID != null" >
+        #{msgTypeID,jdbcType=CHAR},
+      </if>
+      <if test="msgTime != null" >
+        #{msgTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="msgContent != null" >
+        #{msgContent,jdbcType=VARCHAR},
+      </if>
+      <if test="appID != null" >
+        #{appID,jdbcType=VARCHAR},
+      </if>
+      <if test="skipPath != null" >
+        #{skipPath,jdbcType=VARCHAR},
+      </if>
+      <if test="skipType != null" >
+        #{skipType,jdbcType=SMALLINT},
+      </if>
+      <if test="msgFrom != null" >
+        #{msgFrom,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <!-- 消息新增结束-htt -->
+  
+  
+  
+  
   <!-- <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >

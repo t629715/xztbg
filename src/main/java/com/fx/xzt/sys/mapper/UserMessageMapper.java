@@ -16,4 +16,6 @@ public interface UserMessageMapper extends BaseMapper<UserMessage>{
 	 * @return
 	 */
 	List<UserMessageModel> selectByAll(Map<String,Object> map);
+	
+	int add(UserMessage userMessage);
 }

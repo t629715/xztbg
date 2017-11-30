@@ -19,7 +19,7 @@
   
 	<!-- 现金提取查询开始-htt -->
 	<select id="selectByWithdrawCash" resultType="java.util.Map" parameterType="java.util.Map">
-		SELECT w.WithdrawID withdrawID,w.UserID userID,w.UserName userName,w.WithdrawAmt withdrawAmt,
+		SELECT w.WithdrawID withdrawID,cast(w.UserID  as CHAR) userID,w.UserName userName,w.WithdrawAmt withdrawAmt,
 		w.AccountNum accountNum,w.WithdrawTime withdrawTime,w.FinishTime finishTime,w.Status status,w.type,w.poundage,
 		i.agent_id AS agentId, ua.user_name AS agentName, i.broker_id AS
 		brokerId,

@@ -28,4 +28,11 @@ public class UserMessageServiceImpl extends BaseService<UserMessage> implements 
 		return new PageInfo<UserMessageModel>(list);
 	}
 
+	/**
+	 * 新增
+	 */
+	public int add(UserMessage userMessage) {
+		return userMessageMapper.add(userMessage);
+	}
+
 }

@@ -18,15 +18,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fx.xzt.sys.entity.LogRecord;
+import com.fx.xzt.sys.entity.UserMessage;
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.service.GoldWithdrawService;
 import com.fx.xzt.sys.service.LogRecordService;
+import com.fx.xzt.sys.service.UserMessageService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
 import com.fx.xzt.sys.util.DateUtil;
 import com.fx.xzt.sys.util.IPUtil;
 import com.fx.xzt.sys.util.StringUtil;
 import com.fx.xzt.sys.util.log.AuditLog;
+import com.fx.xzt.util.IdUtil;
 import com.fx.xzt.util.POIUtils;
 import com.github.pagehelper.PageInfo;
 
@@ -46,6 +49,8 @@ public class GoldWithdrawController {
 	GoldWithdrawService goldWithdrawService;
 	@Resource
     LogRecordService logRecordService;
+	@Resource
+	UserMessageService userMessageService;
 	
 	/**
 	 * 
@@ -261,12 +266,21 @@ public class GoldWithdrawController {
 	 */
 	@RequestMapping(value="/addLogisticsNoById")
     @ResponseBody
-    public Object addLogisticsNoById(HttpServletRequest request, @RequestParam String logisticsNo, @RequestParam Short status, @RequestParam String id) throws ParseException {
+    public Object addLogisticsNoById(HttpServletRequest request, @RequestParam String logisticsNo, 
+    		@RequestParam Short status, @RequestParam String id, @RequestParam Long userId) throws ParseException {
         CommonResponse cr = new CommonResponse();
         cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
         cr.setMsg("操作失败！");
+        
+        //系统消息
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        UserMessage message = new UserMessage();
+        message.setMsgID(IdUtil.generateyyyymmddhhMMssSSSAnd2Random());
+        message.setMsgTypeID(ConstantUtil.USER_MESSAGE_TYPE_XT);
+        message.setMsgTime(sdf.parse(sdf.format(new Date())));
+        message.setUserID(userId);
+        
        //操作日志
-    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         LogRecord log = new LogRecord();
         log.setTitle("黄金提取物流单号添加");
         log.setContent("添加失败");
@@ -284,6 +298,10 @@ public class GoldWithdrawController {
                     if (flag > 0) {
                         cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);
                         cr.setMsg("操作成功！");
+                        //系统消息
+    					message.setMsgContent("您的黄金提取订单已发货，物流单号为：" + logisticsNo + "！");
+    					userMessageService.add(message);
+                    	//操作日志
                         log.setUserId(users.getId());
                         log.setContent("添加成功，信息：id:" + id + ";;logisticsNo:" + logisticsNo + ";;status" + status + ";;date:" + date);
                     }
@@ -316,12 +334,21 @@ public class GoldWithdrawController {
 	 */
 	@RequestMapping(value="/updateLogisticsNoById")
     @ResponseBody
-    public Object updateLogisticsNoById(HttpServletRequest request, @RequestParam String logisticsNo, @RequestParam String id) throws ParseException {
+    public Object updateLogisticsNoById(HttpServletRequest request, @RequestParam String logisticsNo, 
+    		@RequestParam String id, @RequestParam Long userId) throws ParseException {
         CommonResponse cr = new CommonResponse();
         cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
         cr.setMsg("操作失败！");
+        
+        //系统消息
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        UserMessage message = new UserMessage();
+        message.setMsgID(IdUtil.generateyyyymmddhhMMssSSSAnd2Random());
+        message.setMsgTypeID(ConstantUtil.USER_MESSAGE_TYPE_XT);
+        message.setMsgTime(sdf.parse(sdf.format(new Date())));
+        message.setUserID(userId);
+        
         //操作日志
-    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         LogRecord log = new LogRecord();
         log.setTitle("黄金提取物流单号修改");
         log.setContent("修改失败");
@@ -338,6 +365,10 @@ public class GoldWithdrawController {
                     if (flag > 0) {
                         cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);
                         cr.setMsg("操作成功！");
+                        //系统消息
+    					message.setMsgContent("您的黄金提取订单物流单号已更改，新物流单号为：" + logisticsNo + "！");
+    					userMessageService.add(message);
+                    	//操作日志
                         log.setUserId(users.getId());
                         log.setContent("添加成功，信息：id:" + id + ";;logisticsNo:" + logisticsNo);
                     }

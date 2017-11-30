@@ -144,7 +144,7 @@ public class GoldRedeemConfController {
         log.setTitle("黄金赎回计算");
         log.setContent("计算失败");
         log.setModuleName(ConstantUtil.logRecordModule.HJSHJL.getName());
-        log.setType(ConstantUtil.logRecordType.CK.getIndex());
+        log.setType(ConstantUtil.logRecordType.JS.getIndex());
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {

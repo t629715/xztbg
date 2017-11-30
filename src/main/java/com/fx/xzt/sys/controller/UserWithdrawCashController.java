@@ -19,15 +19,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fx.xzt.sys.entity.LogRecord;
 import com.fx.xzt.sys.entity.UserAccountRecord;
+import com.fx.xzt.sys.entity.UserMessage;
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.model.UserWithdrawCashModel;
 import com.fx.xzt.sys.service.LogRecordService;
 import com.fx.xzt.sys.service.UserAccountRecordService;
+import com.fx.xzt.sys.service.UserMessageService;
 import com.fx.xzt.sys.service.UserWithdrawCashService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
 import com.fx.xzt.sys.util.IPUtil;
 import com.fx.xzt.sys.util.log.AuditLog;
+import com.fx.xzt.util.IdUtil;
 import com.fx.xzt.util.POIUtils;
 import com.github.pagehelper.PageInfo;
 
@@ -40,6 +43,8 @@ public class UserWithdrawCashController {
 	UserAccountRecordService userAccountRecordService;
 	@Resource
     LogRecordService logRecordService;
+	@Resource
+	UserMessageService userMessageService;
 	
 	/**
 	 * 出金管理 集合 
@@ -301,10 +306,18 @@ public class UserWithdrawCashController {
 	 */
 	@RequestMapping(value="/auditPassedById")
 	@ResponseBody
-	public Object auditPassedById(HttpServletRequest request,  String withdrawid) throws Exception{
+	public Object auditPassedById(HttpServletRequest request,  String withdrawid, Long userId) throws Exception{
 		CommonResponse cr = new CommonResponse();
-		//操作日志
+		
+		//系统消息
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		UserMessage message = new UserMessage();
+		message.setMsgID(IdUtil.generateyyyymmddhhMMssSSSAnd2Random());
+		message.setMsgTypeID(ConstantUtil.USER_MESSAGE_TYPE_XT);
+		message.setMsgTime(sdf.parse(sdf.format(new Date())));
+		message.setUserID(userId);
+		
+		//操作日志
 		LogRecord log = new LogRecord();
 		log.setTitle("现金提取审核");
 		log.setContent("审核通过失败");
@@ -324,6 +337,10 @@ public class UserWithdrawCashController {
                 	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);
                 	cr.setData("{}");
                 	cr.setMsg("操作成功！");
+                	//系统消息
+					message.setMsgContent("您的提现审核已通过，需要1-3个工作日到账，请耐心等待！");
+					userMessageService.add(message);
+                	//操作日志
                 	log.setUserId(users.getId());
                     log.setContent("审核通过成功；信息：withdrawid:" + withdrawid);
                 } else {

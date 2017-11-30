@@ -89,7 +89,13 @@ public class ConstantUtil {
     /**
      * 图片服务器地址
      */
-    public final static String PHOTO_URL = "PHOTO_URL";   //用户统计分析周期-近三十天
+    public final static String PHOTO_URL = "PHOTO_URL";   //图片服务器地址
+    
+    /**
+     * 消息类型
+     */
+    public final static String USER_MESSAGE_TYPE_XT = "00";   //系统
+    public final static String USER_MESSAGE_TYPE_XX = "10";   //消息
 
     /**
      * 客户信息-状态
@@ -360,8 +366,9 @@ public class ConstantUtil {
         SQ("授权",8),
         SH("审核",9),
         DL("登录",10),
-        MMCZ("充值密码",11),
-        CX("查询",11);
+        MMCZ("重置密码",11),
+        CX("查询",12),
+        JS("计算",13);
         private String name;
         private Integer index;
         private logRecordType(String name,Integer index){

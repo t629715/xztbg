@@ -4,7 +4,7 @@
 	
 	<!--黄金提取查询开始-htt-->
 	<select id="selectByGoldWithdraw" resultType="java.util.Map" parameterType="java.util.Map">
-	    SELECT CAST(w.id AS CHAR) id, w.user_id userId, w.type type, w.amount amount, w.fee fee, w.insurance insurance, w.logistics_fee logisticsFee, 
+	    SELECT CAST(w.id AS CHAR) id, cast(w.user_id  as CHAR) userId, w.type type, w.amount amount, w.fee fee, w.insurance insurance, w.logistics_fee logisticsFee, 
 		w.apply_time applyTime, w.send_time sendTime, w.status status, w.logistics_no logisticsNo, w.update_time updateTime,
 		u.UserName userName, i.agent_id AS agentId, ua.user_name AS agentName, i.broker_id AS brokerId, ub.user_name AS brokerName,
 		a.contact_name contactName, a.contact_phone contactPhone, a.delivery_address deliveryAddress

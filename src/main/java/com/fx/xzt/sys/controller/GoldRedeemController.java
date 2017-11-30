@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fx.xzt.sys.entity.GoldRedeem;
 import com.fx.xzt.sys.entity.LogRecord;
+import com.fx.xzt.sys.entity.UserMessage;
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.service.GoldRedeemService;
 import com.fx.xzt.sys.service.LogRecordService;
 import com.fx.xzt.sys.service.UserLoginService;
+import com.fx.xzt.sys.service.UserMessageService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
 import com.fx.xzt.sys.util.IPUtil;
@@ -50,6 +52,8 @@ public class GoldRedeemController {
 	UserLoginService userLoginService;
 	@Resource
     LogRecordService logRecordService;
+	@Resource
+	UserMessageService userMessageService;
 	
 	/**
 	 * 
@@ -317,8 +321,16 @@ public class GoldRedeemController {
     @ResponseBody
 	public Object saveGoldRedeem(HttpServletRequest request, @ModelAttribute GoldRedeem goldRedeem) throws Exception {
         CommonResponse cr = new CommonResponse();
+        
+        //系统消息
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        UserMessage message = new UserMessage();
+        message.setMsgID(IdUtil.generateyyyymmddhhMMssSSSAnd2Random());
+        message.setMsgTypeID(ConstantUtil.USER_MESSAGE_TYPE_XT);
+        message.setMsgTime(sdf.parse(sdf.format(new Date())));
+        message.setUserID(Long.parseLong(goldRedeem.getUserIdString()));
+        
         //操作日志
-    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         LogRecord log = new LogRecord();
         log.setTitle("黄金赎回记录新增");
         log.setContent("新增失败；信息：" + goldRedeem.toString());
@@ -339,6 +351,10 @@ public class GoldRedeemController {
             		cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);
                     cr.setData("{}");
                     cr.setMsg("操作成功！");
+                    //系统消息
+					message.setMsgContent("您的黄金已被成功赎回，赎回款项：" + Double.parseDouble(goldRedeem.getAmount().toString()) / 100 + "元已成功充值至您的账户！");
+					userMessageService.add(message);
+                	//操作日志
                     log.setUserId(users.getId());
                     log.setContent("新增成功；信息：" + goldRedeem.toString());
             	} else {

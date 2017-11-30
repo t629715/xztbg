@@ -11,6 +11,33 @@
 		<result column="user_id" jdbcType="BIGINT" property="userId" />
 		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
 	</resultMap>
+	
+	<!--日志查询开始-htt-->
+    <select id="selectByAll" resultType="java.util.Map" parameterType="java.util.Map">
+    	select cast(r.id  as CHAR) id,r.title,r.content,r.module_name moduleName,r.type,r.IP,
+    	cast(r.user_id  as CHAR) userId,r.create_time createTime,u.user_name userName 
+		from log_record r
+		LEFT JOIN users u on r.user_id = u.id
+      <where>
+          <if test="userName != null and userName != '' ">
+            and u.user_name = #{userName,jdbcType=VARCHAR}
+          </if>
+          <if test="type != null and type != '' ">
+              and r.type = #{type,jdbcType=INTEGER}
+          </if>
+          <if test="moduleName !=null and moduleName !='' ">
+              and r.module_name &gt;=#{moduleName,jdbcType=VARCHAR}
+          </if>
+          <if test="startTime !=null and startTime !='' ">
+              and r.create_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+          </if>
+          <if test="endTime !=null and endTime != '' ">
+              and r.create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+          </if>
+      </where>
+        order by r.create_time DESC
+    </select>
+    <!--日志查询结束-htt-->
 
 	<!-- 操作日志记录新增开始-htt -->
 	<insert id="add" parameterType="com.fx.xzt.sys.entity.LogRecord">
@@ -69,4 +96,6 @@
 		</trim>
 	</insert>
 	<!-- 日志操作记录新增结束-htt -->
+	
+	
 </mapper>
