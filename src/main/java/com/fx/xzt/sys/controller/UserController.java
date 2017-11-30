@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.fx.xzt.sys.entity.LogRecord;
+import com.fx.xzt.sys.entity.UserInfo;
 import com.fx.xzt.sys.service.LogRecordService;
 import com.fx.xzt.sys.util.*;
 import com.fx.xzt.sys.util.log.AuditLog;
@@ -504,7 +505,7 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/generateQRCode")
 	@ResponseBody
-	public void createCode(HttpServletRequest request,HttpServletResponse response,String text) throws ParseException {
+	public void createCode(HttpServletRequest request,HttpServletResponse response,String userName,Long id) throws ParseException {
 		//操作日志
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		LogRecord log = new LogRecord();
@@ -515,7 +516,14 @@ public class UserController {
 		log.setIp(IPUtil.getHost(request));
 		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		try {
-			GenerateQRCodeUtil.generateQRCode(response,text);
+			Users users = userService.getUser(id);
+			if (users.getId() != null && users.getPid()!= null)
+				if (users.getPid() == 1){
+					GenerateQRCodeUtil.generateQRCode(response,userName,users.getId(),users.getPid());
+				}else{
+					GenerateQRCodeUtil.generateQRCode(response,userName,users.getId(),users.getPid());
+				}
+
 			log.setContent("生成成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -528,14 +536,21 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/createQRCode")
 	@ResponseBody
-	public void createCode(String text,HttpServletResponse response){
+	public void createCode(String userName,Long id,HttpServletResponse response){
 		int width = 300;
 		int height = 300;
 		String format = "png";
 		Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
 		hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
 		try {
-			BitMatrix bitMatrix = new MultiFormatWriter().encode("http://www.baidu.com", BarcodeFormat.QR_CODE, width, height, hints);
+			Users users = userService.getUser(id);
+			BitMatrix bitMatrix = null;
+			if (users.getPid()==1){
+				 bitMatrix = new MultiFormatWriter().encode("http://116.255.188.180:10080/act1/share.html?brokerId=&agentId="+users.getId(),BarcodeFormat.QR_CODE, width, height, hints);
+			}else{
+				 bitMatrix = new MultiFormatWriter().encode("http://116.255.188.180:10080/act1/share.html?brokerId="+users.getId()+"&agentId="+users.getPid(),BarcodeFormat.QR_CODE, width, height, hints);
+			}
+
 			GenerateQRCodeUtil.writeToStream(response,bitMatrix,format);
 		} catch (WriterException e) {
 			e.printStackTrace();

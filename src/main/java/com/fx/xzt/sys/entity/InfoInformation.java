@@ -18,7 +18,7 @@ public class InfoInformation implements Serializable{
     private String title;
 
     /**
-     *内容路径
+     *内容地址
      */
     private String contentpath;
 
@@ -43,7 +43,7 @@ public class InfoInformation implements Serializable{
     private Date releasetime;
 
     /**
-     *图片路径
+     *图片地址
      */
     private String imagepath;
 

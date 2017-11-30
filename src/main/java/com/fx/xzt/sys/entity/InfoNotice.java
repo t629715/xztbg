@@ -31,7 +31,7 @@ public class InfoNotice implements Serializable {
      */
     private String appID;
     /**
-     * @Fields skipPath 跳转路径
+     * @Fields skipPath 跳转地址
      */
     private String skipPath;
     /**
