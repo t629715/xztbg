@@ -1,17 +1,23 @@
 package com.fx.xzt.sys.controller;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import com.fx.xzt.redis.RedisService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
+import com.fx.xzt.sys.util.StringUtil;
 import com.fx.xzt.util.CaptchaUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -50,24 +56,33 @@ public class LoginController {
 
 	@Resource
 	private UsersService userService;
-	
+	@Resource
+	private RedisService redisService;
+
 	/**
 	 * 基于手机号和密码的身份认证
-	 * @param userInfo  用户信息
-	 * @param model     
+	 * @param model
 	 * @param request  用户请求
 	 * @return 成功:返回该用户可操作的菜单  
 	 *         失败:返回登录页,清除token
 	 */
 	@RequestMapping(value="/login",method=RequestMethod.POST)
 	@ResponseBody
-	public Map checkLogin(@RequestBody Users userInfo,Model model,HttpServletRequest request){
+	public Map checkLogin(String userName,String password,Model model,HttpServletRequest request,String validateCode){
 		Map<String,Object> map = new HashMap<String,Object>();
-		logger.debug("userInfo", userInfo);
-		String password = MD5Utils.encrypt(userInfo.getPassword());
-		MyAuthenticationToken token = new MyAuthenticationToken(userInfo.getUserName(), password, true, null);
+		logger.debug("userInfo", userName);
+		 password = MD5Utils.encrypt(password);
+		MyAuthenticationToken token = new MyAuthenticationToken(userName, password, true, null);
 		Subject subject = SecurityUtils.getSubject();
 		try {
+			if (!StringUtil.isNotEmpty(validateCode)){
+				map.put("msg","请输入验证码");
+				return map;
+			}
+			if (!validateCode.equals(redisService.get("validateCode").toString())){
+				map.put("msg","验证码错误");
+				return map;
+			}
 			subject.login(token);//会到自定义的Realm中进行验证返回
 			if(subject.isAuthenticated()){
 				    Example example = new Example(Users.class);
@@ -122,6 +137,18 @@ public class LoginController {
 	public void captcha(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException
 	{
-		CaptchaUtil.outputCaptcha(request, response);
+		Map map = CaptchaUtil.outputCaptcha();
+		// 将四位数字的验证码保存到Session中。
+		redisService.put("validateCode",map.get("code").toString(),1000*50);
+		// 禁止图像缓存。
+		response.setHeader("Pragma", "no-cache");
+		response.setHeader("Cache-Control", "no-cache");
+		response.setDateHeader("Expires", 0);
+		response.setContentType("image/jpeg");
+		// 将图像输出到Servlet输出流中。
+		ServletOutputStream sos = response.getOutputStream();
+		ImageIO.write((BufferedImage)map.get("buffImg"), "jpeg", sos);
+		sos.close();
 	}
+
 }

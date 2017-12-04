@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -33,10 +35,10 @@ public class CaptchaUtil {
 
 
 
-        public static void outputCaptcha(HttpServletRequest request, HttpServletResponse response)
+        public static Map<String,Object>  outputCaptcha()
                 throws ServletException, IOException
         {
-
+            Map<String,Object> map = new HashMap<String, Object>();
             // 定义图像buffer
             BufferedImage buffImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
             Graphics gd = buffImg.getGraphics();
@@ -54,13 +56,13 @@ public class CaptchaUtil {
             gd.drawRect(0, 0, width - 1, height - 1);
             // 随机产生40条干扰线，使图象中的认证码不易被其它程序探测到。
             gd.setColor(Color.BLACK);
-            for (int i = 0; i < 40; i++) {
+            /*for (int i = 0; i < 40; i++) {
                 int x = random.nextInt(width);
                 int y = random.nextInt(height);
                 int xl = random.nextInt(12);
                 int yl = random.nextInt(12);
                 gd.drawLine(x, y, x + xl, y + yl);
-            }
+            }*/
             // randomCode用于保存随机产生的验证码，以便用户登录后进行验证。
             StringBuffer randomCode = new StringBuffer();
             int red = 0, green = 0, blue = 0;
@@ -77,20 +79,11 @@ public class CaptchaUtil {
                 gd.drawString(code, (i + 1) * xx, codeY);
                 // 将产生的四个随机数组合在一起。
                 randomCode.append(code);
+
             }
-            // 将四位数字的验证码保存到Session中。
-            HttpSession session = request.getSession();
-            System.out.print(randomCode);
-            session.setAttribute("code", randomCode.toString());
-            // 禁止图像缓存。
-            response.setHeader("Pragma", "no-cache");
-            response.setHeader("Cache-Control", "no-cache");
-            response.setDateHeader("Expires", 0);
-            response.setContentType("image/jpeg");
-            // 将图像输出到Servlet输出流中。
-            ServletOutputStream sos = response.getOutputStream();
-            ImageIO.write(buffImg, "jpeg", sos);
-            sos.close();
+            map.put("code",randomCode);
+            map.put("buffImg",buffImg);
+            return map;
         }
 
 }
