@@ -27,8 +27,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_5_vue_resource__["a" /* default */]);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_6__static_js_common_js__["a" /* default */]);
+
 
 
 
