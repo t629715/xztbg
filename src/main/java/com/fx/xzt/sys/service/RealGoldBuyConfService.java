@@ -31,7 +31,7 @@ public interface RealGoldBuyConfService extends IService<RealGoldBuyConf> {
      */
     public int modify(Long id, String name, String productNo, Integer cycle,
                         Short redeemMethod, Short settleMethod, Short calcMethod,
-                        Float calcStartPoint);
+                        Float calcStartPoint,Float yearIncomPercent);
 
     /**
      * 根据主键删除贵金属信息

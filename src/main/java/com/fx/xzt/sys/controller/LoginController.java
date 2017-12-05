@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.alibaba.druid.sql.visitor.functions.Char;
 import com.fx.xzt.redis.RedisService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
@@ -79,6 +80,13 @@ public class LoginController {
 				map.put("msg","请输入验证码");
 				return map;
 			}
+			char[] strs = validateCode.toCharArray();
+			for (int i = 0; i<strs.length; i++){
+				if ('a'<=strs[i] && strs[i]<='z'){
+					strs[i] = (char)(strs[i]-32);
+				}
+			}
+			validateCode = String.valueOf(strs);
 			if (!validateCode.equals(redisService.get("validateCode").toString())){
 				map.put("msg","验证码错误");
 				return map;

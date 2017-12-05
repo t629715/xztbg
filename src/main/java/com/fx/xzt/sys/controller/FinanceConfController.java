@@ -167,7 +167,8 @@ public class FinanceConfController {
     @ResponseBody
     public Object modifyFinanceConf(HttpServletRequest request, Integer id, String productNo, String productName,
                                     Float yearIncomPercent, Integer cycle, Float minMoney,
-                                    Integer calcMethod, Short redeemMethod, Short settleMethod,Integer type) throws ParseException {
+                                    Integer calcMethod, Short redeemMethod, Short settleMethod,Integer type,
+                                    Integer nper) throws ParseException {
         logger.debug("获取修改理财产品信息接口");
         CommonResponse response = new CommonResponse();
         //操作日志
@@ -185,7 +186,7 @@ public class FinanceConfController {
             if (users != null) {
                 Boolean b = financeConfService.modifyFinanceConf(id, productNo, productName,
                         yearIncomPercent, cycle, minMoney,
-                        calcMethod, redeemMethod, settleMethod, type);
+                        calcMethod, redeemMethod, settleMethod, type,nper);
                 if (b){
                     response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                     response.setData(b);

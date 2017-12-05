@@ -46,7 +46,7 @@ public class RealGoldBuyConfServiceImpl extends BaseService<RealGoldBuyConf> imp
     @Override
     public int modify(Long id, String name, String productNo,
                       Integer cycle, Short redeemMethod, Short settleMethod,
-                      Short calcMethod, Float calcStartPoint) {
+                      Short calcMethod, Float calcStartPoint,Float yearIncomPercent) {
         Map map = new HashMap();
         map.put("id",id);
         map.put("name",name);
@@ -56,6 +56,7 @@ public class RealGoldBuyConfServiceImpl extends BaseService<RealGoldBuyConf> imp
         map.put("settleMethod",settleMethod);
         map.put("calcMethod",calcMethod);
         map.put("calcStartPoint",calcStartPoint);
+        map.put("yearIncomPercent",yearIncomPercent);
         return realGoldBuyConfMapper.updateById(map);
     }
     /**

@@ -40,5 +40,6 @@ public interface FinanceConfService extends IService<FinanceConf> {
      */
     Boolean modifyFinanceConf(Integer id, String productNo, String productName,
                               Float yearIncomPercent, Integer cycle, Float minMoney,
-                              Integer calcMethod, Short redeemMethod, Short settleMethod,Integer type);
+                              Integer calcMethod, Short redeemMethod, Short settleMethod,Integer type,
+                              Integer nper);
 }

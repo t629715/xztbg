@@ -22,12 +22,14 @@
     from
       (select id,product_no productNo, product_name productName,cycle,type,
                   year_incom_percent yearIncomPercent,min_money minMoney,
-                  calc_method calcMethod,redeem_method redeemMethod,settle_method settleMethod
+                  calc_method calcMethod,redeem_method redeemMethod,settle_method settleMethod,
+                  nper nper
       from finance_conf
       union all
       select id,product_no productNo, product_name productName,cycle,type,
                   year_incom_percent yearIncomPercent,min_money minMoney,
-                  calc_method calcMethod,redeem_method redeemMethod,settle_method settleMethod
+                  calc_method calcMethod,redeem_method redeemMethod,settle_method settleMethod,
+                  nper nper
       from finance_conf_goldearn ) t1
     order by id
   </select>

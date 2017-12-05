@@ -75,7 +75,8 @@ public class FinanceConfServiceImpl extends BaseService<FinanceConf> implements 
     @Transactional
     public Boolean modifyFinanceConf(Integer id, String productNo, String productName,
                                      Float yearIncomPercent, Integer cycle, Float minMoney,
-                                     Integer calcMethod, Short redeemMethod, Short settleMethod,Integer type) {
+                                     Integer calcMethod, Short redeemMethod, Short settleMethod,Integer type,
+                                     Integer nper) {
         Map map = new HashMap();
         map.put("id",id);
         map.put("productNo",productNo);
@@ -86,6 +87,7 @@ public class FinanceConfServiceImpl extends BaseService<FinanceConf> implements 
         map.put("calcMethod",calcMethod);
         map.put("redeemMethod",redeemMethod);
         map.put("settleMethod",settleMethod);
+        map.put("nper",nper);
         int i = 0;
         if (type == 1){
             i = financeConfMapper.modifyFinanceConf(map);

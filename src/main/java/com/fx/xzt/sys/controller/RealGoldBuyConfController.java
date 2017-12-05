@@ -106,7 +106,7 @@ public class RealGoldBuyConfController {
     @ResponseBody
     public Object eidtRealGoldBuyConf(HttpServletRequest request, Long id, String name, String productNo,
                                       Integer cycle, Short redeemMethod, Short settleMethod,
-                                      Short calcMethod, Float calcStartPoint) throws ParseException {
+                                      Short calcMethod, Float calcStartPoint,Float yearIncomPercent) throws ParseException {
         CommonResponse cr = new CommonResponse();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //操作日志
@@ -123,7 +123,7 @@ public class RealGoldBuyConfController {
             if (users != null) {
                 int i = realGoldBuyConfService.modify(id, name, productNo,
                         cycle, redeemMethod, settleMethod,
-                        calcMethod, calcStartPoint);
+                        calcMethod, calcStartPoint,yearIncomPercent);
                 if (i != 0){
                     cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                     cr.setData(true);
