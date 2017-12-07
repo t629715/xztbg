@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fx.xzt.sys.entity.UserAccountRecord;
 import com.fx.xzt.sys.entity.UserWithdrawCash;
+import com.fx.xzt.sys.mapper.UserAccountMapper;
 import com.fx.xzt.sys.mapper.UserAccountRecordMapper;
 import com.fx.xzt.sys.mapper.UserWithdrawCashMapper;
 import com.fx.xzt.sys.model.UserWithdrawCashModel;
@@ -21,6 +22,7 @@ import com.fx.xzt.sys.service.UserWithdrawCashService;
 import com.fx.xzt.sys.util.AccountRecordStatusEnum;
 import com.fx.xzt.sys.util.ConstantUtil;
 import com.fx.xzt.sys.util.UserWithdrawCashStatusEnum;
+import com.fx.xzt.util.IdUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -32,6 +34,8 @@ public class UserWithdrawCashServiceImpl extends BaseService<UserWithdrawCash> i
 	
 	@Resource
 	UserAccountRecordMapper userAccountRecordMapper;
+	@Resource
+	UserAccountMapper userAccountMapper;
 	
 	public PageInfo<UserWithdrawCashModel> getByAll(String userName, String startTime, String endTime, String status,
 			Integer pageNum, Integer pageSize) {
@@ -177,6 +181,43 @@ public class UserWithdrawCashServiceImpl extends BaseService<UserWithdrawCash> i
 		u.setFinishtime(sdf.parse(sdf.format(new Date())));
 		int msg = userWithdrawCashMapper.updateByIdSelective(u);
 		return msg;
+	}
+
+	/**
+	 * 现金提取--审核不通过
+	 */
+	@Transactional
+	public int auditNoPassedById(String withdrawid) throws ParseException {
+		//更新提现状态
+		SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		UserWithdrawCash u = new UserWithdrawCash();
+		u.setWithdrawid(withdrawid);
+		u.setStatus(Short.decode(ConstantUtil.withdrawCashStatus.SHBTG.toString()));
+		u.setFinishtime(sdf.parse(sdf.format(new Date())));
+		int flag1 = userWithdrawCashMapper.updateByIdSelective(u);
+		//新增账户记录
+		UserWithdrawCash withdrawCash = userWithdrawCashMapper.selectByIdKey(withdrawid);
+		UserAccountRecord record = new UserAccountRecord();
+		record.setId(IdUtil.generateyymmddhhMMssSSSAnd4Random());
+		record.setUserId(withdrawCash.getUserid());
+		record.setUserName(withdrawCash.getUsername());
+		record.setSide(ConstantUtil.USER_ACCOUNT_RECORD_SIDE_J);
+		record.setAction(ConstantUtil.USER_ACCOUNT_RECORD_ACTION_TXJJFX);
+		record.setStatus(ConstantUtil.USER_ACCOUNT_RECORD_STATUS_YSH);
+		record.setRmb(withdrawCash.getWithdrawamt());
+		record.setCreateTime(sdf.parse(sdf.format(new Date())));
+		record.setDescription("提现拒绝返现");
+		int flag2 = userAccountRecordMapper.add(record);
+		//更新账户余额
+		Map<String, Object> map = new  HashMap<String, Object>();
+		map.put("user_id", withdrawCash.getUserid());
+		map.put("rmb", withdrawCash.getWithdrawamt());
+		int flag3 = userAccountMapper.updateByWithdrawCashNoPass(map);
+		if (flag1 > 0 && flag2 >0 && flag3 > 0) {
+			return 1;
+		} else {
+			return -1;
+		}
 	}
 	
 }

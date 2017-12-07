@@ -27,6 +27,18 @@ public interface DealOrderMapper extends BaseMapper<DealOrder> {
      * @return
      */
     Map<String, Object> selectByDealOrderCount(Map<String,Object> map);
+    
+    /**
+     * 
+    * @Title: selectByDealOrderCount2 
+    * @Description: 金权交易金额--持仓中保证金统计
+    * @param map
+    * @return    设定文件 
+    * @return Map<String,Object>    返回类型 
+    * @throws 
+    * @author htt
+     */
+    Map<String, Object> selectByDealOrderCount2(Map<String,Object> map);
 
     /**
      * 获取买涨手数、买入价

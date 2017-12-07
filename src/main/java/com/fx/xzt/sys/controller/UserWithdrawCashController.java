@@ -364,4 +364,78 @@ public class UserWithdrawCashController {
         AuditLog.info(log.toString());
         return cr;
 	}
+	
+	/**
+	 * 
+	* @Title: auditNoPassedById 
+	* @Description: 提现拒绝
+	* @param request
+	* @param withdrawid
+	* @param userId
+	* @return
+	* @throws Exception    设定文件 
+	* @return Object    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	@RequestMapping(value="/auditNoPassedById")
+	@ResponseBody
+	public Object auditNoPassedById(HttpServletRequest request,  String withdrawid, Long userId) throws Exception{
+		CommonResponse cr = new CommonResponse();
+		
+		//系统消息
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		UserMessage message = new UserMessage();
+		message.setMsgID(IdUtil.generateyyyymmddhhMMssSSSAnd2Random());
+		message.setMsgTypeID(ConstantUtil.USER_MESSAGE_TYPE_XT);
+		message.setMsgTime(sdf.parse(sdf.format(new Date())));
+		message.setUserID(userId);
+		
+		//操作日志
+		LogRecord log = new LogRecord();
+		log.setTitle("现金提取审核");
+		log.setContent("审核不通过失败");
+		log.setModuleName(ConstantUtil.logRecordModule.XJTQ.getName());
+		log.setType(ConstantUtil.logRecordType.SH.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
+        try {
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            if (users != null) {
+                int flag = userWithdrawCashService.auditNoPassedById(withdrawid);
+                if (flag > 0) {
+                	UserAccountRecord record = new UserAccountRecord();
+                	record.setWithdrawId(withdrawid);
+                	userAccountRecordService.updateByWithdrawId(record);
+                	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS);
+                	cr.setData("{}");
+                	cr.setMsg("操作成功！");
+                	//系统消息
+					message.setMsgContent("您的提现审核未通过，请检查您的提现信息是否正确！");
+					userMessageService.add(message);
+                	//操作日志
+                	log.setUserId(users.getId());
+                    log.setContent("审核不通过成功；信息：withdrawid:" + withdrawid);
+                } else {
+                	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+                	cr.setData("{}");
+                	cr.setMsg("操作失败！");
+                }
+            } else {
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("操作失败！");
+            }
+        } catch (Exception e) {
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("操作失败！");
+            throw e;
+            // e.printStackTrace();
+        }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
+        return cr;
+	}
 }
