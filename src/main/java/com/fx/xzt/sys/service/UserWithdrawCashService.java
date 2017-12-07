@@ -107,17 +107,4 @@ public interface UserWithdrawCashService extends IService<UserWithdrawCash>{
 	 */
 	public int auditPassedById(String withdrawid) throws ParseException;
 	
-	/**
-	 * 
-	* @Title: auditNoPassedById 
-	* @Description: 现金提取--审核不通过
-	* @param withdrawid
-	* @return
-	* @throws ParseException    设定文件 
-	* @return int    返回类型 
-	* @throws 
-	* @author htt
-	 */
-	public int auditNoPassedById(String withdrawid) throws ParseException;
-	
 }

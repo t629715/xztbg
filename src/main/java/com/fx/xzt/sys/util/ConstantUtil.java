@@ -57,14 +57,12 @@ public class ConstantUtil {
     public final static String USER_ACCOUNT_RECORD_ACTION_HQLCSF = "70";
     public final static String USER_ACCOUNT_RECORD_ACTION_LC = "80";
     public final static String USER_ACCOUNT_RECORD_ACTION_HJSH = "90";
-    public final static String USER_ACCOUNT_RECORD_ACTION_TXJJFX = "100";
     
     /**
      * 用户账户记录状态
      */
     public final static Integer USER_ACCOUNT_RECORD_STATUS_WSH = 0;
     public final static Integer USER_ACCOUNT_RECORD_STATUS_YSH = 1;
-    public final static Integer USER_ACCOUNT_RECORD_STATUS_SHSB = 2;
     
     /**
      * 用户账户记录方向
@@ -245,8 +243,7 @@ public class ConstantUtil {
      */
     public static enum withdrawCashStatus {
         SHZ("审核中","0"),
-        YWC("审核通过","1"),
-        SHBTG("审核不通过","2");
+        YWC("已审核","1");
         private String name;
         private String index;
         private withdrawCashStatus(String name,String index){
@@ -440,8 +437,7 @@ public class ConstantUtil {
         HJSHJL("黄金赎回记录","35"),
         HJSHJS("黄金赎回计算","36"),
         YHQ("优惠券","37"),
-        JXQ("加息券","38"),
-        HJLQ("黄金领取","39");
+        JXQ("加息券","38");
         private String name;
         private String index;
         private logRecordModule(String name,String index){
@@ -458,36 +454,6 @@ public class ConstantUtil {
         	logRecordModule[] ds = logRecordModule.values();
             Map<String, String> rlt = new Hashtable<String, String>();
             for (logRecordModule d : ds) {
-                rlt.put(d.index, d.name);
-            }
-            return rlt;
-        }
-    }
-    
-    /**
-     * 
-    * @ClassName: activityType 
-    * @Description: 活动类型
-    * @author htt
-    * @date 2017-12-6 上午11:04:25 
-    *
-     */
-    public static enum activityType {
-        XSHD("新手活动","1"),
-        TJYL("推荐有礼","2");
-        private String name;
-        private String index;
-        private activityType(String name,String index){
-            this.name = name;
-            this.index = index;
-        }
-        public String toString() {
-            return this.index;
-        }
-        public static Map<String, String> toMap() {
-        	activityType[] ds = activityType.values();
-            Map<String, String> rlt = new Hashtable<String, String>();
-            for (activityType d : ds) {
                 rlt.put(d.index, d.name);
             }
             return rlt;

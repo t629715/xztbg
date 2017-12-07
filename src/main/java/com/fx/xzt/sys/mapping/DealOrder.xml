@@ -144,58 +144,6 @@
     	</where>
     </select>
     <!--金权交易金额统计结束-htt-->
-    
-    <!--金权交易金额-持仓中保证金统计开始-htt-->
-    <select id="selectByDealOrderCount2" resultType="java.util.Map" parameterType="java.util.Map">
-        SELECT SUM(ensure_amount) enSureAmountSumYpc
-        FROM deal_order o
-        LEFT JOIN User_Login u ON o.user_id = u.UserID
-        LEFT JOIN User_Info i ON u.UserID = i.UserID
-        LEFT JOIN users ua ON i.agent_id = ua.id
-        LEFT JOIN users ub ON i.broker_id = ub.id
-        LEFT JOIN share_record s on o.id = s.order_id
-        <where>
-         and u.Status = 1 and o.order_state = 1 
-          <if test="userName != null and userName != '' ">
-            and u.UserName = #{userName,jdbcType=VARCHAR}
-          </if>
-          <if test="orderNo != null and orderNo != '' ">
-              and o.order_no = #{orderNo,jdbcType=VARCHAR}
-          </if>
-          <if test="startTime !=null and startTime !='' ">
-              and o.create_time &gt;=#{startTime,jdbcType=TIMESTAMP}
-          </if>
-          <if test="endTime !=null and endTime != '' ">
-              and o.create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
-          </if>
-          <if test="regStartTime !=null and regStartTime !='' ">
-              and i.RegisterTime &gt;=#{regStartTime,jdbcType=TIMESTAMP}
-          </if>
-          <if test="regEndTime !=null and regEndTime != '' ">
-              and i.RegisterTime &lt;=#{regEndTime,jdbcType=TIMESTAMP}
-          </if>
-          <if test="agentName != null and agentName !='' ">
-              and ua.id = #{agentName,jdbcType=BIGINT}
-          </if>
-          <if test="brokerName != null and brokerName !='' ">
-              and ub.id = #{brokerName,jdbcType=BIGINT}
-          </if>
-          <if test="orderState != null">
-              and o.order_state = #{orderState,jdbcType=INTEGER}
-          </if>
-          <if test="isUseCard != null and isUseCard == 0 ">
-              and o.voucher_id IS null
-          </if>
-          <if test="isUseCard != null and isUseCard == 1 ">
-              and o.voucher_id IS not null
-          </if>
-          <if test="upOrDown != null and upOrDown!= ''">
-              and o.up_or_down = #{upOrDown,jdbcType=INTEGER}
-          </if>
-    	</where>
-    </select>
-    <!--金权交易金额统计结束-htt-->
-    
     <!--获取买涨的总手数、总买入价 -start - tianliya -->
     <select id="selectHandNumberAndOpenPositionForUp" resultType="java.util.Map">
         SELECT SUM(o.hand_number) handNumUp, SUM(o.hand_number*o.open_position_price) openPositionPriceUp, o.product_id productId

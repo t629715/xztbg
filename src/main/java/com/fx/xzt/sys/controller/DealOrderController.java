@@ -257,12 +257,8 @@ public class DealOrderController {
                     agentNameStr = users.getId().toString();
                 }
                 Map<String, Object> map = new HashMap<String, Object>();
-                Map<String, Object> map1 = new HashMap<String, Object>();
                 map = dealOrderService.selectByDealOrderCount(userName, orderNo, startTime, endTime, 
                 		regStartTime, regEndTime, agentNameStr, brokerName, orderState, isUseCard, upOrDown);
-                map1 = dealOrderService.selectByDealOrderCount2(userName, orderNo, startTime, endTime, 
-                		regStartTime, regEndTime, agentNameStr, brokerName, orderState, isUseCard, upOrDown);
-                map.put("enSureAmountSumYpc", map1.get("enSureAmountSumYpc"));
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(map);
                 cr.setMsg("查询成功！");

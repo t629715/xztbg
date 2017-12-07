@@ -14,16 +14,4 @@
   	</update>
 	<!--黄金赎回成功更改账户余额结束-htt-->
 	
-	<!--提现拒绝更改账户余额开始-htt-->
-	<update id="updateByWithdrawCashNoPass" parameterType="java.util.Map">
-	    update user_account
-	    <set>
-	    	<if test="rmb != null and rmb !=''">
-	        	rmb = rmb + #{rmb,jdbcType=BIGINT},
-	        </if>
-    	</set>
-    	where user_id = #{user_id,jdbcType=BIGINT}
-  	</update>
-	<!--提现拒绝更改账户余额结束-htt-->
-	
 </mapper>

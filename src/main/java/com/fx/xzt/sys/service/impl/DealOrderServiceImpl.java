@@ -184,27 +184,4 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
         map.put("gramDown",gramDown);
         return map;
     }
-
-	/**
-	 * 金权交易金额--持仓中保证金统计
-	 */
-	public Map<String, Object> selectByDealOrderCount2(String userName,
-			String orderNo, String startTime, String endTime,
-			String regStartTime, String regEndTime, String agentName,
-			String brokerName, Integer orderState, Integer isUseCard,
-			String upOrDown) {
-		Map<String, Object> map = new HashMap<String, Object>();
-        map.put("userName", userName);
-        map.put("orderNo", orderNo);
-        map.put("startTime", startTime);
-        map.put("endTime", endTime);
-        map.put("regStartTime", regStartTime);
-        map.put("regEndTime", regEndTime);
-        map.put("agentName", agentName);
-        map.put("brokerName", brokerName);
-        map.put("orderState", orderState);
-        map.put("isUseCard", isUseCard);
-        map.put("upOrDown", upOrDown);
-        return dealOrderMapper.selectByDealOrderCount2(map);
-	}
 }

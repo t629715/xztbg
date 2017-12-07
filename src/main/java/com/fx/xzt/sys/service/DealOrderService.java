@@ -64,30 +64,6 @@ public interface DealOrderService {
     Map<String, Object> selectByDealOrderCount(String userName, String orderNo, String startTime, String endTime, 
     		String regStartTime, String regEndTime, String agentName, String brokerName, 
     		Integer orderState, Integer isUseCard, String upOrDown);
-    
-    /**
-     * 
-    * @Title: selectByDealOrderCount2 
-    * @Description: 金权交易金额--持仓中保证金统计
-    * @param userName
-    * @param orderNo
-    * @param startTime
-    * @param endTime
-    * @param regStartTime
-    * @param regEndTime
-    * @param agentName
-    * @param brokerName
-    * @param orderState
-    * @param isUseCard
-    * @param upOrDown
-    * @return    设定文件 
-    * @return Map<String,Object>    返回类型 
-    * @throws 
-    * @author htt
-     */
-    Map<String, Object> selectByDealOrderCount2(String userName, String orderNo, String startTime, String endTime, 
-    		String regStartTime, String regEndTime, String agentName, String brokerName, 
-    		Integer orderState, Integer isUseCard, String upOrDown);
 
     /**
      * 获取对冲套利的信息

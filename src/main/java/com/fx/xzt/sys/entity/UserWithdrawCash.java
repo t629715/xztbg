@@ -19,7 +19,7 @@ public class UserWithdrawCash implements Serializable {
 
     private String username;
 
-    private Long withdrawamt;
+    private Integer withdrawamt;
 
     private String accountnum;
 
@@ -57,11 +57,11 @@ public class UserWithdrawCash implements Serializable {
         this.username = username == null ? null : username.trim();
     }
 
-    public Long getWithdrawamt() {
+    public Integer getWithdrawamt() {
         return withdrawamt;
     }
 
-    public void setWithdrawamt(Long withdrawamt) {
+    public void setWithdrawamt(Integer withdrawamt) {
         this.withdrawamt = withdrawamt;
     }
 
