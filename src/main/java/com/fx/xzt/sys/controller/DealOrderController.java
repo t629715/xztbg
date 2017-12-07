@@ -310,7 +310,7 @@ public class DealOrderController {
             } else {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 cr.setData("{}");
-                cr.setMsg("操作失败！");
+                cr.setMsg("操作失败！ ");
             }
         } catch (Exception e) {
             cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
