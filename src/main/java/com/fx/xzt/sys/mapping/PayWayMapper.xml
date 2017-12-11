@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fx.xzt.sys.mapper.PayWayMapper" >
+  <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.PayWay" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pay_way" property="payWay" jdbcType="SMALLINT" />
+    <result column="pay_device" property="payDevice" jdbcType="SMALLINT" />
+    <result column="pay_url" property="payUrl" jdbcType="VARCHAR" />
+    <result column="notify_url" property="notifyUrl" jdbcType="VARCHAR" />
+    <result column="return_url" property="returnUrl" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="SMALLINT" />
+    <result column="status" property="status" jdbcType="SMALLINT" />
+  </resultMap>
+    <!--修改设备支持的支付方式-->
+    <update id="editPayWays" parameterType="java.util.Map">
+        update pay_way set status = 1  where pay_device=#{payDevice,jdbcType=SMALLINT} and pay_way=#{payWay,jdbcType=SMALLINT}
+    </update>
+    <!--设备的支付方式设为无效-->
+    <update id="editPayWay" parameterType="java.util.Map">
+        update pay_way set status = 0  where pay_device=#{payDevice,jdbcType=SMALLINT}
+    </update>
+    <!--获取各种系统支持的付款方式-->
+    <select id="getDevices" resultType="java.util.Map" parameterType="java.util.Map">
+        select DISTINCT(pay_device) payDevice from pay_way ORDER BY pay_device
+    </select>
+
+    <select id="getPayWaysForDevice" resultType="java.util.Map" parameterType="java.lang.Short">
+        select pay_way payWay from pay_way where pay_device = #{deviceId,jdbcType=SMALLINT} and status = 1 ORDER BY pay_way
+    </select>
+</mapper>
