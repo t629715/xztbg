@@ -38,12 +38,11 @@ public class PayWayServiceImpl extends BaseService<PayWay> implements PayWayServ
     public int editPayWays(Short payDevice, String[] payWays) {
         Map map = new HashMap();
         map.put("payDevice",payDevice);
-        System.out.println(payWayMapper.editPayWay(map)+"----------------");
+        payWayMapper.editPayWay(map);
         int msg = 0;
         for (String s:payWays){
             map.put("payWay",Short.valueOf(s));
             msg = payWayMapper.editPayWays(map);
-            System.out.println(msg+"----------------"+map.get("payWay"));
         }
         return msg;
     }
