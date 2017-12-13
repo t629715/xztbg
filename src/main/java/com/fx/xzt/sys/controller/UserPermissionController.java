@@ -75,7 +75,7 @@ public class UserPermissionController {
 	@RequestMapping(value="/selectPermissions", method=RequestMethod.GET)
 	public CommonResponse selectPermissions(){
 		CommonResponse response = new CommonResponse();
-		TreeModel list = usersPermissionService.getPermissions();
+		TreeModel list = usersPermissionService.getByRidsAll();
 		if (list != null){
 			response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 			response.setData(list);

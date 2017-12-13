@@ -546,11 +546,11 @@ public class UserController {
 			Users users = userService.getUser(id);
 			BitMatrix bitMatrix = null;
 			if (users.getPid()==1){
-				 bitMatrix = new MultiFormatWriter().encode("http://192.168.0.37:8081/act1/register.html?brokerId=&agentId="+users.getId(),BarcodeFormat.QR_CODE, width, height, hints);
-				 //bitMatrix = new MultiFormatWriter().encode("http://116.255.188.180:10080/act1/register.html?brokerId=&agentId="+users.getId(),BarcodeFormat.QR_CODE, width, height, hints);
+				 //bitMatrix = new MultiFormatWriter().encode("http://192.168.0.37:8081/act1/register.html?brokerId=&agentId="+users.getId(),BarcodeFormat.QR_CODE, width, height, hints);
+				 bitMatrix = new MultiFormatWriter().encode("http://116.255.188.180:10080/act1/register.html?brokerId=&agentId="+users.getId(),BarcodeFormat.QR_CODE, width, height, hints);
 			}else{
-				 bitMatrix = new MultiFormatWriter().encode("http://192.168.0.37:8081/act1/register.html?brokerId="+users.getId()+"&agentId="+users.getPid(),BarcodeFormat.QR_CODE, width, height, hints);
-				 //bitMatrix = new MultiFormatWriter().encode("http://116.255.188.180:10080/act1/register.html?brokerId="+users.getId()+"&agentId="+users.getPid(),BarcodeFormat.QR_CODE, width, height, hints);
+				 //bitMatrix = new MultiFormatWriter().encode("http://192.168.0.37:8081/act1/register.html?brokerId="+users.getId()+"&agentId="+users.getPid(),BarcodeFormat.QR_CODE, width, height, hints);
+				 bitMatrix = new MultiFormatWriter().encode("http://116.255.188.180:10080/act1/register.html?brokerId="+users.getId()+"&agentId="+users.getPid(),BarcodeFormat.QR_CODE, width, height, hints);
 			}
 
 			GenerateQRCodeUtil.writeToStream(response,bitMatrix,format);

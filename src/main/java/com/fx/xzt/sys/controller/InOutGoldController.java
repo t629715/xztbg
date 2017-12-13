@@ -3,6 +3,7 @@ package com.fx.xzt.sys.controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,8 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.fx.xzt.sys.service.PayWayService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -45,6 +48,8 @@ public class InOutGoldController {
 	InOutGoldService inOutGoldService;
 	@Resource
     LogRecordService logRecordService;
+	@Resource
+    PayWayService payWayService;
 	
 	/**
 	 * 
@@ -400,6 +405,116 @@ public class InOutGoldController {
                 cr.setMsg("操作成功！");
                 log.setUserId(users.getId());
                 log.setContent("查询成功");
+            } else {
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("操作失败！");
+            }
+
+        } catch (Exception e) {
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("操作失败！");
+            throw e;
+            // e.printStackTrace();
+        }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
+        return cr;
+    }
+
+    /**
+     *
+     * @Title: getPayWaysForDevice
+     * @Description: 查询设备的支付方式
+     * @param request
+     * @return
+     * @throws Exception    设定文件
+     * @return Object    返回类型
+     * @throws
+     * @author htt
+     */
+    @RequestMapping(value="/getPayWaysForDevice")
+    @ResponseBody
+    public Object getPayWaysForDevice(HttpServletRequest request) throws Exception {
+        CommonResponse cr = new CommonResponse();
+        //操作日志
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("查询不同设备的支付方式");
+        log.setContent("查询失败");
+        log.setModuleName(ConstantUtil.logRecordModule.CRJFX.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
+        try {
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            if (users != null) {
+                Map map = new HashMap();
+
+                List<Map<String, Object>> list = payWayService.getDevices();
+                map.put("list",list);
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+                cr.setData(map);
+                cr.setMsg("操作成功！");
+                log.setUserId(users.getId());
+                log.setContent("查询成功");
+            } else {
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("操作失败！");
+            }
+
+        } catch (Exception e) {
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("操作失败！");
+            throw e;
+            // e.printStackTrace();
+        }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
+        return cr;
+    }
+
+    /**
+     *
+     * @Title: editPayWaysForDevice
+     * @Description: 修改设备的支付方式
+     * @param request
+     * @return
+     * @throws Exception    设定文件
+     * @return Object    返回类型
+     * @throws
+     * @author htt
+     */
+    @RequestMapping(value="/editPayWaysForDevice", method= RequestMethod.POST)
+    @ResponseBody
+    public Object editPayWaysForDevice(HttpServletRequest request,Short payDevice, String[] payWays) throws Exception {
+
+
+        CommonResponse cr = new CommonResponse();
+        //操作日志
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("修改设备的支付方式");
+        log.setContent("修改失败");
+        log.setModuleName(ConstantUtil.logRecordModule.CRJFX.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
+        try {
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            if (users != null) {
+
+                int msg = payWayService.editPayWays(payDevice,payWays);
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+                cr.setData(msg);
+                cr.setMsg("操作成功！");
+                log.setUserId(users.getId());
+                log.setContent("修改成功");
             } else {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 cr.setData("{}");
