@@ -132,6 +132,30 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		PageInfo<Map<String, Object>> pagehelper = new PageInfo<Map<String, Object>>(list);
 		return pagehelper;
 	}
+	
+	/**
+	 * 实名认证已审核列表
+	 * @param userName 用户账号
+	 * @param realName 用户姓名
+	 * @param applyTimeStart 申请开始时间
+	 * @param applyTimeEnd 申请结束时间
+	 * @param pageNum
+	 * @param pageSize
+	 * @return
+	 */
+	public PageInfo<Map<String, Object>> getByRealNameAuthApprove(String userName, String realName, String state, 
+			String applyTimeStart, String applyTimeEnd, Integer pageNum, Integer pageSize) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("userName", userName);
+		map.put("realName", realName);
+		map.put("state", state);
+		map.put("applyTimeStart", applyTimeStart);
+		map.put("applyTimeEnd", applyTimeEnd);
+		PageHelper.startPage(pageNum,pageSize);
+		List<Map<String, Object>> list = userInfoMapper.getByRealNameAuthApprove(map);
+		PageInfo<Map<String, Object>> pagehelper = new PageInfo<Map<String, Object>>(list);
+		return pagehelper;
+	}
 
 	/**
 	 * 导出账户信息

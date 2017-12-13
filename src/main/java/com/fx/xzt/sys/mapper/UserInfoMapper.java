@@ -40,6 +40,18 @@ public interface UserInfoMapper extends BaseMapper<UserInfo>{
 	 * @return
 	 */
 	List<Map<String, Object>> getByRealNameAuth(Map<String,Object> map);
+	
+	/**
+	 * 
+	* @Title: getByRealNameAuthApprove 
+	* @Description: 实名认证已审核列表
+	* @param map
+	* @return    设定文件 
+	* @return List<Map<String,Object>>    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	List<Map<String, Object>> getByRealNameAuthApprove(Map<String,Object> map);
 
 	/**
 	 * 获取账户信息列表金额黄金统计

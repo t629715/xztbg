@@ -60,6 +60,8 @@ public interface UserInfoService extends IService<UserInfo> {
      * @return
      */
     PageInfo<Map<String, Object>> getByRealNameAuth(String userName, String realName, String applyTimeStart, String applyTimeEnd, Integer pageNum, Integer pageSize);
+    
+    PageInfo<Map<String, Object>> getByRealNameAuthApprove(String userName, String realName, String state, String applyTimeStart, String applyTimeEnd, Integer pageNum, Integer pageSize);
 
     /**
      *  导出账号信息列表

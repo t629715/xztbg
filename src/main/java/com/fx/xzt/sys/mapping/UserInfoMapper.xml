@@ -63,6 +63,36 @@
 		order by RealNameAuthApplyTime desc
 	</select>
 	<!--实名认证查询结束 -->
+	<!--实名认证查询已审核开始-htt -->
+	<select id="getByRealNameAuthApprove" resultType="java.util.Map"
+		parameterType="java.util.Map">
+		SELECT l.userName ,cast(u.UserID as CHAR) UserID , RealName, IDCard,
+		IDCardPath,IDCardBackPath, RealNameAuthApplyTime,
+		RealNameAuthApproveTime, RealNameAuthApproveState,RealNameAuthStatus
+		FROM User_Info u
+		INNER JOIN User_Login l ON u.UserID = l.UserID
+		<where>
+			and l.Status = 1
+			and u.RealNameAuthApproveState != 0
+			<if test="userName != null and userName!='' ">
+				and l.UserName = #{userName,jdbcType=VARCHAR}
+			</if>
+			<if test="realName != null and realName!='' ">
+				and RealName = #{realName,jdbcType=VARCHAR}
+			</if>
+			<if test="state != null and state !='' ">
+				and RealNameAuthApproveState = #{state,jdbcType=SMALLINT}
+			</if>
+			<if test="applyTimeStart !=null and applyTimeStart !='' ">
+				and RealNameAuthApplyTime &gt;=#{applyTimeStart,jdbcType=TIMESTAMP}
+			</if>
+			<if test="applyTimeEnd !=null and applyTimeEnd != '' ">
+				and RealNameAuthApplyTime &lt;#{applyTimeEnd,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		order by RealNameAuthApplyTime desc
+	</select>
+	<!--实名认证已审核查询结束 -->
 	<!--账户信息查询 -->
 	<select id="getByAccountMessage" resultType="java.util.Map"
 		parameterType="java.util.Map">

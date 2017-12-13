@@ -395,6 +395,76 @@ public class UserInfoController {
         AuditLog.info(log.toString());
 		return cr;
 	}
+	
+	/**
+	 * 实名认证已审核记录查询
+	 * @param userName
+	 * @param realName
+	 * @param applyTimeStart
+	 * @param applyTimeEnd
+	 * @param pageNum
+	 * @param pageSize
+	 * @return
+	 * @throws ParseException 
+	 */
+	@RequestMapping(value="/selectByRealNameAuthApprove")
+	@ResponseBody
+	public Object selectByRealNameAuthApprove(HttpServletRequest request, String userName, String realName, String state, 
+			String applyTimeStart, String applyTimeEnd, @RequestParam Integer pageNum, @RequestParam Integer pageSize) throws ParseException{
+		CommonResponse cr = new CommonResponse();
+		//操作日志
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("实名认证已审核记录查询");
+        log.setContent("查询失败");
+        log.setModuleName(ConstantUtil.logRecordModule.SMRZ.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
+		try {
+			HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            if (users != null) {
+            	//获取图片地址
+            	ConfigParam configParam = configParamService.selectConfigParamByKey(ConstantUtil.PHOTO_URL);
+            	String purl = "";
+            	if (configParam != null) {
+            		purl = configParam.getParamValue();
+            	}
+            	PageInfo<Map<String, Object>> pageInfo = userInfoService.getByRealNameAuthApprove(userName, realName, state, applyTimeStart, applyTimeEnd, pageNum, pageSize);
+            	List<Map<String, Object>> list = pageInfo.getList();
+    			if (list != null && list.size() > 0) {
+    				for (Map<String, Object> map : list) {
+    					if (map.get("IDCardPath") != null && map.get("IDCardPath") != "") {
+    						map.put("IDCardPath", purl + map.get("IDCardPath"));
+    					}
+    					if (map.get("IDCardBackPath") != null && map.get("IDCardBackPath") != "") {
+    						map.put("IDCardBackPath", purl + map.get("IDCardBackPath"));
+    					}
+    					map.put("RealNameAuthApproveState", ConstantUtil.authApproveState.toMap().get(map.get("RealNameAuthApproveState").toString()));
+    				}
+    			}
+            	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+    			cr.setData(pageInfo);
+    			cr.setMsg("操作成功！");
+    			log.setUserId(users.getId());
+                log.setContent("查询成功");
+            } else {
+            	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("操作失败！");
+            }
+		} catch (Exception e) {
+			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+			cr.setData("{}");
+			cr.setMsg("操作失败！");
+			throw e;
+			// e.printStackTrace();
+		}
+		logRecordService.add(log);
+        AuditLog.info(log.toString());
+		return cr;
+	}
 
 	/**
 	 * 账户信息

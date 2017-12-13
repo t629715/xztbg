@@ -356,6 +356,37 @@ public class ConstantUtil {
     }
     
     /**
+     * 
+    * @ClassName: authApproveState 
+    * @Description: 实名认证审核状态
+    * @author htt
+    * @date 2017-12-13 上午11:04:54 
+    *
+     */
+    public static enum authApproveState {
+        WSH("未审核","0"),
+        SHTG("审核通过","1"),
+        SHWTG("审核未通过","-1");
+        private String name;
+        private String index;
+        private authApproveState(String name,String index){
+            this.name = name;
+            this.index = index;
+        }
+        public String toString() {
+            return this.index;
+        }
+        public static Map<String, String> toMap() {
+        	authApproveState[] ds = authApproveState.values();
+            Map<String, String> rlt = new Hashtable<String, String>();
+            for (authApproveState d : ds) {
+                rlt.put(d.index, d.name);
+            }
+            return rlt;
+        }
+    }
+    
+    /**
      * 操作日志记录-类型
      */
     public static enum logRecordType {
