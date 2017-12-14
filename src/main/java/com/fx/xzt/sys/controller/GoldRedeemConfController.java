@@ -151,14 +151,18 @@ public class GoldRedeemConfController {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
-            	if (price > 0 && gram > 0 && poundagePercent > 0) {
+            	if (price > 0 && gram > 0 /*&& poundagePercent > 0*/) {
             		DecimalFormat df = new DecimalFormat("#.00");
             		Double amount = price * gram;
             		Double poundage = amount * poundagePercent;
             		Double total = amount - poundage;
             		Map<String, Object> map = new HashMap<String, Object>();
             		map.put("amount", df.format(amount));
-            		map.put("poundage", df.format(poundage));
+            		if (poundage == 0.0) {
+            			map.put("poundage", 0.00);
+            		} else {
+            			map.put("poundage", df.format(poundage));
+            		}
             		map.put("total", df.format(total));
             		cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                     cr.setData(map);

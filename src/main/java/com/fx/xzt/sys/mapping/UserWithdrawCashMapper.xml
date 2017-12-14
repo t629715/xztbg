@@ -30,7 +30,7 @@
 		LEFT JOIN User_Info i ON w.UserID = i.UserID
 		LEFT JOIN users ua ON i.agent_id = ua.id
 		LEFT JOIN users ub ON i.broker_id = ub.id
-		LEFT JOIN User_BankCard c on w.AccountNum = c.AccountNum
+		LEFT JOIN User_BankCard c on w.AccountNum = c.AccountNum and c.UserID = w.UserID
 		LEFT JOIN Bank b on c.BankNo = b.BankNo
 		<where>
 			and u.Status = 1
