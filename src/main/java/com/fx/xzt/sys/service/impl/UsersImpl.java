@@ -183,8 +183,18 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		}catch (Exception e){
 			e.printStackTrace();
 		}
-		usersMapper.deleteByPid(id);//删除经纪人
+		Users users = new Users();
+		Users users1 = new Users();
+		users.setStatus("0");
+		users.setPid(id);
+		users1.setStatus("0");
+		users1.setId(id);
+
+		usersMapper.updateByIdSelective(users);//逻辑删除经纪人
+		i = usersMapper.updateByIdSelective(users1);//逻辑删除代理商
+		/*usersMapper.deleteByPid(id);//删除经纪人
 		i = usersMapper.deleteById(id);
+		i = usersMapper.deleteById(id);*/
 		if (i>0){
 			UsersUserRole usersUserRole = new UsersUserRole();
 			//获取设置用户角色实体类对象

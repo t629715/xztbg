@@ -39,6 +39,7 @@
         left join users_user_role ur on u.id = ur.uid
         left join users_role r on r.id = ur.rid
         <where>
+                u.status = 1
             <if test="phone != null and phone !='' ">
                 and u.user_name = #{phone,jdbcType=VARCHAR}
             </if>
