@@ -29,7 +29,8 @@ public interface UsersMapper extends BaseMapper<Users>{
 	int insertUsers(Users users);
 	
 	int updateByIdSelective(Users users);
-	
+	int updateByPIdSelective(Users users);
+
 	int deleteById(Long id);
 
 	/**

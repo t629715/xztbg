@@ -168,6 +168,36 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
+    <update id="updateByPIdSelective" parameterType="com.fx.xzt.sys.entity.Users">
+        update users
+        <set>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <!-- <if test="sex != null" >
+               sex = #{sex,jdbcType=VARCHAR},
+             </if>-->
+            <if test="status != null">
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where pid = #{pid,jdbcType=BIGINT}
+    </update>
     <delete id="deleteById" parameterType="java.lang.Long">
     delete from users
     where id = #{id,jdbcType=BIGINT}

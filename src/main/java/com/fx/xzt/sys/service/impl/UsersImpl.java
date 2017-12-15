@@ -190,7 +190,7 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		users1.setStatus("0");
 		users1.setId(id);
 
-		usersMapper.updateByIdSelective(users);//逻辑删除经纪人
+		usersMapper.updateByPIdSelective(users);//逻辑删除经纪人
 		i = usersMapper.updateByIdSelective(users1);//逻辑删除代理商
 		/*usersMapper.deleteByPid(id);//删除经纪人
 		i = usersMapper.deleteById(id);
