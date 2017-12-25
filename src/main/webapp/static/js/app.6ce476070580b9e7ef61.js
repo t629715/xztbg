@@ -342,7 +342,7 @@ exports = module.exports = __webpack_require__(135)(undefined);
 exports.i(__webpack_require__(473), "");
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".el-dialog--small{width:30%!important}", ""]);
 
 // exports
 

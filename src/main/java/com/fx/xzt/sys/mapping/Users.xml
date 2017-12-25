@@ -280,6 +280,7 @@
         on u1.pid=u2.id
 
         <where>
+            u1.status = 1
             <if test="pid != null and pid != ''">
                 and u1.pid=#{pid,jdbcType=BIGINT}
             </if>
