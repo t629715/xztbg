@@ -255,7 +255,8 @@
             left join income_sharing_conf isc
             on isc.agent_id=u1.id
             <where>
-                u1.pid is not null
+                u1.status = 1
+                and u1.pid is not null
                 <if test="pid != null and pid != ''">
                     and u2.id=#{pid,jdbcType=BIGINT}
                 </if>
