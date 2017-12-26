@@ -24,6 +24,7 @@ public class GoldRedeem implements Serializable {
 	private String accountId; //用户账户id
 	private String userName;
 	private String userIdString;
+	private Long channelId;
 	
 	public Long getId() {
 		return id;
@@ -105,12 +106,21 @@ public class GoldRedeem implements Serializable {
 		this.userIdString = userIdString;
 	}
 
+
+	public Long getChannelId() {
+		return channelId;
+	}
+
+	public void setChannelId(Long channelId) {
+		this.channelId = channelId;
+	}
+
 	public String toString() {
 		return "GoldRedeem [id=" + id + ", userId=" + userId + ", gram=" + gram
 				+ ", price=" + price + ", amount=" + amount + ", createTime="
 				+ createTime + ", poundage=" + poundage + ", accountId="
 				+ accountId + ", userName=" + userName + ", userIdString="
-				+ userIdString + "]";
+				+ userIdString + ", channelId=" + channelId + "]";
 	}
 	
 }

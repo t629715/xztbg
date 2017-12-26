@@ -24,6 +24,8 @@ public class UserAccountRecord implements Serializable {
     private Integer status;   //状态  0：未审核；1：已审核
     private String description;//描述
     private String withdrawId; //提现号
+    private Long agentId;      //用户归属代理商
+    private Long brokerId;     //用户对数经纪人
     
 	public Long getId() {
 		return id;
@@ -103,6 +105,22 @@ public class UserAccountRecord implements Serializable {
 
 	public void setWithdrawId(String withdrawId) {
 		this.withdrawId = withdrawId;
+	}
+
+	public Long getAgentId() {
+		return agentId;
+	}
+
+	public void setAgentId(Long agentId) {
+		this.agentId = agentId;
+	}
+
+	public Long getBrokerId() {
+		return brokerId;
+	}
+
+	public void setBrokerId(Long brokerId) {
+		this.brokerId = brokerId;
 	}
     
 }

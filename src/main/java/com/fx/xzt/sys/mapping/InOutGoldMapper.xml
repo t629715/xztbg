@@ -21,7 +21,7 @@
 		UNION ALL
 		SELECT user_id,fee+insurance+logistics_fee cbf FROM gold_withdraw) cbf GROUP BY cbf.user_id) cb ON cb.user_id = a.user_id
 		<where>
-			and l.Status = 1
+			<!-- and l.Status = 1 -->
 			<if test="userName != null and userName!='' ">
 				and l.UserName = #{userName,jdbcType=VARCHAR}
 			</if>
@@ -41,7 +41,7 @@
 		SELECT RechargeChannel rechargeChannel, unix_timestamp(DATE_FORMAT(RechargeTime,'%Y-%c-%d')) rechargeTime, SUM(RMBAmt) rmbAmt
 		FROM User_Recharge 
 		<where>
-			and STATUS = 1 
+			<!-- and STATUS = 1  -->
 			<if test="startTime !=null and startTime !='' ">
               and DATE_FORMAT(RechargeTime,'%Y-%c-%d') &gt;=#{startTime,jdbcType=TIMESTAMP}
             </if>
@@ -102,7 +102,7 @@
 				LEFT JOIN users u ON i.agent_id = u.id
 				WHERE
 					i.agent_id IS NOT NULL
-				AND l. STATUS = 1
+				<!-- AND l. STATUS = 1  -->
 			) a
 		WHERE
 			a.rjSum IS NOT NULL
@@ -157,7 +157,7 @@
 				LEFT JOIN users u ON i.agent_id = u.id
 				WHERE
 					i.agent_id IS NOT NULL
-				AND l. STATUS = 1
+				<!-- AND l. STATUS = 1  -->
 			) a
 		WHERE
 			a.rjSum IS NOT NULL

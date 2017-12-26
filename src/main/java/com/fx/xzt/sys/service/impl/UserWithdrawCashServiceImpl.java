@@ -16,6 +16,7 @@ import com.fx.xzt.sys.entity.UserAccountRecord;
 import com.fx.xzt.sys.entity.UserWithdrawCash;
 import com.fx.xzt.sys.mapper.UserAccountMapper;
 import com.fx.xzt.sys.mapper.UserAccountRecordMapper;
+import com.fx.xzt.sys.mapper.UserInfoMapper;
 import com.fx.xzt.sys.mapper.UserWithdrawCashMapper;
 import com.fx.xzt.sys.model.UserWithdrawCashModel;
 import com.fx.xzt.sys.service.UserWithdrawCashService;
@@ -36,6 +37,8 @@ public class UserWithdrawCashServiceImpl extends BaseService<UserWithdrawCash> i
 	UserAccountRecordMapper userAccountRecordMapper;
 	@Resource
 	UserAccountMapper userAccountMapper;
+	@Resource
+	UserInfoMapper userInfoMapper;
 	
 	public PageInfo<UserWithdrawCashModel> getByAll(String userName, String startTime, String endTime, String status,
 			Integer pageNum, Integer pageSize) {
@@ -198,6 +201,18 @@ public class UserWithdrawCashServiceImpl extends BaseService<UserWithdrawCash> i
 		//新增账户记录
 		UserWithdrawCash withdrawCash = userWithdrawCashMapper.selectByIdKey(withdrawid);
 		UserAccountRecord record = new UserAccountRecord();
+		if (withdrawCash.getUserid() != null) {
+			List<Map<String, Object>> list = userInfoMapper.selectUserInfoById(withdrawCash.getUserid());
+			if (list != null && list.size() == 1) {
+				Map<String, Object> map = list.get(0);
+				if (map.get("agentId") != null) {
+					record.setAgentId(Long.valueOf(map.get("agentId").toString()));
+				}
+				if (map.get("brokerId") != null) {
+					record.setBrokerId(Long.getLong(map.get("brokerId").toString()));
+				}
+			}
+		}
 		record.setId(IdUtil.generateyymmddhhMMssSSSAnd4Random());
 		record.setUserId(withdrawCash.getUserid());
 		record.setUserName(withdrawCash.getUsername());

@@ -208,4 +208,6 @@ public interface UserInfoService extends IService<UserInfo> {
     * @author htt
      */
     List<Map<String, Object>> getByUserAttributeCount(String startTime, String endTime, String loginFrom, String agentName);
+    
+    List<Map<String, Object>> selectUserInfoById(Long userID);
 }

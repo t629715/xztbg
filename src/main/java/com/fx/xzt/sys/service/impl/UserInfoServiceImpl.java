@@ -339,4 +339,8 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		List<Map<String, Object>> list = userInfoMapper.getByUserAttribute(map);
 		return list;
 	}
+
+	public List<Map<String, Object>> selectUserInfoById(Long userID) {
+		return userInfoMapper.selectUserInfoById(userID);
+	}
 }

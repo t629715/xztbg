@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fx.xzt.sys.mapper.UserGoldAccountActivityRecordMapper">
-    <!--金权交易开始-htt-->
+    <!--活动黄金领取开始-htt-->
     <select id="selectByAll" resultType="java.util.Map" parameterType="java.util.Map">
     	SELECT CAST(a.id AS CHAR) id, CAST(a.user_id AS CHAR) userId, a.amount, a.description,
     		a.activity_type activityType, a.type, a.create_time createTime,u.UserName userName,
-			i.agent_id AS agentId, ua.user_name AS agentName, i.broker_id AS brokerId, ub.user_name AS brokerName
+			a.agent_id AS agentId, ua.user_name AS agentName, a.broker_id AS brokerId, ub.user_name AS brokerName
 		from user_gold_account_activity_record a
 		LEFT JOIN User_Login u ON a.user_id = u.UserID
       	LEFT JOIN User_Info i ON u.UserID = i.UserID
-		LEFT JOIN users ua ON i.agent_id = ua.id
-		LEFT JOIN users ub ON i.broker_id = ub.id
+		LEFT JOIN users ua ON a.agent_id = ua.id
+		LEFT JOIN users ub ON a.broker_id = ub.id
       <where>
           <if test="userName != null and userName != '' ">
             and u.UserName = #{userName,jdbcType=VARCHAR}
@@ -33,5 +33,5 @@
       </where>
         order by a.create_time DESC
     </select>
-    <!--金权交易结束-htt-->
+    <!--活动黄金领取结束-htt-->
 </mapper>

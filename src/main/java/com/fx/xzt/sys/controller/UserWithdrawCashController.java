@@ -24,6 +24,7 @@ import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.model.UserWithdrawCashModel;
 import com.fx.xzt.sys.service.LogRecordService;
 import com.fx.xzt.sys.service.UserAccountRecordService;
+import com.fx.xzt.sys.service.UserInfoService;
 import com.fx.xzt.sys.service.UserMessageService;
 import com.fx.xzt.sys.service.UserWithdrawCashService;
 import com.fx.xzt.sys.util.CommonResponse;
@@ -402,6 +403,7 @@ public class UserWithdrawCashController {
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            
             if (users != null) {
                 int flag = userWithdrawCashService.auditNoPassedById(withdrawid);
                 if (flag > 0) {

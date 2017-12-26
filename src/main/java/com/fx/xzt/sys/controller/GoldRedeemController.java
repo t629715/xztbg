@@ -23,6 +23,7 @@ import com.fx.xzt.sys.entity.UserMessage;
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.service.GoldRedeemService;
 import com.fx.xzt.sys.service.LogRecordService;
+import com.fx.xzt.sys.service.UserInfoService;
 import com.fx.xzt.sys.service.UserLoginService;
 import com.fx.xzt.sys.service.UserMessageService;
 import com.fx.xzt.sys.util.CommonResponse;
@@ -54,6 +55,8 @@ public class GoldRedeemController {
     LogRecordService logRecordService;
 	@Resource
 	UserMessageService userMessageService;
+	@Resource
+	UserInfoService userInfoService;
 	
 	/**
 	 * 
@@ -342,6 +345,15 @@ public class GoldRedeemController {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
+            	if (StringUtil.isNotEmpty(goldRedeem.getUserIdString())) {
+            		List<Map<String, Object>> list = userInfoService.selectUserInfoById(Long.parseLong(goldRedeem.getUserIdString()));
+            		if (list != null && list.size() == 1) {
+            			Map<String, Object> map = list.get(0);
+            			if (map.get("channel_id") != null) {
+            				goldRedeem.setChannelId(Long.valueOf(map.get("channel_id").toString()));
+        				}
+            		}
+            	}
             	goldRedeem.setId(IdUtil.generateyymmddhhMMssSSSAnd4Random());
             	goldRedeem.setUserId(Long.parseLong(goldRedeem.getUserIdString()));
             	/*goldRedeem.setAmount(goldRedeem.getAmount() * 100);

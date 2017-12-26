@@ -43,6 +43,12 @@
       <if test="description != null" >
         description,
       </if>
+      <if test="agentId != null" >
+        agent_id,
+      </if>
+      <if test="brokerId != null" >
+        broker_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -71,6 +77,12 @@
       </if>
       <if test="description != null" >
         #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="agentId != null" >
+        #{agentId,jdbcType=BIGINT},
+      </if>
+      <if test="brokerId != null" >
+        #{brokerId,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>

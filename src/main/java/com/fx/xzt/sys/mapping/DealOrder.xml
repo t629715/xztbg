@@ -36,7 +36,7 @@
     <!--金权交易开始-htt-->
     <select id="selectByDealOrder" resultType="java.util.Map" parameterType="java.util.Map">
       SELECT o.id id, o.order_no orderNo, o.user_id userID, u.UserName userName,i.RegisterTime registerTime,
-      i.agent_id AS agentId, ua.user_name AS agentName, i.broker_id AS brokerId, ub.user_name AS brokerName ,
+      o.agent_id AS agentId, ua.user_name AS agentName, o.broker_id AS brokerId, ub.user_name AS brokerName ,
       o.product_id productId, c.name productName,c.point_count pointCount,
       o.up_or_down upOrDown, o.hand_number handNumber,
       o.ensure_amount ensureAmount, o.point_count pointCount,o.open_position_price openPositionPrice, 
@@ -47,12 +47,12 @@
       FROM deal_order o
       LEFT JOIN User_Login u ON o.user_id = u.UserID
       LEFT JOIN User_Info i ON u.UserID = i.UserID
-      LEFT JOIN users ua ON i.agent_id = ua.id
-      LEFT JOIN users ub ON i.broker_id = ub.id
+      LEFT JOIN users ua ON o.agent_id = ua.id
+      LEFT JOIN users ub ON o.broker_id = ub.id
       LEFT JOIN gold_right_deal_conf c ON o.product_id = c.id
       LEFT JOIN share_record s on o.id = s.order_id
       <where>
-          and u.Status = 1
+        <!--   and u.Status = 1 -->
           <if test="userName != null and userName != '' ">
             and u.UserName = #{userName,jdbcType=VARCHAR}
           </if>
@@ -100,11 +100,11 @@
         FROM deal_order o
         LEFT JOIN User_Login u ON o.user_id = u.UserID
         LEFT JOIN User_Info i ON u.UserID = i.UserID
-        LEFT JOIN users ua ON i.agent_id = ua.id
-        LEFT JOIN users ub ON i.broker_id = ub.id
+        LEFT JOIN users ua ON o.agent_id = ua.id
+        LEFT JOIN users ub ON o.broker_id = ub.id
         LEFT JOIN share_record s on o.id = s.order_id
         <where>
-         and u.Status = 1
+        <!--   and u.Status = 1 -->
           <if test="userName != null and userName != '' ">
             and u.UserName = #{userName,jdbcType=VARCHAR}
           </if>
@@ -151,11 +151,12 @@
         FROM deal_order o
         LEFT JOIN User_Login u ON o.user_id = u.UserID
         LEFT JOIN User_Info i ON u.UserID = i.UserID
-        LEFT JOIN users ua ON i.agent_id = ua.id
-        LEFT JOIN users ub ON i.broker_id = ub.id
+        LEFT JOIN users ua ON o.agent_id = ua.id
+        LEFT JOIN users ub ON o.broker_id = ub.id
         LEFT JOIN share_record s on o.id = s.order_id
         <where>
-         and u.Status = 1 and o.order_state = 1 
+         <!--   and u.Status = 1 -->
+         and o.order_state = 1 
           <if test="userName != null and userName != '' ">
             and u.UserName = #{userName,jdbcType=VARCHAR}
           </if>

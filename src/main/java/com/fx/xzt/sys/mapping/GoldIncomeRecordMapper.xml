@@ -16,14 +16,14 @@
 	<select id="selectByGoldIncome" resultType="java.util.Map" parameterType="java.util.Map">
 		SELECT r.id, u.UserName userName, r.user_id userId,r.income,r.total_incom totalIncom,r.create_time createTime,
 		r.gram gram,r.price price,r.income_percent incomePercent ,
-		i.agent_id AS agentId, ua.user_name AS agentName, i.broker_id AS brokerId, ub.user_name AS brokerName
+		r.agent_id AS agentId, ua.user_name AS agentName, r.broker_id AS brokerId, ub.user_name AS brokerName
 		FROM gold_income_record r
 		LEFT JOIN User_Login u ON r.user_id = u.UserID
 		LEFT JOIN User_Info i ON u.UserID = i.UserID
-		LEFT JOIN users ua ON i.agent_id = ua.id
-		LEFT JOIN users ub ON i.broker_id = ub.id
+		LEFT JOIN users ua ON r.agent_id = ua.id
+		LEFT JOIN users ub ON r.broker_id = ub.id
 		<where>
-			and u.Status = 1
+			<!--   and u.Status = 1 -->
 			<if test="userName != null and userName != '' ">
 				and u.UserName = #{userName,jdbcType=VARCHAR}
 			</if>
@@ -59,10 +59,10 @@
 		FROM gold_income_record r
 		LEFT JOIN User_Login u ON r.user_id = u.UserID
 		LEFT JOIN User_Info i ON u.UserID = i.UserID
-		LEFT JOIN users ua ON i.agent_id = ua.id
-		LEFT JOIN users ub ON i.broker_id = ub.id
+		LEFT JOIN users ua ON r.agent_id = ua.id
+		LEFT JOIN users ub ON r.broker_id = ub.id
 		<where>
-			and u.Status = 1
+			<!--   and u.Status = 1 -->
 			<if test="userName != null and userName != '' ">
 				and u.UserName = #{userName,jdbcType=VARCHAR}
 			</if>
@@ -97,7 +97,8 @@
 		FROM user_gold_account r
 		LEFT JOIN User_Login u ON r.user_id = u.UserID
 		<where>
-			and u.Status = 1
+		 and 1=1
+			<!--   and u.Status = 1 -->
 		</where>
 	</select>
 	<!-- 黄金收益结算查询统计结束-htt -->

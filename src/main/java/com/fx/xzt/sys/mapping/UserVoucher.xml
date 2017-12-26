@@ -6,15 +6,15 @@
       SELECT CAST(v.id AS CHAR) id,CAST(v.user_id AS CHAR) userId,u.UserName userName,v.gold_condition goldCondition,v.deduction_value deductionValue,
 	  v.deduction_percent deductionPercent,v.description,v.create_time createTime,v.use_status useStatus,v.use_time useTime,
 	  v.date_start dateStart,v.date_end dateEnd,v.type,v.source,
-      CAST(i.agent_id as CHAR) AS agentId, ua.user_name AS agentName, CAST(i.broker_id as CHAR) AS brokerId, ub.user_name AS brokerName 
+      CAST(v.agent_id as CHAR) AS agentId, ua.user_name AS agentName, CAST(v.broker_id as CHAR) AS brokerId, ub.user_name AS brokerName 
       FROM user_voucher v
       LEFT JOIN User_Login u ON v.user_id = u.UserID
       LEFT JOIN User_Info i ON u.UserID = i.UserID
-      LEFT JOIN users ua ON i.agent_id = ua.id
-      LEFT JOIN users ub ON i.broker_id = ub.id
+      LEFT JOIN users ua ON v.agent_id = ua.id
+      LEFT JOIN users ub ON v.broker_id = ub.id
       <where>
 
-          and u.Status = 1
+          <!--   and u.Status = 1 -->
           <if test="userName != null and userName != '' ">
             and u.UserName = #{userName,jdbcType=VARCHAR}
           </if>
@@ -42,5 +42,5 @@
       </where>
         order by v.create_time DESC
     </select>
-    <!--金权交易结束-htt-->
+    <!---优惠券查询开始结束-htt-->
 </mapper>

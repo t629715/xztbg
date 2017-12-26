@@ -32,10 +32,10 @@
 		FROM User_Recharge r
 		LEFT JOIN User_Login u ON r.UserID = u.UserID
 		LEFT JOIN User_Info i ON r.UserID = i.UserID
-		LEFT JOIN users ua ON i.agent_id = ua.id
-		LEFT JOIN users ub ON i.broker_id = ub.id
+		LEFT JOIN users ua ON r.agent_id = ua.id
+		LEFT JOIN users ub ON r.broker_id = ub.id
 		<where>
-			and u.Status = 1
+			<!--   and u.Status = 1 -->
 			<if test="userName != null and userName != '' ">
 				and r.userName = #{userName,jdbcType=VARCHAR}
 			</if>
@@ -69,10 +69,10 @@
 		FROM User_Recharge r
 		LEFT JOIN User_Login u ON r.UserID = u.UserID
 		LEFT JOIN User_Info i ON r.UserID = i.UserID
-		LEFT JOIN users ua ON i.agent_id = ua.id
-		LEFT JOIN users ub ON i.broker_id = ub.id
+		LEFT JOIN users ua ON r.agent_id = ua.id
+		LEFT JOIN users ub ON r.broker_id = ub.id
 		<where>
-			and u.Status = 1
+			<!--   and u.Status = 1 -->
 			<if test="userName != null and userName != '' ">
 				and r.userName = #{userName,jdbcType=VARCHAR}
 			</if>
