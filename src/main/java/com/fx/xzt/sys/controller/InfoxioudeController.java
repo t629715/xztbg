@@ -59,7 +59,7 @@ public class InfoxioudeController {
         LogRecord log = new LogRecord();
         log.setTitle("查询希欧德信息");
         log.setContent("查询失败");
-        log.setModuleName(ConstantUtil.logRecordModule.LCJY.getName());
+        log.setModuleName(ConstantUtil.logRecordModule.XODZX.getName());
         log.setType(ConstantUtil.logRecordType.CX.getIndex());
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
@@ -107,8 +107,8 @@ public class InfoxioudeController {
         LogRecord log = new LogRecord();
         log.setTitle("删除信息");
         log.setContent("删除失败");
-        log.setModuleName(ConstantUtil.logRecordModule.LCJY.getName());
-        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setModuleName(ConstantUtil.logRecordModule.XODZX.getName());
+        log.setType(ConstantUtil.logRecordType.WLSC.getIndex());
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
@@ -163,8 +163,8 @@ public class InfoxioudeController {
         LogRecord log = new LogRecord();
         log.setTitle("修改信息");
         log.setContent("修改失败");
-        log.setModuleName(ConstantUtil.logRecordModule.LCJY.getName());
-        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setModuleName(ConstantUtil.logRecordModule.XODZX.getName());
+        log.setType(ConstantUtil.logRecordType.XG.getIndex());
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
@@ -268,8 +268,8 @@ public class InfoxioudeController {
         LogRecord log = new LogRecord();
         log.setTitle("发布希欧德信息");
         log.setContent("发布失败");
-        log.setModuleName(ConstantUtil.logRecordModule.LCJY.getName());
-        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setModuleName(ConstantUtil.logRecordModule.XODZX.getName());
+        log.setType(ConstantUtil.logRecordType.XZ.getIndex());
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
@@ -351,7 +351,6 @@ public class InfoxioudeController {
             response.setMsg("操作失败！");
             throw e;
         }
-        logRecordService.add(log);
         AuditLog.info(log.toString());
         return response;
     }

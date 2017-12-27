@@ -74,8 +74,8 @@ public class UserController {
 		LogRecord log = new LogRecord();
 		log.setTitle("添加用户");
 		log.setContent("添加失败");
-		log.setModuleName(ConstantUtil.logRecordModule.YHQ.getName());
-		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setModuleName(ConstantUtil.logRecordModule.ZHGL.getName());
+		log.setType(ConstantUtil.logRecordType.LJSC.getIndex());
 		log.setIp(IPUtil.getHost(request));
 		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		HttpSession httpSession = request.getSession();
@@ -87,14 +87,14 @@ public class UserController {
 		Integer count = userService.save(userInfo);
 		if(count>0){
 			log.setUserId(users.getId());
-			log.setContent("获取成功");
+			log.setContent("添加成功");
 			logRecordService.add(log);
 			AuditLog.info(log.toString());
-			return "保存用户信息成功";
+			return "添加用户成功";
 		}
 		logRecordService.add(log);
 		AuditLog.info(log.toString());
-		return "保存用户信息失败";
+		return "添加用户失败";
 	}
 	
 	/**
@@ -111,7 +111,7 @@ public class UserController {
 		LogRecord log = new LogRecord();
 		log.setTitle("查询用户信息");
 		log.setContent("查询失败");
-		log.setModuleName(ConstantUtil.logRecordModule.YHQ.getName());
+		log.setModuleName(ConstantUtil.logRecordModule.ZHGL.getName());
 		log.setType(ConstantUtil.logRecordType.CX.getIndex());
 		log.setIp(IPUtil.getHost(request));
 		log.setCreateTime(sdf.parse(sdf.format(new Date())));
@@ -119,6 +119,8 @@ public class UserController {
 		HttpSession httpSession = request.getSession();
 		Users users = (Users) httpSession.getAttribute("currentUser");
 		if(userInfo!=null){
+		    log.setUserId(users.getId());
+		    log.setContent("查询成功");
 			logRecordService.add(log);
 			AuditLog.info(log.toString());
 			return "您要查找的用户名是:"+userInfo.getUserName();
@@ -142,18 +144,26 @@ public class UserController {
 		//操作日志
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		LogRecord log = new LogRecord();
-		log.setTitle("优惠券查询查询");
-		log.setContent("查询失败");
-		log.setModuleName(ConstantUtil.logRecordModule.YHQ.getName());
-		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setTitle("删除用户");
+		log.setContent("删除失败");
+		log.setModuleName(ConstantUtil.logRecordModule.ZHGL.getName());
+		log.setType(ConstantUtil.logRecordType.LJSC.getIndex());
 		log.setIp(IPUtil.getHost(request));
 		log.setCreateTime(sdf.parse(sdf.format(new Date())));
-		Integer count = userService.delete(uid);
-		if(count>0){
-			logRecordService.add(log);
-			AuditLog.info(log.toString());
-			return "删除用户信息成功";
+
+		HttpSession httpSession = request.getSession();
+		Users users = (Users) httpSession.getAttribute("currentUser");
+		if (users != null){
+			Integer count = userService.delete(uid);
+			if(count>0){
+				log.setUserId(users.getId());
+				log.setContent("删除成功");
+				logRecordService.add(log);
+				AuditLog.info(log.toString());
+				return "删除用户信息成功";
+			}
 		}
+
 		logRecordService.add(log);
 		AuditLog.info(log.toString());
 		return "删除用户信息失败";
@@ -163,11 +173,29 @@ public class UserController {
 	 */
 	@RequestMapping(value="/insertUser")
 	@ResponseBody
-	public Map<String,Object> insertUser(Users users,@RequestParam(value="rids", required=false)List<Integer> rids){
+	public Map<String,Object> insertUser(HttpServletRequest request,Users users,@RequestParam(value="rids", required=false)List<Integer> rids) throws ParseException {
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("增加用户");
+		log.setContent("添加失败");
+		log.setModuleName(ConstantUtil.logRecordModule.ZHGL.getName());
+		log.setType(ConstantUtil.logRecordType.XZ.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
+
+		HttpSession httpSession = request.getSession();
+		Users user = (Users) httpSession.getAttribute("currentUser");
 		Map<String,Object> map = new HashMap<String,Object>();
 		users.setPid(new Long(1));
 		users.setStatus("1");
 		int msg = userService.insertUsers(users, rids);
+		if (user != null && msg>0){
+			log.setContent("添加成功");
+			log.setUserId(user.getId());
+		}
+		logRecordService.add(log);
+		AuditLog.info(log.toString());
 		map.put("msg", msg);
 		return map;
 	}
@@ -182,12 +210,21 @@ public class UserController {
 		LogRecord log = new LogRecord();
 		log.setTitle("删除用户");
 		log.setContent("删除失败");
-		log.setModuleName(ConstantUtil.logRecordModule.YHQ.getName());
-		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setModuleName(ConstantUtil.logRecordModule.ZHGL.getName());
+		log.setType(ConstantUtil.logRecordType.LJSC.getIndex());
 		log.setIp(IPUtil.getHost(request));
 		log.setCreateTime(sdf.parse(sdf.format(new Date())));
+        HttpSession httpSession = request.getSession();
+        Users users = (Users) httpSession.getAttribute("currentUser");
 		Map<String,Object> map = new HashMap<String,Object>();
 		int msg = userService.deleteById(id);
+		if (users != null){
+            if (msg>0){
+                log.setUserId(users.getId());
+                log.setContent("删除成功");
+            }
+        }
+
 		map.put("msg", msg);
 		logRecordService.add(log);
 		AuditLog.info(log.toString());
@@ -295,7 +332,7 @@ public class UserController {
 		LogRecord log = new LogRecord();
 		log.setTitle("代理商视角");
 		log.setContent("查询失败");
-		log.setModuleName(ConstantUtil.logRecordModule.YHQ.getName());
+		log.setModuleName(ConstantUtil.logRecordModule.SHGLYY.getName());
 		log.setType(ConstantUtil.logRecordType.CX.getIndex());
 		log.setIp(IPUtil.getHost(request));
 		log.setCreateTime(sdf.parse(sdf.format(new Date())));
@@ -342,8 +379,8 @@ public class UserController {
 		LogRecord log = new LogRecord();
 		log.setTitle("新建代理商");
 		log.setContent("新建失败");
-		log.setModuleName(ConstantUtil.logRecordModule.YHQ.getName());
-		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setModuleName(ConstantUtil.logRecordModule.SHGLYY.getName());
+		log.setType(ConstantUtil.logRecordType.XZ.getIndex());
 		log.setIp(IPUtil.getHost(request));
 		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		try {
@@ -427,7 +464,7 @@ public class UserController {
 		LogRecord log = new LogRecord();
 		log.setTitle("小象管理視角");
 		log.setContent("查询失败");
-		log.setModuleName(ConstantUtil.logRecordModule.YHQ.getName());
+		log.setModuleName(ConstantUtil.logRecordModule.SHGL.getName());
 		log.setType(ConstantUtil.logRecordType.CX.getIndex());
 		log.setIp(IPUtil.getHost(request));
 		log.setCreateTime(sdf.parse(sdf.format(new Date())));
@@ -475,8 +512,8 @@ public class UserController {
 		LogRecord log = new LogRecord();
 		log.setTitle("导出小想管理视角查询结果");
 		log.setContent("导出失败");
-		log.setModuleName(ConstantUtil.logRecordModule.YHQ.getName());
-		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setModuleName(ConstantUtil.logRecordModule.SHGL.getName());
+		log.setType(ConstantUtil.logRecordType.DC.getIndex());
 		log.setIp(IPUtil.getHost(request));
 		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 

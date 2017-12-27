@@ -466,13 +466,15 @@ public class ConstantUtil {
         SHGLYY("商户管理(运营商视角)","30"),
         SHGL("商户管理","31"),
         XJKH("下级客户","32"),
-        ZHGL("注册管理","33"),
+        ZHGL("账户管理","33"),
         JSGL("角色管理","34"),
         HJSHJL("黄金赎回记录","35"),
         HJSHJS("黄金赎回计算","36"),
         YHQ("优惠券","37"),
         JXQ("加息券","38"),
         HJLQ("黄金领取","39");
+
+
         private String name;
         private String index;
         private logRecordModule(String name,String index){

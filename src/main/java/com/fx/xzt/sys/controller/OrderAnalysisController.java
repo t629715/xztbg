@@ -61,7 +61,7 @@ public class OrderAnalysisController {
         LogRecord log = new LogRecord();
         log.setTitle("查询交易分析");
         log.setContent("查询失败");
-        log.setModuleName(ConstantUtil.logRecordModule.LCJY.getName());
+        log.setModuleName(ConstantUtil.logRecordModule.JYFX.getName());
         log.setType(ConstantUtil.logRecordType.CX.getIndex());
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
@@ -124,7 +124,7 @@ public class OrderAnalysisController {
         LogRecord log = new LogRecord();
         log.setTitle("交易分析统计");
         log.setContent("统计失败");
-        log.setModuleName(ConstantUtil.logRecordModule.LCJY.getName());
+        log.setModuleName(ConstantUtil.logRecordModule.JYFX.getName());
         log.setType(ConstantUtil.logRecordType.CX.getIndex());
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
@@ -192,8 +192,8 @@ public class OrderAnalysisController {
         LogRecord log = new LogRecord();
         log.setTitle("导出交易分析");
         log.setContent("导出失败");
-        log.setModuleName(ConstantUtil.logRecordModule.LCJY.getName());
-        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setModuleName(ConstantUtil.logRecordModule.JYFX.getName());
+        log.setType(ConstantUtil.logRecordType.DC.getIndex());
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {

@@ -48,7 +48,7 @@ public class IncomeShringConfController {
         LogRecord log = new LogRecord();
         log.setTitle("查询代理商分成设置");
         log.setContent("查询失败");
-        log.setModuleName(ConstantUtil.logRecordModule.LCJY.getName());
+        log.setModuleName(ConstantUtil.logRecordModule.SHGLYY.getName());
         log.setType(ConstantUtil.logRecordType.CX.getIndex());
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
@@ -94,8 +94,8 @@ public class IncomeShringConfController {
         LogRecord log = new LogRecord();
         log.setTitle("修改分成设置");
         log.setContent("修改失败");
-        log.setModuleName(ConstantUtil.logRecordModule.LCJY.getName());
-        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setModuleName(ConstantUtil.logRecordModule.SHGLYY.getName());
+        log.setType(ConstantUtil.logRecordType.XG.getIndex());
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {

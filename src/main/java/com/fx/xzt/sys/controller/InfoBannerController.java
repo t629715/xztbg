@@ -228,7 +228,7 @@ public class InfoBannerController {
 		LogRecord log = new LogRecord();
 		log.setTitle("查询Banner");
 		log.setContent("查询失败");
-		log.setModuleName(ConstantUtil.logRecordModule.LCJY.getName());
+		log.setModuleName(ConstantUtil.logRecordModule.HDGL.getName());
 		log.setType(ConstantUtil.logRecordType.CX.getIndex());
 		log.setIp(IPUtil.getHost(request));
 		log.setCreateTime(sdf.parse(sdf.format(new Date())));

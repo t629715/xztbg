@@ -51,7 +51,7 @@ public class RealGoldBuyConfController {
         LogRecord log = new LogRecord();
         log.setTitle("获取实金买卖信息");
         log.setContent("获取失败");
-        log.setModuleName(ConstantUtil.logRecordModule.LCJY.getName());
+        log.setModuleName(ConstantUtil.logRecordModule.SJMMSD.getName());
         log.setType(ConstantUtil.logRecordType.CX.getIndex());
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
@@ -113,8 +113,8 @@ public class RealGoldBuyConfController {
         LogRecord log = new LogRecord();
         log.setTitle("修改实金买卖配置");
         log.setContent("修改失败");
-        log.setModuleName(ConstantUtil.logRecordModule.LCJY.getName());
-        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setModuleName(ConstantUtil.logRecordModule.SJMMSD.getName());
+        log.setType(ConstantUtil.logRecordType.XG.getIndex());
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
@@ -161,8 +161,8 @@ public class RealGoldBuyConfController {
         LogRecord log = new LogRecord();
         log.setTitle("删除实金买卖配置");
         log.setContent("删除失败");
-        log.setModuleName(ConstantUtil.logRecordModule.LCJY.getName());
-        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setModuleName(ConstantUtil.logRecordModule.SJMMSD.getName());
+        log.setType(ConstantUtil.logRecordType.WLSC.getIndex());
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {

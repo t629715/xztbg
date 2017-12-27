@@ -74,7 +74,7 @@ public class GoldRightDealConfController {
         LogRecord log = new LogRecord();
         log.setTitle("获取金权规则");
         log.setContent("查询失败");
-        log.setModuleName(ConstantUtil.logRecordModule.LCJY.getName());
+        log.setModuleName(ConstantUtil.logRecordModule.JQGZSD.getName());
         log.setType(ConstantUtil.logRecordType.CX.getIndex());
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
@@ -138,8 +138,8 @@ public class GoldRightDealConfController {
         LogRecord log = new LogRecord();
         log.setTitle("黄金提取查询");
         log.setContent("查询失败");
-        log.setModuleName(ConstantUtil.logRecordModule.HJTQ.getName());
-        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setModuleName(ConstantUtil.logRecordModule.JQGZSD.getName());
+        log.setType(ConstantUtil.logRecordType.XG.getIndex());
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
@@ -189,8 +189,8 @@ public class GoldRightDealConfController {
         //操作日志
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         LogRecord log = new LogRecord();
-        log.setTitle("黄金提取查询");
-        log.setContent("查询失败");
+        log.setTitle("强制平仓");
+        log.setContent("平仓失败");
         log.setModuleName(ConstantUtil.logRecordModule.HJTQ.getName());
         log.setType(ConstantUtil.logRecordType.CX.getIndex());
         log.setIp(IPUtil.getHost(request));
@@ -200,10 +200,10 @@ public class GoldRightDealConfController {
         Users users = (Users) httpSession.getAttribute("currentUser");
         if (users != null){
             rabbitmqService.sendForceCloseDirectiveByUserName(users.getUserName());
+            log.setContent("平仓成功");
+            log.setUserId(users.getId());
             result.setData(true);
         }
-
-
         logRecordService.add(log);
         AuditLog.info(log.toString());
         return result;

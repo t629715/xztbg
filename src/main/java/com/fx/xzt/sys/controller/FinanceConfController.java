@@ -66,7 +66,7 @@ public class FinanceConfController {
         LogRecord log = new LogRecord();
         log.setTitle("获取理财产品信息");
         log.setContent("查询失败");
-        log.setModuleName(ConstantUtil.logRecordModule.HJTQ.getName());
+        log.setModuleName(ConstantUtil.logRecordModule.LCCPSD.getName());
         log.setType(ConstantUtil.logRecordType.CX.getIndex());
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
