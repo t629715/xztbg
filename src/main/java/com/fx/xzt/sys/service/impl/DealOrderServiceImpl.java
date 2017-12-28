@@ -143,18 +143,34 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
         //买涨的总手数、买入价
         Map<String, Object> mapDown = dealOrderMapper.selectHandNumberAndOpenPositionForDown();
         //买涨的总手数
-        Integer handNumUp = Integer.valueOf(mapUp.get("handNumUp").toString());
+        Integer handNumUp = 0;
+        if (mapUp != null){
+            if (mapUp.get("handNumUp") != null){
+                handNumUp = Integer.valueOf(mapUp.get("handNumUp").toString());
+            }
+        }
         //买跌的总手数
-        Integer handNumDown = Integer.valueOf(mapDown.get("handNumDown").toString());
+        Integer handNumDown = 0;
+        if (mapDown != null){
+            if (mapDown.get("handNumDown") != null){
+                handNumDown = Integer.valueOf(mapDown.get("handNumDown").toString());
+            }
+        }
         //买涨买跌的总手数
         Integer handNum = handNumUp+handNumDown;
         //买涨均价：买入价*手数的合计/总手数
-        Double avgUp = (Double) mapUp.get("openPositionPriceUp")/handNum;
+        Double avgUp = 0D;
+        if (handNum != 0){
+            avgUp = (Double) mapUp.get("openPositionPriceUp")/handNum;
+        }
         BigDecimal bu   =   new   BigDecimal(avgUp);
         double   fu   =   bu.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
         map.put("avgUp",fu);
         //买跌均价：买入价*手数的合计/总手数
-        Double avgDown = (Double) mapDown.get("openPositionPriceDown")/handNum;
+        Double avgDown = 0D;
+        if (handNum != 0){
+            avgDown = (Double) mapDown.get("openPositionPriceDown")/handNum;
+        }
         BigDecimal b   =   new   BigDecimal(avgDown);
         double   f1   =   b.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
         map.put("avgDown",f1);
