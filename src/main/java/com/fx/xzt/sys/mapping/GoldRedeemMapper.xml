@@ -45,7 +45,7 @@
 		FROM gold_redeem r 
 		LEFT JOIN User_Login u ON r.user_id = u.UserID
 		LEFT JOIN User_Info i ON u.UserID = i.UserID
-		LEFT JOIN users ua ON r.agent_id = ua.id
+		LEFT JOIN users ua ON r.channel_id = ua.id
 	    <where>
 	      <!--   and u.Status = 1 -->
 	      <if test="userName != null and userName !=''">
