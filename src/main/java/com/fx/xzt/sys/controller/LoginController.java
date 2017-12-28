@@ -158,5 +158,4 @@ public class LoginController {
 		ImageIO.write((BufferedImage)map.get("buffImg"), "jpeg", sos);
 		sos.close();
 	}
-
 }
