@@ -132,7 +132,6 @@ public class LoginController {
 		 }
 		 return response;
 	 }
-
 	/**
 	 * 获取验证码
 	 * @param request
