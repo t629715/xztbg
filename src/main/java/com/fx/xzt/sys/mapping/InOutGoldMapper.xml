@@ -73,7 +73,7 @@
 							User_Recharge r
 						WHERE
 							r. STATUS = 1
-						AND r.UserID = i.UserID
+						AND r.agent_id = u.id
 						<if test="startTime !=null and startTime !='' ">
 							 and DATE_FORMAT(RechargeTime,'%Y-%m-%d') &gt;=#{startTime,jdbcType=TIMESTAMP}
 						</if>
@@ -88,7 +88,7 @@
 							User_WithdrawCash c
 						WHERE
 							c. STATUS = 1
-						AND c.UserID = i.UserID
+						AND c.agent_id = u.id
 						<if test="startTime !=null and startTime !='' ">
 							 and DATE_FORMAT(WithdrawTime,'%Y-%m-%d') &gt;=#{startTime,jdbcType=TIMESTAMP}
 						</if>
@@ -97,11 +97,10 @@
 			           </if>
 					) cjSum
 				FROM
-					User_Info i
-				LEFT JOIN User_Login l ON i.UserID = l.UserID
-				LEFT JOIN users u ON i.agent_id = u.id
+					FROM
+					 users u 
 				WHERE
-					i.agent_id IS NOT NULL
+					u.pid = 1
 				<!-- AND l. STATUS = 1  -->
 			) a
 		WHERE
@@ -128,7 +127,7 @@
 							User_Recharge r
 						WHERE
 							r. STATUS = 1
-						AND r.UserID = i.UserID
+						AND r.agent_id = u.id
 						<if test="startTime !=null and startTime !='' ">
 							 and DATE_FORMAT(RechargeTime,'%Y-%m-%d') &gt;=#{startTime,jdbcType=TIMESTAMP}
 						</if>
@@ -143,7 +142,7 @@
 							User_WithdrawCash c
 						WHERE
 							c. STATUS = 1
-						AND c.UserID = i.UserID
+						AND c.agent_id = u.id
 						<if test="startTime !=null and startTime !='' ">
 							 and DATE_FORMAT(WithdrawTime,'%Y-%m-%d') &gt;=#{startTime,jdbcType=TIMESTAMP}
 						</if>
@@ -152,11 +151,9 @@
 			           </if>
 					) cjSum
 				FROM
-					User_Info i
-				LEFT JOIN User_Login l ON i.UserID = l.UserID
-				LEFT JOIN users u ON i.agent_id = u.id
+					 users u 
 				WHERE
-					i.agent_id IS NOT NULL
+					u.pid = 1
 				<!-- AND l. STATUS = 1  -->
 			) a
 		WHERE
