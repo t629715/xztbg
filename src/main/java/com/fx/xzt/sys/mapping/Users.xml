@@ -33,6 +33,12 @@
         from users
         where id = #{id,jdbcType=BIGINT}
     </select>
+    <select id="selectById1" resultType="java.util.Map" parameterType="java.lang.Long">
+        select
+        id, user_name userName, password, email, phone, status, create_time createTime, update_time updateTime,pid
+        from users
+        where id = #{id,jdbcType=BIGINT}
+    </select>
     <select id="selectByUsersModel" resultType="com.fx.xzt.sys.model.UsersModel" parameterType="java.util.Map">
         select u.id,u.phone,u.create_time as createTime,GROUP_CONCAT(r.name) as rname,GROUP_CONCAT(r.id) as rid,u.user_name as userName,u.pid pid
         from users u
@@ -217,6 +223,7 @@
     <select id="selectByBrokerMessage" resultType="java.util.Map" parameterType="java.util.Map">
         SELECT CAST(id as CHAR) id,user_name brokerName,CAST(pid as CHAR) pid,phone,create_time createTime FROM users
         <where>
+            status = 1
             <if test="pid != null and pid!='' ">
                 and pid = #{pid,jdbcType=BIGINT}
             </if>

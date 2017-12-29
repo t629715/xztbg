@@ -151,32 +151,41 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 	@Transactional
 	public int deleteById(Long id) {
 		int i = 0;
-
 		try{
-			List<UserInfo> userInfos = userInfoMapper.selectUserInfoByAgentId(id);
-			Users users = usersMapper.selectById(id);
-			if (users.getPid() == 1){//如果删除的用户是代理商
+
+			Map map  = usersMapper.selectById1(id);
+
+			if (map.get("pid").toString().equals("1")){//如果删除的用户是代理商
+				//根据代理商获取客户
+				List<Map<String,Long>> userInfos = userInfoMapper.selectUserInfoByAgentId1(id);
 				//删除代理商的分成信息
 				incomeSharingConfMapper.deleteByAgentId(id);
 				List<ConfigParam> configParams = configParamMapper.selectConfigParamByKey("BROKER_ID");
 				if (userInfos != null && userInfos.size() != 0){
-					for (UserInfo userInfo1:userInfos){
+					for (Map<String,Long> userInfo1:userInfos){
+						UserInfo userInfo = new UserInfo();
+						userInfo.setUserid(userInfo1.get("UserID"));
 						//设置客户代理商id为2
-						userInfo1.setAgentId(configParams.get(0).getParamValue());
+						userInfo.setAgentId(configParams.get(0).getParamValue());
 						//设置客户经纪人为null
-						userInfo1.setBrokerId(null);
+						userInfo.setBrokerId(null);
 						//修改客户信息
-						userInfoMapper.editUserInfo(userInfo1);
+						userInfoMapper.editUserInfo(userInfo);
 					}
 				}
 			}
 			else {//如果删除的用户是经纪人
+				//根据代理商获取客户
+				List<Map<String,Long>> userInfos = userInfoMapper.selectUserInfoByBrokerId1(id);
 				if (userInfos != null && userInfos.size() != 0){
-					for (UserInfo userInfo1:userInfos){
+					for (Map<String,Long> userInfo1:userInfos){
+						UserInfo userInfo = new UserInfo();
+						userInfo.setUserid(userInfo1.get("UserID"));
 						//客户的经纪人设为null
-						userInfo1.setBrokerId(null);
+						userInfo.setBrokerId(null);
 						//修改客户信息
-						userInfoMapper.editUserInfo(userInfo1);
+						userInfoMapper.editUserInfo(userInfo);
+						System.out.println("beizhixing222222");
 					}
 				}
 			}

@@ -8,6 +8,7 @@ import com.fx.xzt.sys.entity.UsersRolePermission;
 import com.fx.xzt.sys.mapper.UsersRolePermissionMapper;
 import com.fx.xzt.sys.service.UsersRolePermissionService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -39,7 +40,18 @@ public class UsersRolePermissionServiceImpl extends BaseService<UsersRolePermiss
 	 */
 	@Override
 	public List<Integer> selectPidByRoleId(Integer roleId) {
-		return usersRolePermissionMapper.selectPidByRoleId(roleId) ;
+		List<Integer> pid = usersRolePermissionMapper.selectPidByRoleId(roleId) ;
+		List<Integer> list = new ArrayList<Integer>();
+		for (Integer i:pid){
+			list.add(i);
+		}
+		for (Integer i:pid){
+			List<Integer> type = usersRolePermissionMapper.selectTypeByPid(i);
+			if (type != null && type.size() != 0){
+				list.remove(i);
+			}
+		}
+		return list;
 	}
 
 }

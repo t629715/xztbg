@@ -83,6 +83,7 @@ public class UsersRoleServiceImpl extends BaseService<UsersRole> implements User
 						Set<Integer> set = new HashSet();
 						for (Integer pid : pids) {
 							set.add(usersPermissionMapper.getByPid(pid));
+							set.add(pid);
 						}
 					/*for (Integer i:set){
 						UsersRolePermission urp = new UsersRolePermission();
@@ -90,7 +91,7 @@ public class UsersRoleServiceImpl extends BaseService<UsersRole> implements User
 						urp.setPid(i);
 						msg = usersRolePermissionService.insertUsersRolePermission(urp);
 					}*/
-						for (Integer pid : pids) {
+						for (Integer pid : set) {
 							UsersRolePermission urp = new UsersRolePermission();
 							urp.setRid(rid);
 							urp.setPid(pid);
