@@ -79,6 +79,7 @@ public interface UserInfoMapper extends BaseMapper<UserInfo>{
 	 * @return
 	 */
 	int updateUserInfoBrokerId(Map<String,Object> map);
+	int alertAgentAndBroker(Map<String,Object> map);
 	
 	/**
 	 * 
