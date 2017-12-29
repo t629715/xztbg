@@ -31,4 +31,5 @@ public interface UsersRolePermissionMapper extends BaseMapper<UsersRolePermissio
 	 *
 	 */
 	List<Integer> selectPidByRoleId(Integer rid);
+	List<Integer> selectTypeByPid(Integer pid);
 }

@@ -45,6 +45,7 @@ public interface UsersMapper extends BaseMapper<Users>{
 	Users selectByPhone(String phone);
 	
 	Users selectById(Long id);
+	Map<String,Object> selectById1(Long id);
 
 	/**
 	 *  获取代理商列表

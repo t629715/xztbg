@@ -132,8 +132,9 @@ public interface UserInfoMapper extends BaseMapper<UserInfo>{
 	/**
 	 * 根据代理商id获取客户信息
 	 */
-	List<UserInfo> selectUserInfoByAgentId(Long agentId);
-	
+	List<Map<String,Long>> selectUserInfoByBrokerId1(Long agentId);
+	List<Map<String,Long>> selectUserInfoByAgentId1(Long agentId);
+
 	List<Map<String, Object>> selectUserInfoById(Long userID);
 
 }

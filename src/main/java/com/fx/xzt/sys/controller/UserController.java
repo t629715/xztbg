@@ -391,7 +391,7 @@ public class UserController {
 				Long pid = users.getId();
 				usersInfo.setPassword(MD5Utils.encrypt(usersInfo.getPassword()));
 				usersInfo.setPid(pid);
-				int i = userService.insertAgent(usersInfo);
+				int i = userService.insertUsers(usersInfo,null);
 				if (i != 0){
 					cr.setData(i);
 					cr.setMsg("操作成功！");

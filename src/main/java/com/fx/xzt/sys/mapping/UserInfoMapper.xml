@@ -624,8 +624,12 @@
 	</select>
 	<!--合作伙伴-获取下级客户信息 tianliya-->
 	<!--根据代理商获取客户信息 -tianliya-->
-	<select id="selectUserInfoByAgentId" parameterType="java.lang.Long" resultMap="BaseResultMap">
-		select * from User_Info where agent_id = #{agentId,jdbcType=BIGINT}
+	<select id="selectUserInfoByAgentId1" parameterType="java.lang.Long" resultType="java.util.Map">
+		select UserID from User_Info where agent_id = #{agentId,jdbcType=BIGINT}
+	</select>
+	<!--根据经纪人获取客户信息 -tianliya-->
+	<select id="selectUserInfoByBrokerId1" parameterType="java.lang.Long" resultType="java.util.Map">
+		select UserID from User_Info where broker_id = #{agentId,jdbcType=BIGINT}
 	</select>
 	<!--下级客户-财产信息统计 tianliya-->
 	<select id="getSubClientsAccountCount" resultType="java.util.Map"

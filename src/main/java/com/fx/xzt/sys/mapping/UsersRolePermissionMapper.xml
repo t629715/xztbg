@@ -57,6 +57,11 @@
     from users_role_permission
     where rid = #{rid,jdbcType=INTEGER}
   </select>
+  <select id="selectTypeByPid" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+    select type
+    from users_permission
+    where pid = #{pid,jdbcType=INTEGER}
+  </select>
   <!--获取 给定角色的彩单集合  tianliya start-->
   <!-- <sql id="Example_Where_Clause" >
     <where >
