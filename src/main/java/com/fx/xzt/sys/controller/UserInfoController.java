@@ -701,6 +701,34 @@ public class UserInfoController {
 		}
 		return response;
 	 }
+
+	/**
+	 * 变更经纪人
+	 */
+	@RequestMapping(value="/alertAgentAndBroker")
+	@ResponseBody
+	public CommonResponse alertAgentAndBroker(HttpServletRequest request,String userId,Long  brokerId,Long agentId){
+		CommonResponse response = new CommonResponse();
+		try{
+			HttpSession session = request.getSession();
+			Users users = (Users)session.getAttribute("currentUser");
+			if (users != null){
+				int msg = userInfoService.alertAgentAndBroker(Long.valueOf(userId),brokerId,agentId);
+				if (msg>0){
+					response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+					response.setData(msg);
+					response.setMsg("变更成功");
+				}else{
+					response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+					response.setData(msg);
+					response.setMsg("变更失败");
+				}
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return response;
+	}
 	
 	/**
 	 * 
@@ -800,8 +828,7 @@ public class UserInfoController {
 	* @param endTime  结束时间
 	* @param loginFrom  登录来源
 	* @param agentName 代理商id
-	* @param pageNum
-	* @param pageSize
+	* @param
 	* @return    设定文件 
 	* @return Object    返回类型 
 	 * @throws Exception 
@@ -1094,8 +1121,7 @@ public class UserInfoController {
 	* @param endTime  结束时间
 	* @param loginFrom  登录来源
 	* @param agentName 代理商id
-	* @param pageNum
-	* @param pageSize
+	* @param
 	* @return    设定文件 
 	* @return Object    返回类型 
 	 * @throws Exception 

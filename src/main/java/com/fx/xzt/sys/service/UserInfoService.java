@@ -114,6 +114,7 @@ public interface UserInfoService extends IService<UserInfo> {
      * @return
      */
     int changeBroker(Long userId, Long brokerId);
+    int alertAgentAndBroker(Long userId, Long brokerId,Long agent);
     
     /**
      * 

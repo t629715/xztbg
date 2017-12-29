@@ -103,7 +103,7 @@
 	<!--账户信息查询 -->
 	<select id="getByAccountMessage" resultType="java.util.Map"
 		parameterType="java.util.Map">
-		SELECT u.UserID AS userId,l.UserName AS userName,l.Status AS
+		SELECT CAST(u.UserID AS  CHAR ) AS userId,l.UserName AS userName,l.Status AS
 		STATUS,u.RealName,u.RegisterTime registerTime,
 		u.agent_id AS agentId, ua.user_name AS agentName, u.broker_id AS brokerId,
 		u1.user_name AS brokerName ,
@@ -657,6 +657,9 @@
 	<!--修改客户的经济人 tianliya-->
 	<update id="updateUserInfoBrokerId" parameterType="java.util.Map">
 		update User_Info set broker_id=#{brokerId,jdbcType=BIGINT} where UserID = #{userId,jdbcType=BIGINT}
+	</update>
+	<update id="alertAgentAndBroker" parameterType="java.util.Map">
+		update User_Info set broker_id=#{brokerId,jdbcType=BIGINT},agent_id=#{agentId,jdbcType=BIGINT} where UserID = #{userId,jdbcType=BIGINT}
 	</update>
 	<!--修改客户的经济人 tianliya-->
 	<!-- <sql id="Example_Where_Clause" > <where > <foreach collection="oredCriteria" 
