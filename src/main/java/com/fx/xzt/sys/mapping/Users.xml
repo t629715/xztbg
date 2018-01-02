@@ -264,6 +264,13 @@
             <where>
                 u1.status = 1
                 and u1.pid is not null
+                <if test="type ==1 ">
+                    and u1.pid = #{type,jdbcType=BIGINT}
+                </if>
+                <if test="type == -9 ">
+                    and u1.pid != 1 and u1.pid != -1
+                </if>
+
                 <if test="pid != null and pid != ''">
                     and u2.id=#{pid,jdbcType=BIGINT}
                 </if>

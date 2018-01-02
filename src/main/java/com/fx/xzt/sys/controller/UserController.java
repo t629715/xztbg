@@ -457,7 +457,7 @@ public class UserController {
 	 */
 	@RequestMapping(value="/sightOfElephant")
 	@ResponseBody
-	public Object sightOfsightOfElephant(HttpServletRequest request, Long agentName ,Long brokerName, String startTime, String endTime, Integer pageNum, Integer pageSize) throws ParseException {
+	public Object sightOfsightOfElephant(HttpServletRequest request, Long agentName ,Long brokerName, Integer type,String startTime, String endTime, Integer pageNum, Integer pageSize) throws ParseException {
 		CommonResponse cr = new CommonResponse();
 		//操作日志
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -472,7 +472,7 @@ public class UserController {
 			HttpSession httpSession = request.getSession();
 			Users users = (Users) httpSession.getAttribute("currentUser");
 			if (users != null){
-				PageInfo<Map<String, Object>> list = userService.sightOfElephant(brokerName,agentName,startTime,endTime,pageNum,pageSize);
+				PageInfo<Map<String, Object>> list = userService.sightOfElephant(brokerName,agentName,startTime,endTime,pageNum,pageSize,type);
 				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 				cr.setData(list);
 				cr.setMsg("操作成功！");

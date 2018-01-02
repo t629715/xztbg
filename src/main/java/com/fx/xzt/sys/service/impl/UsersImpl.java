@@ -293,12 +293,13 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 	@Override
 	public PageInfo<Map<String, Object>> sightOfElephant(Long id , Long  pid,
 														 String startTime, String endTime,
-														 Integer pageNum, Integer pageSize) {
+														 Integer pageNum, Integer pageSize,Integer type) {
 		Map map = new HashMap();
 		map.put("id",id);
 		map.put("pid",pid);
 		map.put("startTime",startTime);
 		map.put("endTime",endTime);
+		map.put("type",type);
 		PageHelper.startPage(pageNum,pageSize);
 		List list  = usersMapper.getByAgentNameAndType(map);
 		PageInfo pageInfo = new PageInfo(list);
