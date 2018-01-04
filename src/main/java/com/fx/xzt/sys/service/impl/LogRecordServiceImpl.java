@@ -44,7 +44,7 @@ public class LogRecordServiceImpl extends BaseService<LogRecord> implements LogR
         map.put("userName", userName);
         map.put("type", type);
         map.put("moduleName", moduleName);
-        map.put("endTime", endTime);
+        map.put("startTime", startTime);
         map.put("endTime", endTime);
         PageHelper.startPage(pageNum,pageSize);
         List<Map<String, Object>> list = logRecordMapper.selectByAll(map);
