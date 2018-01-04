@@ -41,7 +41,7 @@
 	
 	<!--黄金赎回查询统计开始-htt-->
 	<select id="selectByGoldRedeemCount" resultType="java.util.Map" parameterType="java.util.Map">
-	    SELECT  IFNULL(SUM(r.gram),0) gramSum
+	    SELECT  FORMAT(IFNULL(SUM(r.gram),0),3) gramSum
 		FROM gold_redeem r 
 		LEFT JOIN User_Login u ON r.user_id = u.UserID
 		LEFT JOIN User_Info i ON u.UserID = i.UserID

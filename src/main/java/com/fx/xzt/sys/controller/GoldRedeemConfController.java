@@ -152,7 +152,7 @@ public class GoldRedeemConfController {
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
             	if (price > 0 && gram > 0 /*&& poundagePercent > 0*/) {
-            		DecimalFormat df = new DecimalFormat("#.00");
+            		DecimalFormat df = new DecimalFormat("0.00");
             		Double amount = price * gram;
             		Double poundage = amount * poundagePercent;
             		Double total = amount - poundage;
