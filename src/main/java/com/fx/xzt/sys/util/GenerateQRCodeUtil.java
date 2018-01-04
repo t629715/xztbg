@@ -70,12 +70,12 @@ public class GenerateQRCodeUtil {
         hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
         BitMatrix bitMatrix = null;
         if (agentId==1){
-             bitMatrix = new MultiFormatWriter().encode("https://gds.xaifin.com/act1/share.html?brokerId=&agentId="+brokerId, BarcodeFormat.QR_CODE, width, height, hints);
+             bitMatrix = new MultiFormatWriter().encode("https://gds.xaifin.com/act1/register.html?brokerId=&agentId="+brokerId, BarcodeFormat.QR_CODE, width, height, hints);
         }else{
             if (brokerId==null){
-                bitMatrix = new MultiFormatWriter().encode("https://gds.xaifin.com/act1/share.html?brokerId=&agentId="+agentId, BarcodeFormat.QR_CODE, width, height, hints);
+                bitMatrix = new MultiFormatWriter().encode("https://gds.xaifin.com/act1/register.html?brokerId=&agentId="+agentId, BarcodeFormat.QR_CODE, width, height, hints);
             }else {
-                bitMatrix = new MultiFormatWriter().encode("https://gds.xaifin.com/act1/share.html?brokerId="+brokerId+"&agentId="+agentId, BarcodeFormat.QR_CODE, width, height, hints);
+                bitMatrix = new MultiFormatWriter().encode("https://gds.xaifin.com/act1/register.html?brokerId="+brokerId+"&agentId="+agentId, BarcodeFormat.QR_CODE, width, height, hints);
             }
 
         }

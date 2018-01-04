@@ -58,7 +58,7 @@
             </if>
         </where>
         GROUP BY u.id,u.phone,u.password,u.create_time
-        order by u.create_time
+        order by u.create_time desc
     </select>
     <select id="getUserInfoNyName" resultMap="BaseResultMap" parameterType="java.lang.String">
         select
