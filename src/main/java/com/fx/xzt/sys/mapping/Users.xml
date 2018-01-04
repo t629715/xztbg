@@ -46,6 +46,7 @@
         left join users_role r on r.id = ur.rid
         <where>
                 u.status = 1
+                and u.pid is not  NULL
             <if test="phone != null and phone !='' ">
                 and u.user_name = #{phone,jdbcType=VARCHAR}
             </if>
@@ -57,7 +58,7 @@
             </if>
         </where>
         GROUP BY u.id,u.phone,u.password,u.create_time
-        order by u.create_time desc
+        order by u.create_time
     </select>
     <select id="getUserInfoNyName" resultMap="BaseResultMap" parameterType="java.lang.String">
         select
