@@ -54,6 +54,7 @@
 		<where>
 			and l.Status = 1
 			and u.RealNameAuthApproveState = 0
+			and u.RealNameAuthStatus = 2
 			<if test="userName != null and userName!='' ">
 				and l.UserName = #{userName,jdbcType=VARCHAR}
 			</if>

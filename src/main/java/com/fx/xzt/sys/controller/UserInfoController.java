@@ -435,12 +435,12 @@ public class UserInfoController {
             	List<Map<String, Object>> list = pageInfo.getList();
     			if (list != null && list.size() > 0) {
     				for (Map<String, Object> map : list) {
-    					if (map.get("IDCardPath") != null && map.get("IDCardPath") != "") {
+    					/*if (map.get("IDCardPath") != null && map.get("IDCardPath") != "") {
     						map.put("IDCardPath", purl + map.get("IDCardPath"));
     					}
     					if (map.get("IDCardBackPath") != null && map.get("IDCardBackPath") != "") {
     						map.put("IDCardBackPath", purl + map.get("IDCardBackPath"));
-    					}
+    					}*/
     					map.put("RealNameAuthApproveState", ConstantUtil.authApproveState.toMap().get(map.get("RealNameAuthApproveState").toString()));
     				}
     			}
