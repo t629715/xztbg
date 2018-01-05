@@ -190,13 +190,15 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
         goldRightDealConf.setId(productIdUp);
         //合约  一手=多少克
         Integer contract = goldRightDealConfMapper.selectOne(goldRightDealConf).getContract();
-        Integer gramUp = handNumUp*contract;
+//        Integer gramUp = handNumUp*contract;
+        Integer gramUp = handNumUp;
         map.put("gramUp",gramUp);
         //买跌持仓克重
         Long productIdDown = (Long) mapUp.get("productId");
         goldRightDealConf.setId(productIdDown);
         Integer contractDown = goldRightDealConfMapper.selectOne(goldRightDealConf).getContract();
-        Integer gramDown = handNumDown*contractDown;
+//        Integer gramDown = handNumDown*contractDown;
+        Integer gramDown = handNumDown;
         map.put("gramDown",gramDown);
         return map;
     }
