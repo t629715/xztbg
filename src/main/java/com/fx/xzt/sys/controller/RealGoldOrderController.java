@@ -61,7 +61,7 @@ public class RealGoldOrderController {
     @RequestMapping(value="/selectByRealGoldOrder")
     @ResponseBody
     public Object selectByRealGoldOrder(HttpServletRequest request, String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime,
-                                           String agentName, String brokerName, @RequestParam Integer pageNum, @RequestParam Integer pageSize) throws ParseException {
+                                           String agentName, String brokerName, String isNovice, @RequestParam Integer pageNum, @RequestParam Integer pageSize) throws ParseException {
         CommonResponse cr = new CommonResponse();
         //操作日志
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -80,7 +80,7 @@ public class RealGoldOrderController {
                 if (users.getPid() != null &&  users.getPid() == 1) {
                     agentNameStr = users.getId().toString();
                 }
-                PageInfo<Map<String, Object>> pageInfo = realGoldOrderService.selectByRealGoldOrder(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName, pageNum, pageSize);
+                PageInfo<Map<String, Object>> pageInfo = realGoldOrderService.selectByRealGoldOrder(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName, isNovice, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
@@ -122,7 +122,7 @@ public class RealGoldOrderController {
     @RequestMapping(value="/excelRealGoldOrder")
     @ResponseBody
     public void excelRealGoldOrder(HttpServletRequest request, HttpServletResponse response, String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime,
-                                   String agentName, String brokerName) throws Exception {
+                                   String agentName, String brokerName, String isNovice) throws Exception {
     	//操作日志
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         LogRecord log = new LogRecord();
@@ -142,7 +142,7 @@ public class RealGoldOrderController {
                 if (users.getPid() != null &&  users.getPid() == 1) {
                     agentNameStr = users.getId().toString();
                 }
-                List<Map<String, Object>> list = realGoldOrderService.excelRealGoldOrder(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName);
+                List<Map<String, Object>> list = realGoldOrderService.excelRealGoldOrder(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName, isNovice);
                 if (list != null && list.size() > 0) {
                     for (Map<String, Object> map : list) {
                         Object rmbAmountObj =  map.get("rmbAmount");
@@ -201,7 +201,8 @@ public class RealGoldOrderController {
      */
     @RequestMapping(value="/selectByRealGoldCount")
     @ResponseBody
-    public Object selectByRealGoldCount(HttpServletRequest request, String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName) throws ParseException {
+    public Object selectByRealGoldCount(HttpServletRequest request, String userName, String orderNo, String startTime, String endTime, 
+    		String regStartTime, String regEndTime, String agentName, String brokerName, String isNovice) throws ParseException {
         CommonResponse cr = new CommonResponse();
         //操作日志
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -221,7 +222,7 @@ public class RealGoldOrderController {
                     agentNameStr = users.getId().toString();
                 }
                 Map<String,Object> map = new HashMap<String,Object>();
-                map = realGoldOrderService.selectByRealGoldCount(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName);
+                map = realGoldOrderService.selectByRealGoldCount(userName, orderNo, startTime, endTime, regStartTime, regEndTime, agentNameStr, brokerName, isNovice);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(map);
                 cr.setMsg("操作成功！");

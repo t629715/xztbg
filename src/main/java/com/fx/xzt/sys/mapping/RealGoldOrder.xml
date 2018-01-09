@@ -18,7 +18,8 @@
       SELECT o.id id, o.order_no orderNo, o.user_id userID, u.UserName userName,i.RegisterTime registerTime,
       o.agent_id AS agentId, ua.user_name AS agentName, o.broker_id AS brokerId, ub.user_name AS brokerName ,
       o.gold_product_id goldProductId, c.name productName,o.buy_price buyPrice, o.gram gram,
-      o.rmb_amount rmbAmount, o.fee fee,o.buy_time buyTime, s.share_amount shareAmount
+      o.rmb_amount rmbAmount, o.fee fee,o.buy_time buyTime, s.share_amount shareAmount,
+      o.discount,o.discount_price discountPrice,o.is_novice isNovice
       FROM real_gold_order o
       LEFT JOIN User_Login u ON o.user_id = u.UserID
       LEFT JOIN User_Info i ON u.UserID = i.UserID
@@ -51,6 +52,9 @@
           </if>
           <if test="brokerName != null and brokerName !='' ">
               and ub.id = #{brokerName,jdbcType=BIGINT}
+          </if>
+          <if test="isNovice != null and isNovice !='' ">
+              and o.is_novice = #{isNovice,jdbcType=INTEGER}
           </if>
       </where>
         order by o.buy_time DESC
@@ -92,6 +96,9 @@
           </if>
           <if test="brokerName != null and brokerName !='' ">
               and ub.id = #{brokerName,jdbcType=BIGINT}
+          </if>
+          <if test="isNovice != null and isNovice !='' ">
+              and o.is_novice = #{isNovice,jdbcType=INTEGER}
           </if>
         </where>
     </select>

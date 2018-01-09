@@ -38,7 +38,7 @@ public class RealGoldOrderServiceImpl extends BaseService<RealGoldOrder> impleme
      * @param pageSize
      * @return
      */
-    public PageInfo<Map<String, Object>> selectByRealGoldOrder(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName, Integer pageNum, Integer pageSize) {
+    public PageInfo<Map<String, Object>> selectByRealGoldOrder(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName, String isNovice, Integer pageNum, Integer pageSize) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("orderNo", orderNo);
@@ -48,6 +48,7 @@ public class RealGoldOrderServiceImpl extends BaseService<RealGoldOrder> impleme
         map.put("regEndTime", regEndTime);
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
+        map.put("isNovice", isNovice);
         PageHelper.startPage(pageNum,pageSize);
         List<Map<String, Object>> list = realGoldOrderMapper.selectByRealGoldOrder(map);
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
@@ -66,7 +67,7 @@ public class RealGoldOrderServiceImpl extends BaseService<RealGoldOrder> impleme
      * @param brokerName 经纪人用户名
      * @return
      */
-    public List<Map<String, Object>> excelRealGoldOrder(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName) {
+    public List<Map<String, Object>> excelRealGoldOrder(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName, String isNovice) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("orderNo", orderNo);
@@ -76,6 +77,7 @@ public class RealGoldOrderServiceImpl extends BaseService<RealGoldOrder> impleme
         map.put("regEndTime", regEndTime);
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
+        map.put("isNovice", isNovice);
         List<Map<String, Object>> list = realGoldOrderMapper.selectByRealGoldOrder(map);
         return list;
     }
@@ -92,7 +94,7 @@ public class RealGoldOrderServiceImpl extends BaseService<RealGoldOrder> impleme
      * @param brokerName 经纪人用户名
      * @return
      */
-    public Map<String, Object> selectByRealGoldCount(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName) {
+    public Map<String, Object> selectByRealGoldCount(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime, String agentName, String brokerName, String isNovice) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("orderNo", orderNo);
@@ -102,6 +104,7 @@ public class RealGoldOrderServiceImpl extends BaseService<RealGoldOrder> impleme
         map.put("regEndTime", regEndTime);
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
+        map.put("isNovice", isNovice);
         return realGoldOrderMapper.selectByRealGoldCount(map);
     }
 }
