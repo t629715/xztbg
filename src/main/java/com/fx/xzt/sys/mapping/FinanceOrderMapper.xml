@@ -24,7 +24,7 @@
     o.product_id productId, c.product_name productName,c.product_no productNo,o.cycle,o.year_incom_percent yearIncomPercent,
     o.float_percent floatPercent, o.nper nper, c.type type,
     o.buy_amount buyAmount,o.buy_time buyTime,o.redeem_time redeemTime,o.status,o.income,
-    o.initial_price initialPrice, o.clear_price clearPrice, 
+    o.initial_price initialPrice, o.clear_price clearPrice, o.gram,
     s.share_amount shareAmount 
     FROM finance_order o
     LEFT JOIN User_Login u ON o.user_id = u.UserID
