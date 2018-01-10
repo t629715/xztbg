@@ -265,13 +265,33 @@ public class InfoBannerController {
 	 */
 	@RequestMapping(value="/getAdPic1",method=RequestMethod.POST)
 	@ResponseBody
-	public List<Map<String, Object>> getAdPic1(Short page){
-		return infoBannerService.getAdPic(page,8);
+	public CommonResponse getAdPic1(HttpServletRequest request,Short page){
+		CommonResponse commonResponse = new CommonResponse();
+		HttpSession httpSession = request.getSession();
+		Users users = (Users) httpSession.getAttribute("currentUser");
+		if (users != null){
+			commonResponse.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+			commonResponse.setData(infoBannerService.getAdPic(page,8));
+		}else {
+			commonResponse.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+			commonResponse.setData("");
+		}
+		return commonResponse;
 	}
 	@RequestMapping(value="/getAdPic2",method=RequestMethod.POST)
 	@ResponseBody
-	public List<Map<String, Object>> getAdPic2(Short page){
-		return infoBannerService.getAdPic(page,1);
+	public CommonResponse getAdPic2(HttpServletRequest request, Short page){
+		CommonResponse commonResponse = new CommonResponse();
+		HttpSession httpSession = request.getSession();
+		Users users = (Users) httpSession.getAttribute("currentUser");
+		if (users != null){
+			commonResponse.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+			commonResponse.setData(infoBannerService.getAdPic(page,1));
+		}else {
+			commonResponse.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+			commonResponse.setData("");
+		}
+		return commonResponse;
 	}
 
 	@RequestMapping(value="/getOneBySerialNo",method=RequestMethod.POST)

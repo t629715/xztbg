@@ -160,7 +160,7 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
         Integer handNum = handNumUp+handNumDown;
         //买涨均价：买入价*手数的合计/总手数
         Double avgUp = 0D;
-        if (handNum != 0){
+        if (mapUp != null&&handNum != 0){
             avgUp = (Double) mapUp.get("openPositionPriceUp")/handNum;
         }
         BigDecimal bu   =   new   BigDecimal(avgUp);
@@ -168,7 +168,7 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
         map.put("avgUp",fu);
         //买跌均价：买入价*手数的合计/总手数
         Double avgDown = 0D;
-        if (handNum != 0){
+        if (mapDown != null&&handNum != 0){
             avgDown = (Double) mapDown.get("openPositionPriceDown")/handNum;
         }
         BigDecimal b   =   new   BigDecimal(avgDown);

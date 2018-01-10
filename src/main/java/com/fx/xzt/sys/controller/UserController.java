@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.fx.xzt.shiro.MyAuthenticationToken;
 import com.fx.xzt.sys.entity.LogRecord;
 import com.fx.xzt.sys.entity.UserInfo;
 import com.fx.xzt.sys.service.LogRecordService;
@@ -80,8 +81,10 @@ public class UserController {
 		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		HttpSession httpSession = request.getSession();
 		Users users = (Users) httpSession.getAttribute("currentUser");
-		if(userInfo.getStatus()==null){
+		if (users != null){
 
+		}
+		if(userInfo.getStatus()==null){
 			userInfo.setStatus("1");
 		}
 		Integer count = userService.save(userInfo);
@@ -173,7 +176,7 @@ public class UserController {
 	 */
 	@RequestMapping(value="/insertUser")
 	@ResponseBody
-	public Map<String,Object> insertUser(HttpServletRequest request,Users users,@RequestParam(value="rids", required=false)List<Integer> rids) throws ParseException {
+	public CommonResponse insertUser(HttpServletRequest request,Users users,@RequestParam(value="rids", required=false)List<Integer> rids) throws ParseException {
 		//操作日志
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		LogRecord log = new LogRecord();
@@ -183,28 +186,34 @@ public class UserController {
 		log.setType(ConstantUtil.logRecordType.XZ.getIndex());
 		log.setIp(IPUtil.getHost(request));
 		log.setCreateTime(sdf.parse(sdf.format(new Date())));
-
+		CommonResponse commonResponse = new CommonResponse();
 		HttpSession httpSession = request.getSession();
 		Users user = (Users) httpSession.getAttribute("currentUser");
 		Map<String,Object> map = new HashMap<String,Object>();
 		users.setPid(new Long(1));
 		users.setStatus("1");
-		int msg = userService.insertUsers(users, rids);
-		if (user != null && msg>0){
+
+		if (user != null ){
+			int msg = userService.insertUsers(users, rids);
+			map.put("msg", msg);
+			commonResponse.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+			commonResponse.setData(map);
 			log.setContent("添加成功");
 			log.setUserId(user.getId());
+		}else {
+			commonResponse.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
 		}
 		logRecordService.add(log);
 		AuditLog.info(log.toString());
-		map.put("msg", msg);
-		return map;
+
+		return commonResponse;
 	}
 	/**
 	 * 删除
 	 */
 	@RequestMapping(value="/deleteUser")
 	@ResponseBody
-	public Map<String,Object> deleteUser(Long id,HttpServletRequest request) throws ParseException {
+	public CommonResponse deleteUser(Long id,HttpServletRequest request) throws ParseException {
 		//操作日志
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		LogRecord log = new LogRecord();
@@ -214,41 +223,72 @@ public class UserController {
 		log.setType(ConstantUtil.logRecordType.LJSC.getIndex());
 		log.setIp(IPUtil.getHost(request));
 		log.setCreateTime(sdf.parse(sdf.format(new Date())));
+		CommonResponse commonResponse = new CommonResponse();
         HttpSession httpSession = request.getSession();
         Users users = (Users) httpSession.getAttribute("currentUser");
+        Users user = userService.getUser(id);
+		MyAuthenticationToken token = new MyAuthenticationToken(user.getUserName(), user.getPassword(), true, null);
 		Map<String,Object> map = new HashMap<String,Object>();
-		int msg = userService.deleteById(id);
+
 		if (users != null){
+			int msg = userService.deleteById(id);
             if (msg>0){
                 log.setUserId(users.getId());
+                token.clear();
+                map.put("msg", msg);
                 log.setContent("删除成功");
             }
-        }
-
-		map.put("msg", msg);
+			commonResponse.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+            commonResponse.setData(map);
+        }else{
+			commonResponse.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+		}
 		logRecordService.add(log);
 		AuditLog.info(log.toString());
-		return map;
+		return commonResponse;
 	}
 	/**
 	 * 更新用户 id 手机号 和 密码必须传递
 	 */
 	@RequestMapping(value="/updateUser")
 	@ResponseBody
-	public Map<String,Object> updateUser(Users users,@RequestParam(value="rids", required=false)List<Integer> rids){
-		Map<String,Object> map = new HashMap<String,Object>();
-		int msg = userService.updateByIdSelective(users, rids);
-		map.put("msg", msg);
-		return map;
+	public CommonResponse updateUser(Users users,@RequestParam(value="rids", required=false)List<Integer> rids, HttpServletRequest request){
+		CommonResponse commonResponse = new CommonResponse();
+		HttpSession httpSession = request.getSession();
+		Users users1 = (Users) httpSession.getAttribute("currentUser");
+		Users user = userService.getUser(users.getId());
+		MyAuthenticationToken token = new MyAuthenticationToken(user.getUserName(), user.getPassword(), true, null);
+		if (users1 != null){
+			Map<String,Object> map = new HashMap<String,Object>();
+			int msg = userService.updateByIdSelective(users, rids);
+			map.put("msg", msg);
+			if (token != null){
+				token.clear();
+			}
+			commonResponse.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+			commonResponse.setData(map);
+		}else{
+			commonResponse.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+		}
+		return commonResponse;
 	}
 	/**
 	 * 用户信息列表
 	 */
 	@RequestMapping(value="/selectByUsers")
 	@ResponseBody
-	public PageInfo<UsersModel> selectByUsers(String phone, String startTime, String endTime, Integer pageNum,
+	public CommonResponse selectByUsers(String phone, String startTime, String endTime, Integer pageNum,
 			Integer pageSize,HttpServletRequest request){
-		return userService.selectByUsersModel(phone, startTime, endTime, pageNum, pageSize);
+		CommonResponse commonResponse = new CommonResponse();
+		HttpSession httpSession = request.getSession();
+		Users users1 = (Users) httpSession.getAttribute("currentUser");
+		if (users1 != null){
+			commonResponse.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+			commonResponse.setData(userService.selectByUsersModel(phone, startTime, endTime, pageNum, pageSize));
+		}else{
+			commonResponse.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+		}
+		return commonResponse;
 	}
 
 	/**
@@ -348,6 +388,8 @@ public class UserController {
 
 				log.setUserId(users.getId());
 				log.setContent("查询成功");
+			}else {
+				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
 			}
 
 		} catch (Exception e) {
@@ -403,6 +445,8 @@ public class UserController {
 					cr.setMsg("操作失败！");
 				}
 				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+			}else {
+				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
 			}
 		} catch (Exception e) {
 			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
@@ -478,6 +522,8 @@ public class UserController {
 				cr.setMsg("操作成功！");
 				log.setUserId(users.getId());
 				log.setContent("查询成功");
+			}else{
+				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
 			}
 
 		} catch (Exception e) {
