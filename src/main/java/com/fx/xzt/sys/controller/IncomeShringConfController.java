@@ -37,7 +37,13 @@ public class IncomeShringConfController {
     @Resource
     LogRecordService logRecordService;
 
-
+    /**
+     * 获取代理商的分成设置
+     * @param request
+     * @param userId
+     * @return
+     * @throws ParseException
+     */
     @RequestMapping(value = "/getIncomeSharingConf",method= RequestMethod.POST)
     @ResponseBody
     public Object getIncomeSharingConf(HttpServletRequest request, Long userId) throws ParseException {
@@ -57,6 +63,7 @@ public class IncomeShringConfController {
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
                 IncomeSharingConf incomeSharingConf = incomeSharingConfService.getIncomeSharingConf(userId);
+                System.out.println(incomeSharingConf+"9999999999999");
                 response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 response.setData(incomeSharingConf);
                 response.setMsg("操作成功！");

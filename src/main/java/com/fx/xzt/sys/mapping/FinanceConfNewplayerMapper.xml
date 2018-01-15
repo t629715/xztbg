@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fx.xzt.sys.mapper.FinanceConfNewplayerMapper" >
+  <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.FinanceConfNewplayer" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="product_no" property="productNo" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="year_incom_percent" property="yearIncomPercent" jdbcType="REAL" />
+    <result column="float_percent_max" property="floatPercentMax" jdbcType="REAL" />
+    <result column="cycle" property="cycle" jdbcType="INTEGER" />
+    <result column="min_weight" property="minWeight" jdbcType="INTEGER" />
+    <result column="max_weight" property="maxWeight" jdbcType="INTEGER" />
+    <result column="calc_method" property="calcMethod" jdbcType="INTEGER" />
+    <result column="redeem_method" property="redeemMethod" jdbcType="SMALLINT" />
+    <result column="settle_method" property="settleMethod" jdbcType="SMALLINT" />
+    <result column="allocation_method" property="allocationMethod" jdbcType="SMALLINT" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="sell_amount" property="sellAmount" jdbcType="BIGINT" />
+    <result column="risk_type" property="riskType" jdbcType="VARCHAR" />
+    <result column="estimate_percent" property="estimatePercent" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, product_no, product_name, year_incom_percent, float_percent_max, cycle, min_weight, 
+    max_weight, calc_method, redeem_method, settle_method, allocation_method, type, sell_amount, 
+    risk_type, estimate_percent
+  </sql>
+  <!--获取所有的新手专属理财产品-tianliya-->
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from finance_conf_newplayer
+  </select>
+
+  <!--根据id删除新手专属理财-tianliya-->
+  <delete id="deleteById" parameterType="java.lang.Long">
+    DELETE FROM finance_conf_newplayer WHERE id = #{id,jdbcType=BIGINT}
+  </delete>
+  <!--修改选中的新手专属理财产品-tianliya-->
+  <update id="updateSelective" parameterType="java.util.Map" >
+    update finance_conf_newplayer
+    <set >
+      <if test="productNo != null" >
+        product_no = #{productNo,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="yearIncomPercent != null" >
+        year_incom_percent = #{yearIncomPercent,jdbcType=REAL},
+      </if>
+      <if test="floatPercentMax != null" >
+        float_percent_max = #{floatPercentMax,jdbcType=REAL},
+      </if>
+      <if test="cycle != null" >
+        cycle = #{cycle,jdbcType=INTEGER},
+      </if>
+      <if test="minWeight != null" >
+        min_weight = #{minWeight,jdbcType=INTEGER},
+      </if>
+      <if test="maxWeight != null" >
+        max_weight = #{maxWeight,jdbcType=INTEGER},
+      </if>
+      <if test="calcMethod != null" >
+        calc_method = #{calcMethod,jdbcType=INTEGER},
+      </if>
+      <if test="redeemMethod != null" >
+        redeem_method = #{redeemMethod,jdbcType=SMALLINT},
+      </if>
+      <if test="settleMethod != null" >
+        settle_method = #{settleMethod,jdbcType=SMALLINT},
+      </if>
+      <if test="allocationMethod != null" >
+        allocation_method = #{allocationMethod,jdbcType=SMALLINT},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="sellAmount != null" >
+        sell_amount = #{sellAmount,jdbcType=BIGINT},
+      </if>
+      <if test="riskType != null" >
+        risk_type = #{riskType,jdbcType=VARCHAR},
+      </if>
+      <if test="estimatePercent != null" >
+        estimate_percent = #{estimatePercent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -7,10 +7,11 @@
     <result column="random_percent" property="randomPercent" jdbcType="DOUBLE" />
     <result column="gold_right_percent" property="goldRightPercent" jdbcType="DOUBLE" />
     <result column="gold_percent" property="goldPercent" jdbcType="DOUBLE" />
+    <result column="finance_for_new_percent" property="financeForNewPercent" jdbcType="DOUBLE" />
     <result column="agent_id" property="agentId" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, real_gold_percent, random_percent, gold_right_percent, gold_percent, agent_id
+    id, real_gold_percent, random_percent, gold_right_percent, gold_percent, agent_id, finance_for_new_percent
   </sql>
   <select id="selectIncomeSharingConf" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select
@@ -47,6 +48,9 @@
       <if test="goldPercent != null" >
         gold_percent,
       </if>
+      <if test="financeForNewPercent != null" >
+        finance_for_new_percent,
+      </if>
       <if test="agentId != null" >
         agent_id,
       </if>
@@ -67,6 +71,9 @@
       <if test="goldPercent != null" >
         #{goldPercent,jdbcType=DOUBLE},
       </if>
+      <if test="financeForNewPercent != null" >
+        #{financeForNewPercent,jdbcType=DOUBLE},
+      </if>
       <if test="agentId != null" >
         #{agentId,jdbcType=BIGINT},
       </if>
@@ -86,6 +93,9 @@
       </if>
       <if test="goldPercent != null" >
         gold_percent = #{goldPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="financeForNewPercent != null" >
+        finance_for_new_percent = #{financeForNewPercent,jdbcType=DOUBLE},
       </if>
       <if test="agentId != null" >
         agent_id = #{agentId,jdbcType=BIGINT},

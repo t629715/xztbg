@@ -11,7 +11,18 @@ public class IncomeSharingConf {
 
     private Double goldPercent;
 
+    private Double financeForNewPercent;
+
+
     private Long agentId;
+
+    public Double getFinanceForNewPercent() {
+        return financeForNewPercent;
+    }
+
+    public void setFinanceForNewPercent(Double financeForNewPercent) {
+        this.financeForNewPercent = financeForNewPercent;
+    }
 
     public Long getId() {
         return id;
@@ -59,5 +70,18 @@ public class IncomeSharingConf {
 
     public void setAgentId(Long agentId) {
         this.agentId = agentId;
+    }
+
+    @Override
+    public String toString() {
+        return "IncomeSharingConf{" +
+                "id=" + id +
+                ", realGoldPercent=" + realGoldPercent +
+                ", randomPercent=" + randomPercent +
+                ", goldRightPercent=" + goldRightPercent +
+                ", goldPercent=" + goldPercent +
+                ", financeForNewPercent=" + financeForNewPercent +
+                ", agentId=" + agentId +
+                '}';
     }
 }
