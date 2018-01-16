@@ -214,20 +214,20 @@ public class FinanceOrderController {
                     excelName = "理财交易";
                     //判断是否为代理商账户
                     if (users.getPid() != null &&  users.getPid() == 1) {
-                        String[] heads = {"用户账号", "注册时间", "经纪人", "交易订单号", "产品编号", "产品名称", "周期", "收益率", "买入金额",
+                        String[] heads = {"用户账号", "注册时间", "经纪人", "交易订单号", "产品编号", "产品名称", "周期", "收益率", "买入价", "买入克重",  "买入金额",
                                 "买入时间", "赎回时间", "状态", "收益支出", "交易分成"};
-                        String[] colums = {"userName", "registerTime", "brokerName", "orderNo", "productNo", "productName", "cycle", "yearIncomPercent", "buyAmount",
-                                "buyTime", "redeemTime", "status", "income", "shareAmount"};
+                        String[] colums = {"userName", "registerTime", "brokerName", "orderNo", "productNo", "productName", "cycle", "yearIncomPercent", 
+                        		"initialPrice", "gram", "buyAmount", "buyTime", "redeemTime", "status", "income", "shareAmount"};
                         poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                     } else if (users.getPid() == null || users.getPid() == 0){
                         if (status != null && status == 2) {
                             tieleName = "理财收益结算";
                             excelName = "理财收益结算";
                         }
-                        String[] heads = {"用户账号", "注册时间", "代理商", "经纪人", "交易订单号", "产品编号", "产品名称", "周期", "收益率", "买入金额",
+                        String[] heads = {"用户账号", "注册时间", "代理商", "经纪人", "交易订单号", "产品编号", "产品名称", "周期", "收益率", "买入价", "买入克重","买入金额",
                                 "买入时间", "赎回时间", "状态", "收益支出"};
-                        String[] colums = {"userName", "registerTime", "agentName", "brokerName", "orderNo", "productNo", "productName", "cycle", "yearIncomPercent", "buyAmount",
-                                "buyTime", "redeemTime", "status", "income"};
+                        String[] colums = {"userName", "registerTime", "agentName", "brokerName", "orderNo", "productNo", "productName", "cycle", "yearIncomPercent", 
+                        		"initialPrice", "gram", "buyAmount", "buyTime", "redeemTime", "status", "income"};
                         poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                     }
                     log.setUserId(users.getId());

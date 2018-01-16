@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fx.xzt.sys.mapper.FinanceNewplayerOrderMapper">
+    <!--新手理财专享开始-htt-->
+    <select id="selectByAll" resultType="java.util.Map" parameterType="java.util.Map">
+    select o.id, o.user_id userId, o.order_no orderNo, o.product_id productId,o.product_name productName,
+        o.product_no productNo,
+    	o.buy_amount buyAmount, o.buy_time buyTime, o.redeem_time redeemTime, o.status, o.income,
+		o.initial_price initialPrice, o.clear_price clearPrice, o.year_incom_percent yearIncomPercent, 
+		o.float_percent_max floatPercentMax, o.cycle, o.min_weight minWeight, o.start_day startDay , 
+		o.end_day endDay, o.send_day sendDay,
+		o.settle_method settleMethod,o.allocation_method allocationMethod, o.type, o.sell_amount sellAmount, 
+		o.risk_type riskType, o.estimate_percent estimatePercent,o.gram,
+		u.UserName userName, i.RegisterTime  registerTime,
+    	o.agent_id AS agentId, ua.user_name AS agentName, o.broker_id AS brokerId, ub.user_name AS brokerName 
+ 		from finance_newplayer_order o
+	  LEFT JOIN User_Login u ON o.user_id = u.UserID
+      LEFT JOIN User_Info i ON u.UserID = i.UserID
+      LEFT JOIN users ua ON o.agent_id = ua.id
+      LEFT JOIN users ub ON o.broker_id = ub.id
+      <where>
+        <!--   and u.Status = 1 -->
+          <if test="userName != null and userName != '' ">
+            and u.UserName = #{userName,jdbcType=VARCHAR}
+          </if>
+          <if test="orderNo != null and orderNo != '' ">
+              and o.order_no = #{orderNo,jdbcType=VARCHAR}
+          </if>
+          <if test="startTime !=null and startTime !='' ">
+              and o.buy_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+          </if>
+          <if test="endTime !=null and endTime != '' ">
+              and o.buy_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+          </if>
+          <if test="regStartTime !=null and regStartTime !='' ">
+              and i.RegisterTime &gt;=#{regStartTime,jdbcType=TIMESTAMP}
+          </if>
+          <if test="regEndTime !=null and regEndTime != '' ">
+              and i.RegisterTime &lt;=#{regEndTime,jdbcType=TIMESTAMP}
+          </if>
+          <if test="agentName != null and agentName !='' ">
+              and ua.id = #{agentName,jdbcType=BIGINT}
+          </if>
+          <if test="brokerName != null and brokerName !='' ">
+              and ub.id = #{brokerName,jdbcType=BIGINT}
+          </if>
+          <if test="status != null and status !='' ">
+              and o.status = #{status,jdbcType=INTEGER}
+          </if>
+          <if test="type != null ">
+          	  and o.type = #{type,jdbcType=INTEGER}
+          </if>
+          <if test="redeemStartTime !=null and redeemStartTime !='' ">
+	        and o.redeem_time &gt;=#{redeemStartTime,jdbcType=TIMESTAMP}
+	      </if>
+	      <if test="redeemEndTime !=null and redeemEndTime != '' ">
+	        and o.redeem_time &lt;=#{redeemEndTime,jdbcType=TIMESTAMP}
+	      </if>
+      </where>
+        order by o.buy_time DESC
+    </select>
+    <!--新手理财专享结束-htt-->
+    <!--新手理财专享金额统计开始-htt-->
+    <select id="selectByAllCount" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT SUM(buy_amount) buyAmountSum, SUM(gram) gramCount,
+        SUM(s.share_amount) shareAmountSum, SUM(o.income) costSum
+        FROM finance_newplayer_order o
+        LEFT JOIN User_Login u ON o.user_id = u.UserID
+        LEFT JOIN User_Info i ON u.UserID = i.UserID
+        LEFT JOIN users ua ON o.agent_id = ua.id
+        LEFT JOIN users ub ON o.broker_id = ub.id
+        LEFT JOIN share_record s on o.id = s.order_id
+        <where>
+        <!--   and u.Status = 1 -->
+         <if test="userName != null and userName != '' ">
+            and u.UserName = #{userName,jdbcType=VARCHAR}
+          </if>
+          <if test="orderNo != null and orderNo != '' ">
+              and o.order_no = #{orderNo,jdbcType=VARCHAR}
+          </if>
+          <if test="startTime !=null and startTime !='' ">
+              and o.buy_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+          </if>
+          <if test="endTime !=null and endTime != '' ">
+              and o.buy_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+          </if>
+          <if test="regStartTime !=null and regStartTime !='' ">
+              and i.RegisterTime &gt;=#{regStartTime,jdbcType=TIMESTAMP}
+          </if>
+          <if test="regEndTime !=null and regEndTime != '' ">
+              and i.RegisterTime &lt;=#{regEndTime,jdbcType=TIMESTAMP}
+          </if>
+          <if test="agentName != null and agentName !='' ">
+              and ua.id = #{agentName,jdbcType=BIGINT}
+          </if>
+          <if test="brokerName != null and brokerName !='' ">
+              and ub.id = #{brokerName,jdbcType=BIGINT}
+          </if>
+          <if test="status != null">
+              and o.status = #{status,jdbcType=INTEGER}
+          </if>
+          <if test="type != null">
+          	  and o.type = #{type,jdbcType=INTEGER}
+          </if>
+          <if test="redeemStartTime !=null and redeemStartTime !='' ">
+	        and o.redeem_time &gt;=#{redeemStartTime,jdbcType=TIMESTAMP}
+	      </if>
+	      <if test="redeemEndTime !=null and redeemEndTime != '' ">
+	        and o.redeem_time &lt;=#{redeemEndTime,jdbcType=TIMESTAMP}
+	      </if>
+    	</where>
+    </select>
+    <!--新手理财专享金额统计结束-htt-->
+</mapper>

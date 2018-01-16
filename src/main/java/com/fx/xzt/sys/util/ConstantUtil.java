@@ -472,7 +472,8 @@ public class ConstantUtil {
         HJSHJS("黄金赎回计算","36"),
         YHQ("优惠券","37"),
         JXQ("加息券","38"),
-        HJLQ("黄金领取","39");
+        HJLQ("黄金领取","39"),
+        XSLC("新手理财","40");
 
 
         private String name;
@@ -521,6 +522,36 @@ public class ConstantUtil {
         	activityType[] ds = activityType.values();
             Map<String, String> rlt = new Hashtable<String, String>();
             for (activityType d : ds) {
+                rlt.put(d.index, d.name);
+            }
+            return rlt;
+        }
+    }
+    
+    /**
+     * 
+    * @ClassName: isNovice 
+    * @Description: 是否新手专享
+    * @author htt
+    * @date 2018-1-16 下午2:15:36 
+    *
+     */
+    public static enum isNovice {
+        F("否","0"),
+        Y("是","1");
+        private String name;
+        private String index;
+        private isNovice(String name,String index){
+            this.name = name;
+            this.index = index;
+        }
+        public String toString() {
+            return this.index;
+        }
+        public static Map<String, String> toMap() {
+        	isNovice[] ds = isNovice.values();
+            Map<String, String> rlt = new Hashtable<String, String>();
+            for (isNovice d : ds) {
                 rlt.put(d.index, d.name);
             }
             return rlt;
