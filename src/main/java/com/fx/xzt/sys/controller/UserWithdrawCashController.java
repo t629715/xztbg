@@ -192,6 +192,8 @@ public class UserWithdrawCashController {
                 if (list != null && list.size() > 0) {
                     for (Map<String, Object> map : list) {
                         map.put("status", ConstantUtil.withdrawCashStatus.toMap().get(map.get("status").toString()));
+                        map.put("type", ConstantUtil.withdrawCashType.toMap().get(map.get("type").toString()));
+                        
                         Object amtObj =  map.get("withdrawAmt");
                         Object poundageObj = map.get("poundage");
                         Object registerTimeObj = map.get("registerTime");
@@ -220,8 +222,8 @@ public class UserWithdrawCashController {
                         }
                     }
                     POIUtils poi = new POIUtils();
-                    String[] heads = {"用户账号","代理商","经纪人","提取金额","手续费","银行卡号","申请提取时间", "审核时间",  "状态"};
-                    String[] colums = {"userName", "agentName", "brokerName", "withdrawAmt", "poundage", "accountNum", "withdrawTime", "finishTime", "status"};
+                    String[] heads = {"用户账号","代理商","经纪人","提取金额","手续费","提取类型","所属银行","银行卡号","申请提取时间", "审核时间",  "状态"};
+                    String[] colums = {"userName", "agentName", "brokerName", "withdrawAmt", "poundage", "type","bankName","accountNum", "withdrawTime", "finishTime", "status"};
                     poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                     log.setUserId(users.getId());
                     log.setContent("导出成功，共：" + list.size() + "条数据");

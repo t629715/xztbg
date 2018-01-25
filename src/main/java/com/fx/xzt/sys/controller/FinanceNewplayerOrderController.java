@@ -214,26 +214,45 @@ public class FinanceNewplayerOrderController {
                          	Double shareAmount = Double.valueOf(shareAmountObj.toString());
                          	map.put("shareAmount", shareAmount/100);
                         }
+                    	
+                    	Object initialPriceObj =  map.get("initialPrice");
+                    	if (initialPriceObj != null && initialPriceObj != "") {
+                    		Double initialPrice = Double.valueOf(initialPriceObj.toString());
+                    		map.put("initialPrice", initialPrice/100);
+                    	}
+                    	
+                    	Object clearPriceObj =  map.get("clearPrice");
+                    	if (clearPriceObj != null && clearPriceObj != "") {
+                    		Double clearPrice = Double.valueOf(clearPriceObj.toString());
+                    		map.put("clearPrice", clearPrice/100);
+                    	}
+                    	
+                    	Object floatPercentMaxObj =  map.get("floatPercentMax");
+                    	if (floatPercentMaxObj != null && floatPercentMaxObj != "") {
+                        	Double floatPercentMax = Double.valueOf(floatPercentMaxObj.toString());
+                        	DecimalFormat df = new DecimalFormat("0.00%");
+                        	map.put("floatPercentMax", df.format(floatPercentMax));
+                        }
                     }
                     POIUtils poi = new POIUtils();
                     tieleName = "新手理财专享";
                     excelName = "新手理财专享";
                     //判断是否为代理商账户
                     if (users.getPid() != null &&  users.getPid() == 1) {
-                        String[] heads = {"用户账号", "注册时间", "经纪人", "交易订单号", "产品编号", "产品名称", "周期", "收益率", "买入金额",
-                                "买入时间", "赎回时间", "状态", "收益支出", "交易分成"};
-                        String[] colums = {"userName", "registerTime", "brokerName", "orderNo", "productNo", "productName", "cycle", "yearIncomPercent", "buyAmount",
-                                "buyTime", "redeemTime", "status", "income", "shareAmount"};
+                        String[] heads = {"用户账号", "注册时间", "经纪人", "交易订单号", "产品编号", "产品名称", "周期", "收益率","最大浮动收益率", 
+                        		"买入价","结算价","买入克重","买入金额","买入时间", "赎回时间", "状态", "收益支出", "交易分成"};
+                        String[] colums = {"userName", "registerTime", "brokerName", "orderNo", "productNo", "productName", "cycle", "yearIncomPercent", "floatPercentMax", 
+                        		"initialPrice","clearPrice","gram","buyAmount","buyTime", "redeemTime", "status", "income", "shareAmount"};
                         poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                     } else if (users.getPid() == null || users.getPid() == 0){
                         if (status != null && status.equals("2")) {
                             tieleName = "新手理财专享结算";
                             excelName = "新手理财专享结算";
                         }
-                        String[] heads = {"用户账号", "注册时间", "代理商", "经纪人", "交易订单号", "产品编号", "产品名称", "周期", "收益率", "买入金额",
-                                "买入时间", "赎回时间", "状态", "收益支出"};
-                        String[] colums = {"userName", "registerTime", "agentName", "brokerName", "orderNo", "productNo", "productName", "cycle", "yearIncomPercent", "buyAmount",
-                                "buyTime", "redeemTime", "status", "income"};
+                        String[] heads = {"用户账号", "注册时间", "代理商", "经纪人", "交易订单号", "产品编号", "产品名称", "周期", "收益率", "最大浮动收益率",
+                        		"买入价","结算价","买入克重","买入金额","买入时间", "赎回时间", "状态", "收益支出"};
+                        String[] colums = {"userName", "registerTime", "agentName", "brokerName", "orderNo", "productNo", "productName", "cycle", "yearIncomPercent", "floatPercentMax",
+                        		"initialPrice","clearPrice","gram","buyAmount","buyTime", "redeemTime", "status", "income"};
                         poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                     }
                     log.setUserId(users.getId());

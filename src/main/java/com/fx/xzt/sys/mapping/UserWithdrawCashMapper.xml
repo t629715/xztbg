@@ -24,14 +24,12 @@
 		w.agent_id AS agentId, ua.user_name AS agentName, w.broker_id AS
 		brokerId,
 		ub.user_name AS brokerName,
-		i.RealName realName,b.BankName bankName
+		i.RealName realName,w.BankName bankName
 		FROM User_WithdrawCash w
 		LEFT JOIN User_Login u ON w.UserID = u.UserID
 		LEFT JOIN User_Info i ON w.UserID = i.UserID
 		LEFT JOIN users ua ON w.agent_id = ua.id
 		LEFT JOIN users ub ON w.broker_id = ub.id
-		LEFT JOIN User_BankCard c on w.AccountNum = c.AccountNum and c.UserID = w.UserID
-		LEFT JOIN Bank b on c.BankNo = b.BankNo
 		<where>
 			<!--   and u.Status = 1 -->
 			<if test="userName != null and userName != '' ">

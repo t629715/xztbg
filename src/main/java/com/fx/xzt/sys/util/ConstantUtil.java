@@ -268,6 +268,36 @@ public class ConstantUtil {
     
     /**
      * 
+    * @ClassName: withdrawCashType 
+    * @Description: 现金提取类型
+    * @author htt
+    * @date 2018-1-25 下午3:06:30 
+    *
+     */
+    public static enum withdrawCashType {
+        YHK("银行卡","1"),
+        ZFB("支付宝","2");
+        private String name;
+        private String index;
+        private withdrawCashType(String name,String index){
+            this.name = name;
+            this.index = index;
+        }
+        public String toString() {
+            return this.index;
+        }
+        public static Map<String, String> toMap() {
+        	withdrawCashType[] ds = withdrawCashType.values();
+            Map<String, String> rlt = new Hashtable<String, String>();
+            for (withdrawCashType d : ds) {
+                rlt.put(d.index, d.name);
+            }
+            return rlt;
+        }
+    }
+    
+    /**
+     * 
     * @ClassName: goldWithdrawtype 
     * @Description: 黄金提取类型
     * @author htt
@@ -305,7 +335,9 @@ public class ConstantUtil {
      */
     public static enum goldWithdrawStatus {
         WFH("未发货","1"),
-        YFH("已发货","2");
+        YFH("已发货","2"),
+        YWC("已完成","3"),
+        YQX("已取消","4");
         private String name;
         private String index;
         private goldWithdrawStatus(String name,String index){

@@ -533,8 +533,8 @@ public class UserInfoController {
             if (users != null) {
         		List<Map<String, Object>> list = userInfoService.getExcelAccount(userName,agentsName, brokerName,startTime,endTime);
         		POIUtils poi = new POIUtils();
-        		String[] heads = {"用户账号","姓名","注册时间","代理商","经纪人","身份证号","银行卡","人民币余额","人民币冻结","人民币理财","利息","黄金"};
-        		String[] colums = {"userName","realname","registertime","agentName","brokerName","idcard","accountNum","rmb","frozenRmb","finance","totalIncome","gold"};
+        		String[] heads = {"用户账号","昵称","姓名","注册时间","代理商","经纪人","身份证号","银行卡","人民币余额","人民币冻结","人民币理财","利息","黄金"};
+        		String[] colums = {"userName","nickName","realname","registertime","agentName","brokerName","idcard","accountNum","rmb","frozenRmb","finance","totalIncome","gold"};
         		poi.doExport(request, response, list, "账户信息", "账户信息", heads, colums);
         		log.setUserId(users.getId());
                 log.setContent("导出成功，共：" + list.size() + "条数据");

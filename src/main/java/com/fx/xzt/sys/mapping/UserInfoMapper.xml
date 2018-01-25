@@ -104,11 +104,13 @@
 	<!--账户信息查询 -->
 	<select id="getByAccountMessage" resultType="java.util.Map"
 		parameterType="java.util.Map">
-		SELECT CAST(u.UserID AS  CHAR ) AS userId,l.UserName AS userName,l.Status AS
+		SELECT CAST(u.UserID AS  CHAR ) AS userId,l.UserName AS userName,u.NickName nickName,l.Status AS
 		STATUS,u.RealName,u.RegisterTime registerTime,
 		u.agent_id AS agentId, ua.user_name AS agentName, u.broker_id AS brokerId,
 		u1.user_name AS brokerName ,
-		u.IDCard AS idcard,b.BankName AS bankName,ub.AccountNum AS accountNum,
+		u.IDCard AS idcard,
+		(SELECT GROUP_CONCAT(AccountNum) FROM User_BankCard where u.UserID = UserID) accountNum,
+		p.alipay_number alipayNumber,
 		a.rmb AS rmb,a.finance AS finance,frozen_rmb AS frozenRmb,total_income AS
 		totalIncome,
 		g.gold as gold
@@ -117,9 +119,7 @@
 		RIGHT JOIN User_Login l ON u.UserID = l.UserID
 		LEFT JOIN users ua ON u.agent_id = ua.id
 		LEFT JOIN users u1 ON u.broker_id = u1.id
-		LEFT JOIN (SELECT * FROM User_BankCard WHERE State=1) ub ON u.UserID =
-		ub.UserID
-		LEFT JOIN Bank b ON ub.BankNo = b.BankNo
+		LEFT JOIN user_alipay p on u.UserID = p.user_id
 		LEFT JOIN user_account a ON a.user_id = l.UserID
 		left join user_gold_account g on g.user_id = l.UserID
 		<where>

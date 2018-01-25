@@ -169,6 +169,7 @@ public class FinanceOrderController {
                     	}
                     	
                     	Object buyAmountObj =  map.get("buyAmount");
+                    	Object initialPriceObj =  map.get("initialPrice");
                     	Object incomeObj =  map.get("income");
                     	Object yearIncomPercentObj =  map.get("yearIncomPercent");
                     	Object shareAmountObj = map.get("shareAmount");
@@ -192,6 +193,12 @@ public class FinanceOrderController {
                         	Double buyAmount = Double.valueOf(buyAmountObj.toString());
                         	map.put("buyAmount", buyAmount/100);
                         }
+                    	
+                    	if (initialPriceObj != null && initialPriceObj != "") {
+                        	Double initialPrice = Double.valueOf(initialPriceObj.toString());
+                        	map.put("initialPrice", initialPrice/100);
+                        }
+                    	
                     	if (incomeObj != null && incomeObj != "") {
                         	Double income = Double.valueOf(incomeObj.toString());
                         	map.put("income", income/100);
