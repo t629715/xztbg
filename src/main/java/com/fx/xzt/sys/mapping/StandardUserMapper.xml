@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fx.xzt.sys.mapper.StandardUserMapper">
+	<!--标准户统计查询开始-htt -->
+	<select id="selectByStandardUser" resultType="java.util.Map" parameterType="java.util.Map">
+		select * from (select *, (CASE WHEN my.rjZCount >= 100000 AND my.jyNum > 50 THEN 1 else 0 end) bzh from
+			(select sj.*,
+				(SELECT SUM(RMBAmt) FROM User_Recharge WHERE UserID = sj.UserID and STATUS=1) rjZCount,
+				(select SUM(hand_number)  from deal_order where user_id = sj.UserID) jyNum 
+			from (
+				SELECT l.UserID, l.UserName, l.agent_id agentId, l.broker_id brokerId, i.RealName, i.RegisterTime,
+				 ua.user_name AS agentName, ub.user_name AS brokerName,
+			    (SELECT  SUM(RMBAmt) rj FROM User_Recharge 
+			    	WHERE UserID = l.userID and STATUS=1 
+			    	<if test="startTime !=null and startTime !='' ">
+		              and RechargeTime &gt;=#{startTime,jdbcType=TIMESTAMP}
+		          	</if>
+			        <if test="endTime !=null and endTime != '' ">
+			        	and RechargeTime &lt;=#{endTime,jdbcType=TIMESTAMP}
+			        </if>
+			     ) rjCount,
+			 	(SELECT SUM(WithdrawAmt) cj FROM User_WithdrawCash 
+			 		WHERE UserID = l.userID 
+			 		<if test="startTime !=null and startTime !='' ">
+		              and WithdrawTime &gt;=#{startTime,jdbcType=TIMESTAMP}
+		          	</if>
+			        <if test="endTime !=null and endTime != '' ">
+			        	and WithdrawTime &lt;=#{endTime,jdbcType=TIMESTAMP}
+			        </if>
+			 	) cjCount
+			FROM
+				User_Login l
+				LEFT JOIN User_Info i ON l.UserID = i.UserID
+				LEFT JOIN users ua ON l.agent_id = ua.id
+      			LEFT JOIN users ub ON l.broker_id = ub.id
+				where 1=1 
+			)sj) my ) my2
+		<where>
+			<if test="regStartTime !=null and regStartTime !='' ">
+                and my2.RegisterTime &gt;=#{regStartTime,jdbcType=TIMESTAMP}
+	        </if>
+	        <if test="regEndTime !=null and regEndTime != '' ">
+	            and my2.RegisterTime &lt;=#{regEndTime,jdbcType=TIMESTAMP}
+	        </if>
+	        <if test="agentName != null and agentName !='' ">
+	            and my2.agentId = #{agentName,jdbcType=BIGINT}
+	        </if>
+	        <if test="brokerName != null and brokerName !='' ">
+	            and my2.brokerId = #{brokerName,jdbcType=BIGINT}
+	        </if>
+	        <if test="userName != null and userName != '' ">
+	            and my2.UserName = #{userName,jdbcType=VARCHAR}
+	        </if>
+	        <if test="bzh != null and bzh != '' ">
+	            and my2.bzh = #{bzh,jdbcType=VARCHAR}
+	        </if>
+
+		</where>
+		order by my2.RegisterTime desc
+	</select>
+	<!--标准户统计查询结束 -->
+
+</mapper>
