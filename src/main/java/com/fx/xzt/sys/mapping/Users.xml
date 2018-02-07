@@ -46,7 +46,7 @@
         left join users_role r on r.id = ur.rid
         <where>
                 u.status = 1
-                and u.pid is not  NULL
+                and u.user_name != 'admin'
             <if test="phone != null and phone !='' ">
                 and u.user_name = #{phone,jdbcType=VARCHAR}
             </if>
@@ -160,6 +160,8 @@
             <if test="phone != null">
                 phone = #{phone,jdbcType=VARCHAR},
             </if>
+
+                pid = #{pid},
             <!-- <if test="sex != null" >
                sex = #{sex,jdbcType=VARCHAR},
              </if>-->
