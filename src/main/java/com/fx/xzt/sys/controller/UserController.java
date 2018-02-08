@@ -176,7 +176,7 @@ public class UserController {
 	 */
 	@RequestMapping(value="/insertUser")
 	@ResponseBody
-	public CommonResponse insertUser(HttpServletRequest request,Users users,@RequestParam(value="rids", required=false)List<Integer> rids) throws ParseException {
+	public CommonResponse insertUser(HttpServletRequest request,Users users,@RequestParam(value="rids", required=false)List<Integer> rids, Integer type) throws ParseException {
 		//操作日志
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		LogRecord log = new LogRecord();
@@ -190,7 +190,9 @@ public class UserController {
 		HttpSession httpSession = request.getSession();
 		Users user = (Users) httpSession.getAttribute("currentUser");
 		Map<String,Object> map = new HashMap<String,Object>();
-		users.setPid(new Long(1));
+		if (type != 1){
+			users.setPid(new Long(1));
+		}
 		users.setStatus("1");
 
 		if (user != null ){
@@ -252,7 +254,7 @@ public class UserController {
 	 */
 	@RequestMapping(value="/updateUser")
 	@ResponseBody
-	public CommonResponse updateUser(Users users,@RequestParam(value="rids", required=false)List<Integer> rids, HttpServletRequest request){
+	public CommonResponse updateUser(Users users,@RequestParam(value="rids", required=false)List<Integer> rids,Integer type, HttpServletRequest request){
 		CommonResponse commonResponse = new CommonResponse();
 		HttpSession httpSession = request.getSession();
 		Users users1 = (Users) httpSession.getAttribute("currentUser");
@@ -260,6 +262,14 @@ public class UserController {
 		MyAuthenticationToken token = new MyAuthenticationToken(user.getUserName(), user.getPassword(), true, null);
 		if (users1 != null){
 			Map<String,Object> map = new HashMap<String,Object>();
+			if (type == 1){
+				users.setPid(null);
+			}else {
+				users.setPid(user.getPid());
+			}
+			if ( type == 2){
+				users.setPid(Long.valueOf("1"));
+			}
 			int msg = userService.updateByIdSelective(users, rids);
 			map.put("msg", msg);
 			if (token != null){

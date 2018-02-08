@@ -100,7 +100,6 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 			}
 			users.setPassword(MD5Utils.encrypt(users.getPassword()));
 			users.setCreateTime(new Date());
-			users.setUpdateTime(new Date());
 			users.setStatus("1");
 			msg=usersMapper.insertUsers(users);
 			if(msg>0&&rids!=null&&!rids.isEmpty()){
@@ -109,8 +108,11 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 				incomeSharingConf.setGoldPercent(0d);
 				incomeSharingConf.setGoldRightPercent(0d);
 				incomeSharingConf.setAgentId(selectUser1.getId());
-				if (selectUser1.getPid() == 1){
-					incomeSharingConfMapper.insertIncomeSharingConf(incomeSharingConf);
+				if (selectUser1.getPid()!= null ){
+					if (selectUser1.getPid()== 1){
+						incomeSharingConfMapper.insertIncomeSharingConf(incomeSharingConf);
+					}
+
 				}
 
 				Integer uid = users.getId().intValue();
@@ -137,6 +139,7 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 				users.setPassword("");
 			}
 			users.setUpdateTime(new Date());
+
 			msg=usersMapper.updateByIdSelective(users);
 			if(msg>0&&rids!=null&&!rids.isEmpty()){
 				Integer uid = users.getId().intValue();

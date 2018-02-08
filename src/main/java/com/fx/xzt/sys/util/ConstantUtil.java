@@ -505,7 +505,8 @@ public class ConstantUtil {
         YHQ("优惠券","37"),
         JXQ("加息券","38"),
         HJLQ("黄金领取","39"),
-        XSLC("新手理财","40");
+        XSLC("新手理财","40"),
+        BZHTJ("标准户统计","41");
 
 
         private String name;
@@ -584,6 +585,36 @@ public class ConstantUtil {
         	isNovice[] ds = isNovice.values();
             Map<String, String> rlt = new Hashtable<String, String>();
             for (isNovice d : ds) {
+                rlt.put(d.index, d.name);
+            }
+            return rlt;
+        }
+    }
+    
+    /**
+     * 
+    * @ClassName: isStandardUser 
+    * @Description: 是否标准户
+    * @author htt
+    * @date 2018-2-3 下午2:38:50 
+    *
+     */
+    public static enum isStandardUser {
+        F("否","0"),
+        Y("是","1");
+        private String name;
+        private String index;
+        private isStandardUser(String name,String index){
+            this.name = name;
+            this.index = index;
+        }
+        public String toString() {
+            return this.index;
+        }
+        public static Map<String, String> toMap() {
+        	isStandardUser[] ds = isStandardUser.values();
+            Map<String, String> rlt = new Hashtable<String, String>();
+            for (isStandardUser d : ds) {
                 rlt.put(d.index, d.name);
             }
             return rlt;
