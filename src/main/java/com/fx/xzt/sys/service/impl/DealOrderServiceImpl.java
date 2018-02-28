@@ -137,70 +137,79 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
      */
     @Override
     public Map<String, Object> selectHandNumBuyAmount() {
-        Map<String, Object> map = new HashMap<String, Object>();
-        //买涨的总手数、买入价
-        Map<String, Object> mapUp = dealOrderMapper.selectHandNumberAndOpenPositionForUp();
-        //买涨的总手数、买入价
-        Map<String, Object> mapDown = dealOrderMapper.selectHandNumberAndOpenPositionForDown();
-        //买涨的总手数
-        Integer handNumUp = 0;
-        if (mapUp != null){
-            if (mapUp.get("handNumUp") != null){
-                handNumUp = Integer.valueOf(mapUp.get("handNumUp").toString());
+        try{
+            Map<String, Object> map = new HashMap<String, Object>();
+            //买涨的总手数、买入价
+            Map<String, Object> mapUp = dealOrderMapper.selectHandNumberAndOpenPositionForUp();
+            //买涨的总手数、买入价
+            Map<String, Object> mapDown = dealOrderMapper.selectHandNumberAndOpenPositionForDown();
+            //买涨的总手数
+            Integer handNumUp = 0;
+            if (mapUp != null){
+                if (mapUp.get("handNumUp") != null){
+                    handNumUp = Integer.valueOf(mapUp.get("handNumUp").toString());
+                }
             }
-        }
-        //买跌的总手数
-        Integer handNumDown = 0;
-        if (mapDown != null){
-            if (mapDown.get("handNumDown") != null){
-                handNumDown = Integer.valueOf(mapDown.get("handNumDown").toString());
+            //买跌的总手数
+            Integer handNumDown = 0;
+            if (mapDown != null){
+                if (mapDown.get("handNumDown") != null){
+                    handNumDown = Integer.valueOf(mapDown.get("handNumDown").toString());
+                }
             }
-        }
-        //买涨买跌的总手数
-        Integer handNum = handNumUp+handNumDown;
-        //买涨均价：买入价*手数的合计/总手数
-        Double avgUp = 0D;
-        if (mapUp != null&&handNum != 0){
-            avgUp = (Double) mapUp.get("openPositionPriceUp")/handNum;
-        }
-        BigDecimal bu   =   new   BigDecimal(avgUp);
-        double   fu   =   bu.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
-        map.put("avgUp",fu);
-        //买跌均价：买入价*手数的合计/总手数
-        Double avgDown = 0D;
-        if (mapDown != null&&handNum != 0){
-            avgDown = (Double) mapDown.get("openPositionPriceDown")/handNum;
-        }
-        BigDecimal b   =   new   BigDecimal(avgDown);
-        double   f1   =   b.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
-        map.put("avgDown",f1);
-        //净值=买涨均价-买跌均价
-        Double netValue = avgUp - avgDown;
-        BigDecimal netVa  =   new   BigDecimal(netValue);
-        double  netVal  =   netVa.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
-        map.put("netValue",netVal);
-        //获利=买涨总额-买跌总额
-        Double profit = netValue*handNum;
-        BigDecimal profi   =   new   BigDecimal(profit);
-        double   profit2   =   profi.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
-        map.put("profit",profit2);
-        //买涨持仓克重
-        GoldRightDealConf goldRightDealConf = new GoldRightDealConf();
-        Long productIdUp = (Long) mapUp.get("productId");
-        goldRightDealConf.setId(productIdUp);
-        //合约  一手=多少克
-        Integer contract = goldRightDealConfMapper.selectOne(goldRightDealConf).getContract();
+            //买涨买跌的总手数
+            Integer handNum = handNumUp+handNumDown;
+            //买涨均价：买入价*手数的合计/总手数
+            Double avgUp = 0D;
+            if (mapUp != null&&handNum != 0){
+                if (mapUp.get("openPositionPriceUp") != null){
+                    avgUp = (Double) mapUp.get("openPositionPriceUp")/handNum;
+                }
+            }
+            BigDecimal bu   =   new   BigDecimal(avgUp);
+            double   fu   =   bu.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
+            map.put("avgUp",fu);
+            //买跌均价：买入价*手数的合计/总手数
+            Double avgDown = 0D;
+            if (mapDown != null&&handNum != 0){
+                if (mapDown.get("openPositionPriceDown") != null){
+                    avgDown = (Double) mapDown.get("openPositionPriceDown")/handNum;
+                }
+            }
+            BigDecimal b   =   new   BigDecimal(avgDown);
+            double   f1   =   b.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
+            map.put("avgDown",f1);
+            //净值=买涨均价-买跌均价
+            Double netValue = avgUp - avgDown;
+            BigDecimal netVa  =   new   BigDecimal(netValue);
+            double  netVal  =   netVa.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
+            map.put("netValue",netVal);
+            //获利=买涨总额-买跌总额
+            Double profit = netValue*handNum;
+            BigDecimal profi   =   new   BigDecimal(profit);
+            double   profit2   =   profi.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
+            map.put("profit",profit2);
+            //买涨持仓克重
+            GoldRightDealConf goldRightDealConf = new GoldRightDealConf();
+            Long productIdUp = (Long) mapUp.get("productId");
+            goldRightDealConf.setId(productIdUp);
+            //合约  一手=多少克
+            Integer contract = goldRightDealConfMapper.selectOne(goldRightDealConf).getContract();
 //        Integer gramUp = handNumUp*contract;
-        Integer gramUp = handNumUp;
-        map.put("gramUp",gramUp);
-        //买跌持仓克重
-        Long productIdDown = (Long) mapUp.get("productId");
-        goldRightDealConf.setId(productIdDown);
-        Integer contractDown = goldRightDealConfMapper.selectOne(goldRightDealConf).getContract();
+            Integer gramUp = handNumUp;
+            map.put("gramUp",gramUp);
+            //买跌持仓克重
+            Long productIdDown = (Long) mapUp.get("productId");
+            goldRightDealConf.setId(productIdDown);
+            Integer contractDown = goldRightDealConfMapper.selectOne(goldRightDealConf).getContract();
 //        Integer gramDown = handNumDown*contractDown;
-        Integer gramDown = handNumDown;
-        map.put("gramDown",gramDown);
-        return map;
+            Integer gramDown = handNumDown;
+            map.put("gramDown",gramDown);
+            return map;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
 	/**
