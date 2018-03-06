@@ -149,8 +149,8 @@
 		SELECT SUM(rmb) rmbSum, SUM(finance) finaceSum, SUM(frozen_rmb)
 		frozenRmbSum,
 		SUM(total_income) AS totalIncomeSum, SUM(gold) goldSum
-		FROM User_Info u
-		RIGHT JOIN User_Login l ON u.UserID = l.UserID
+		FROM User_Login l
+		LEFT JOIN User_Info u ON u.UserID = l.UserID
 		LEFT JOIN user_account a ON l.UserID = a.user_id
 		LEFT JOIN user_gold_account ga ON ga.user_id = l.UserID
 		LEFT JOIN users ua ON u.agent_id = ua.id
