@@ -506,7 +506,8 @@ public class ConstantUtil {
         JXQ("加息券","38"),
         HJLQ("黄金领取","39"),
         XSLC("新手理财","40"),
-        BZHTJ("标准户统计","41");
+        BZHTJ("标准户统计","41"),
+        TJYHMX("推荐用户明细","42");
 
 
         private String name;
@@ -615,6 +616,36 @@ public class ConstantUtil {
         	isStandardUser[] ds = isStandardUser.values();
             Map<String, String> rlt = new Hashtable<String, String>();
             for (isStandardUser d : ds) {
+                rlt.put(d.index, d.name);
+            }
+            return rlt;
+        }
+    }
+    
+    /**
+     * 
+    * @ClassName: acceptPrize 
+    * @Description: 领奖标志
+    * @author htt
+    * @date 2018-3-5 上午11:15:35 
+    *
+     */
+    public static enum acceptPrize {
+        WLJ("未领奖","0"),
+        YLJ("已领奖","1");
+        private String name;
+        private String index;
+        private acceptPrize(String name,String index){
+            this.name = name;
+            this.index = index;
+        }
+        public String toString() {
+            return this.index;
+        }
+        public static Map<String, String> toMap() {
+        	acceptPrize[] ds = acceptPrize.values();
+            Map<String, String> rlt = new Hashtable<String, String>();
+            for (acceptPrize d : ds) {
                 rlt.put(d.index, d.name);
             }
             return rlt;
