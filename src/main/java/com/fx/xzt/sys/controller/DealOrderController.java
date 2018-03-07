@@ -227,7 +227,6 @@ public class DealOrderController {
     	logRecordService.add(log);
         AuditLog.info(log.toString());
     }
-
     /**
      *  金权交易查询-金额统计
      * @return
