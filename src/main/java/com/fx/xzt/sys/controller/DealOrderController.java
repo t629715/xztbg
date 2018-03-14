@@ -292,8 +292,17 @@ public class DealOrderController {
      */
     @RequestMapping(value="/getHedgeArbitrage1")
     @ResponseBody
-    public Object getHedgeArbitrage1(HttpServletRequest request){
+    public Object getHedgeArbitrage1(HttpServletRequest request) throws ParseException {
         CommonResponse cr = new CommonResponse();
+        //操作日志
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("查询对冲套利信息");
+        log.setContent("查询失败");
+        log.setModuleName(ConstantUtil.logRecordModule.DCTL.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
@@ -306,6 +315,8 @@ public class DealOrderController {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(map1);
                 cr.setMsg("操作成功！");
+                log.setContent("查询成功");
+                log.setUserId(users.getId());
             } else {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 cr.setData("{}");
@@ -317,12 +328,22 @@ public class DealOrderController {
             cr.setMsg("操作失败！");
             throw e;
         }
+
         return cr;
     }
     @RequestMapping(value="/getHedgeArbitrage2")
     @ResponseBody
-    public Object getHedgeArbitrage2(HttpServletRequest request){
+    public Object getHedgeArbitrage2(HttpServletRequest request) throws ParseException {
         CommonResponse cr = new CommonResponse();
+        //操作日志
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("查询对冲套利信息");
+        log.setContent("查询失败");
+        log.setModuleName(ConstantUtil.logRecordModule.DCTL.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
@@ -336,6 +357,8 @@ public class DealOrderController {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(map1);
                 cr.setMsg("操作成功！");
+                log.setContent("查询成功");
+                log.setUserId(users.getId());
             } else {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 cr.setData("{}");
@@ -347,12 +370,22 @@ public class DealOrderController {
             cr.setMsg("操作失败！");
             throw e;
         }
+
         return cr;
     }
     @RequestMapping(value="/getHedgeArbitrage3")
     @ResponseBody
-    public Object getHedgeArbitrage3(HttpServletRequest request){
+    public Object getHedgeArbitrage3(HttpServletRequest request) throws ParseException {
         CommonResponse cr = new CommonResponse();
+        //操作日志
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("查询对冲套利信息");
+        log.setContent("查询失败");
+        log.setModuleName(ConstantUtil.logRecordModule.DCTL.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
@@ -366,6 +399,8 @@ public class DealOrderController {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(map1);
                 cr.setMsg("操作成功！");
+                log.setContent("查询成功");
+                log.setUserId(users.getId());
             } else {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 cr.setData("{}");
@@ -377,6 +412,7 @@ public class DealOrderController {
             cr.setMsg("操作失败！");
             throw e;
         }
+
         return cr;
     }
 

@@ -50,7 +50,7 @@ public class InfoBannerController {
 		LogRecord log = new LogRecord();
 		log.setTitle("添加Banner");
 		log.setContent("查询失败");
-		log.setModuleName(ConstantUtil.logRecordModule.LCJY.getName());
+		log.setModuleName(ConstantUtil.logRecordModule.GGWGL.getName());
 		log.setType(ConstantUtil.logRecordType.CX.getIndex());
 		log.setIp(IPUtil.getHost(request));
 		log.setCreateTime(sdf.parse(sdf.format(new Date())));
@@ -96,8 +96,8 @@ public class InfoBannerController {
 		LogRecord log = new LogRecord();
 		log.setTitle("编辑图片");
 		log.setContent("编辑失败");
-		log.setModuleName(ConstantUtil.logRecordModule.LCJY.getName());
-		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setModuleName(ConstantUtil.logRecordModule.GGWGL.getName());
+		log.setType(ConstantUtil.logRecordType.XG.getIndex());
 		log.setIp(IPUtil.getHost(request));
 		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		try {
@@ -141,8 +141,8 @@ public class InfoBannerController {
 		LogRecord log = new LogRecord();
 		log.setTitle("删除图片");
 		log.setContent("删除失败");
-		log.setModuleName(ConstantUtil.logRecordModule.LCJY.getName());
-		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setModuleName(ConstantUtil.logRecordModule.GGWGL.getName());
+		log.setType(ConstantUtil.logRecordType.WLSC.getIndex());
 		log.setIp(IPUtil.getHost(request));
 		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		try {
@@ -187,8 +187,8 @@ public class InfoBannerController {
 		LogRecord log = new LogRecord();
 		log.setTitle("修改图片顺序");
 		log.setContent("修改失败");
-		log.setModuleName(ConstantUtil.logRecordModule.LCJY.getName());
-		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setModuleName(ConstantUtil.logRecordModule.GGWGL.getName());
+		log.setType(ConstantUtil.logRecordType.XG.getIndex());
 		log.setIp(IPUtil.getHost(request));
 		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		try {
@@ -228,7 +228,7 @@ public class InfoBannerController {
 		LogRecord log = new LogRecord();
 		log.setTitle("查询Banner");
 		log.setContent("查询失败");
-		log.setModuleName(ConstantUtil.logRecordModule.HDGL.getName());
+		log.setModuleName(ConstantUtil.logRecordModule.GGWGL.getName());
 		log.setType(ConstantUtil.logRecordType.CX.getIndex());
 		log.setIp(IPUtil.getHost(request));
 		log.setCreateTime(sdf.parse(sdf.format(new Date())));

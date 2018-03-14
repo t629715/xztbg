@@ -163,8 +163,8 @@ public class FinanceConfController {
         LogRecord log = new LogRecord();
         log.setTitle("删除理财产品信息");
         log.setContent("删除失败");
-        log.setModuleName(ConstantUtil.logRecordModule.HJTQ.getName());
-        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setModuleName(ConstantUtil.logRecordModule.LCCPSD.getName());
+        log.setType(ConstantUtil.logRecordType.WLSC.getIndex());
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
@@ -225,8 +225,8 @@ public class FinanceConfController {
         LogRecord log = new LogRecord();
         log.setTitle("修改理财产品信息");
         log.setContent("修改失败");
-        log.setModuleName(ConstantUtil.logRecordModule.HJTQ.getName());
-        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setModuleName(ConstantUtil.logRecordModule.LCCPSD.getName());
+        log.setType(ConstantUtil.logRecordType.XG.getIndex());
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
@@ -280,8 +280,8 @@ public class FinanceConfController {
         LogRecord log = new LogRecord();
         log.setTitle("修改新手理财产品信息");
         log.setContent("修改失败");
-        log.setModuleName(ConstantUtil.logRecordModule.HJTQ.getName());
-        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setModuleName(ConstantUtil.logRecordModule.LCCPSD.getName());
+        log.setType(ConstantUtil.logRecordType.XG.getIndex());
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
@@ -323,8 +323,8 @@ public class FinanceConfController {
         LogRecord log = new LogRecord();
         log.setTitle("删除新手理财产品信息");
         log.setContent("删除失败");
-        log.setModuleName(ConstantUtil.logRecordModule.HJTQ.getName());
-        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setModuleName(ConstantUtil.logRecordModule.LCCPSD.getName());
+        log.setType(ConstantUtil.logRecordType.WLSC.getIndex());
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {

@@ -162,7 +162,7 @@ public class RealGoldBuyConfController {
         log.setTitle("删除实金买卖配置");
         log.setContent("删除失败");
         log.setModuleName(ConstantUtil.logRecordModule.SJMMSD.getName());
-        log.setType(ConstantUtil.logRecordType.WLSC.getIndex());
+        log.setType(ConstantUtil.logRecordType.LJSC.getIndex());
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {

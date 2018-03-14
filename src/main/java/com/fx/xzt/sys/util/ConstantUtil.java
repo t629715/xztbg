@@ -490,7 +490,7 @@ public class ConstantUtil {
         XJTQ("现金提取","22"),
         XJCZ("现金充值","23"),
         GGGL("公告管理","24"),
-        GGWGL("广告位管理","25"),
+        GGWGL("图片管理","25"),
         HJKT("黄金课堂","26"),
         XODZX("希欧德中心","27"),
         ZXGL("咨询管理","28"),

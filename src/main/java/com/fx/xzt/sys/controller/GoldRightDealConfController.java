@@ -136,8 +136,8 @@ public class GoldRightDealConfController {
         //操作日志
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         LogRecord log = new LogRecord();
-        log.setTitle("黄金提取查询");
-        log.setContent("查询失败");
+        log.setTitle("修改金权规则");
+        log.setContent("修改失败");
         log.setModuleName(ConstantUtil.logRecordModule.JQGZSD.getName());
         log.setType(ConstantUtil.logRecordType.XG.getIndex());
         log.setIp(IPUtil.getHost(request));
@@ -160,6 +160,8 @@ public class GoldRightDealConfController {
                     response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                     response.setData(b);
                     response.setMsg("操作成功！");
+                    log.setUserId(users.getId());
+                    log.setContent("修改成功");
                 }else {
                     response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                     response.setData(b);
@@ -191,8 +193,8 @@ public class GoldRightDealConfController {
         LogRecord log = new LogRecord();
         log.setTitle("强制平仓");
         log.setContent("平仓失败");
-        log.setModuleName(ConstantUtil.logRecordModule.HJTQ.getName());
-        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setModuleName(ConstantUtil.logRecordModule.JQGZSD.getName());
+        log.setType(ConstantUtil.logRecordType.XG.getIndex());
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
         //TODO:权限用户判断

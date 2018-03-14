@@ -64,6 +64,7 @@ public class UserWithdrawCashController {
 	@RequestMapping(value="/excelRecharge")
 	public void excelRecharge(HttpServletRequest request, HttpServletResponse response,
 			String userName, String startTime, String endTime, String status){
+
 		List<UserWithdrawCashModel> list = userWithdrawCashService.getByAllExcel(userName, startTime, endTime, status);
 		POIUtils poi = new POIUtils();
 		String[] heads = {"账号","提现金额","绑定银行","绑定银行卡号","冻结时间","完成时间","状态"};

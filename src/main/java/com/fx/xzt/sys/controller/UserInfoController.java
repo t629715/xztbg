@@ -559,7 +559,7 @@ public class UserInfoController {
 		//操作日志
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         LogRecord log = new LogRecord();
-        log.setTitle("账户信息统计查询");
+        log.setTitle("获取账户信息列表--金额统计");
         log.setContent("查询失败");
         log.setModuleName(ConstantUtil.logRecordModule.ZHXX.getName());
         log.setType(ConstantUtil.logRecordType.CX.getIndex());
@@ -597,8 +597,17 @@ public class UserInfoController {
 
 	@RequestMapping(value="/selectSubClients")
 	@ResponseBody
-	public Object selectSubClients(HttpServletRequest request,String userName,String agentsName, String brokerName,String startTime,String endTime,@RequestParam Integer pageNum,@RequestParam Integer pageSize){
+	public Object selectSubClients(HttpServletRequest request,String userName,String agentsName, String brokerName,String startTime,String endTime,@RequestParam Integer pageNum,@RequestParam Integer pageSize) throws ParseException {
 		CommonResponse cr = new CommonResponse();
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("查询下级客户");
+		log.setContent("查询失败");
+		log.setModuleName(ConstantUtil.logRecordModule.XJKH.getName());
+		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		try {
 			HttpSession httpSession = request.getSession();
 			Users users = (Users) httpSession.getAttribute("currentUser");
@@ -608,6 +617,8 @@ public class UserInfoController {
 				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 				cr.setData(pageInfo);
 				cr.setMsg("操作成功！");
+				log.setUserId(users.getId());
+				log.setContent("查询成功");
 			}
 
 		} catch (Exception e) {
@@ -617,6 +628,8 @@ public class UserInfoController {
 			throw e;
 			// e.printStackTrace();
 		}
+		logRecordService.add(log);
+		AuditLog.info(log.toString());
 		return cr;
 	}
 	/**
@@ -649,8 +662,17 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/selectSubClientsCount")
 	@ResponseBody
-	public String selectSubClientsCount(HttpServletRequest request, String userName,String agentName, String brokerName,String startTime,String endTime){
+	public String selectSubClientsCount(HttpServletRequest request, String userName,String agentName, String brokerName,String startTime,String endTime) throws ParseException {
 		CommonResponse cr = new CommonResponse();
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("下级客户-金额统计");
+		log.setContent("查询失败");
+		log.setModuleName(ConstantUtil.logRecordModule.XJKH.getName());
+		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		try {
 			HttpSession httpSession = request.getSession();
 			Users users = (Users) httpSession.getAttribute("currentUser");
@@ -661,6 +683,8 @@ public class UserInfoController {
 				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 				cr.setData(map);
 				cr.setMsg("操作成功！");
+				log.setUserId(users.getId());
+				log.setContent("查询成功");
 			}
 
 		} catch (Exception e) {
@@ -670,6 +694,8 @@ public class UserInfoController {
 			throw e;
 			// e.printStackTrace();
 		}
+		logRecordService.add(log);
+		AuditLog.info(log.toString());
 		return JSON.toJSONString(cr);
 	}
 
@@ -679,8 +705,17 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/cheageBroker")
 	@ResponseBody
-	 public CommonResponse cheageBroker(HttpServletRequest request,String userId,Long  brokerId){
+	 public CommonResponse cheageBroker(HttpServletRequest request,String userId,Long  brokerId) throws ParseException {
 	 	CommonResponse response = new CommonResponse();
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("变更经济人");
+		log.setContent("变更失败");
+		log.setModuleName(ConstantUtil.logRecordModule.ZHXX.getName());
+		log.setType(ConstantUtil.logRecordType.XG.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 	 	try{
 	 		HttpSession session = request.getSession();
 	 		Users users = (Users)session.getAttribute("currentUser");
@@ -690,6 +725,8 @@ public class UserInfoController {
 	 				response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 					response.setData(msg);
 					response.setMsg("变更成功");
+					log.setUserId(users.getId());
+					log.setContent("变更成功");
 	 			}else{
 					response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 					response.setData(msg);
@@ -699,6 +736,8 @@ public class UserInfoController {
 		}catch (Exception e){
 	 		e.printStackTrace();
 		}
+		logRecordService.add(log);
+		AuditLog.info(log.toString());
 		return response;
 	 }
 
@@ -707,8 +746,17 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/alertAgentAndBroker")
 	@ResponseBody
-	public CommonResponse alertAgentAndBroker(HttpServletRequest request,String userId,Long  brokerId,Long agentId){
+	public CommonResponse alertAgentAndBroker(HttpServletRequest request,String userId,Long  brokerId,Long agentId) throws ParseException {
 		CommonResponse response = new CommonResponse();
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("变更经济人");
+		log.setContent("变更失败");
+		log.setModuleName(ConstantUtil.logRecordModule.ZHXX.getName());
+		log.setType(ConstantUtil.logRecordType.XG.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		try{
 			HttpSession session = request.getSession();
 			Users users = (Users)session.getAttribute("currentUser");
@@ -718,6 +766,8 @@ public class UserInfoController {
 					response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 					response.setData(msg);
 					response.setMsg("变更成功");
+					log.setUserId(users.getId());
+					log.setContent("变更成功");
 				}else{
 					response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 					response.setData(msg);
@@ -727,6 +777,8 @@ public class UserInfoController {
 		}catch (Exception e){
 			e.printStackTrace();
 		}
+		logRecordService.add(log);
+		AuditLog.info(log.toString());
 		return response;
 	}
 	
