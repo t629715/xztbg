@@ -172,16 +172,50 @@ public class InfoNoticeController {
 	 */
 	@RequestMapping(value="/upDown")
 	@ResponseBody
-	public Map<String,Object> upDown(Long upSerialNo, Long downSerialNo){
+	public Map<String,Object> upDown(HttpServletRequest request,Long upSerialNo, Long downSerialNo) throws ParseException {
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("查询公告");
+		log.setContent("查询失败");
+		log.setModuleName(ConstantUtil.logRecordModule.GGGL.getName());
+		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
+		HttpSession session = request.getSession();
+		Users users = (Users) session.getAttribute("currentUser");
 		Map<String,Object> map = new HashMap<String,Object>();
-		int msg = infoNoticeService.upDown(upSerialNo, downSerialNo);
-		map.put("msg", msg);
+		try{
+			int msg = infoNoticeService.upDown(upSerialNo, downSerialNo);
+			map.put("msg", msg);
+			log.setContent("查询成功");
+			log.setUserId(users.getId());
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		logRecordService.add(log);
+		AuditLog.info(log.toString());
 		return map;
 	}
 	
 	@RequestMapping(value="/selectAll")
 	@ResponseBody
-	public InfoNotice selectBySerialNo(Long serialNo){
+	public InfoNotice selectBySerialNo(HttpServletRequest request,Long serialNo) throws ParseException {
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("查询公告");
+		log.setContent("查询失败");
+		log.setModuleName(ConstantUtil.logRecordModule.GGGL.getName());
+		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
+		HttpSession session = request.getSession();
+		Users users = (Users) session.getAttribute("currentUser");
+		log.setUserId(users.getId());
+		log.setContent("查询成功");
+		logRecordService.add(log);
+		AuditLog.info(log.toString());
 		return infoNoticeService.getBySerialNo(serialNo);
 	}
 

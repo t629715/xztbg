@@ -17,6 +17,9 @@ import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
 import com.fx.xzt.sys.util.IPUtil;
 import com.fx.xzt.sys.util.log.AuditLog;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,6 +37,8 @@ public class InfoBannerController {
 	InfoBannerService infoBannerService;
 	@Resource
 	LogRecordService logRecordService;
+
+	private static final Logger logger = LoggerFactory.getLogger(InfoBannerController.class);
 
 	/**
 	 * 添加

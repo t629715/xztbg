@@ -195,6 +195,8 @@ public class FinanceConfController {
             response.setMsg("操作失败！");
             throw e;
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
         return response;
     }
 
@@ -316,7 +318,7 @@ public class FinanceConfController {
     @RequestMapping(value = "/removeFinanceConfForNew",method=RequestMethod.POST)
     @ResponseBody
     public CommonResponse removeFinanceConfForNew(HttpServletRequest request, Long id) throws ParseException {
-        logger.debug("获取删除理新手财产品信息接口");
+        logger.debug("删除理新手财产品信息接口");
         CommonResponse response = new CommonResponse();
         //操作日志
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -345,6 +347,8 @@ public class FinanceConfController {
             response.setMsg("操作失败！");
             throw e;
         }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
         return response;
     }
 }

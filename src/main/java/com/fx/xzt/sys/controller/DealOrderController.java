@@ -138,7 +138,6 @@ public class DealOrderController {
         log.setType(ConstantUtil.logRecordType.DC.getIndex());
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
-        
     	try {
             String tieleName = "金权交易";
             String excelName = "金权交易";
@@ -154,7 +153,6 @@ public class DealOrderController {
                 if (list != null && list.size() > 0) {
                     for (Map<String, Object> map : list) {
                         map.put("upOrDown", ConstantUtil.dealOrderUpOrDown.toMap().get(map.get("upOrDown").toString()));
-                        
                         Object buyPreRmbObj =  map.get("buyPreRmb");
                         Object buyAfterRmbObj =  map.get("buyAfterRmb");
                         Object ensureAmountObj =  map.get("ensureAmount");

@@ -61,10 +61,10 @@ public class RealGoldConfController {
         //操作日志
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         LogRecord log = new LogRecord();
-        log.setTitle("实金交易导出");
-        log.setContent("导出失败");
+        log.setTitle("查询实金买卖设定");
+        log.setContent("查询失败");
         log.setModuleName(ConstantUtil.logRecordModule.SJMMSD.getName());
-        log.setType(ConstantUtil.logRecordType.DC.getIndex());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
@@ -122,10 +122,10 @@ public class RealGoldConfController {
         //操作日志
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         LogRecord log = new LogRecord();
-        log.setTitle("实金交易导出");
+        log.setTitle("修改实金买卖设定");
         log.setContent("导出失败");
         log.setModuleName(ConstantUtil.logRecordModule.SJMMSD.getName());
-        log.setType(ConstantUtil.logRecordType.DC.getIndex());
+        log.setType(ConstantUtil.logRecordType.XG.getIndex());
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {

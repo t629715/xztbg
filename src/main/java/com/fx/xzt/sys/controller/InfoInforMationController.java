@@ -343,6 +343,7 @@ public class InfoInforMationController {
 			response.setMsg("操作失败！");
 			throw e;
 		}
+		logRecordService.add(log);
 		AuditLog.info(log.toString());
 		return response;
 	}

@@ -308,7 +308,7 @@ public class UserController {
 		log.setTitle("获取用户信息");
 		log.setContent("查询失败");
 		log.setModuleName(ConstantUtil.logRecordModule.ZHGL.getName());
-		log.setType(ConstantUtil.logRecordType.LJSC.getIndex());
+		log.setType(ConstantUtil.logRecordType.CX.getIndex());
 		log.setIp(IPUtil.getHost(request));
 		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		CommonResponse commonResponse = new CommonResponse();

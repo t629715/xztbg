@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,6 +65,7 @@ public class UserInfoController {
 	ConfigParamService configParamService;
 	@Resource
 	UserMessageService userMessageService;
+	private static Logger logger = LoggerFactory.getLogger(UserInfoController.class);
 	
 	/**
 	 * 获取认证集合
@@ -559,7 +562,7 @@ public class UserInfoController {
 		//操作日志
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         LogRecord log = new LogRecord();
-        log.setTitle("获取账户信息列表--金额统计");
+        log.setTitle("账户信息统计查询");
         log.setContent("查询失败");
         log.setModuleName(ConstantUtil.logRecordModule.ZHXX.getName());
         log.setType(ConstantUtil.logRecordType.CX.getIndex());
