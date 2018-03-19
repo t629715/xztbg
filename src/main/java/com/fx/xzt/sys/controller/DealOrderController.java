@@ -162,6 +162,7 @@ public class DealOrderController {
                         Object registerTimeObj = map.get("registerTime");
                     	Object createTimeObj = map.get("createTime");
                     	Object endTimeObj = map.get("endTime");
+                    	Object costObj = map.get("cost");
                     	
                		 	if (registerTimeObj != null && registerTimeObj != "") {
                		 		map.put("registerTime", sdf.format(sdf.parse(registerTimeObj.toString())));
@@ -199,20 +200,24 @@ public class DealOrderController {
                         	Double shareAmount = Double.valueOf(shareAmountObj.toString());
                         	map.put("shareAmount", shareAmount/100);
                         }
+                        if (costObj != null && costObj != "") {
+                        	Double cost = Double.valueOf(shareAmountObj.toString());
+                        	map.put("cost", cost/100);
+                        }
                     }
                     POIUtils poi = new POIUtils();
                     //判断是否为代理商账户
                     if (users.getPid() != null && users.getPid() == 1) {
                         String[] heads = {"用户账号", "注册时间",  "经纪人", "交易订单号", "合约类型", "方向", "黄金克数", "建仓前余额", "建仓后余额",
-                                "合约金额", "买入金额", "交易成本", "买入点数", "卖出点数", "建仓时间", "平仓时间", "盈亏", "交易分成"};
+                                "合约金额", "买入金额", "交易成本", "卡券抵扣", "买入点数", "卖出点数", "建仓时间", "平仓时间", "盈亏", "交易分成"};
                         String[] colums = {"userName", "registerTime", "brokerName", "orderNo", "productName", "upOrDown", "handNumber", "buyPreRmb", "buyAfterRmb",
-                                "ensureAmount", "ensureAmount", "ensureAmount", "openPositionPrice", "closePositionPrice", "createTime", "endTime", "profitLossNumber", "shareAmount"};
+                                "ensureAmount", "ensureAmount","voucherValue", "cost", "openPositionPrice", "closePositionPrice", "createTime", "endTime", "profitLossNumber", "shareAmount"};
                         poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                     } else if (users.getPid() == null || users.getPid() == 0) {
                         String[] heads = {"用户账号", "注册时间", "代理商", "经纪人", "交易订单号", "合约类型", "方向", "黄金克数", "建仓前余额", "建仓后余额",
-                                "合约金额", "买入金额", "交易成本", "买入点数", "卖出点数", "建仓时间", "平仓时间", "盈亏"};
+                                "合约金额", "买入金额", "交易成本", "卡券抵扣","买入点数", "卖出点数", "建仓时间", "平仓时间", "盈亏"};
                         String[] colums = {"userName", "registerTime", "agentName", "brokerName", "orderNo", "productName", "upOrDown", "handNumber", "buyPreRmb", "buyAfterRmb",
-                                "ensureAmount", "ensureAmount", "ensureAmount", "openPositionPrice", "closePositionPrice", "createTime", "endTime", "profitLossNumber"};
+                                "ensureAmount", "ensureAmount","voucherValue", "cost", "openPositionPrice", "closePositionPrice", "createTime", "endTime", "profitLossNumber"};
                         poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                     }
                     log.setUserId(users.getId());

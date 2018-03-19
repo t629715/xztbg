@@ -97,7 +97,6 @@
 			              and DATE_FORMAT(WithdrawTime,'%Y-%m-%d') &lt;#{endTime,jdbcType=TIMESTAMP}
 			           </if>
 					) cjSum
-				FROM
 					FROM
 					 users u 
 				WHERE
