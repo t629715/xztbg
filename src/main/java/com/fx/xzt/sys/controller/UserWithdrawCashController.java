@@ -64,6 +64,7 @@ public class UserWithdrawCashController {
 	@RequestMapping(value="/excelRecharge")
 	public void excelRecharge(HttpServletRequest request, HttpServletResponse response,
 			String userName, String startTime, String endTime, String status){
+
 		List<UserWithdrawCashModel> list = userWithdrawCashService.getByAllExcel(userName, startTime, endTime, status);
 		POIUtils poi = new POIUtils();
 		String[] heads = {"账号","提现金额","绑定银行","绑定银行卡号","冻结时间","完成时间","状态"};
@@ -75,7 +76,18 @@ public class UserWithdrawCashController {
 	 */
 	@RequestMapping(value="/editStatus")
 	@ResponseBody
-	public Map<String,Object> editStatus(String withdrawid,Integer type){
+	public Map<String,Object> editStatus(HttpServletRequest request,String withdrawid,Integer type) throws ParseException {
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("修改用户提现状态");
+		log.setContent("修改失败失败");
+		log.setModuleName("账号管理");
+		log.setType(ConstantUtil.logRecordType.XG.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
+		HttpSession session = request.getSession();
+		Users users = (Users) session.getAttribute("currentUser");
 		int msg = 0;
 		if(type==1){
 			//提现
@@ -84,8 +96,14 @@ public class UserWithdrawCashController {
 			//拒绝
 			msg = userWithdrawCashService.updateWithdrawCashAndAccount(withdrawid);
 		}
+		if (msg >0){
+			log.setContent("修改成功");
+			log.setUserId(users.getId());
+		}
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("msg", msg);
+		logRecordService.add(log);
+		AuditLog.info(log.toString());
 		return map;
 	}
 	

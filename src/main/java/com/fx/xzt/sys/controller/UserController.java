@@ -254,8 +254,17 @@ public class UserController {
 	 */
 	@RequestMapping(value="/updateUser")
 	@ResponseBody
-	public CommonResponse updateUser(Users users,@RequestParam(value="rids", required=false)List<Integer> rids,Integer type, HttpServletRequest request){
+	public CommonResponse updateUser(Users users,@RequestParam(value="rids", required=false)List<Integer> rids,Integer type, HttpServletRequest request) throws ParseException {
 		CommonResponse commonResponse = new CommonResponse();
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("更新用户");
+		log.setContent("添加失败");
+		log.setModuleName(ConstantUtil.logRecordModule.ZHGL.getName());
+		log.setType(ConstantUtil.logRecordType.LJSC.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		HttpSession httpSession = request.getSession();
 		Users users1 = (Users) httpSession.getAttribute("currentUser");
 		Users user = userService.getUser(users.getId());
@@ -275,11 +284,15 @@ public class UserController {
 			if (token != null){
 				token.clear();
 			}
+			log.setUserId(users.getId());
+			log.setContent("更新成功");
 			commonResponse.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 			commonResponse.setData(map);
 		}else{
 			commonResponse.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
 		}
+		logRecordService.add(log);
+		AuditLog.info(log.toString());
 		return commonResponse;
 	}
 	/**
@@ -288,16 +301,29 @@ public class UserController {
 	@RequestMapping(value="/selectByUsers")
 	@ResponseBody
 	public CommonResponse selectByUsers(String phone, String startTime, String endTime, Integer pageNum,
-			Integer pageSize,HttpServletRequest request){
+			Integer pageSize,HttpServletRequest request) throws ParseException {
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("获取用户信息");
+		log.setContent("查询失败");
+		log.setModuleName(ConstantUtil.logRecordModule.ZHGL.getName());
+		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		CommonResponse commonResponse = new CommonResponse();
 		HttpSession httpSession = request.getSession();
 		Users users1 = (Users) httpSession.getAttribute("currentUser");
 		if (users1 != null){
 			commonResponse.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 			commonResponse.setData(userService.selectByUsersModel(phone, startTime, endTime, pageNum, pageSize));
+			log.setUserId(users1.getId());
+			log.setContent("查询成功");
 		}else{
 			commonResponse.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
 		}
+		logRecordService.add(log);
+		AuditLog.info(log.toString());
 		return commonResponse;
 	}
 
@@ -604,8 +630,8 @@ public class UserController {
 		LogRecord log = new LogRecord();
 		log.setTitle("生成二维码");
 		log.setContent("生成失败");
-		log.setModuleName(ConstantUtil.logRecordModule.YHQ.getName());
-		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setModuleName(ConstantUtil.logRecordModule.SHGLYY.getName());
+		log.setType(ConstantUtil.logRecordType.XZ.getIndex());
 		log.setIp(IPUtil.getHost(request));
 		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		try {

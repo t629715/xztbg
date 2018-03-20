@@ -17,6 +17,9 @@ import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
 import com.fx.xzt.sys.util.IPUtil;
 import com.fx.xzt.sys.util.log.AuditLog;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,6 +38,8 @@ public class InfoBannerController {
 	@Resource
 	LogRecordService logRecordService;
 
+	private static final Logger logger = LoggerFactory.getLogger(InfoBannerController.class);
+
 	/**
 	 * 添加
 	 * @param infoBanner
@@ -50,7 +55,7 @@ public class InfoBannerController {
 		LogRecord log = new LogRecord();
 		log.setTitle("添加Banner");
 		log.setContent("查询失败");
-		log.setModuleName(ConstantUtil.logRecordModule.LCJY.getName());
+		log.setModuleName(ConstantUtil.logRecordModule.GGWGL.getName());
 		log.setType(ConstantUtil.logRecordType.CX.getIndex());
 		log.setIp(IPUtil.getHost(request));
 		log.setCreateTime(sdf.parse(sdf.format(new Date())));
@@ -96,8 +101,8 @@ public class InfoBannerController {
 		LogRecord log = new LogRecord();
 		log.setTitle("编辑图片");
 		log.setContent("编辑失败");
-		log.setModuleName(ConstantUtil.logRecordModule.LCJY.getName());
-		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setModuleName(ConstantUtil.logRecordModule.GGWGL.getName());
+		log.setType(ConstantUtil.logRecordType.XG.getIndex());
 		log.setIp(IPUtil.getHost(request));
 		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		try {
@@ -141,8 +146,8 @@ public class InfoBannerController {
 		LogRecord log = new LogRecord();
 		log.setTitle("删除图片");
 		log.setContent("删除失败");
-		log.setModuleName(ConstantUtil.logRecordModule.LCJY.getName());
-		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setModuleName(ConstantUtil.logRecordModule.GGWGL.getName());
+		log.setType(ConstantUtil.logRecordType.WLSC.getIndex());
 		log.setIp(IPUtil.getHost(request));
 		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		try {
@@ -187,8 +192,8 @@ public class InfoBannerController {
 		LogRecord log = new LogRecord();
 		log.setTitle("修改图片顺序");
 		log.setContent("修改失败");
-		log.setModuleName(ConstantUtil.logRecordModule.LCJY.getName());
-		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setModuleName(ConstantUtil.logRecordModule.GGWGL.getName());
+		log.setType(ConstantUtil.logRecordType.XG.getIndex());
 		log.setIp(IPUtil.getHost(request));
 		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		try {
@@ -228,7 +233,7 @@ public class InfoBannerController {
 		LogRecord log = new LogRecord();
 		log.setTitle("查询Banner");
 		log.setContent("查询失败");
-		log.setModuleName(ConstantUtil.logRecordModule.HDGL.getName());
+		log.setModuleName(ConstantUtil.logRecordModule.GGWGL.getName());
 		log.setType(ConstantUtil.logRecordType.CX.getIndex());
 		log.setIp(IPUtil.getHost(request));
 		log.setCreateTime(sdf.parse(sdf.format(new Date())));

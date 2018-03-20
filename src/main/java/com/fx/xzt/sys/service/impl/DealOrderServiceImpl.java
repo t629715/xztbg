@@ -163,7 +163,7 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
             Double avgUp = 0D;
             if (mapUp != null&&handNum != 0){
                 if (mapUp.get("openPositionPriceUp") != null){
-                    avgUp = (Double) mapUp.get("openPositionPriceUp")/handNum;
+                    avgUp = (Double) mapUp.get("openPositionPriceUp")/handNumUp;
                 }
             }
             BigDecimal bu   =   new   BigDecimal(avgUp);
@@ -173,7 +173,7 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
             Double avgDown = 0D;
             if (mapDown != null&&handNum != 0){
                 if (mapDown.get("openPositionPriceDown") != null){
-                    avgDown = (Double) mapDown.get("openPositionPriceDown")/handNum;
+                    avgDown = (Double) mapDown.get("openPositionPriceDown")/handNumDown;
                 }
             }
             BigDecimal b   =   new   BigDecimal(avgDown);
@@ -185,7 +185,7 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
             double  netVal  =   netVa.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
             map.put("netValue",netVal);
             //获利=买涨总额-买跌总额
-            Double profit = netValue*handNum;
+            Double profit = avgUp*handNumUp-avgDown*handNumDown;
             BigDecimal profi   =   new   BigDecimal(profit);
             double   profit2   =   profi.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
             map.put("profit",profit2);
@@ -194,14 +194,14 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
             Long productIdUp = (Long) mapUp.get("productId");
             goldRightDealConf.setId(productIdUp);
             //合约  一手=多少克
-            Integer contract = goldRightDealConfMapper.selectOne(goldRightDealConf).getContract();
+//            Integer contract = goldRightDealConfMapper.selectOne(goldRightDealConf).getContract();
 //        Integer gramUp = handNumUp*contract;
             Integer gramUp = handNumUp;
             map.put("gramUp",gramUp);
             //买跌持仓克重
             Long productIdDown = (Long) mapUp.get("productId");
             goldRightDealConf.setId(productIdDown);
-            Integer contractDown = goldRightDealConfMapper.selectOne(goldRightDealConf).getContract();
+            //Integer contractDown = goldRightDealConfMapper.selectOne(goldRightDealConf).getContract();
 //        Integer gramDown = handNumDown*contractDown;
             Integer gramDown = handNumDown;
             map.put("gramDown",gramDown);

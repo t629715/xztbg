@@ -582,12 +582,15 @@
 			<if test="agentId != null">
 				agent_id = #{agentId,jdbcType=VARCHAR},
 			</if>
-				broker_id = #{brokerId,jdbcType=TIMESTAMP},
+		  	<if test="brokerId != null">
+				broker_id = #{brokerId,jdbcType=VARCHAR},
+			</if>
+
 			<if test="attribution != null">
-				Attribution = #{attribution,jdbcType=TIMESTAMP},
+				Attribution = #{attribution,jdbcType=VARCHAR},
 			</if>
 			<if test="registerIp != null">
-				RegisterIp = #{registerIp,jdbcType=TIMESTAMP},
+				RegisterIp = #{registerIp,jdbcType=VARCHAR},
 			</if>
 			<if test="sex != null">
 				sex = #{sex,jdbcType=SMALLINT},

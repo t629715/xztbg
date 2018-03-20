@@ -12,7 +12,7 @@
 		LEFT JOIN users ua ON i.agent_id = ua.id
 		LEFT JOIN users ub ON i.broker_id = ub.id
 		LEFT JOIN (SELECT UserID, ifnull(SUM(RMBAmt),0) rj FROM User_Recharge WHERE STATUS=1 GROUP BY UserID) r ON r.UserID = a.user_id
-		LEFT JOIN (SELECT UserID, ifnull(SUM(WithdrawAmt),0) cj FROM User_WithdrawCash GROUP BY UserID) c ON c.UserID = a.user_id
+		LEFT JOIN (SELECT UserID, ifnull(SUM(WithdrawAmt),0) cj FROM User_WithdrawCash WHERE Status = 1 GROUP BY UserID) c ON c.UserID = a.user_id
 		LEFT JOIN (SELECT user_id,SUM(rmb_amount) sjAmount FROM real_gold_order GROUP BY user_id) sj ON sj.user_id = a.user_id
 		LEFT JOIN (
 		SELECT cbf.user_id,SUM(cbf.cbf) cbf FROM (SELECT user_id, fee cbf FROM real_gold_order 
@@ -42,12 +42,13 @@
 		SELECT RechargeChannel rechargeChannel, unix_timestamp(DATE_FORMAT(RechargeTime,'%Y-%c-%d')) rechargeTime, SUM(RMBAmt) rmbAmt
 		FROM User_Recharge 
 		<where>
+		AND STATUS=1
 			<!-- and STATUS = 1  -->
 			<if test="startTime !=null and startTime !='' ">
               and DATE_FORMAT(RechargeTime,'%Y-%c-%d') &gt;=#{startTime,jdbcType=TIMESTAMP}
             </if>
             <if test="endTime !=null and endTime != '' ">
-              and DATE_FORMAT(RechargeTime,'%Y-%c-%d') &lt;#{endTime,jdbcType=TIMESTAMP}
+              and DATE_FORMAT(RechargeTime,'%Y-%c-%d') &lt;=#{endTime,jdbcType=TIMESTAMP}
            </if>
            <if test="channel != null and channel !='' ">
 				and RechargeChannel = #{channel,jdbcType=VARCHAR}
@@ -79,7 +80,7 @@
 							 and DATE_FORMAT(RechargeTime,'%Y-%m-%d') &gt;=#{startTime,jdbcType=TIMESTAMP}
 						</if>
 						<if test="endTime !=null and endTime != '' ">
-			              and DATE_FORMAT(RechargeTime,'%Y-%m-%d') &lt;#{endTime,jdbcType=TIMESTAMP}
+			              and DATE_FORMAT(RechargeTime,'%Y-%m-%d') &lt;=#{endTime,jdbcType=TIMESTAMP}
 			           </if>
 					) rjSum,
 					(
@@ -94,10 +95,9 @@
 							 and DATE_FORMAT(WithdrawTime,'%Y-%m-%d') &gt;=#{startTime,jdbcType=TIMESTAMP}
 						</if>
 						<if test="endTime !=null and endTime != '' ">
-			              and DATE_FORMAT(WithdrawTime,'%Y-%m-%d') &lt;#{endTime,jdbcType=TIMESTAMP}
+			              and DATE_FORMAT(WithdrawTime,'%Y-%m-%d') &lt;=#{endTime,jdbcType=TIMESTAMP}
 			           </if>
 					) cjSum
-				FROM
 					FROM
 					 users u 
 				WHERE
@@ -133,7 +133,7 @@
 							 and DATE_FORMAT(RechargeTime,'%Y-%m-%d') &gt;=#{startTime,jdbcType=TIMESTAMP}
 						</if>
 						<if test="endTime !=null and endTime != '' ">
-			              and DATE_FORMAT(RechargeTime,'%Y-%m-%d') &lt;#{endTime,jdbcType=TIMESTAMP}
+			              and DATE_FORMAT(RechargeTime,'%Y-%m-%d') &lt;=#{endTime,jdbcType=TIMESTAMP}
 			           </if>
 					) rjSum,
 					(
@@ -148,7 +148,7 @@
 							 and DATE_FORMAT(WithdrawTime,'%Y-%m-%d') &gt;=#{startTime,jdbcType=TIMESTAMP}
 						</if>
 						<if test="endTime !=null and endTime != '' ">
-			              and DATE_FORMAT(WithdrawTime,'%Y-%m-%d') &lt;#{endTime,jdbcType=TIMESTAMP}
+			              and DATE_FORMAT(WithdrawTime,'%Y-%m-%d') &lt;=#{endTime,jdbcType=TIMESTAMP}
 			           </if>
 					) cjSum
 				FROM

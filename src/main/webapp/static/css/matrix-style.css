@@ -46,7 +46,9 @@ hr{ border-top-color:#dadada;}
 .bg_lr{ background:#f74d4d;}
 .bg_lv{ background:#603bbc;}
 .bg_lh{ background:#b6b3b3;}
-
+.el-picker-panel.el-date-picker.has-time{
+	z-index: 100000 !important;
+}
 /* Header */
 #header {
 	display: inline-block;
@@ -234,7 +236,10 @@ hr{ border-top-color:#dadada;}
 	position: absolute;
 	left: 0;
 	/*padding-left: 250px;*/
-	top: 0;
+	top: 10;
+}
+.el-tabs__content{
+	display: none;
 }
 #content-header {
 	position: abslute;

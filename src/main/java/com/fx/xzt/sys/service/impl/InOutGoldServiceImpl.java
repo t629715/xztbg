@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.fx.xzt.sys.entity.InOutGold;
 import com.fx.xzt.sys.mapper.InOutGoldMapper;
 import com.fx.xzt.sys.service.InOutGoldService;
+import com.fx.xzt.sys.util.StringUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -66,7 +67,13 @@ public class InOutGoldServiceImpl extends BaseService<InOutGold> implements InOu
         map.put("startTime", startTime);
         map.put("endTime", endTime);
         map.put("channel", channel);
-		return inOutGoldMapper.selectByRechargeChannel(map);
+        List<Map<String, Object>> list = inOutGoldMapper.selectByRechargeChannel(map);
+        if (list != null && list.size() > 0) {
+        	for (Map<String, Object> map1 : list) {
+        		map1.put("rmbAmt", StringUtil.fundsHandle(map1.get("rmbAmt")));
+        	}
+        }
+		return list;
 	}
 
 	/**
@@ -78,7 +85,14 @@ public class InOutGoldServiceImpl extends BaseService<InOutGold> implements InOu
 		map.put("type", type);
         map.put("startTime", startTime);
         map.put("endTime", endTime);
-		return inOutGoldMapper.selectByAgent(map);
+        List<Map<String, Object>> list = inOutGoldMapper.selectByAgent(map);
+        if (list != null && list.size() > 0) {
+        	for (Map<String, Object> map1 : list) {
+        		map1.put("rjSum", StringUtil.fundsHandle(map1.get("rjSum")));
+        		map1.put("cjSum", StringUtil.fundsHandle(map1.get("cjSum")));
+        	}
+        }
+		return list;
 	}
 
 	/**
@@ -90,7 +104,13 @@ public class InOutGoldServiceImpl extends BaseService<InOutGold> implements InOu
 		map.put("type", type);
         map.put("startTime", startTime);
         map.put("endTime", endTime);
-		return inOutGoldMapper.selectByAgentNet(map);
+        List<Map<String, Object>> list = inOutGoldMapper.selectByAgentNet(map);
+        if (list != null && list.size() > 0) {
+        	for (Map<String, Object> map1 : list) {
+        		map1.put("jrjSum", StringUtil.fundsHandle(map1.get("jrjSum")));
+        	}
+        }
+		return list;
 	}
 
 
