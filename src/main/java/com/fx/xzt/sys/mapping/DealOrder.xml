@@ -200,13 +200,13 @@
     <!--获取买涨的总手数、总买入价 -start - tianliya -->
     <select id="selectHandNumberAndOpenPositionForUp" resultType="java.util.Map">
         SELECT SUM(o.hand_number) handNumUp, SUM(o.hand_number*o.open_position_price) openPositionPriceUp, o.product_id productId
-        FROM deal_order o WHERE o.order_state = 0 AND o.up_or_down = 0
+        FROM deal_order o WHERE o.order_state = 0 AND o.up_or_down = 0 and o.agent_id != '10000268'
     </select>
     <!--获取买跌的总手数、总买入价 -end - tianliya -->
     <!--获取买跌的总手数、总买入价 -start - tianliya -->
     <select id="selectHandNumberAndOpenPositionForDown" resultType="java.util.Map">
         SELECT SUM(o.hand_number) handNumDown, SUM(o.hand_number*o.open_position_price) openPositionPriceDown, o.product_id productId
-        FROM deal_order o WHERE o.order_state = 0 AND o.up_or_down = 1
+        FROM deal_order o WHERE o.order_state = 0 AND o.up_or_down = 1 and o.agent_id != '10000268'
     </select>
     <!--获取买跌的总手数、总买入价 -end - tianliya -->
 
