@@ -48,7 +48,7 @@
               and DATE_FORMAT(RechargeTime,'%Y-%c-%d') &gt;=#{startTime,jdbcType=TIMESTAMP}
             </if>
             <if test="endTime !=null and endTime != '' ">
-              and DATE_FORMAT(RechargeTime,'%Y-%c-%d') &lt;#{endTime,jdbcType=TIMESTAMP}
+              and DATE_FORMAT(RechargeTime,'%Y-%c-%d') &lt;=#{endTime,jdbcType=TIMESTAMP}
            </if>
            <if test="channel != null and channel !='' ">
 				and RechargeChannel = #{channel,jdbcType=VARCHAR}
@@ -80,7 +80,7 @@
 							 and DATE_FORMAT(RechargeTime,'%Y-%m-%d') &gt;=#{startTime,jdbcType=TIMESTAMP}
 						</if>
 						<if test="endTime !=null and endTime != '' ">
-			              and DATE_FORMAT(RechargeTime,'%Y-%m-%d') &lt;#{endTime,jdbcType=TIMESTAMP}
+			              and DATE_FORMAT(RechargeTime,'%Y-%m-%d') &lt;=#{endTime,jdbcType=TIMESTAMP}
 			           </if>
 					) rjSum,
 					(
@@ -95,7 +95,7 @@
 							 and DATE_FORMAT(WithdrawTime,'%Y-%m-%d') &gt;=#{startTime,jdbcType=TIMESTAMP}
 						</if>
 						<if test="endTime !=null and endTime != '' ">
-			              and DATE_FORMAT(WithdrawTime,'%Y-%m-%d') &lt;#{endTime,jdbcType=TIMESTAMP}
+			              and DATE_FORMAT(WithdrawTime,'%Y-%m-%d') &lt;=#{endTime,jdbcType=TIMESTAMP}
 			           </if>
 					) cjSum
 					FROM
@@ -133,7 +133,7 @@
 							 and DATE_FORMAT(RechargeTime,'%Y-%m-%d') &gt;=#{startTime,jdbcType=TIMESTAMP}
 						</if>
 						<if test="endTime !=null and endTime != '' ">
-			              and DATE_FORMAT(RechargeTime,'%Y-%m-%d') &lt;#{endTime,jdbcType=TIMESTAMP}
+			              and DATE_FORMAT(RechargeTime,'%Y-%m-%d') &lt;=#{endTime,jdbcType=TIMESTAMP}
 			           </if>
 					) rjSum,
 					(
@@ -148,7 +148,7 @@
 							 and DATE_FORMAT(WithdrawTime,'%Y-%m-%d') &gt;=#{startTime,jdbcType=TIMESTAMP}
 						</if>
 						<if test="endTime !=null and endTime != '' ">
-			              and DATE_FORMAT(WithdrawTime,'%Y-%m-%d') &lt;#{endTime,jdbcType=TIMESTAMP}
+			              and DATE_FORMAT(WithdrawTime,'%Y-%m-%d') &lt;=#{endTime,jdbcType=TIMESTAMP}
 			           </if>
 					) cjSum
 				FROM
