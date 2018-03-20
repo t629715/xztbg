@@ -201,7 +201,7 @@ public class DealOrderController {
                         	map.put("shareAmount", shareAmount/100);
                         }
                         if (costObj != null && costObj != "") {
-                        	Double cost = Double.valueOf(shareAmountObj.toString());
+                        	Double cost = Double.valueOf(costObj.toString());
                         	map.put("cost", cost/100);
                         }
                     }
