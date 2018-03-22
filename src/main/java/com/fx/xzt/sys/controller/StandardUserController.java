@@ -85,13 +85,20 @@ public class StandardUserController {
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
                 String agentNameStr = agentName;
                 if (users.getPid() != null &&  users.getPid() == 1) {
                     agentNameStr = users.getId().toString();
                 }
+                
+                String isView = "0";
+		        if (role != null && role.get("roleIsView") != null) {
+		            isView = role.get("roleIsView").toString();
+		        }
+                
                 PageInfo<Map<String, Object>> pageInfo = standardUserService.getByStandardUser(userName, agentNameStr, brokerName, 
-                		startTime, endTime, regStartTime, regEndTime, bzh, pageNum, pageSize);
+                		startTime, endTime, regStartTime, regEndTime, bzh, isView, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
@@ -151,9 +158,14 @@ public class StandardUserController {
             String excelName = "标准户统计";
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
+            	String isView = "0";
+		        if (role != null && role.get("roleIsView") != null) {
+		            isView = role.get("roleIsView").toString();
+		        }
                 List<Map<String, Object>> list = standardUserService.excelByStandardUser(userName, agentName, brokerName, 
-                		startTime, endTime, regStartTime, regEndTime, bzh);
+                		startTime, endTime, regStartTime, regEndTime, bzh, isView);
                 POIUtils poi = new POIUtils();
                 String[] heads = {"用户账号", "注册时间", "代理商", "经纪人", "真实姓名", "是否标准户", "入金总额", "出金总额"};
                 String[] colums = {"UserName", "RegisterTime", "agentName", "brokerName", "RealName", "bzh", "rjCount", "cjCount"};

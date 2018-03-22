@@ -46,7 +46,14 @@
 	<!--实名认证查询开始-htt -->
 	<select id="getByRealNameAuth" resultType="java.util.Map"
 		parameterType="java.util.Map">
-		SELECT l.userName ,cast(u.UserID as CHAR) UserID , RealName, IDCard,
+		SELECT 
+		<if test="isView == '1'">
+            l.UserName userName,
+        </if>
+        <if test="isView != '1'">
+            INSERT(l.UserName, 4, 4, '****') userName,
+        </if>
+		cast(u.UserID as CHAR) UserID , RealName, IDCard,
 		IDCardPath,IDCardBackPath, RealNameAuthApplyTime,
 		RealNameAuthApproveTime, RealNameAuthApproveState,RealNameAuthStatus
 		FROM User_Info u
@@ -74,7 +81,14 @@
 	<!--实名认证查询已审核开始-htt -->
 	<select id="getByRealNameAuthApprove" resultType="java.util.Map"
 		parameterType="java.util.Map">
-		SELECT l.userName ,cast(u.UserID as CHAR) UserID , RealName, IDCard,
+		SELECT 
+		<if test="isView == '1'">
+            l.UserName userName,
+        </if>
+        <if test="isView != '1'">
+            INSERT(l.UserName, 4, 4, '****') userName,
+        </if>
+		cast(u.UserID as CHAR) UserID , RealName, IDCard,
 		IDCardPath,IDCardBackPath, RealNameAuthApplyTime,
 		RealNameAuthApproveTime, RealNameAuthApproveState,RealNameAuthStatus
 		FROM User_Info u
@@ -104,7 +118,14 @@
 	<!--账户信息查询 -->
 	<select id="getByAccountMessage" resultType="java.util.Map"
 		parameterType="java.util.Map">
-		SELECT CAST(u.UserID AS  CHAR ) AS userId,l.UserName AS userName,u.NickName nickName,l.Status AS
+		SELECT CAST(u.UserID AS  CHAR ) AS userId,
+		<if test="isView == '1'">
+            l.UserName userName,
+        </if>
+        <if test="isView != '1'">
+            INSERT(l.UserName, 4, 4, '****') userName,
+        </if>
+		u.NickName nickName,l.Status AS
 		STATUS,u.RealName,u.RegisterTime registerTime,
 		u.agent_id AS agentId, ua.user_name AS agentName, u.broker_id AS brokerId,
 		u1.user_name AS brokerName ,

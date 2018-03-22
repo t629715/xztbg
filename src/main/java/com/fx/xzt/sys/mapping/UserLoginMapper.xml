@@ -33,13 +33,22 @@
     
     <!--注册信息查询开始-htt-->
     <select id="getByRegisterMessage" resultType="java.util.Map" parameterType="java.util.Map" >
-        SELECT cast(l.UserID as CHAR) UserID , l.UserName ,i.agent_id agentId, u.user_name agentName, i.broker_id brokerId, u1.user_name brokerName ,
+        SELECT cast(l.UserID as CHAR) UserID , 
+        <if test="isView == '1'">
+            l.UserName UserName,
+        </if>
+        <if test="isView != '1'">
+            INSERT(l.UserName, 4, 4, '****') UserName,
+        </if>
+        i.agent_id agentId, u.user_name agentName, 
+        i.broker_id brokerId, u1.user_name brokerName ,
         l.Status ,i.RegisterTime, i.RegisterFrom, i.RegisterIp, i.attribution,
         m.lastlogintime, m.lastloginfrom, m.lastfromip, i.attribution_province attributionProvince 
         FROM User_Login l LEFT JOIN User_Info i ON l.UserID = i.UserID
         LEFT JOIN users u ON i.agent_id = u.id
         LEFT JOIN users u1 ON i.broker_id = u1.id
-        LEFT JOIN (SELECT userid useridm,MAX(loginTime) lastlogintime,loginFrom lastloginfrom,fromIp lastfromip FROM User_LoginInfo GROUP BY  useridm) m
+        LEFT JOIN (SELECT userid useridm,MAX(loginTime) lastlogintime,loginFrom lastloginfrom,
+        fromIp lastfromip FROM User_LoginInfo GROUP BY  useridm) m
         ON l.UserID = m.useridm
         <where>
         	<!-- and l.Status = 1 -->

@@ -28,6 +28,7 @@ public interface StandardUserService {
 	* @param regStartTime 注册开始时间
 	* @param regEndTime 注册结束时间
 	* @param bzh 是否标准户1：是；0：否
+	 * @param isView 
 	* @param pageNum
 	* @param pageSize
 	* @return    设定文件 
@@ -37,7 +38,7 @@ public interface StandardUserService {
 	* @author htt
 	 */
 	PageInfo<Map<String, Object>> getByStandardUser(String userName, String agentName, String brokerName, 
-			String startTime, String endTime, String regStartTime, String regEndTime, String bzh, Integer pageNum, Integer pageSize) throws ParseException;
+			String startTime, String endTime, String regStartTime, String regEndTime, String bzh, String isView, Integer pageNum, Integer pageSize) throws ParseException;
 	
 	/**
 	 * 
@@ -58,6 +59,6 @@ public interface StandardUserService {
 	* @author htt
 	 */
 	List<Map<String, Object>> excelByStandardUser(String userName, String agentName, String brokerName, 
-			String startTime, String endTime, String regStartTime, String regEndTime, String bzh) throws ParseException;
+			String startTime, String endTime, String regStartTime, String regEndTime, String bzh, String isView) throws ParseException;
 
 }

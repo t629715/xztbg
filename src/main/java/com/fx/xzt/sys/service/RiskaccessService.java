@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public interface RiskaccessService {
 
-    PageInfo<Map<String, Object>> getByRiskaccessAll(String userName, String realName, String startTime, String endTime, String accessLevel, Integer pageNum, Integer pageSize);
+    PageInfo<Map<String, Object>> getByRiskaccessAll(String userName, String realName, String startTime, String endTime, String accessLevel, String isView, Integer pageNum, Integer pageSize);
 
     int updateLevelById(String level, String accessId);
 }

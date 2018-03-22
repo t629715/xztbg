@@ -29,7 +29,7 @@ public class UserLoginServiceImpl extends BaseService<UserLogin> implements User
 
     public PageInfo<Map<String, Object>> getByRegisterMessage(String userName, String startTime, String endTime,
             String registerFrom, String registerIp, String lastStartTime, String lastEndTime, String lastLoginFrom,
-            String agentName, String brokerName, String attribution, Integer pageNum, Integer pageSize) {
+            String agentName, String brokerName, String attribution, String isView, Integer pageNum, Integer pageSize) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("startTime", startTime);
@@ -42,6 +42,7 @@ public class UserLoginServiceImpl extends BaseService<UserLogin> implements User
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         map.put("attributionProvince", attribution);//归属地省份
+        map.put("isView", isView);
         PageHelper.startPage(pageNum, pageSize);
         List<Map<String, Object>> list = userLoginMapper.getByRegisterMessage(map);
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<Map<String, Object>>(list);
@@ -51,7 +52,7 @@ public class UserLoginServiceImpl extends BaseService<UserLogin> implements User
     public List<Map<String, Object>> getExcelByRegister(String userName, String startTime, String endTime,
         String registerFrom, String registerIp, String lastStartTime,
         String lastEndTime, String lastLoginFrom,
-        String agentsName, String brokerName, String attribution){
+        String agentsName, String brokerName, String attribution, String isView){
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("startTime", startTime);
@@ -64,6 +65,7 @@ public class UserLoginServiceImpl extends BaseService<UserLogin> implements User
         map.put("agentsName", agentsName);
         map.put("brokerName", brokerName);
         map.put("attribution", attribution);
+        map.put("isView", isView);
         List<Map<String, Object>> list = userLoginMapper.getByRegisterMessage(map);
         return list;
     }

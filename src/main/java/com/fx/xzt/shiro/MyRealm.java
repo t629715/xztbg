@@ -1,8 +1,10 @@
 package com.fx.xzt.shiro;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -47,6 +49,7 @@ public class MyRealm extends AuthorizingRealm{
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		Users userInfo = null;
+		
 		if(token instanceof MyAuthenticationToken){
 			MyAuthenticationToken myToken = (MyAuthenticationToken) token;
 			String phone = myToken.getPhone();
@@ -68,6 +71,11 @@ public class MyRealm extends AuthorizingRealm{
 			//比对成功则返回authcInfo
     	    AuthenticationInfo authcInfo = new SimpleAuthenticationInfo(userInfo, userInfo.getPassword().toCharArray(),this.getName());  
     	    this.setSession("currentUser", userInfo);
+    	    
+    	    Map<String, Object> map = new HashMap<String, Object>();
+			map.put("roleId","8825995784228865");
+			map.put("roleIsView","0");
+    	    this.setSession("currentUserRole", map);
     	    return authcInfo; 
 		}
 		return null;

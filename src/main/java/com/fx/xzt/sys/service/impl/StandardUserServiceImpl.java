@@ -37,7 +37,7 @@ public class StandardUserServiceImpl extends BaseService<StandardUser> implement
 	 */
 	public PageInfo<Map<String, Object>> getByStandardUser(String userName,
 			String agentName, String brokerName, String startTime,
-			String endTime, String regStartTime, String regEndTime, String bzh,
+			String endTime, String regStartTime, String regEndTime, String bzh, String isView, 
 			Integer pageNum, Integer pageSize) throws ParseException {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
@@ -48,6 +48,7 @@ public class StandardUserServiceImpl extends BaseService<StandardUser> implement
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         map.put("bzh", bzh);
+        map.put("isView", isView);
         PageHelper.startPage(pageNum,pageSize);
         List<Map<String, Object>> list = standardUserMapper.selectByStandardUser(map);
         handle(list);
@@ -61,7 +62,7 @@ public class StandardUserServiceImpl extends BaseService<StandardUser> implement
 	 */
 	public List<Map<String, Object>> excelByStandardUser(String userName,
 			String agentName, String brokerName, String startTime,
-			String endTime, String regStartTime, String regEndTime, String bzh) throws ParseException {
+			String endTime, String regStartTime, String regEndTime, String bzh, String isView) throws ParseException {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("startTime", startTime);
@@ -71,6 +72,7 @@ public class StandardUserServiceImpl extends BaseService<StandardUser> implement
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         map.put("bzh", bzh);
+        map.put("isView", isView);
         List<Map<String, Object>> list = standardUserMapper.selectByStandardUser(map);
         handle(list);
         return list;

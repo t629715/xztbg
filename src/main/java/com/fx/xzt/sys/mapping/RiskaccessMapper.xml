@@ -22,7 +22,13 @@
 
   <!--风险评测查询开始-htt-->
   <select id="selectByRiskaccessAll" resultType="java.util.Map" parameterType="java.util.Map">
-    SELECT cast(r.access_id as CHAR) accessId, r.user_id userId, l.UserName userName, 
+    SELECT cast(r.access_id as CHAR) accessId, r.user_id userId, 
+    <if test="isView == '1'">
+    	l.UserName userName,
+    </if>
+    <if test="isView != '1'">
+    	INSERT(l.UserName, 4, 4, '****') userName,
+    </if>
     r.access_level accessLevel, DATE_FORMAT(r.access_time, '%Y-%m-%d %h:%i:%s') accessTime,i.RealName realName
     FROM riskaccess r 
     LEFT JOIN User_Info i ON r.user_id = i.UserID
