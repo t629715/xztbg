@@ -1,8 +1,10 @@
 package com.fx.xzt.sys.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Resource;
 
@@ -82,7 +84,15 @@ public class UserLoginServiceImpl extends BaseService<UserLogin> implements User
 	 * 注册信息查询-归属地获取
 	 */
 	public List<Map<String, Object>> getByAttributionPro() {
-		return userLoginMapper.getByAttributionPro();
+	    List<Map<String, Object>> resultList = new ArrayList<>();
+	    List queryList = userLoginMapper.getByAttributionPro();
+	    if (queryList != null && queryList != null){
+	        Map<String, Object> result = new ConcurrentHashMap<>();
+	        result.put("province","全部");
+	        resultList.add(result);
+	        resultList.addAll(queryList);
+        }
+		return resultList;
 	}
 
     

@@ -96,6 +96,8 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
         map.put("isUseCard", isUseCard);
         map.put("upOrDown", upOrDown);
         List<Map<String, Object>> list = dealOrderMapper.selectByDealOrder(map);
+
+
         return list;
     }
 

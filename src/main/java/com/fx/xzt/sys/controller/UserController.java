@@ -30,6 +30,8 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+import com.google.zxing.common.StringUtils;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -349,6 +351,24 @@ public class UserController {
         }
         return cr;
 	}
+	@RequestMapping(value="/selectByAgentMessage1")
+	@ResponseBody
+	public Object selectByAgentMessage1(){
+		CommonResponse cr = new CommonResponse();
+		try {
+			List<Map<String, Object>> list = userService.selectByAgentMessage1();
+			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+			cr.setData(list);
+			cr.setMsg("操作成功！");
+		} catch (Exception e) {
+			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+			cr.setData("{}");
+			cr.setMsg("操作失败！");
+			throw e;
+			// e.printStackTrace();
+		}
+		return cr;
+	}
 
 	/**
 	 * 根据代理商获取经纪人列表,若pid为空则取当前登录人下的经纪人
@@ -357,7 +377,7 @@ public class UserController {
 	 */
 	@RequestMapping(value="/selectByBrokerMessage")
 	@ResponseBody
-	public Object selectByBrokerMessage(HttpServletRequest request, @RequestParam String pid){
+	public Object selectByBrokerMessage(HttpServletRequest request,String pid){
 		CommonResponse cr = new CommonResponse();
         try {
         	Long pidl = null;
@@ -387,6 +407,37 @@ public class UserController {
             // e.printStackTrace();
         }
         return cr;
+	}
+	@RequestMapping(value="/selectByBrokerMessage1")
+	@ResponseBody
+	public Object selectByBrokerMessage1(HttpServletRequest request,String pid){
+		CommonResponse cr = new CommonResponse();
+		try {
+			Long pid1 = null;
+			if (StringUtil.isNotEmpty(pid)){
+				pid1 = Long.valueOf(pid);
+			}
+			HttpSession httpSession = request.getSession();
+			Users users = (Users) httpSession.getAttribute("currentUser");
+			if (users != null) {
+				List<Map<String, Object>> list = userService.selectByBrokerMessage1(pid1);
+				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+				cr.setData(list);
+				cr.setMsg("操作成功！");
+
+			} else {
+				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+				cr.setData("{}");
+				cr.setMsg("操作失败！");
+			}
+		} catch (Exception e) {
+			cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+			cr.setData("{}");
+			cr.setMsg("操作失败！");
+			throw e;
+			// e.printStackTrace();
+		}
+		return cr;
 	}
 
 	/**
