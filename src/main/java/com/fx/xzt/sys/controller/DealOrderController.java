@@ -152,6 +152,12 @@ public class DealOrderController {
                 		regStartTime, regEndTime, agentNameStr, brokerName, orderState, isUseCard, upOrDown);
                 if (list != null && list.size() > 0) {
                     for (Map<String, Object> map : list) {
+                        if (map.get("upOrDown") == "0"){
+                            if (map.get("openPositionPrice") != null){
+                                Double openPositionPrice = (Double) map.get("openPositionPrice")+(Double)map.get("pointCount");;
+                                map.put("openPositionPrice",openPositionPrice);
+                            }
+                        }
                         map.put("upOrDown", ConstantUtil.dealOrderUpOrDown.toMap().get(map.get("upOrDown").toString()));
                         Object buyPreRmbObj =  map.get("buyPreRmb");
                         Object buyAfterRmbObj =  map.get("buyAfterRmb");
@@ -163,7 +169,7 @@ public class DealOrderController {
                     	Object createTimeObj = map.get("createTime");
                     	Object endTimeObj = map.get("endTime");
                     	Object costObj = map.get("cost");
-                    	
+
                		 	if (registerTimeObj != null && registerTimeObj != "") {
                		 		map.put("registerTime", sdf.format(sdf.parse(registerTimeObj.toString())));
                         }
