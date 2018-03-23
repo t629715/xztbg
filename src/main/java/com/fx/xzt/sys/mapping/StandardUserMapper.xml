@@ -9,10 +9,10 @@
 				(select SUM(hand_number)  from deal_order where user_id = sj.UserID) jyNum 
 			from (
 				SELECT l.UserID, 
-				<if test="isView == '1'">
+				<if test='isView == "1"'>
 					l.UserName ,
 				</if>
-				<if test="isView != '1'">
+				<if test='isView != "1"'>
 				    INSERT(l.UserName, 4, 4, '****') UserName,
 				</if>
 				l.agent_id agentId, l.broker_id brokerId, i.RealName, i.RegisterTime,

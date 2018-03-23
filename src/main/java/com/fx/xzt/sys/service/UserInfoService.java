@@ -87,18 +87,20 @@ public interface UserInfoService extends IService<UserInfo> {
      * @param userName
      * @param agentName
      * @param brokerName
+     * @param isView 
      * @return
      */
-    PageInfo<Map<String,Object>> getSubClients(String userName, String agentName, String brokerName, Integer pageNum, Integer pageSize);
+    PageInfo<Map<String,Object>> getSubClients(String userName, String agentName, String brokerName, String isView, Integer pageNum, Integer pageSize);
 
     /**
      * 导出下级客户信息
      * @param userName
      * @param agentName
      * @param brokerName
+     * @param isView 
      * @return
      */
-    List<Map<String, Object>> getExcelSubClientsAccount(String userName, String agentName, String brokerName);
+    List<Map<String, Object>> getExcelSubClientsAccount(String userName, String agentName, String brokerName, String isView);
 
     /**
      * 下级客户 资产统计

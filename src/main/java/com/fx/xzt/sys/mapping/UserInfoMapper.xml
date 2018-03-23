@@ -47,10 +47,10 @@
 	<select id="getByRealNameAuth" resultType="java.util.Map"
 		parameterType="java.util.Map">
 		SELECT 
-		<if test="isView == '1'">
+		<if test='isView == "1"'>
             l.UserName userName,
         </if>
-        <if test="isView != '1'">
+        <if test='isView != "1"'>
             INSERT(l.UserName, 4, 4, '****') userName,
         </if>
 		cast(u.UserID as CHAR) UserID , RealName, IDCard,
@@ -82,10 +82,10 @@
 	<select id="getByRealNameAuthApprove" resultType="java.util.Map"
 		parameterType="java.util.Map">
 		SELECT 
-		<if test="isView == '1'">
+		<if test='isView == "1"'>
             l.UserName userName,
         </if>
-        <if test="isView != '1'">
+        <if test='isView != "1"'>
             INSERT(l.UserName, 4, 4, '****') userName,
         </if>
 		cast(u.UserID as CHAR) UserID , RealName, IDCard,
@@ -119,10 +119,10 @@
 	<select id="getByAccountMessage" resultType="java.util.Map"
 		parameterType="java.util.Map">
 		SELECT CAST(u.UserID AS  CHAR ) AS userId,
-		<if test="isView == '1'">
+		<if test='isView == "1"'>
             l.UserName userName,
         </if>
-        <if test="isView != '1'">
+        <if test='isView != "1"'>
             INSERT(l.UserName, 4, 4, '****') userName,
         </if>
 		u.NickName nickName,l.Status AS
@@ -621,7 +621,14 @@
 	</update>
 	<!--合作伙伴-获取下级客户信息 tianliya-->
 	<select id="getSubClients" resultType="java.util.Map" parameterType="java.util.Map">
-		SELECT u.UserID AS userId,l.UserName AS userName,l.Status AS
+		SELECT u.UserID AS userId,
+		<if test='isView == "1"'>
+			l.UserName userName,
+		</if>
+		<if test='isView != "1"'>
+			INSERT(l.UserName, 4, 4, '****') userName,
+		</if>
+		l.Status AS
 		STATUS,u.RealName,u.RegisterTime registerTime,
 		u.agent_id AS agentId, ua.user_name AS agentName, u.broker_id AS brokerId,
 		u1.user_name AS brokerName ,

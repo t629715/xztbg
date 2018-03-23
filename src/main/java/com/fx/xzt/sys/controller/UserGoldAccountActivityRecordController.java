@@ -82,8 +82,13 @@ public class UserGoldAccountActivityRecordController {
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
-                PageInfo<Map<String, Object>> pageInfo = recordService.selectByAll(userName, startTime, endTime, agentName, brokerName, activityType, pageNum, pageSize);
+            	String isView = "0";
+		        if (role != null && role.get("roleIsView") != null) {
+		            isView = role.get("roleIsView").toString();
+		        }
+                PageInfo<Map<String, Object>> pageInfo = recordService.selectByAll(userName, startTime, endTime, agentName, brokerName, activityType, isView, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
@@ -143,8 +148,13 @@ public class UserGoldAccountActivityRecordController {
             String excelName = "活动黄金领取";
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
+            String isView = "0";
+	        if (role != null && role.get("roleIsView") != null) {
+	            isView = role.get("roleIsView").toString();
+	        }
             if (users != null) {
-                List<Map<String, Object>> list = recordService.excelAll(userName, startTime, endTime, agentName, brokerName, activityType);
+                List<Map<String, Object>> list = recordService.excelAll(userName, startTime, endTime, agentName, brokerName, activityType, isView);
                 if (list != null && list.size() > 0) {
                 	for (Map<String, Object> map : list) {
                         map.put("activityType", ConstantUtil.activityType.toMap().get(map.get("activityType").toString()));

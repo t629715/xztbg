@@ -34,10 +34,10 @@
     <!--注册信息查询开始-htt-->
     <select id="getByRegisterMessage" resultType="java.util.Map" parameterType="java.util.Map" >
         SELECT cast(l.UserID as CHAR) UserID , 
-        <if test="isView == '1'">
+        <if test='isView == "1"'>
             l.UserName UserName,
         </if>
-        <if test="isView != '1'">
+        <if test='isView != "1"'>
             INSERT(l.UserName, 4, 4, '****') UserName,
         </if>
         i.agent_id agentId, u.user_name agentName, 

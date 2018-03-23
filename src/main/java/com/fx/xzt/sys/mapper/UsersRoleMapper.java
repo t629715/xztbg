@@ -3,7 +3,7 @@ package com.fx.xzt.sys.mapper;
 import java.util.List;
 import java.util.Map;
 
-import com.fx.xzt.sys.model.UsersRoleModel;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.fx.xzt.sys.entity.UsersRole;
@@ -40,5 +40,7 @@ public interface UsersRoleMapper extends BaseMapper<UsersRole>{
 	List<Map<String, Object>> getRoles(Map<String, Object> map);
 
 	String  getRName(Long id);
+	
+	Map<String, Object> getById(@Param("id") String id);
 	
 }

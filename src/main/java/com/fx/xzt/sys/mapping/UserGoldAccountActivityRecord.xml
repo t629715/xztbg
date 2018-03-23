@@ -4,7 +4,13 @@
     <!--活动黄金领取开始-htt-->
     <select id="selectByAll" resultType="java.util.Map" parameterType="java.util.Map">
     	SELECT CAST(a.id AS CHAR) id, CAST(a.user_id AS CHAR) userId, a.amount, a.description,
-    		a.activity_type activityType, a.type, a.create_time createTime,u.UserName userName,
+    		a.activity_type activityType, a.type, a.create_time createTime,
+    		<if test='isView == "1"'>
+				u.UserName userName,
+			</if>
+			<if test='isView != "1"'>
+			    INSERT(u.UserName, 4, 4, '****') userName,
+			</if>
 			a.agent_id AS agentId, ua.user_name AS agentName, a.broker_id AS brokerId, ub.user_name AS brokerName
 		from user_gold_account_activity_record a
 		LEFT JOIN User_Login u ON a.user_id = u.UserID

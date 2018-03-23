@@ -48,6 +48,7 @@ public interface UserWithdrawCashService extends IService<UserWithdrawCash>{
 	* @param agentName  代理商用户名
 	* @param brokerName 经纪人用户名
 	* @param status   状态 0：审核中 1：已完成
+	 * @param isView 
 	* @param pageNum
 	* @param pageSize
 	* @return    设定文件 
@@ -56,7 +57,7 @@ public interface UserWithdrawCashService extends IService<UserWithdrawCash>{
 	* @author htt
 	 */
 	PageInfo<Map<String, Object>> selectByWithdrawCash (String userName, String startTime, String endTime, 
-			String agentName, String brokerName, Integer status ,Integer pageNum, Integer pageSize);
+			String agentName, String brokerName, Integer status ,String isView, Integer pageNum, Integer pageSize);
 	
 	/**
 	 * 
@@ -68,13 +69,14 @@ public interface UserWithdrawCashService extends IService<UserWithdrawCash>{
 	* @param agentName  代理商用户名
 	* @param brokerName 经纪人用户名
 	* @param status 状态 0：审核中 1：已完成
+	 * @param isView 
 	* @return    设定文件 
 	* @return List<Map<String,Object>>    返回类型 
 	* @throws 
 	* @author htt
 	 */
 	List<Map<String, Object>> excelWithdrawCash (String userName, String startTime, String endTime, 
-			String agentName, String brokerName, Integer status);
+			String agentName, String brokerName, Integer status, String isView);
 	
 	/**
 	 * 

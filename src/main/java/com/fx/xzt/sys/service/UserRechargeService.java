@@ -30,6 +30,7 @@ public interface UserRechargeService extends IService<UserRecharge>{
 	* @param brokerName  经纪人用户名
 	* @param rechargechannel  充值渠道
 	* @param status  充值状态  0：失败 1：成功
+	 * @param isView 
 	* @param pageNum
 	* @param pageSize
 	* @return    设定文件 
@@ -38,7 +39,7 @@ public interface UserRechargeService extends IService<UserRecharge>{
 	* @author htt
 	 */
 	PageInfo<Map<String, Object>> selectByRecharge(String userName, String startTime, String endTime, String agentName, String brokerName, 
-			String rechargechannel, Integer status, Integer pageNum, Integer pageSize);
+			String rechargechannel, Integer status, String isView, Integer pageNum, Integer pageSize);
 
 	/**
 	 * 
@@ -51,13 +52,14 @@ public interface UserRechargeService extends IService<UserRecharge>{
 	* @param brokerName  经纪人用户名
 	* @param rechargechannel  充值渠道
 	* @param status  充值状态  0：失败 1：成功
+	 * @param isView 
 	* @return    设定文件 
 	* @return List<Map<String,Object>>    返回类型 
 	* @throws 
 	* @author htt
 	 */
     List<Map<String, Object>> excelRecharge(String userName, String startTime, String endTime, String agentName, String brokerName, 
-			String rechargechannel, Integer status);
+			String rechargechannel, Integer status, String isView);
 
     /**
      * 

@@ -86,13 +86,18 @@ public class FinanceOrderController {
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
+            	String isView = "0";
+		        if (role != null && role.get("roleIsView") != null) {
+		            isView = role.get("roleIsView").toString();
+		        }
                 String agentNameStr = agentName;
                 if (users.getPid() != null &&  users.getPid() == 1) {
                     agentNameStr = users.getId().toString();
                 }
                 PageInfo<Map<String, Object>> pageInfo = financeOrderService.selectByFinanceOrder(userName, orderNo, startTime, endTime, regStartTime, regEndTime,
-                		redeemStartTime, redeemEndTime, agentNameStr, brokerName, status, type, nper, pageNum, pageSize);
+                		redeemStartTime, redeemEndTime, agentNameStr, brokerName, status, type, nper, isView, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
@@ -155,13 +160,18 @@ public class FinanceOrderController {
             String excelName = "";
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
+            	String isView = "0";
+		        if (role != null && role.get("roleIsView") != null) {
+		            isView = role.get("roleIsView").toString();
+		        }
                 String agentNameStr = agentName;
                 if (users.getPid() != null &&  users.getPid() == 1) {
                 	agentNameStr = users.getId().toString();
                 }
                 List<Map<String, Object>> list = financeOrderService.excelFinanceOrder(userName, orderNo, startTime, endTime, regStartTime, regEndTime, 
-                		redeemStartTime, redeemEndTime, agentNameStr, brokerName, status, type, nper);
+                		redeemStartTime, redeemEndTime, agentNameStr, brokerName, status, type, nper, isView);
                 if (list != null && list.size() > 0) {
                     for (Map<String, Object> map : list) {
                     	if (map.get("status") != null && map.get("status") != "") {
@@ -372,13 +382,18 @@ public class FinanceOrderController {
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
+            	String isView = "0";
+		        if (role != null && role.get("roleIsView") != null) {
+		            isView = role.get("roleIsView").toString();
+		        }
                 String agentNameStr = agentName;
                 if (users.getPid() != null &&  users.getPid() == 1) {
                 	agentNameStr = users.getId().toString();
                 }
                 PageInfo<Map<String, Object>> pageInfo = financeOrderService.selectByGoldFinanceOrder(userName, orderNo, startTime, endTime, regStartTime, regEndTime,
-                		redeemStartTime, redeemEndTime, agentNameStr, brokerName, status, type, nper, pageNum, pageSize);
+                		redeemStartTime, redeemEndTime, agentNameStr, brokerName, status, type, nper, isView, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
@@ -441,13 +456,18 @@ public class FinanceOrderController {
             String excelName = "";
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
+            	String isView = "0";
+		        if (role != null && role.get("roleIsView") != null) {
+		            isView = role.get("roleIsView").toString();
+		        }
                 String agentNameStr = agentName;
                 if (users.getPid() != null &&  users.getPid() == 1) {
                 	agentNameStr = users.getId().toString();
                 }
                 List<Map<String, Object>> list = financeOrderService.excelGoldFinanceOrder(userName, orderNo, startTime, endTime, regStartTime, regEndTime, 
-                		redeemStartTime, redeemEndTime, agentNameStr, brokerName, status, type, nper);
+                		redeemStartTime, redeemEndTime, agentNameStr, brokerName, status, type, nper, isView);
                 if (list != null && list.size() > 0) {
                     for (Map<String, Object> map : list) {
                     	if (map.get("status") != null && map.get("status") != "") {

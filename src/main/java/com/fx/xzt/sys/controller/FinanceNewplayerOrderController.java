@@ -93,13 +93,18 @@ public class FinanceNewplayerOrderController {
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
+            	String isView = "0";
+		        if (role != null && role.get("roleIsView") != null) {
+		            isView = role.get("roleIsView").toString();
+		        }
                 String agentNameStr = agentName;
                 if (users.getPid() != null &&  users.getPid() == 1) {
                     agentNameStr = users.getId().toString();
                 }
                 PageInfo<Map<String, Object>> pageInfo = orderService.selectByAll(userName, orderNo, startTime, endTime, 
-                		regStartTime, regEndTime, agentNameStr, brokerName, status, type, redeemStartTime, redeemEndTime, pageNum, pageSize);
+                		regStartTime, regEndTime, agentNameStr, brokerName, status, type, redeemStartTime, redeemEndTime, isView, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
@@ -164,13 +169,18 @@ public class FinanceNewplayerOrderController {
             String excelName = "新手理财专享";
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
+            	String isView = "0";
+		        if (role != null && role.get("roleIsView") != null) {
+		            isView = role.get("roleIsView").toString();
+		        }
                 String agentNameStr = agentName;
                 if (users.getPid() != null &&  users.getPid() == 1) {
                     agentNameStr = users.getId().toString();
                 }
                 List<Map<String, Object>> list = orderService.excelAll(userName, orderNo, startTime, endTime, 
-                		regStartTime, regEndTime, agentNameStr, brokerName, status, type, redeemStartTime, redeemEndTime);
+                		regStartTime, regEndTime, agentNameStr, brokerName, status, type, redeemStartTime, redeemEndTime, isView);
                 if (list != null && list.size() > 0) {
                     for (Map<String, Object> map : list) {
                     	if (map.get("status") != null && map.get("status") != "") {

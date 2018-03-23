@@ -33,7 +33,7 @@ public class UserGoldAccountActivityRecordServiceImpl extends BaseService<UserGo
 	 */
 	public PageInfo<Map<String, Object>> selectByAll(String userName,
 			String startTime, String endTime, String agentName,
-			String brokerName, Integer activityType, Integer pageNum,
+			String brokerName, Integer activityType, String isView, Integer pageNum,
 			Integer pageSize) {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
@@ -42,6 +42,7 @@ public class UserGoldAccountActivityRecordServiceImpl extends BaseService<UserGo
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         map.put("activityType", activityType);
+        map.put("isView", isView);
         PageHelper.startPage(pageNum,pageSize);
         List<Map<String, Object>> list = mapper.selectByAll(map);
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
@@ -53,7 +54,7 @@ public class UserGoldAccountActivityRecordServiceImpl extends BaseService<UserGo
 	 */
 	public List<Map<String, Object>> excelAll(String userName,
 			String startTime, String endTime, String agentName,
-			String brokerName, Integer activityType) {
+			String brokerName, Integer activityType, String isView) {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("startTime", startTime);
@@ -61,6 +62,7 @@ public class UserGoldAccountActivityRecordServiceImpl extends BaseService<UserGo
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         map.put("activityType", activityType);
+        map.put("isView", isView);
         List<Map<String, Object>> list = mapper.selectByAll(map);
         return list;
 	}

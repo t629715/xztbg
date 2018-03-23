@@ -29,6 +29,7 @@ public interface FinanceNewplayerOrderService {
 	* @param brokerName 经纪人用户名
 	* @param status 状态
 	* @param type 类型
+	 * @param isView 
 	* @param pageNum
 	* @param pageSize
 	* @return    设定文件 
@@ -38,7 +39,7 @@ public interface FinanceNewplayerOrderService {
 	 */
     PageInfo<Map<String, Object>> selectByAll(String userName, String orderNo, String startTime, String endTime, 
     		String regStartTime, String regEndTime, String agentName, String brokerName, String status, 
-    		String type, String redeemStartTime, String redeemEndTime,Integer pageNum, Integer pageSize);
+    		String type, String redeemStartTime, String redeemEndTime,String isView, Integer pageNum, Integer pageSize);
 
    /**
     * 
@@ -54,6 +55,7 @@ public interface FinanceNewplayerOrderService {
    * @param brokerName 经纪人用户名
    * @param status 状态
    * @param type  类型
+ * @param isView 
    * @return    设定文件 
    * @return List<Map<String,Object>>    返回类型 
    * @throws 
@@ -61,7 +63,7 @@ public interface FinanceNewplayerOrderService {
     */
     List<Map<String, Object>> excelAll(String userName, String orderNo, String startTime, String endTime, 
     		String regStartTime, String regEndTime, String agentName, String brokerName, String status, 
-    		String type, String redeemStartTime, String redeemEndTime);
+    		String type, String redeemStartTime, String redeemEndTime, String isView);
 
     /**
      * 

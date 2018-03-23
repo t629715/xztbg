@@ -33,11 +33,12 @@ public class InOutGoldServiceImpl extends BaseService<InOutGold> implements InOu
 	 * 出入金查询
 	 */
 	public PageInfo<Map<String, Object>> selectByInOutGold(String userName,
-			String agentName, String brokerName, Integer pageNum, Integer pageSize) {
+			String agentName, String brokerName, String isView, Integer pageNum, Integer pageSize) {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
+        map.put("isView", isView);
         PageHelper.startPage(pageNum,pageSize);
         List<Map<String, Object>> list = inOutGoldMapper.selectByInOutGold(map);
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
@@ -48,11 +49,12 @@ public class InOutGoldServiceImpl extends BaseService<InOutGold> implements InOu
 	 * 出入金查询--导出
 	 */
 	public List<Map<String, Object>> excelInOutGold(String userName,
-			String agentName, String brokerName) {
+			String agentName, String brokerName, String isView) {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
+        map.put("isView", isView);
         List<Map<String, Object>> list = inOutGoldMapper.selectByInOutGold(map);
         return list;
 	}

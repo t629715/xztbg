@@ -15,7 +15,13 @@
 	<!--黄金赎回查询开始-htt-->
 	<select id="selectByGoldRedeem" resultType="java.util.Map" parameterType="java.util.Map">
 	    SELECT  cast(r.id as CHAR) id, cast(r.user_id as CHAR) userId,r.gram,r.price,r.amount,r.create_time createTme,r.poundage,
-		u.UserName userName, cast(r.channel_id as CHAR) AS channelId, ua.user_name AS channelName 
+		<if test='isView == "1"'>
+			u.UserName userName,
+		</if>
+		<if test='isView != "1"'>
+			INSERT(u.UserName, 4, 4, '****') userName,
+		</if>
+		cast(r.channel_id as CHAR) AS channelId, ua.user_name AS channelName 
 		FROM gold_redeem r 
 		LEFT JOIN User_Login u ON r.user_id = u.UserID
 		LEFT JOIN User_Info i ON u.UserID = i.UserID

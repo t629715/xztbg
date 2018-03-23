@@ -85,9 +85,14 @@ public class UserRechargeController {
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
+            	String isView = "0";
+		        if (role != null && role.get("roleIsView") != null) {
+		            isView = role.get("roleIsView").toString();
+		        }
                 PageInfo<Map<String, Object>> pageInfo = userRechargeService.selectByRecharge(userName, startTime, endTime, 
-                		agentName, brokerName, rechargechannel, status, pageNum, pageSize);
+                		agentName, brokerName, rechargechannel, status, isView, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
@@ -146,9 +151,14 @@ public class UserRechargeController {
             String excelName = "现金充值";
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
+            	String isView = "0";
+		        if (role != null && role.get("roleIsView") != null) {
+		            isView = role.get("roleIsView").toString();
+		        }
                 String agentNameStr = agentName;
-                List<Map<String, Object>> list = userRechargeService.excelRecharge(userName, startTime, endTime, agentNameStr, brokerName, rechargechannel, status);
+                List<Map<String, Object>> list = userRechargeService.excelRecharge(userName, startTime, endTime, agentNameStr, brokerName, rechargechannel, status, isView);
                 if (list != null && list.size() > 0) {
                     for (Map<String, Object> map : list) {
                     	Object RMBAmtObj =  map.get("RMBAmt");

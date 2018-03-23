@@ -48,7 +48,7 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
      */
     public PageInfo<Map<String, Object>> selectByDealOrder(String userName, String orderNo, String startTime, String endTime, 
     		String regStartTime, String regEndTime, String agentName, String brokerName, Integer orderState, Integer isUseCard,
-    		String upOrDown, Integer pageNum, Integer pageSize) {
+    		String upOrDown, String isView, Integer pageNum, Integer pageSize) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("orderNo", orderNo);
@@ -61,6 +61,7 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
         map.put("orderState", orderState);
         map.put("isUseCard", isUseCard);
         map.put("upOrDown", upOrDown);
+        map.put("isView", isView);
         PageHelper.startPage(pageNum,pageSize);
         List<Map<String, Object>> list = dealOrderMapper.selectByDealOrder(map);
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
@@ -82,7 +83,7 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
      */
     public List<Map<String, Object>> excelDealOrderMessage(String userName, String orderNo, String startTime, String endTime, 
     		String regStartTime, String regEndTime, String agentName, String brokerName, 
-    		Integer orderState, Integer isUseCard, String upOrDown) {
+    		Integer orderState, Integer isUseCard, String upOrDown, String isView) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("orderNo", orderNo);
@@ -95,6 +96,7 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
         map.put("orderState", orderState);
         map.put("isUseCard", isUseCard);
         map.put("upOrDown", upOrDown);
+        map.put("isView", isView);
         List<Map<String, Object>> list = dealOrderMapper.selectByDealOrder(map);
 
 

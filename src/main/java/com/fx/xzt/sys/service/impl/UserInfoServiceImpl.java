@@ -205,11 +205,12 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 	 * @return
 	 */
 	@Override
-	public PageInfo<Map<String,Object>> getSubClients(String userName, String agentName, String brokerName, Integer pageNum, Integer pageSize) {
+	public PageInfo<Map<String,Object>> getSubClients(String userName, String agentName, String brokerName, String isView , Integer pageNum, Integer pageSize) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
 		map.put("agentName", agentName);
 		map.put("brokerName", brokerName);
+		map.put("isView", isView);
 		PageHelper.startPage(pageNum,pageSize);
 		List<Map<String, Object>> list = userInfoMapper.getSubClients(map);
 		for (Map m:list){
@@ -226,11 +227,12 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 	 * @return
 	 */
 	@Override
-	public List<Map<String, Object>> getExcelSubClientsAccount(String userName, String agentName, String brokerName) {
+	public List<Map<String, Object>> getExcelSubClientsAccount(String userName, String agentName, String brokerName, String isView) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
 		map.put("agentName", agentName);
 		map.put("brokerName", brokerName);
+		map.put("isView", isView);
 		List<Map<String, Object>> list = userInfoMapper.getSubClients(map);
 
 		return list;
