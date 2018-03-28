@@ -35,9 +35,16 @@
 
     <!--金权交易开始-htt-->
     <select id="selectByDealOrder" resultType="java.util.Map" parameterType="java.util.Map">
-      SELECT o.id id, o.order_no orderNo, o.user_id userID, u.UserName userName,i.RegisterTime registerTime,
+      SELECT o.id id, o.order_no orderNo, o.user_id userID, 
+      <if test='isView == "1"'>
+		u.UserName userName,
+	  </if>
+	  <if test='isView != "1"'>
+		INSERT(u.UserName, 4, 4, '****') userName,
+	  </if>
+      i.RegisterTime registerTime,
       o.agent_id AS agentId, ua.user_name AS agentName, o.broker_id AS brokerId, ub.user_name AS brokerName ,
-      o.product_id productId, c.name productName,c.point_count pointCount,
+      o.product_id productId, c.name productName,
       o.up_or_down upOrDown, o.hand_number handNumber,
       o.ensure_amount ensureAmount, o.point_count pointCount,o.open_position_price openPositionPrice, 
       o.close_position_price closePositionPrice,

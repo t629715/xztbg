@@ -84,8 +84,13 @@ public class InOutGoldController {
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
-                PageInfo<Map<String, Object>> pageInfo = inOutGoldService.selectByInOutGold(userName, agentName, brokerName, pageNum, pageSize);
+            	String isView = "0";
+		        if (role != null && role.get("roleIsView") != null) {
+		            isView = role.get("roleIsView").toString();
+		        }
+                PageInfo<Map<String, Object>> pageInfo = inOutGoldService.selectByInOutGold(userName, agentName, brokerName, isView, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
@@ -140,12 +145,17 @@ public class InOutGoldController {
             String excelName = "出入金查询";
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
+            	String isView = "0";
+		        if (role != null && role.get("roleIsView") != null) {
+		            isView = role.get("roleIsView").toString();
+		        }
                 String agentNameStr = agentName;
                 if (users.getPid() != null &&  users.getPid() == 1) {
                     agentNameStr = users.getUserName();
                 }
-                List<Map<String, Object>> list = inOutGoldService.excelInOutGold(userName, agentNameStr, brokerName);
+                List<Map<String, Object>> list = inOutGoldService.excelInOutGold(userName, agentNameStr, brokerName, isView);
                 if (list != null && list.size() > 0) {
                     for (Map<String, Object> map : list) {
                     	Object registerTimeObj = map.get("registerTime");

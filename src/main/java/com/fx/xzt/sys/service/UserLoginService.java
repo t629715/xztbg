@@ -27,12 +27,13 @@ public interface UserLoginService extends IService<UserLogin>{
 	 * @param agentsName 代理商用户名
 	 * @param brokerName 经纪人用户名
 	 * @param attribution 归属地
+	 * @param isView 是否允许查看全部用户名；0：否；1：是
 	 * @return
 	 */
 	PageInfo<Map<String, Object>> getByRegisterMessage(String userName, String startTime, String endTime,
 									   String registerFrom, String registerIp, String lastStartTime,
 									   String lastEndTime, String lastLoginFrom, String agentName,
-									   String brokerName, String attribution, Integer pageNum,
+									   String brokerName, String attribution, String isView, Integer pageNum,
 									   Integer pageSize);
 
 	/**
@@ -48,12 +49,13 @@ public interface UserLoginService extends IService<UserLogin>{
 	 * @param agentsName 代理商用户名
 	 * @param brokerName 经纪人用户名
 	 * @param attribution 归属地
+	 * @param isView 是否允许查看全部用户名；0：否；1：是
 	 * @return
 	 */
 	List<Map<String, Object>> getExcelByRegister(String userName, String startTime, String endTime,
 													String registerFrom, String registerIp, String lastStartTime,
 													String lastEndTime, String lastLoginFrom,
-													String agentsName, String brokerName, String attribution);
+													String agentsName, String brokerName, String attribution, String isView);
 	
 	/**
 	 * 

@@ -32,7 +32,7 @@ public class UserVoucherServiceImpl extends BaseService<UserVoucher> implements 
 	 * 优惠券查询
 	 */
 	public PageInfo<Map<String, Object>> selectByUserVoucher(String userName, String startTime, String endTime, String useStartTime,
-			String useEndTime, String agentName, String brokerName, Integer useState, Integer pageNum, Integer pageSize) {
+			String useEndTime, String agentName, String brokerName, Integer useState, String isView, Integer pageNum, Integer pageSize) {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("startTime", startTime);
@@ -42,6 +42,7 @@ public class UserVoucherServiceImpl extends BaseService<UserVoucher> implements 
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         map.put("useStatus", useState);
+        map.put("isView", isView);
         PageHelper.startPage(pageNum,pageSize);
         List<Map<String, Object>> list = userVoucherMapper.selectByUserVoucher(map);
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
@@ -52,7 +53,7 @@ public class UserVoucherServiceImpl extends BaseService<UserVoucher> implements 
 	 * 优惠券查询导出
 	 */
 	public List<Map<String, Object>> excelUserVoucher(String userName, String startTime, String endTime, String useStartTime,
-			String useEndTime, String agentName, String brokerName, Integer useState) {
+			String useEndTime, String agentName, String brokerName, Integer useState, String isView) {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("startTime", startTime);
@@ -62,6 +63,7 @@ public class UserVoucherServiceImpl extends BaseService<UserVoucher> implements 
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         map.put("useState", useState);
+        map.put("isView", isView);
         List<Map<String, Object>> list = userVoucherMapper.selectByUserVoucher(map);
         return list;
 	}

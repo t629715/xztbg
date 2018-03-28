@@ -125,7 +125,7 @@ public class UserWithdrawCashServiceImpl extends BaseService<UserWithdrawCash> i
 	 */
 	public PageInfo<Map<String, Object>> selectByWithdrawCash(String userName,
 			String startTime, String endTime, String agentName,
-			String brokerName, Integer status, Integer pageNum, Integer pageSize) {
+			String brokerName, Integer status, String isView, Integer pageNum, Integer pageSize) {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("startTime", startTime);
@@ -133,6 +133,7 @@ public class UserWithdrawCashServiceImpl extends BaseService<UserWithdrawCash> i
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         map.put("status", status);
+        map.put("isView", isView);
         PageHelper.startPage(pageNum,pageSize);
         List<Map<String, Object>> list = userWithdrawCashMapper.selectByWithdrawCash(map);
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
@@ -144,7 +145,7 @@ public class UserWithdrawCashServiceImpl extends BaseService<UserWithdrawCash> i
 	 */
 	public List<Map<String, Object>> excelWithdrawCash(String userName,
 			String startTime, String endTime, String agentName,
-			String brokerName, Integer status) {
+			String brokerName, Integer status, String isView) {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("startTime", startTime);
@@ -152,6 +153,7 @@ public class UserWithdrawCashServiceImpl extends BaseService<UserWithdrawCash> i
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         map.put("status", status);
+        map.put("isView", isView);
         List<Map<String, Object>> list = userWithdrawCashMapper.selectByWithdrawCash(map);
         return list;
 	}

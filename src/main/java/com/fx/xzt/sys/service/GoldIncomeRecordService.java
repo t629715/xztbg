@@ -25,6 +25,7 @@ public interface GoldIncomeRecordService {
 	* @param agentName 代理商用户名
 	* @param brokerName 经纪人用户名
 	* @param type 类型1：昨天；2：近7天；3：本月；4：上个月
+	 * @param isView 
 	* @param pageNum
 	* @param pageSize
 	* @return    设定文件 
@@ -34,7 +35,7 @@ public interface GoldIncomeRecordService {
 	 */
     PageInfo<Map<String, Object>> selectByGoldIncome(String userName, String startTime, String endTime, 
     		String startTypeTime, String endTypeTime, String agentName, String brokerName, 
-    		Integer type, Integer pageNum, Integer pageSize);
+    		Integer type, String isView, Integer pageNum, Integer pageSize);
     
     /**
      * 
@@ -46,13 +47,14 @@ public interface GoldIncomeRecordService {
     * @param agentName 代理商用户名
     * @param brokerName 经纪人用户名
     * @param type 类型1：昨天；2：近7天；3：本月；4：上个月
+     * @param isView 
     * @return    设定文件 
     * @return List<Map<String,Object>>    返回类型 
     * @throws 
     * @author htt
      */
     List<Map<String, Object>> excelGoldIncome(String userName, String startTime, String endTime, 
-    		String startTypeTime, String endTypeTime, String agentName, String brokerName, Integer type);
+    		String startTypeTime, String endTypeTime, String agentName, String brokerName, Integer type, String isView);
     
     /**
      * 

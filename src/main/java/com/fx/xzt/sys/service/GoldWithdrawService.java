@@ -25,6 +25,7 @@ public interface GoldWithdrawService {
 	* @param agentName   代理商账号
 	* @param brokerName  经纪人账号
 	* @param status  状态1:未发货2:已发货
+	 * @param isView 
 	* @param pageNum  页数
 	* @param pageSize 条数
 	* @return    设定文件 
@@ -33,7 +34,7 @@ public interface GoldWithdrawService {
 	* @author htt
 	 */
     PageInfo<Map<String, Object>> selectByGoldWithdraw(String userName, String startTime, String endTime, 
-    		String agentName, String brokerName, Integer status, Integer pageNum, Integer pageSize);
+    		String agentName, String brokerName, Integer status, String isView, Integer pageNum, Integer pageSize);
     
     /**
      * 
@@ -45,13 +46,14 @@ public interface GoldWithdrawService {
     * @param agentName 代理商账号
     * @param brokerName  经纪人账号
     * @param status 状态1:未发货2:已发货
+     * @param isView 
     * @return    设定文件 
     * @return List<Map<String,Object>>    返回类型 
     * @throws 
     * @author htt
      */
     List<Map<String, Object>> excelGoldWithdraw(String userName, String startTime, String endTime, 
-    		String agentName, String brokerName, Integer status);
+    		String agentName, String brokerName, Integer status, String isView);
     
     /**
      * 

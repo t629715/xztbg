@@ -33,7 +33,7 @@ public class GoldWithdrawServiceImpl extends BaseService<GoldWithdraw> implement
 	 */
 	public PageInfo<Map<String, Object>> selectByGoldWithdraw(String userName,
 			String startTime, String endTime, String agentName,
-			String brokerName, Integer status, Integer pageNum, Integer pageSize) {
+			String brokerName, Integer status, String isView, Integer pageNum, Integer pageSize) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("userName", userName);
         map.put("startTime", startTime);
@@ -41,6 +41,7 @@ public class GoldWithdrawServiceImpl extends BaseService<GoldWithdraw> implement
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         map.put("status", status);
+        map.put("isView", isView);
         PageHelper.startPage(pageNum,pageSize);
         List<Map<String, Object>> list = goldWithdrawMapper.selectByGoldWithdraw(map);
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
@@ -52,7 +53,7 @@ public class GoldWithdrawServiceImpl extends BaseService<GoldWithdraw> implement
 	 */
 	public List<Map<String, Object>> excelGoldWithdraw(String userName,
 			String startTime, String endTime, String agentName,
-			String brokerName, Integer status) {
+			String brokerName, Integer status, String isView) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("userName", userName);
         map.put("startTime", startTime);
@@ -60,6 +61,7 @@ public class GoldWithdrawServiceImpl extends BaseService<GoldWithdraw> implement
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         map.put("status", status);
+        map.put("isView", isView);
         List<Map<String, Object>> list = goldWithdrawMapper.selectByGoldWithdraw(map);
         return list;
 	}

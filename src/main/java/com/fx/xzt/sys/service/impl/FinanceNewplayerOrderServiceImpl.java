@@ -31,7 +31,7 @@ public class FinanceNewplayerOrderServiceImpl extends BaseService<FinanceNewplay
      */
 	public PageInfo<Map<String, Object>> selectByAll(String userName, String orderNo, String startTime, String endTime,
 			String regStartTime, String regEndTime, String agentName, String brokerName, String status, String type,
-			String redeemStartTime, String redeemEndTime, Integer pageNum, Integer pageSize) {
+			String redeemStartTime, String redeemEndTime, String isView, Integer pageNum, Integer pageSize) {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("orderNo", orderNo);
@@ -45,6 +45,7 @@ public class FinanceNewplayerOrderServiceImpl extends BaseService<FinanceNewplay
         map.put("type", type);
         map.put("redeemStartTime", redeemStartTime);
         map.put("redeemEndTime", redeemEndTime);
+        map.put("isView", isView);
         PageHelper.startPage(pageNum,pageSize);
         List<Map<String, Object>> list = orderMapper.selectByAll(map);
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
@@ -55,7 +56,7 @@ public class FinanceNewplayerOrderServiceImpl extends BaseService<FinanceNewplay
 	 * 导出
 	 */
 	public List<Map<String, Object>> excelAll(String userName, String orderNo, String startTime, String endTime, String regStartTime,
-			String regEndTime, String agentName, String brokerName, String status, String type, String redeemStartTime, String redeemEndTime) {
+			String regEndTime, String agentName, String brokerName, String status, String type, String redeemStartTime, String redeemEndTime, String isView) {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("orderNo", orderNo);
@@ -69,6 +70,7 @@ public class FinanceNewplayerOrderServiceImpl extends BaseService<FinanceNewplay
         map.put("type", type);
         map.put("redeemStartTime", redeemStartTime);
         map.put("redeemEndTime", redeemEndTime);
+        map.put("isView", isView);
         List<Map<String, Object>> list = orderMapper.selectByAll(map);
         return list;
 	}

@@ -98,13 +98,14 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		return -1;
 	}
 
-	public PageInfo<Map<String, Object>> getByAccountMessage(String userName,String agentsName, String brokerName,String startTime,String endTime,Integer pageNum,Integer pageSize) {
+	public PageInfo<Map<String, Object>> getByAccountMessage(String userName,String agentsName, String brokerName,String startTime,String endTime, String isView, Integer pageNum,Integer pageSize) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
 		map.put("agentsName", agentsName);
 		map.put("brokerName", brokerName);
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
+		map.put("isView", isView);
 		PageHelper.startPage(pageNum,pageSize);
 		List<Map<String, Object>> list = userInfoMapper.getByAccountMessage(map);
 		return new PageInfo<Map<String, Object>>(list);
@@ -120,13 +121,14 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 	 * @param pageSize
 	 * @return
 	 */
-	public PageInfo<Map<String, Object>> getByRealNameAuth(String userName, String realName, String applyTimeStart, String applyTimeEnd, Integer pageNum,
+	public PageInfo<Map<String, Object>> getByRealNameAuth(String userName, String realName, String applyTimeStart, String applyTimeEnd, String isView , Integer pageNum,
 											  Integer pageSize) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
 		map.put("realName", realName);
 		map.put("applyTimeStart", applyTimeStart);
 		map.put("applyTimeEnd", applyTimeEnd);
+		map.put("isView", isView);
 		PageHelper.startPage(pageNum,pageSize);
 		List<Map<String, Object>> list = userInfoMapper.getByRealNameAuth(map);
 		PageInfo<Map<String, Object>> pagehelper = new PageInfo<Map<String, Object>>(list);
@@ -144,13 +146,14 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 	 * @return
 	 */
 	public PageInfo<Map<String, Object>> getByRealNameAuthApprove(String userName, String realName, String state, 
-			String applyTimeStart, String applyTimeEnd, Integer pageNum, Integer pageSize) {
+			String applyTimeStart, String applyTimeEnd, String isView , Integer pageNum, Integer pageSize) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
 		map.put("realName", realName);
 		map.put("state", state);
 		map.put("applyTimeStart", applyTimeStart);
 		map.put("applyTimeEnd", applyTimeEnd);
+		map.put("isView", isView);
 		PageHelper.startPage(pageNum,pageSize);
 		List<Map<String, Object>> list = userInfoMapper.getByRealNameAuthApprove(map);
 		PageInfo<Map<String, Object>> pagehelper = new PageInfo<Map<String, Object>>(list);
@@ -166,13 +169,14 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 	 * @param endTime  注册结束时间
 	 * @return
 	 */
-	public List<Map<String, Object>> getExcelAccount(String userName, String agentsName, String brokerName, String startTime, String endTime) {
+	public List<Map<String, Object>> getExcelAccount(String userName, String agentsName, String brokerName, String startTime, String endTime, String isView) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
 		map.put("agentsName", agentsName);
 		map.put("brokerName", brokerName);
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
+		map.put("isView", isView);
 		List<Map<String, Object>> list = userInfoMapper.getByAccountMessage(map);
 		return list;
 	}
@@ -201,11 +205,12 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 	 * @return
 	 */
 	@Override
-	public PageInfo<Map<String,Object>> getSubClients(String userName, String agentName, String brokerName, Integer pageNum, Integer pageSize) {
+	public PageInfo<Map<String,Object>> getSubClients(String userName, String agentName, String brokerName, String isView , Integer pageNum, Integer pageSize) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
 		map.put("agentName", agentName);
 		map.put("brokerName", brokerName);
+		map.put("isView", isView);
 		PageHelper.startPage(pageNum,pageSize);
 		List<Map<String, Object>> list = userInfoMapper.getSubClients(map);
 		for (Map m:list){
@@ -222,11 +227,12 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 	 * @return
 	 */
 	@Override
-	public List<Map<String, Object>> getExcelSubClientsAccount(String userName, String agentName, String brokerName) {
+	public List<Map<String, Object>> getExcelSubClientsAccount(String userName, String agentName, String brokerName, String isView) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
 		map.put("agentName", agentName);
 		map.put("brokerName", brokerName);
+		map.put("isView", isView);
 		List<Map<String, Object>> list = userInfoMapper.getSubClients(map);
 
 		return list;

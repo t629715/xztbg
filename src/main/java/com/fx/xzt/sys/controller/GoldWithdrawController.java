@@ -88,8 +88,13 @@ public class GoldWithdrawController {
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
-                PageInfo<Map<String, Object>> pageInfo = goldWithdrawService.selectByGoldWithdraw(userName, startTime, endTime, agentName, brokerName, status, pageNum, pageSize);
+            	String isView = "0";
+		        if (role != null && role.get("roleIsView") != null) {
+		            isView = role.get("roleIsView").toString();
+		        }
+                PageInfo<Map<String, Object>> pageInfo = goldWithdrawService.selectByGoldWithdraw(userName, startTime, endTime, agentName, brokerName, status, isView, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
@@ -146,9 +151,14 @@ public class GoldWithdrawController {
             String excelName = "黄金提取记录";
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
+            	String isView = "0";
+		        if (role != null && role.get("roleIsView") != null) {
+		            isView = role.get("roleIsView").toString();
+		        }
                 List<Map<String, Object>> list = goldWithdrawService.excelGoldWithdraw(userName, startTime, endTime, 
-                		agentName, brokerName, status);
+                		agentName, brokerName, status, isView);
                 if (list != null && list.size() > 0) {
                     for (Map<String, Object> map : list) {
                     	Object insuranceObj =  map.get("insurance");

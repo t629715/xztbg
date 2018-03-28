@@ -15,10 +15,10 @@ import java.util.Map;
 public interface FinanceOrderService {
 
     PageInfo<Map<String, Object>> selectByFinanceOrder(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime,
-    		String redeemStartTime, String redeemEndTime, String agentName, String brokerName, Integer status, Integer type, String nper, Integer pageNum, Integer pageSize);
+    		String redeemStartTime, String redeemEndTime, String agentName, String brokerName, Integer status, Integer type, String nper, String isView, Integer pageNum, Integer pageSize);
 
     List<Map<String, Object>> excelFinanceOrder(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime,
-    		String redeemStartTime, String redeemEndTime, String agentName, String brokerName, Integer status, Integer type, String nper) throws ParseException;
+    		String redeemStartTime, String redeemEndTime, String agentName, String brokerName, Integer status, Integer type, String nper, String isView) throws ParseException;
 
     Map<String, Object> selectByFinanceOrderCount( String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime,
     		String redeemStartTime, String redeemEndTime, String agentName, String brokerName, Integer status, Integer type, String nper);
@@ -48,7 +48,7 @@ public interface FinanceOrderService {
     * @author htt
      */
     PageInfo<Map<String, Object>> selectByGoldFinanceOrder(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime,
-    		String redeemStartTime, String redeemEndTime, String agentName, String brokerName, Integer status, Integer type, String nper, Integer pageNum, Integer pageSize);
+    		String redeemStartTime, String redeemEndTime, String agentName, String brokerName, Integer status, Integer type, String nper, String isView, Integer pageNum, Integer pageSize);
 
     /**
      * 
@@ -67,6 +67,7 @@ public interface FinanceOrderService {
     * @param status 状态1：持有中；2：已赎回
     * @param type 1：理财；2：黄金理财
     * @param nper 周期
+     * @param isView 
     * @return
     * @throws ParseException    设定文件 
     * @return List<Map<String,Object>>    返回类型 
@@ -74,7 +75,7 @@ public interface FinanceOrderService {
     * @author htt
      */
     List<Map<String, Object>> excelGoldFinanceOrder(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime,
-    		String redeemStartTime, String redeemEndTime, String agentName, String brokerName, Integer status, Integer type, String nper) throws ParseException;
+    		String redeemStartTime, String redeemEndTime, String agentName, String brokerName, Integer status, Integer type, String nper, String isView) throws ParseException;
     
     /**
      * 

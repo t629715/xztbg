@@ -11,7 +11,13 @@
 		o.end_day endDay, o.send_day sendDay,
 		o.settle_method settleMethod,o.allocation_method allocationMethod, o.type, o.sell_amount sellAmount, 
 		o.risk_type riskType, o.estimate_percent estimatePercent,o.gram,
-		u.UserName userName, i.RegisterTime  registerTime,
+		<if test='isView == "1"'>
+			u.UserName userName,
+		</if>
+		<if test='isView != "1"'>
+			INSERT(u.UserName, 4, 4, '****') userName,
+		</if>
+		i.RegisterTime  registerTime,
     	o.agent_id AS agentId, ua.user_name AS agentName, o.broker_id AS brokerId, ub.user_name AS brokerName 
  		from finance_newplayer_order o
 	  LEFT JOIN User_Login u ON o.user_id = u.UserID

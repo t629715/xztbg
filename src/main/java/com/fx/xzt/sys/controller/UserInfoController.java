@@ -176,9 +176,14 @@ public class UserInfoController {
 		try {
 			HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
 			 if (users != null) {
+				 String isView = "0";
+		         if (role != null && role.get("roleIsView") != null) {
+		              isView = role.get("roleIsView").toString();
+		          }
 				  PageInfo<Map<String, Object>> pageInfo = userLoginService.getByRegisterMessage(userName, startTime, endTime, registerFrom, registerIp,
-							lastStartTime, lastEndTime, lastLoginFrom, agentName, brokerName, attribution, pageNum, pageSize);
+							lastStartTime, lastEndTime, lastLoginFrom, agentName, brokerName, attribution, isView, pageNum, pageSize);
 					cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 					cr.setData(pageInfo);
 					cr.setMsg("操作成功！");
@@ -306,9 +311,14 @@ public class UserInfoController {
 		try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
+            	String isView = "0";
+		         if (role != null && role.get("roleIsView") != null) {
+		              isView = role.get("roleIsView").toString();
+		          }
             	List<Map<String, Object>> list = userLoginService.getExcelByRegister(userName,startTime,endTime,registerFrom,registerIp,lastStartTime,
-        				lastEndTime,lastLoginFrom,agentsName,brokerName,attribution);
+        				lastEndTime,lastLoginFrom,agentsName,brokerName,attribution, isView);
         		if (list != null && !list.isEmpty()) {
         			for (Map<String, Object> u : list) {
         				String name = ConstantUtil.userStatus.toMap().get(u.get("Status").toString());
@@ -358,6 +368,7 @@ public class UserInfoController {
 		try {
 			HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
             	//获取图片地址
             	ConfigParam configParam = configParamService.selectConfigParamByKey(ConstantUtil.PHOTO_URL);
@@ -365,7 +376,13 @@ public class UserInfoController {
             	if (configParam != null) {
             		purl = configParam.getParamValue();
             	}
-            	PageInfo<Map<String, Object>> pageInfo = userInfoService.getByRealNameAuth(userName, realName, applyTimeStart, applyTimeEnd, pageNum, pageSize);
+            	
+            	String isView = "0";
+		         if (role != null && role.get("roleIsView") != null) {
+		              isView = role.get("roleIsView").toString();
+		          }
+            	
+            	PageInfo<Map<String, Object>> pageInfo = userInfoService.getByRealNameAuth(userName, realName, applyTimeStart, applyTimeEnd, isView, pageNum, pageSize);
             	List<Map<String, Object>> list = pageInfo.getList();
     			/*if (list != null && list.size() > 0) {
     				for (Map<String, Object> map : list) {
@@ -427,6 +444,7 @@ public class UserInfoController {
 		try {
 			HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
             	//获取图片地址
             	ConfigParam configParam = configParamService.selectConfigParamByKey(ConstantUtil.PHOTO_URL);
@@ -434,7 +452,13 @@ public class UserInfoController {
             	if (configParam != null) {
             		purl = configParam.getParamValue();
             	}
-            	PageInfo<Map<String, Object>> pageInfo = userInfoService.getByRealNameAuthApprove(userName, realName, state, applyTimeStart, applyTimeEnd, pageNum, pageSize);
+            	
+            	String isView = "0";
+		         if (role != null && role.get("roleIsView") != null) {
+		              isView = role.get("roleIsView").toString();
+		          }
+            	
+            	PageInfo<Map<String, Object>> pageInfo = userInfoService.getByRealNameAuthApprove(userName, realName, state, applyTimeStart, applyTimeEnd, isView, pageNum, pageSize);
             	List<Map<String, Object>> list = pageInfo.getList();
     			if (list != null && list.size() > 0) {
     				for (Map<String, Object> map : list) {
@@ -489,8 +513,13 @@ public class UserInfoController {
 		try {
 			HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
 			 if (users != null) {
-				 PageInfo<Map<String, Object>> pageInfo = userInfoService.getByAccountMessage(userName, agentsName, brokerName, startTime, endTime, pageNum, pageSize);
+				 String isView = "0";
+		         if (role != null && role.get("roleIsView") != null) {
+		              isView = role.get("roleIsView").toString();
+		          }
+				 PageInfo<Map<String, Object>> pageInfo = userInfoService.getByAccountMessage(userName, agentsName, brokerName, startTime, endTime, isView, pageNum, pageSize);
 					cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 					cr.setData(pageInfo);
 					cr.setMsg("操作成功！");
@@ -533,8 +562,13 @@ public class UserInfoController {
 		try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
-        		List<Map<String, Object>> list = userInfoService.getExcelAccount(userName,agentsName, brokerName,startTime,endTime);
+            	String isView = "0";
+		        if (role != null && role.get("roleIsView") != null) {
+		        	isView = role.get("roleIsView").toString();
+		        }
+        		List<Map<String, Object>> list = userInfoService.getExcelAccount(userName,agentsName, brokerName,startTime,endTime, isView);
         		POIUtils poi = new POIUtils();
         		String[] heads = {"用户账号","昵称","姓名","注册时间","代理商","经纪人","身份证号","银行卡","人民币余额","人民币冻结","人民币理财","利息","黄金"};
         		String[] colums = {"userName","nickName","realname","registertime","agentName","brokerName","idcard","accountNum","rmb","frozenRmb","finance","totalIncome","gold"};
@@ -614,9 +648,14 @@ public class UserInfoController {
 		try {
 			HttpSession httpSession = request.getSession();
 			Users users = (Users) httpSession.getAttribute("currentUser");
+			Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
 			if (users != null){
 				agentsName = users.getUserName();
-				PageInfo<Map<String, Object>> pageInfo = userInfoService.getSubClients(userName, agentsName, brokerName, pageNum, pageSize);
+				String isView = "0";
+		        if (role != null && role.get("roleIsView") != null) {
+		            isView = role.get("roleIsView").toString();
+		        }
+				PageInfo<Map<String, Object>> pageInfo = userInfoService.getSubClients(userName, agentsName, brokerName, isView, pageNum, pageSize);
 				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 				cr.setData(pageInfo);
 				cr.setMsg("操作成功！");
@@ -643,9 +682,14 @@ public class UserInfoController {
 	public void excelSubClients(HttpServletRequest request, HttpServletResponse response,String userName,String agentName, String brokerName,String startTime,String endTime){
 		HttpSession httpSession = request.getSession();
 		Users users = (Users) httpSession.getAttribute("currentUser");
+		Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
 		if (users != null){
 			agentName = users.getUserName();
-			List<Map<String, Object>> list = userInfoService.getExcelSubClientsAccount(userName,agentName, brokerName);
+			String isView = "0";
+	        if (role != null && role.get("roleIsView") != null) {
+	            isView = role.get("roleIsView").toString();
+	        }
+			List<Map<String, Object>> list = userInfoService.getExcelSubClientsAccount(userName,agentName, brokerName, isView);
 			POIUtils poi = new POIUtils();
 			String[] heads = {"用户账号","代理商","经纪人","人民币余额","人民币冻结","人民币理财","利息","黄金"};
 			String[] colums = {"userName","agentName","brokerName","rmb","frozenRmb","finance","totalIncome","gold"};

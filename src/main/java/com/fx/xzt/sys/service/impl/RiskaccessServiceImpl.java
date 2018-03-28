@@ -40,13 +40,14 @@ public class RiskaccessServiceImpl extends BaseService<Riskaccess> implements Ri
      * @return
      */
 
-    public PageInfo<Map<String, Object>> getByRiskaccessAll(String userName, String realName, String startTime, String endTime, String accessLevel, Integer pageNum, Integer pageSize) {
+    public PageInfo<Map<String, Object>> getByRiskaccessAll(String userName, String realName, String startTime, String endTime, String accessLevel, String isView, Integer pageNum, Integer pageSize) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("realName", realName);
         map.put("startTime", startTime);
         map.put("endTime", endTime);
         map.put("accessLevel", accessLevel);
+        map.put("isView", isView);
         PageHelper.startPage(pageNum,pageSize);
         List<Map<String, Object>> list = riskaccessMapper.selectByRiskaccessAll(map);
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<Map<String, Object>>(list);

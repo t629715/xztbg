@@ -22,6 +22,7 @@ public interface InOutGoldService {
 	* @param userName  用户账号
 	* @param agentName  代理商账号
 	* @param brokerName 经纪人账号
+	 * @param isView 
 	* @param pageNum 页数
 	* @param pageSize 条数
 	* @return    设定文件 
@@ -30,7 +31,7 @@ public interface InOutGoldService {
 	* @author htt
 	 */
 	PageInfo<Map<String, Object>> selectByInOutGold(String userName, String agentName, String brokerName, 
-			Integer pageNum, Integer pageSize);
+			String isView, Integer pageNum, Integer pageSize);
 	
 	/**
 	 * 
@@ -39,12 +40,13 @@ public interface InOutGoldService {
 	* @param userName  用户账号
 	* @param agentName 代理商账号
 	* @param brokerName 经纪人账号
+	 * @param isView 
 	* @return    设定文件 
 	* @return List<Map<String,Object>>    返回类型 
 	* @throws 
 	* @author htt
 	 */
-	List<Map<String, Object>> excelInOutGold(String userName, String agentName, String brokerName);
+	List<Map<String, Object>> excelInOutGold(String userName, String agentName, String brokerName, String isView);
 	
 	/**
 	 * 

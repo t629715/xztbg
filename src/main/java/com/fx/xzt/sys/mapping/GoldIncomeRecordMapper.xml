@@ -14,7 +14,14 @@
 
 	<!-- 黄金收益结算查询开始-htt -->
 	<select id="selectByGoldIncome" resultType="java.util.Map" parameterType="java.util.Map">
-		SELECT r.id, u.UserName userName, r.user_id userId,r.income,r.total_incom totalIncom,r.create_time createTime,
+		SELECT r.id, 
+		<if test='isView == "1"'>
+			u.UserName userName,
+		</if>
+		<if test='isView != "1"'>
+			INSERT(u.UserName, 4, 4, '****') userName,
+		</if>
+		r.user_id userId,r.income,r.total_incom totalIncom,r.create_time createTime,
 		r.gram gram,r.price price,r.income_percent incomePercent ,
 		r.agent_id AS agentId, ua.user_name AS agentName, r.broker_id AS brokerId, ub.user_name AS brokerName
 		FROM gold_income_record r

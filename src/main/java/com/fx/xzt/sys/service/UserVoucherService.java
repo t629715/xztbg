@@ -27,6 +27,7 @@ public interface UserVoucherService {
 	* @param agentName    运营商用户名
 	* @param brokerName   经纪人用户名
 	* @param useState  使用状态
+	 * @param isView 
 	* @param pageNum
 	* @param pageSize
 	* @return    设定文件 
@@ -35,7 +36,7 @@ public interface UserVoucherService {
 	* @author htt
 	 */
     PageInfo<Map<String, Object>> selectByUserVoucher(String userName, String startTime, String endTime, String useStartTime, String useEndTime, 
-    		String agentName, String brokerName, Integer useState, Integer pageNum, Integer pageSize);
+    		String agentName, String brokerName, Integer useState, String isView, Integer pageNum, Integer pageSize);
 
    /**
     * 
@@ -55,7 +56,7 @@ public interface UserVoucherService {
    * @author htt
     */
     List<Map<String, Object>> excelUserVoucher(String userName, String startTime, String endTime, String useStartTime, String useEndTime, 
-    		String agentName, String brokerName, Integer useState);
+    		String agentName, String brokerName, Integer useState, String isView);
 
 
 }

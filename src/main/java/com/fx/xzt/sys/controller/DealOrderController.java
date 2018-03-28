@@ -1,5 +1,7 @@
 package com.fx.xzt.sys.controller;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -79,13 +81,18 @@ public class DealOrderController {
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
                 String agentNameStr = agentName;
+                String isView = "0";
+		        if (role != null && role.get("roleIsView") != null) {
+		            isView = role.get("roleIsView").toString();
+		        }
                 if (users.getPid() != null &&  users.getPid() == 1) {
                     agentNameStr = users.getId().toString();
                 }
                 PageInfo<Map<String, Object>> pageInfo = dealOrderService.selectByDealOrder(userName, orderNo, startTime, endTime, 
-                		regStartTime, regEndTime, agentNameStr, brokerName, orderState, isUseCard, upOrDown, pageNum, pageSize);
+                		regStartTime, regEndTime, agentNameStr, brokerName, orderState, isUseCard, upOrDown, isView, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
@@ -143,15 +150,33 @@ public class DealOrderController {
             String excelName = "金权交易";
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
+            	String isView = "0";
+		        if (role != null && role.get("roleIsView") != null) {
+		            isView = role.get("roleIsView").toString();
+		        }
                 String agentNameStr = agentName;
                 if (users.getPid() != null &&  users.getPid() == 1) {
                     agentNameStr = users.getId().toString();
                 }
                 List<Map<String, Object>> list = dealOrderService.excelDealOrderMessage(userName, orderNo, startTime, endTime, 
-                		regStartTime, regEndTime, agentNameStr, brokerName, orderState, isUseCard, upOrDown);
+                		regStartTime, regEndTime, agentNameStr, brokerName, orderState, isUseCard, upOrDown, isView);
                 if (list != null && list.size() > 0) {
+                    DecimalFormat df = new DecimalFormat("0.00");
+                    df.setRoundingMode(RoundingMode.HALF_UP);
                     for (Map<String, Object> map : list) {
+                        if (map.get("upOrDown").toString().equals("0")){
+                            if (map.get("openPositionPrice") != null && map.get("pointCount") != null){
+                                Double openPositionPrice = (Double) map.get("openPositionPrice")+(Double)map.get("pointCount");
+                                map.put("openPositionPrice",df.format(openPositionPrice));
+                            }
+                        }else if (map.get("upOrDown").toString().equals("1")){
+                            if (map.get("closePositionPrice") != null && map.get("pointCount") != null){
+                                Double closePositionPrice = (Double) map.get("closePositionPrice")+(Double)map.get("pointCount");
+                                map.put("closePositionPrice",df.format(closePositionPrice));
+                            }
+                        }
                         map.put("upOrDown", ConstantUtil.dealOrderUpOrDown.toMap().get(map.get("upOrDown").toString()));
                         Object buyPreRmbObj =  map.get("buyPreRmb");
                         Object buyAfterRmbObj =  map.get("buyAfterRmb");
@@ -163,7 +188,7 @@ public class DealOrderController {
                     	Object createTimeObj = map.get("createTime");
                     	Object endTimeObj = map.get("endTime");
                     	Object costObj = map.get("cost");
-                    	
+
                		 	if (registerTimeObj != null && registerTimeObj != "") {
                		 		map.put("registerTime", sdf.format(sdf.parse(registerTimeObj.toString())));
                         }

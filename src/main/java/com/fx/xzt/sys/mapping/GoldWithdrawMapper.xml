@@ -6,7 +6,13 @@
 	<select id="selectByGoldWithdraw" resultType="java.util.Map" parameterType="java.util.Map">
 	    SELECT CAST(w.id AS CHAR) id, cast(w.user_id  as CHAR) userId, w.type type, w.amount amount, w.fee fee, w.insurance insurance, w.logistics_fee logisticsFee, 
 		w.apply_time applyTime, w.send_time sendTime, w.status status, w.logistics_no logisticsNo, w.update_time updateTime,
-		u.UserName userName, w.agent_id AS agentId, ua.user_name AS agentName, w.broker_id AS brokerId, ub.user_name AS brokerName,
+		<if test='isView == "1"'>
+			u.UserName userName,
+		</if>
+		<if test='isView != "1"'>
+			INSERT(u.UserName, 4, 4, '****') userName,
+		</if>
+		w.agent_id AS agentId, ua.user_name AS agentName, w.broker_id AS brokerId, ub.user_name AS brokerName,
 		a.contact_name contactName, a.contact_phone contactPhone, a.delivery_address deliveryAddress
 		FROM gold_withdraw w
 		LEFT JOIN user_address a ON w.user_id = a.user_id

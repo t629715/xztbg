@@ -3,6 +3,7 @@ package com.fx.xzt.sys.service.impl;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -19,6 +20,7 @@ import com.fx.xzt.sys.entity.UsersRolePermission;
 import com.fx.xzt.sys.mapper.UsersRoleMapper;
 import com.fx.xzt.sys.service.UsersRolePermissionService;
 import com.fx.xzt.sys.service.UsersRoleService;
+import com.fx.xzt.sys.util.StringUtil;
 
 @Service
 public class UsersRoleServiceImpl extends BaseService<UsersRole> implements UsersRoleService{
@@ -125,6 +127,17 @@ public class UsersRoleServiceImpl extends BaseService<UsersRole> implements User
 
 	public List<UsersRole> getByAll(UsersRole usersRole) {
 		return usersRoleMapper.getByAll(usersRole);
+	}
+
+	/**
+	 * 根据id获取角色信息
+	 */
+	public Map<String, Object> getById(String id) {
+		Map<String, Object> map = null;
+		if (StringUtil.isNotEmpty(id)) {
+			map = usersRoleMapper.getById(id);
+		}
+		return map;
 	}
 
 }

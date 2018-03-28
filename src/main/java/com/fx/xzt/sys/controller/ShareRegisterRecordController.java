@@ -83,8 +83,13 @@ public class ShareRegisterRecordController {
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
-                PageInfo<Map<String, Object>> pageInfo = shareRegisterRecordService.selectByAll(userName, acceptPrize, startTime, endTime, agentName, brokerName, pageNum, pageSize);
+            	String isView = "0";
+		        if (role != null && role.get("roleIsView") != null) {
+		            isView = role.get("roleIsView").toString();
+		        }
+                PageInfo<Map<String, Object>> pageInfo = shareRegisterRecordService.selectByAll(userName, acceptPrize, startTime, endTime, agentName, brokerName, isView, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
@@ -144,8 +149,13 @@ public class ShareRegisterRecordController {
             String excelName = "推荐用户明细";
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
-                List<Map<String, Object>> list = shareRegisterRecordService.excelAll(userName, acceptPrize, startTime, endTime, agentName, brokerName);
+            	String isView = "0";
+		        if (role != null && role.get("roleIsView") != null) {
+		            isView = role.get("roleIsView").toString();
+		        }
+                List<Map<String, Object>> list = shareRegisterRecordService.excelAll(userName, acceptPrize, startTime, endTime, agentName, brokerName, isView);
                 if (list != null && list.size() > 0) {
                     for (Map<String, Object> map : list) {
                         map.put("acceptPrize", ConstantUtil.acceptPrize.toMap().get(map.get("acceptPrize").toString()));

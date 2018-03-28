@@ -23,7 +23,14 @@
 
 	<!-- 现金充值查询开始-htt -->
 	<select id="selectByRecharge" resultType="java.util.Map" parameterType="java.util.Map">
-		SELECT r.RechargeID, r.UserID, r.UserName, r.RMBAmt, r.RechargeTime,
+		SELECT r.RechargeID, r.UserID, 
+		<if test='isView == "1"'>
+			r.UserName UserName,
+		</if>
+		<if test='isView != "1"'>
+			INSERT(r.UserName, 4, 4, '****') UserName,
+		</if>
+		r.RMBAmt, r.RechargeTime,
 		r.RechargeChannel, r.PlatformName,
 		r.MerchantOrderNum, r.Status,
 		i.agent_id AS agentId, ua.user_name AS agentName, i.broker_id AS

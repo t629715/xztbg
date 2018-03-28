@@ -24,6 +24,7 @@ public interface GoldRedeemService {
 	* @param startTime   赎回开始时间
 	* @param endTime   赎回结束时间
 	* @param channelName  渠道商用户账号
+	 * @param isView 
 	* @param pageNum  页数
 	* @param pageSize  条数
 	* @return    设定文件 
@@ -32,7 +33,7 @@ public interface GoldRedeemService {
 	* @author htt
 	 */
 	PageInfo<Map<String, Object>> selectByGoldRedeem(String userName, String startTime, String endTime, 
-    		String channelName, Integer pageNum, Integer pageSize);
+    		String channelName, String isView, Integer pageNum, Integer pageSize);
 	
 	/**
 	 * 
@@ -47,7 +48,7 @@ public interface GoldRedeemService {
 	* @throws 
 	* @author htt
 	 */
-	List<Map<String, Object>> excelGoldRedeem(String userName, String startTime, String endTime, String channelName);
+	List<Map<String, Object>> excelGoldRedeem(String userName, String startTime, String endTime, String channelName, String isView);
 	
 	/**
 	 * 

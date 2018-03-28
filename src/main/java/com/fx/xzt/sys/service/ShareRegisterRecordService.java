@@ -25,6 +25,7 @@ public interface ShareRegisterRecordService {
 	* @param endTime 结束时间
 	* @param agentName 代理商id
 	* @param brokerName 经纪人id
+	 * @param isView 
 	* @param pageNum
 	* @param pageSize
 	* @return    设定文件 
@@ -33,7 +34,7 @@ public interface ShareRegisterRecordService {
 	* @author htt
 	 */
     PageInfo<Map<String, Object>> selectByAll(String userName, String acceptPrize, String startTime, String endTime, 
-    		String agentName, String brokerName, Integer pageNum, Integer pageSize);
+    		String agentName, String brokerName, String isView, Integer pageNum, Integer pageSize);
 
     /**
      * 
@@ -51,6 +52,6 @@ public interface ShareRegisterRecordService {
     * @author htt
      */
     List<Map<String, Object>> excelAll(String userName, String acceptPrize, String startTime, String endTime, 
-    		String agentName, String brokerName);
+    		String agentName, String brokerName, String isView);
 
 }

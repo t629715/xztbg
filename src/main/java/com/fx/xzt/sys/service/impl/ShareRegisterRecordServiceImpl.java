@@ -34,7 +34,7 @@ public class ShareRegisterRecordServiceImpl extends BaseService<ShareRegisterRec
 	 * 查询
 	 */
 	public PageInfo<Map<String, Object>> selectByAll(String userName, String acceptPrize, String startTime, String endTime,
-			String agentName, String brokerName, Integer pageNum, Integer pageSize) {
+			String agentName, String brokerName, String isView, Integer pageNum, Integer pageSize) {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("acceptPrize", acceptPrize);
@@ -42,6 +42,7 @@ public class ShareRegisterRecordServiceImpl extends BaseService<ShareRegisterRec
         map.put("endTime", endTime);
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
+        map.put("isView", isView);
         PageHelper.startPage(pageNum,pageSize);
         List<Map<String, Object>> list = shareRegisterRecordMapper.selectByAll(map);
         if (list != null && list.size() > 0) {
@@ -57,7 +58,7 @@ public class ShareRegisterRecordServiceImpl extends BaseService<ShareRegisterRec
 	 * 导出
 	 */
 	public List<Map<String, Object>> excelAll(String userName, String acceptPrize, String startTime, String endTime,
-			String agentName, String brokerName) {
+			String agentName, String brokerName, String isView) {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("acceptPrize", acceptPrize);
@@ -65,6 +66,7 @@ public class ShareRegisterRecordServiceImpl extends BaseService<ShareRegisterRec
         map.put("endTime", endTime);
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
+        map.put("isView", isView);
         List<Map<String, Object>> list = shareRegisterRecordMapper.selectByAll(map);
         return list;
 	}

@@ -57,6 +57,7 @@ public interface UsersService extends IService<Users>{
 	 * @return
 	 */
 	List<Map<String,Object>> selectByAgentMessage();
+	List<Map<String,Object>> selectByAgentMessage1();
 
 	/**
 	 * 获取经纪人列表
@@ -64,6 +65,7 @@ public interface UsersService extends IService<Users>{
 	 * @return
 	 */
 	List<Map<String,Object>> selectByBrokerMessage(Long pid);
+	List<Map<String,Object>> selectByBrokerMessage1(Long pid);
 
 	/**
 	 * @param usersInfo

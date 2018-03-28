@@ -73,7 +73,7 @@ public class UserRechargeServiceImpl extends BaseService<UserRecharge> implement
 	 */
 	public PageInfo<Map<String, Object>> selectByRecharge(String userName,
 			String startTime, String endTime, String agentName,
-			String brokerName, String rechargechannel, Integer status,
+			String brokerName, String rechargechannel, Integer status, String isView ,
 			Integer pageNum, Integer pageSize) {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
@@ -83,6 +83,7 @@ public class UserRechargeServiceImpl extends BaseService<UserRecharge> implement
         map.put("brokerName", brokerName);
         map.put("rechargechannel", rechargechannel);
         map.put("status", status);
+        map.put("isView", isView);
         PageHelper.startPage(pageNum,pageSize);
         List<Map<String, Object>> list = userRechargeMapper.selectByRecharge(map);
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
@@ -94,7 +95,7 @@ public class UserRechargeServiceImpl extends BaseService<UserRecharge> implement
 	 */
 	public List<Map<String, Object>> excelRecharge(String userName,
 			String startTime, String endTime, String agentName,
-			String brokerName, String rechargechannel, Integer status) {
+			String brokerName, String rechargechannel, Integer status, String isView ) {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("startTime", startTime);
@@ -103,6 +104,7 @@ public class UserRechargeServiceImpl extends BaseService<UserRecharge> implement
         map.put("brokerName", brokerName);
         map.put("rechargechannel", rechargechannel);
         map.put("status", status);
+        map.put("isView", isView);
         List<Map<String, Object>> list = userRechargeMapper.selectByRecharge(map);
         return list;
 	}

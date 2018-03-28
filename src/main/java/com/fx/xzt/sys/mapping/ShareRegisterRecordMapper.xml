@@ -4,8 +4,20 @@
    
     <!--查询开始-htt-->
     <select id="selectByAll" resultType="java.util.Map" parameterType="java.util.Map">
-    select sr.id, sr.share_userid shareUserId, l2.UserName shareUserName, 
-    	sr.new_userid newUserId, l1.UserName newUserName,
+    select sr.id, sr.share_userid shareUserId, 
+    		<if test='isView == "1"'>
+				l2.UserName shareUserName,
+			</if>
+			<if test='isView != "1"'>
+			    INSERT(l2.UserName, 4, 4, '****') shareUserName,
+			</if>
+    	sr.new_userid newUserId,
+    		<if test='isView == "1"'>
+				l1.UserName newUserName,
+			</if>
+			<if test='isView != "1"'>
+			    INSERT(l1.UserName, 4, 4, '****') newUserName,
+			</if>
 		sr.accept_prize acceptPrize, sr.create_time createTime, sr.update_time updateTime, sr.remark, 
 		sr.agent_id AS agentId, ua.user_name AS agentName, sr.broker_id AS brokerId, ub.user_name AS brokerName 
 	from share_register_record sr
