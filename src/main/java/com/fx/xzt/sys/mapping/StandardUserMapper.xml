@@ -3,7 +3,7 @@
 <mapper namespace="com.fx.xzt.sys.mapper.StandardUserMapper">
 	<!--标准户统计查询开始-htt -->
 	<select id="selectByStandardUser" resultType="java.util.Map" parameterType="java.util.Map">
-		select * from (select *, (CASE WHEN my.rjZCount >= 100000 AND my.jyNum > 50 THEN 1 else 0 end) bzh from
+		select * from (select *, (CASE WHEN my.rjZCount >= 10000 AND my.jyNum >= 50 THEN 1 else 0 end) bzh from
 			(select sj.*,
 				(SELECT SUM(RMBAmt) FROM User_Recharge WHERE UserID = sj.UserID and STATUS=1) rjZCount,
 				(select SUM(hand_number)  from deal_order where user_id = sj.UserID) jyNum 
