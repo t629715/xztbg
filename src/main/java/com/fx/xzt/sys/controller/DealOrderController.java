@@ -1,5 +1,7 @@
 package com.fx.xzt.sys.controller;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -161,11 +163,18 @@ public class DealOrderController {
                 List<Map<String, Object>> list = dealOrderService.excelDealOrderMessage(userName, orderNo, startTime, endTime, 
                 		regStartTime, regEndTime, agentNameStr, brokerName, orderState, isUseCard, upOrDown, isView);
                 if (list != null && list.size() > 0) {
+                    DecimalFormat df = new DecimalFormat("0.00");
+                    df.setRoundingMode(RoundingMode.HALF_UP);
                     for (Map<String, Object> map : list) {
-                        if (map.get("upOrDown") == "0"){
-                            if (map.get("openPositionPrice") != null){
-                                Double openPositionPrice = (Double) map.get("openPositionPrice")+(Double)map.get("pointCount");;
-                                map.put("openPositionPrice",openPositionPrice);
+                        if (map.get("upOrDown").toString().equals("0")){
+                            if (map.get("openPositionPrice") != null && map.get("pointCount") != null){
+                                Double openPositionPrice = (Double) map.get("openPositionPrice")+(Double)map.get("pointCount");
+                                map.put("openPositionPrice",df.format(openPositionPrice));
+                            }
+                        }else if (map.get("upOrDown").toString().equals("1")){
+                            if (map.get("closePositionPrice") != null && map.get("pointCount") != null){
+                                Double closePositionPrice = (Double) map.get("closePositionPrice")+(Double)map.get("pointCount");
+                                map.put("closePositionPrice",df.format(closePositionPrice));
                             }
                         }
                         map.put("upOrDown", ConstantUtil.dealOrderUpOrDown.toMap().get(map.get("upOrDown").toString()));
