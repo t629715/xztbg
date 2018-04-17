@@ -71,6 +71,7 @@ public class LoginController {
 	@ResponseBody
 	public Map checkLogin(String userName,String password,Model model,HttpServletRequest request,String validateCode){
 		Map<String,Object> map = new HashMap<String,Object>();
+		String sessionId = request.getSession().getId();
 		logger.debug("userInfo", userName);
 		 password = MD5Utils.encrypt(password);
 		MyAuthenticationToken token = new MyAuthenticationToken(userName, password, true, null);
@@ -86,11 +87,12 @@ public class LoginController {
 					strs[i] = (char)(strs[i]-32);
 				}
 			}
-			validateCode = String.valueOf(strs);
-			if (!validateCode.equals(redisService.get("validateCode").toString())){
+			/*validateCode = String.valueOf(strs);
+			if (!validateCode.equals(redisService.get(sessionId).toString())){
 				map.put("msg","验证码错误");
 				return map;
-			}
+			}*/
+			redisService.delete(sessionId);
 			subject.login(token);//会到自定义的Realm中进行验证返回
 			if(subject.isAuthenticated()){
 				    Example example = new Example(Users.class);
@@ -141,12 +143,13 @@ public class LoginController {
 	 */
 	@RequestMapping(value = "/captcha", method = RequestMethod.GET)
 	@ResponseBody
-	public void captcha(HttpServletRequest request, HttpServletResponse response)
+	public void captcha(HttpServletRequest request, HttpServletResponse response, String randomCode)
 			throws ServletException, IOException
 	{
+		String sessionId = request.getSession().getId();
 		Map map = CaptchaUtil.outputCaptcha();
 		// 将四位数字的验证码保存到Session中。
-		redisService.put("validateCode",map.get("code").toString(),1000*50);
+		redisService.put(sessionId,map.get("code").toString(),1000*50);
 		// 禁止图像缓存。
 		response.setHeader("Pragma", "no-cache");
 		response.setHeader("Cache-Control", "no-cache");
