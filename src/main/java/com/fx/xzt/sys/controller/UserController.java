@@ -254,7 +254,7 @@ public class UserController {
 	/**
 	 * 更新用户 id 手机号 和 密码必须传递
 	 */
-	@RequestMapping(value="/updateUser")
+	@RequestMapping(value="/updateUser",method = RequestMethod.POST)
 	@ResponseBody
 	public CommonResponse updateUser(Users users,@RequestParam(value="rids", required=false)List<Integer> rids,Integer type, HttpServletRequest request) throws ParseException {
 		CommonResponse commonResponse = new CommonResponse();
@@ -335,10 +335,17 @@ public class UserController {
 	 */
 	@RequestMapping(value="/selectByAgentMessage")
 	@ResponseBody
-	public Object selectByAgentMessage(){
+	public Object selectByAgentMessage(HttpServletRequest request){
 		CommonResponse cr = new CommonResponse();
         try {
-        	List<Map<String, Object>> list = userService.selectByAgentMessage();
+			HttpSession httpSession = request.getSession();
+			Users users = (Users) httpSession.getAttribute("currentUser");
+			if (users.getPid() == null){
+
+			}else if (users.getPid() == 1){
+
+			}
+        	List<Map<String, Object>> list = userService.selectByAgentMessage(users.getPid());
         	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
             cr.setData(list);
             cr.setMsg("操作成功！");
@@ -413,12 +420,14 @@ public class UserController {
 	public Object selectByBrokerMessage1(HttpServletRequest request,String pid){
 		CommonResponse cr = new CommonResponse();
 		try {
+			HttpSession session = request.getSession();
+			Users users = (Users) session.getAttribute("currentUser");
 			Long pid1 = null;
 			if (StringUtil.isNotEmpty(pid)){
 				pid1 = Long.valueOf(pid);
+			}else {
+				pid1 = users.getId();
 			}
-			HttpSession httpSession = request.getSession();
-			Users users = (Users) httpSession.getAttribute("currentUser");
 			if (users != null) {
 				List<Map<String, Object>> list = userService.selectByBrokerMessage1(pid1);
 				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);

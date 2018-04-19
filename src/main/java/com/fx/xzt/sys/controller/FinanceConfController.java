@@ -132,13 +132,11 @@ public class FinanceConfController {
             } else {
                 logger.debug("没有登录");
                 response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
-                response.setData("{}");
                 response.setMsg("操作失败！");
             }
 
         } catch (Exception e) {
             response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
-            response.setData("{}");
             response.setMsg("操作失败！");
             throw e;
         }

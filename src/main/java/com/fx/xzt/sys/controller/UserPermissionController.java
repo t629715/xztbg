@@ -233,10 +233,12 @@ public class UserPermissionController {
 	 */
 	@RequestMapping(value="/selectByAgentMessage")
 	@ResponseBody
-	public Object selectByAgentMessage(){
+	public Object selectByAgentMessage(HttpServletRequest request){
 		CommonResponse cr = new CommonResponse();
         try {
-        	List<Map<String, Object>> list = userService.selectByAgentMessage();
+			HttpSession session = request.getSession();
+			Users users = (Users) session.getAttribute("currentUser");
+        	List<Map<String, Object>> list = userService.selectByAgentMessage(users.getPid());
         	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
             cr.setData(list);
             cr.setMsg("操作成功！");
