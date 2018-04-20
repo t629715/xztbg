@@ -25,4 +25,13 @@ public interface FinanceRegulargoldOrderMapper extends BaseMapper<FinanceRegular
      */
     List<Map> exportAllByConditions(Map<String, Object> conditions);
 
+    /**
+     * @CreateBy：tianliya
+     * @CreateTime：2018/4/19 15:06
+     * @Description：定期金买入统计
+     * @param conditions
+     * @return
+     */
+    Integer selectTotalCount(Map<String, Object> conditions);
+
 }

@@ -42,7 +42,7 @@
         select
         o.order_id orderId, o.product_id productId, o.product_no productNo, o.product_name
         productName,
-        o.product_type productType, o.product_year_incom_percent productYearIncomPercent,
+        o.product_type productType, concat(convert(o.product_year_incom_percent*100,DECIMAL(6,2)),'%') productYearIncomPercent,
         o.product_cycle productCycle, o.product_min_gram productMinGram, o.product_max_gram
         productMaxGram,
         o.product_settle_method productSettleMethod, o.buy_type buyType,o.buy_amount buyAmount,
@@ -100,7 +100,7 @@
 
 
             <if test="userName != null and userName != ''">
-                AND u.UserName like CONCAT(CONCAT(#{userName,jdbcType=VARCHAR},'%'))
+                AND u.UserName like CONCAT(#{userName,jdbcType=VARCHAR},'%')
             </if>
         </where>
     </select>
@@ -110,12 +110,15 @@
         select
         o.order_id orderId, o.product_id productId, o.product_no productNo, o.product_name
         productName,
-        IF(o.product_type = 1,'定期金','特价金') productType, o.product_year_incom_percent productYearIncomPercent,
+        IF(o.product_type = 1,'定期金','特价金') productType, concat(convert(o.product_year_incom_percent*100,DECIMAL(6,2)),'%')
+        productYearIncomPercent,
         o.product_cycle productCycle, o.product_min_gram productMinGram, o.product_max_gram
         productMaxGram,
-        o.product_settle_method productSettleMethod, IF(o.buy_type=1,'现金买入','实金转入') buyType,o.buy_amount buyAmount,
+        o.product_settle_method productSettleMethod, IF(o.buy_type=1,'现金买入','实金转入')
+        buyType,o.buy_amount buyAmount,
         o.buy_time buyTime,
-        o.expire_time expireTime, IF(o.status = 1,'持有中','已赎回') status, o.income_gram incomeGram, o.buy_price buyPrice,
+        o.expire_time expireTime, IF(o.status = 1,'持有中','已赎回') status, o.income_gram incomeGram,
+        o.buy_price buyPrice,
         o.back_total_gram backTotalGram,o.voucher_value voucherValue, o.voucher_deductible
         voucherDeductible,o.gram,
         <if test="isView != '1'.toString()">
@@ -165,10 +168,56 @@
             <if test="regEndTime != null and regEndTime != ''">
                 AND u1.RegisterTime &lt;= #{regEndTime,jdbcType=TIMESTAMP}
             </if>
+            <if test="userName != null and userName != ''">
+                AND u.UserName like CONCAT(#{userName,jdbcType=VARCHAR},'%')
+            </if>
+        </where>
+    </select>
+
+    <!--定期及买入统计-tianliya-->
+    <select id="selectTotalCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select sum(buy_amount) totalAmount
+        from finance_regulargold_order o
+        left join User_Login u
+        on o.user_id = u.UserID
+        left join User_Info u1
+        on u.UserId = u1.UserId
+        <where>
+            <if test="startTime != null and startTime != ''">
+                AND o.buy_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND o.buy_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="redeemStartTime != null and redeemStartTime != ''">
+                AND o.expire_time &gt;= #{redeemStartTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="redeemEndTime != null and redeemEndTime != ''">
+                AND o.expire_time &lt;= #{redeemEndTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="status != null and status != ''">
+                AND o.status = #{status,jdbcType=SMALLINT}
+            </if>
+            <if test="buyType != null and buyType != ''">
+                AND o.buy_time = #{buyType,jdbcType=SMALLINT}
+            </if>
+            <if test="agentName != null and agentName != ''">
+                AND o.agent_id = #{agentName,jdbcType=BIGINT}
+            </if>
+            <if test="brokerName != null and brokerName != ''">
+                AND o.broker_id = #{brokerName,jdbcType=BIGINT}
+            </if>
+
+            <if test="regStartTime != null and regStartTime != ''">
+                AND u1.RegisterTime &gt;= #{regStartTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="regEndTime != null and regEndTime != ''">
+                AND u1.RegisterTime &lt;= #{regEndTime,jdbcType=TIMESTAMP}
+            </if>
 
 
             <if test="userName != null and userName != ''">
-                AND u.UserName like CONCAT(CONCAT(#{userName,jdbcType=VARCHAR},'%'))
+                AND u.UserName like CONCAT(#{userName,jdbcType=VARCHAR},'%')
             </if>
         </where>
     </select>

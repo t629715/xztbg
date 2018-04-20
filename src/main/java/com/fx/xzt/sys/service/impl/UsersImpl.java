@@ -255,17 +255,16 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 	public List<Map<String,Object>> selectByAgentMessage(Long pid){
 		Map map = new HashMap();
 		map.put("pid",pid);
+		Map<String, Object> result = new ConcurrentHashMap<>();
+		result.put("id","");
+		result.put("agentName","默认");
 		List<Map<String, Object>> resultList = new ArrayList<>();
 		if (usersMapper.selectByAgentMessage().size() != 0 && usersMapper.selectByAgentMessage() != null){
-			Map<String, Object> result = new ConcurrentHashMap<>();
-			result.put("id","");
-			result.put("agentName","全部");
 			resultList.add(result);
 			if (pid == null){
 				resultList.addAll(usersMapper.selectByAgentMessage());
 			}
 		}
-
 		return resultList;
 	}
 	public List<Map<String,Object>> selectByAgentMessage1(){
@@ -296,7 +295,7 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		List<Map<String, Object>> resultList = new ArrayList<>();
 		Map<String, Object> result = new ConcurrentHashMap<>();
         result.put("id","");
-        result.put("brokerName","全部");
+        result.put("brokerName","默认");
         resultList.add(result);
 		if (usersMapper.selectByBrokerMessage(map).size() != 0 && usersMapper.selectByBrokerMessage(map) != null){
 
