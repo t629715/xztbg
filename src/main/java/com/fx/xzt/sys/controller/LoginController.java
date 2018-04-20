@@ -87,11 +87,11 @@ public class LoginController {
 					strs[i] = (char)(strs[i]-32);
 				}
 			}
-			/*validateCode = String.valueOf(strs);
+			validateCode = String.valueOf(strs);
 			if (!validateCode.equals(redisService.get(sessionId).toString())){
 				map.put("msg","验证码错误");
 				return map;
-			}*/
+			}
 			redisService.delete(sessionId);
 			subject.login(token);//会到自定义的Realm中进行验证返回
 			if(subject.isAuthenticated()){
