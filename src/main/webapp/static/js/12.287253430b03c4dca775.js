@@ -132,6 +132,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }, {
         value: 9,
         label: '审核'
+      }, {
+        value: 14,
+        label: '充值'
       }],
       sform: {
         userName: '',
