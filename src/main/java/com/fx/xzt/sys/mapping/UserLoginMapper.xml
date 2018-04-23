@@ -30,6 +30,11 @@
         order by attribution_province 
     </select>
     <!-- 注册信息查询-归属地结束-htt -->
+    <!-- 根据userName获取用户的信息tianliya -->
+    <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap" >
+        SELECT UserID, UserName FROM User_Login where Status = 1 and UserName = #{userName,jdbcType=VARCHAR}
+    </select>
+    <!-- 注册信息查询-归属地结束-htt -->
     
     <!--注册信息查询开始-htt-->
     <select id="getByRegisterMessage" resultType="java.util.Map" parameterType="java.util.Map" >

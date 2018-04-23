@@ -14,9 +14,11 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fx.xzt.exception.GlobalException;
 import com.fx.xzt.sys.entity.LogRecord;
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.model.UserRechargeModel;
@@ -242,6 +244,57 @@ public class UserRechargeController {
             cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
             cr.setData("{}");
             cr.setMsg("操作失败！");
+            throw e;
+            // e.printStackTrace();
+        }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
+        return cr;
+    }
+
+    /**
+     *
+     * @Title: selectByUserRechargeCount
+     * @Description: 现金充值记录-统计
+     * @param request
+     * @return    设定文件
+     * @return Object    返回类型
+     * @throws ParseException
+     * @throws
+     * @author htt
+     */
+    @RequestMapping(value="/recharge",method = RequestMethod.POST)
+    @ResponseBody
+    public Object recharge(HttpServletRequest request, String userName, String money, String payType, String payOrderId) throws ParseException, GlobalException {
+        CommonResponse cr = new CommonResponse();
+        //操作日志
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("人工充值");
+        log.setContent("账户："+userName+"--金额："+(Double.parseDouble(money)/100)+"(元)--"+"失败");
+        log.setModuleName(ConstantUtil.logRecordModule.RGCZ.getName());
+        log.setType(ConstantUtil.logRecordType.CZ.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
+        try {
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            if (users != null) {
+                cr = userRechargeService.manualRecharge(users, userName, money, payType, payOrderId);
+                if(cr.getCode() == 1000){
+                    log.setContent("账户："+userName+"--金额："+(Double.parseDouble(money)/100)+"(元)--"+"成功");
+
+                }else {
+                    log.setContent("账户："+userName+"--金额："+(Double.parseDouble(money)/100)+"(元)--"+"失败");
+                }
+                log.setUserId(users.getId());
+            } else {
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setMsg("操作失败！请登录");
+            }
+        } catch (Exception e) {
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setMsg("操作失败！出现异常");
             throw e;
             // e.printStackTrace();
         }

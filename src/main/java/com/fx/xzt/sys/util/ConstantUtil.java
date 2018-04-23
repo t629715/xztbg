@@ -434,6 +434,7 @@ public class ConstantUtil {
         DL("登录",10),
         MMCZ("重置密码",11),
         CX("查询",12),
+        CZ("充值",14),
         JS("计算",13);
         private String name;
         private Integer index;
@@ -509,6 +510,7 @@ public class ConstantUtil {
         BZHTJ("标准户统计","41"),
         TJYHMX("推荐用户明细","42"),
         DQJGL("定期金管理","43"),
+        RGCZ("人工充值","45"),
         DQJJY("定期金交易","44");
 
 

@@ -1,7 +1,10 @@
 package com.fx.xzt.sys.service;
 
 
+import com.fx.xzt.exception.GlobalException;
 import com.fx.xzt.sys.entity.PayWay;
+import com.fx.xzt.sys.entity.Users;
+import com.fx.xzt.sys.util.CommonResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -23,4 +26,6 @@ public interface PayWayService extends IService<PayWay>{
      * @return
      */
     int editPayWays(Short payDevice, String[] payWays);
+
+
 }
