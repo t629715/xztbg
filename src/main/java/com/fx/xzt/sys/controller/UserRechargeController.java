@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +27,7 @@ import com.fx.xzt.sys.model.UserRechargeModel;
 import com.fx.xzt.sys.service.LogRecordService;
 import com.fx.xzt.sys.service.UserRechargeService;
 import com.fx.xzt.sys.util.CommonResponse;
+import com.fx.xzt.sys.util.Constant;
 import com.fx.xzt.sys.util.ConstantUtil;
 import com.fx.xzt.sys.util.IPUtil;
 import com.fx.xzt.sys.util.log.AuditLog;
@@ -280,7 +283,15 @@ public class UserRechargeController {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
-                cr = userRechargeService.manualRecharge(users, userName, money, payType, payOrderId);
+                Subject subject = SecurityUtils.getSubject();
+                boolean is = subject.hasRole("人工充值");
+                if (is){
+                    cr = userRechargeService.manualRecharge(users, userName, money, payType, payOrderId);
+                }else {
+                    cr.setMsg("没有操作权限");
+                    cr.setCode(Constant.RESCODE_NOAUTH);
+                }
+
                 if(cr.getCode() == 1000){
                     log.setContent("账户："+userName+"--金额："+(Double.parseDouble(money)/100)+"(元)--"+"成功");
 

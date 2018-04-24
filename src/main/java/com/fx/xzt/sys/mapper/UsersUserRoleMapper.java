@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
+import com.fx.xzt.sys.entity.UsersPermission;
+import com.fx.xzt.sys.entity.UsersRole;
 import com.fx.xzt.sys.entity.UsersUserRole;
 import com.fx.xzt.sys.model.UsersUserRoleModel;
 
@@ -47,6 +49,15 @@ public interface UsersUserRoleMapper extends BaseMapper<UsersUserRole>{
 	 * 
 	 */
 	List<UsersUserRole> selectByRoleId(Integer rid);
+
+	/**
+	 * @CreateBy：tianliya
+	 * @CreateTime：2018/4/24 13:50
+	 * @Description：根据用户
+	 * @param userId
+	 * @return
+	 */
+	List<UsersPermission> getByUserId(Long userId);
 
 
 }
