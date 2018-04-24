@@ -5,6 +5,8 @@ import java.util.*;
 import javax.annotation.Resource;
 
 import com.fx.xzt.sys.entity.Users;
+import com.fx.xzt.sys.entity.UsersPermission;
+import com.fx.xzt.sys.entity.UsersRole;
 import com.fx.xzt.sys.mapper.UsersMapper;
 import com.fx.xzt.sys.mapper.UsersRoleMapper;
 import com.fx.xzt.sys.model.UsersRoleModel;
@@ -130,6 +132,8 @@ public class UsersUserRoleServiceImpl extends BaseService<UsersUserRole> impleme
 		return usersUserRoleMapper.selectByRoleId(rid);
 	}
 
-
+	public List<UsersPermission> getByUserId(Long userId) {
+		return usersUserRoleMapper.getByUserId(userId);
+	}
 
 }

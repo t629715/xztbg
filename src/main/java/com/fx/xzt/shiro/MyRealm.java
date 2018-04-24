@@ -24,6 +24,10 @@ import org.apache.shiro.subject.Subject;
 
 import com.fx.xzt.exception.AuthenticateException;
 import com.fx.xzt.sys.entity.Users;
+import com.fx.xzt.sys.entity.UsersPermission;
+import com.fx.xzt.sys.entity.UsersRole;
+import com.fx.xzt.sys.entity.UsersUserRole;
+import com.fx.xzt.sys.mapper.UsersUserRoleMapper;
 import com.fx.xzt.sys.service.UsersRoleService;
 import com.fx.xzt.sys.service.UsersService;
 import com.fx.xzt.sys.service.UsersUserRoleService;
@@ -44,6 +48,8 @@ public class MyRealm extends AuthorizingRealm{
 	UsersUserRoleService usersUserRoleService;
 	@Resource
 	UsersRoleService usersRoleService;
+	@Resource
+	private UsersUserRoleMapper usersUserRoleMapper;
 	
 	public MyRealm() {
 		setAuthenticationTokenClass(AuthenticationToken.class);
@@ -112,20 +118,18 @@ public class MyRealm extends AuthorizingRealm{
     			List<String> roleList = new ArrayList<String>();
     			List<String> permissionList = new ArrayList<String>();
     			//查询用户角色
-//    			RoleInfo userRole = roleInfoMapper.selectByUserId(userInfo.getId());
-//    			if(null !=userRole){
-//    				roleList.add(userRole.getRoleName());
-//    				List<MenuChild> roleMenus = menuChildMapper.getMenuChildByRoleId(userRole.getId());
-//    				if(null !=roleMenus){
-//    					for(MenuChild menu:roleMenus){
-//    						permissionList.add(menu.getMenuName());
-//    					}
-//    				}
-//    			}
+    			List<UsersPermission> usersPermissions = usersUserRoleService.getByUserId(userInfo.getId());
+    			if(null !=usersPermissions){
+    				if(null !=usersPermissions){
+    					for(UsersPermission menu:usersPermissions){
+    						permissionList.add(menu.getText());
+    					}
+    				}
+    			}
     			
     			//为用户添加权限，角色
     			SimpleAuthorizationInfo simpleAuthorInfo = new SimpleAuthorizationInfo();
-    			simpleAuthorInfo.addRoles(roleList);
+    			simpleAuthorInfo.addRoles(permissionList);
     			simpleAuthorInfo.addStringPermissions(permissionList);
     			return simpleAuthorInfo;
     		}
@@ -136,7 +140,7 @@ public class MyRealm extends AuthorizingRealm{
 
     /** 
      * 将一些数据放到ShiroSession中,以便于其它地方使用 
-     * @see  比如Controller,使用时直接用HttpSession.getAttribute(key)就可以取到 
+     *  比如Controller,使用时直接用HttpSession.getAttribute(key)就可以取到
      * 也可以直接从subject的身份对象中取
      */  
     private void setSession(Object key, Object value){  
