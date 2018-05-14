@@ -508,7 +508,9 @@ public class ConstantUtil {
         XSLC("新手理财","40"),
         BZHTJ("标准户统计","41"),
         TJYHMX("推荐用户明细","42"),
-        DQJGL("定期金管理","43");
+        DQJGL("定期金管理","43"),
+        SJTZGL("实金投资管理","44"),
+        CJBGL("存金宝管理","45");
 
 
         private String name;

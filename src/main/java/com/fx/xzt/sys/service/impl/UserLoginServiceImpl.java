@@ -54,7 +54,7 @@ public class UserLoginServiceImpl extends BaseService<UserLogin> implements User
     public List<Map<String, Object>> getExcelByRegister(String userName, String startTime, String endTime,
         String registerFrom, String registerIp, String lastStartTime,
         String lastEndTime, String lastLoginFrom,
-        String agentsName, String brokerName, String attribution, String isView){
+        String agentName, String brokerName, String attribution, String isView){
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("startTime", startTime);
@@ -64,7 +64,7 @@ public class UserLoginServiceImpl extends BaseService<UserLogin> implements User
         map.put("lastStartTime", lastStartTime);
         map.put("lastEndTime", lastEndTime);
         map.put("lastLoginFrom", lastLoginFrom);
-        map.put("agentsName", agentsName);
+        map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         map.put("attribution", attribution);
         map.put("isView", isView);

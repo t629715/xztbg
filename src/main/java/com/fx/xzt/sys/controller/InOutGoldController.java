@@ -174,7 +174,7 @@ public class InOutGoldController {
                     POIUtils poi = new POIUtils();
                     //判断是否为代理商账户
                     String[] heads = {"姓名", "用户账号",  "代理商", "经纪人", "注册时间", "入金", "出金", "成本", "账户余额", "利息", "理财", "买入黄金资金"};
-                    String[] colums = {"realName", "userName", "agentName", "brokerName", "registerTime", "cj", "rj", "cbf", "rmb", "totalIncome", "finance","sjAmount"};
+                    String[] colums = {"realName", "userName", "agentName", "brokerName", "registerTime", "rj", "cj", "cbf", "rmb", "totalIncome", "finance","sjAmount"};
                     poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                     log.setUserId(users.getId());
                     log.setContent("导出成功，共：" + list.size() + "条数据");
