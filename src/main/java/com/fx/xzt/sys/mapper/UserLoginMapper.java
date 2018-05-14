@@ -46,4 +46,13 @@ public interface UserLoginMapper extends BaseMapper<UserLogin>{
 	 */
 	List<Map<String, Object>> getByAttributionPro();
 
+	/**
+	 * @CreateBy：tianliya
+	 * @CreateTime：2018/4/23 10:17
+	 * @Description：通过userName获取数据
+	 * @param userName
+	 * @return
+	 */
+	UserLogin selectByUserName(String userName);
+
 }

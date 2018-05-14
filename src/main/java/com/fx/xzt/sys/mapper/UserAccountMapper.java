@@ -41,4 +41,22 @@ public interface UserAccountMapper extends BaseMapper<UserAccount> {
 	 */
 	int updateByWithdrawCashNoPass(Map<String, Object> map);
 
+	/**
+	 * @CreateBy：tianliya
+	 * @CreateTime：2018/4/23 12:24
+	 * @Description：更新操作锁表  行级锁
+	 * @param userId
+	 * @return
+	 */
+	UserAccount lockUserAccount(Long userId);
+
+	/**
+	 * @CreateBy：tianliya
+	 * @CreateTime：2018/4/23 12:35
+	 * @Description：充值后修改账户余额
+	 * @param userAccount
+	 * @return
+	 */
+	Integer updateForRecharge(UserAccount userAccount);
+
 }

@@ -42,4 +42,13 @@ public interface UserRechargeMapper extends BaseMapper<UserRecharge>{
 	* @author htt
 	 */
     Map<String, Object> selectByRechargeCount(Map<String,Object> map);
+
+	/**
+	 * @CreateBy：tianliya
+	 * @CreateTime：2018/4/23 13:24
+	 * @Description：人工充值的记录
+	 * @param userRecharge
+	 * @return
+	 */
+	Integer insertOneRecord(UserRecharge userRecharge);
 }

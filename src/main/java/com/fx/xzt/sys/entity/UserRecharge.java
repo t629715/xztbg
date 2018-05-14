@@ -33,6 +33,18 @@ public class UserRecharge implements Serializable {
 
     private Short status;
 
+    private Long agentId;
+
+    private Long brokerId;
+
+    private String tradeNo;
+
+    private String tradeName;
+
+    private Date createTime;
+
+    private String thirdName;
+
     private static final long serialVersionUID = 1L;
 
     public String getRechargeid() {
@@ -113,5 +125,53 @@ public class UserRecharge implements Serializable {
 
     public void setStatus(Short status) {
         this.status = status;
+    }
+
+    public Long getAgentId() {
+        return agentId;
+    }
+
+    public void setAgentId(Long agentId) {
+        this.agentId = agentId;
+    }
+
+    public Long getBrokerId() {
+        return brokerId;
+    }
+
+    public void setBrokerId(Long brokerId) {
+        this.brokerId = brokerId;
+    }
+
+    public String getTradeNo() {
+        return tradeNo;
+    }
+
+    public void setTradeNo(String tradeNo) {
+        this.tradeNo = tradeNo;
+    }
+
+    public String getTradeName() {
+        return tradeName;
+    }
+
+    public void setTradeName(String tradeName) {
+        this.tradeName = tradeName;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getThirdName() {
+        return thirdName;
+    }
+
+    public void setThirdName(String thirdName) {
+        this.thirdName = thirdName;
     }
 }

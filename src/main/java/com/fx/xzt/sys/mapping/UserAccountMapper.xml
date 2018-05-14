@@ -2,6 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fx.xzt.sys.mapper.UserAccountMapper">
 
+	<!--更新操作的行级锁-tainliya-->
+	<select id="lockUserAccount" parameterType="java.lang.Long" resultType="com.fx.xzt.sys.entity.UserAccount">
+		select id , rmb from user_account where user_id = #{userId,jdbcType=BIGINT}
+	</select>
+
+	<!--充值修改账户余额-tianliya-->
+	<update id="updateForRecharge" parameterType="com.fx.xzt.sys.entity.UserAccount">
+		update user_account
+		<set>
+			<if test="rmb != null and rmb !=''">
+				rmb = #{rmb,jdbcType=REAL},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
 	<!--黄金赎回成功更改账户余额开始-htt-->
 	<update id="updateByGoldReedm" parameterType="java.util.Map">
 	    update user_account

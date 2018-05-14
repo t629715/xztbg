@@ -252,16 +252,19 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 	 *  获取代理商列表
 	 * @return
 	 */
-	public List<Map<String,Object>> selectByAgentMessage(){
+	public List<Map<String,Object>> selectByAgentMessage(Long pid){
+		Map map = new HashMap();
+		map.put("pid",pid);
+		Map<String, Object> result = new ConcurrentHashMap<>();
+		result.put("id","");
+		result.put("agentName","默认");
 		List<Map<String, Object>> resultList = new ArrayList<>();
 		if (usersMapper.selectByAgentMessage().size() != 0 && usersMapper.selectByAgentMessage() != null){
-			Map<String, Object> result = new ConcurrentHashMap<>();
-			result.put("id","");
-			result.put("agentName","全部");
 			resultList.add(result);
-			resultList.addAll(usersMapper.selectByAgentMessage());
+			if (pid == null){
+				resultList.addAll(usersMapper.selectByAgentMessage());
+			}
 		}
-
 		return resultList;
 	}
 	public List<Map<String,Object>> selectByAgentMessage1(){
@@ -290,11 +293,12 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("pid",pid);
 		List<Map<String, Object>> resultList = new ArrayList<>();
+		Map<String, Object> result = new ConcurrentHashMap<>();
+        result.put("id","");
+        result.put("brokerName","默认");
+        resultList.add(result);
 		if (usersMapper.selectByBrokerMessage(map).size() != 0 && usersMapper.selectByBrokerMessage(map) != null){
-			Map<String, Object> result = new ConcurrentHashMap<>();
-			result.put("id","");
-			result.put("brokerName","全部");
-			resultList.add(result);
+
 			resultList.addAll(usersMapper.selectByBrokerMessage(map));
 		}
 		return resultList;

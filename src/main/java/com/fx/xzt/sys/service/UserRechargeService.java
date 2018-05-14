@@ -4,8 +4,11 @@ package com.fx.xzt.sys.service;
 import java.util.List;
 import java.util.Map;
 
+import com.fx.xzt.exception.GlobalException;
 import com.fx.xzt.sys.entity.UserRecharge;
+import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.model.UserRechargeModel;
+import com.fx.xzt.sys.util.CommonResponse;
 import com.github.pagehelper.PageInfo;
 
 public interface UserRechargeService extends IService<UserRecharge>{
@@ -79,5 +82,18 @@ public interface UserRechargeService extends IService<UserRecharge>{
      */
     Map<String, Object> selectByRechargeCount(String userName, String startTime, String endTime, String agentName, String brokerName, 
 			String rechargechannel, Integer status);
+
+	/**
+	 * @CreateBy：tianliya
+	 * @CreateTime：2018/4/23 10:10
+	 * @Description：人工充值
+	 * @param users 操作人
+	 * @param rechargeAccount 充值账户
+	 * @param money 充值金额
+	 * @param payWay 支付方式
+	 * @param rechargeNo 充值单号
+	 * @return
+	 */
+	CommonResponse manualRecharge(Users users, String rechargeAccount, String money, String payWay, String rechargeNo) throws GlobalException;
 
 }

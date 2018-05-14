@@ -2,6 +2,8 @@ package com.fx.xzt.sys.service;
 
 import java.util.List;
 
+import com.fx.xzt.sys.entity.UsersPermission;
+import com.fx.xzt.sys.entity.UsersRole;
 import com.fx.xzt.sys.entity.UsersUserRole;
 import com.fx.xzt.sys.model.UserInfoModel;
 import com.fx.xzt.sys.model.UsersUserRoleModel;
@@ -60,6 +62,15 @@ public interface UsersUserRoleService extends IService<UsersUserRole>{
 	PageInfo selectRoleUsers(String roleName,String startTime,String endTime,Integer pageNum,Integer pageSize);
 	
 	List<UsersUserRole> selectByRoleId(Integer roleId);
+
+	/**
+	 * @CreateBy：tianliya
+	 * @CreateTime：2018/4/24 13:49
+	 * @Description：获取用户的角色
+	 * @param roleId
+	 * @return
+	 */
+	List<UsersPermission> getByUserId(Long roleId);
 
 
 	

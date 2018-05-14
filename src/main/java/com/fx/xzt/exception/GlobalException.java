@@ -8,7 +8,7 @@ package com.fx.xzt.exception;
 * @date 2017年7月31日 下午4:30:12 
 *
  */
-public class GlobalException extends Exception {
+public class GlobalException extends RuntimeException {
 
 	/**
 	 * 
