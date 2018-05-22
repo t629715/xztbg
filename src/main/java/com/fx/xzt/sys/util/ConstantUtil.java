@@ -510,8 +510,10 @@ public class ConstantUtil {
         BZHTJ("标准户统计","41"),
         TJYHMX("推荐用户明细","42"),
         DQJGL("定期金管理","43"),
-        RGCZ("人工充值","45"),
-        DQJJY("定期金交易","44");
+        SJTZGL("实金投资管理","44"),
+        CJBGL("存金宝管理","45"),
+        RGCZ("人工充值","46"),
+        DQJJY("定期金交易","47");
 
 
         private String name;

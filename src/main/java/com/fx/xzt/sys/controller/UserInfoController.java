@@ -296,7 +296,7 @@ public class UserInfoController {
 	@ResponseBody
 	public void excelRegisterMessage(HttpServletRequest request, HttpServletResponse response,String userName, String startTime, String endTime,
 		String registerFrom, String registerIp, String lastStartTime, String lastEndTime, String lastLoginFrom,
-		String agentsName, String brokerName, String attribution) throws ParseException{
+		String agentName, String brokerName, String attribution) throws ParseException{
 		
 		//操作日志
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -318,7 +318,7 @@ public class UserInfoController {
 		              isView = role.get("roleIsView").toString();
 		          }
             	List<Map<String, Object>> list = userLoginService.getExcelByRegister(userName,startTime,endTime,registerFrom,registerIp,lastStartTime,
-        				lastEndTime,lastLoginFrom,agentsName,brokerName,attribution, isView);
+        				lastEndTime,lastLoginFrom,agentName,brokerName,attribution, isView);
         		if (list != null && !list.isEmpty()) {
         			for (Map<String, Object> u : list) {
         				String name = ConstantUtil.userStatus.toMap().get(u.get("Status").toString());
@@ -327,7 +327,7 @@ public class UserInfoController {
         		}
         		POIUtils poi = new POIUtils();
         		String[] heads = {"用户账号","代理商","经纪人","注册时间","注册来源","注册IP","归属地省","归属地市","最后一次登录时间","最后一次登录方式","最后一次登录IP","状态"};
-        		String[] colums = {"UserName","agentsName","brokerName","RegisterTime","RegisterFrom","RegisterIp","attributionProvince",
+        		String[] colums = {"UserName","agentName","brokerName","RegisterTime","RegisterFrom","RegisterIp","attributionProvince",
         				"attribution","lastlogintime","lastloginfrom","lastfromip","Status"};
         		poi.doExport(request, response, list, "注册信息", "注册信息", heads, colums);
         		log.setUserId(users.getId());
@@ -569,6 +569,32 @@ public class UserInfoController {
 		        	isView = role.get("roleIsView").toString();
 		        }
         		List<Map<String, Object>> list = userInfoService.getExcelAccount(userName,agentsName, brokerName,startTime,endTime, isView);
+        		if (list != null && list.size() > 0) {
+        			for (Map<String, Object> map : list) {
+        				Object rmbObj = map.get("rmb");
+        				Object frozenRmbObj = map.get("frozenRmb");
+        				Object financeObj = map.get("finance");
+        				Object totalIncomeObj = map.get("totalIncome");
+        				
+        				if (rmbObj != null && rmbObj != "") {
+        					Double rmb = Double.valueOf(rmbObj.toString());
+                        	map.put("rmb", rmb/100);
+        				}
+        				if (frozenRmbObj != null && frozenRmbObj != "") {
+        					Double frozenRmb = Double.valueOf(frozenRmbObj.toString());
+                        	map.put("frozenRmb", frozenRmb/100);
+        				}
+        				if (financeObj != null && financeObj != "") {
+        					Double finance = Double.valueOf(financeObj.toString());
+                        	map.put("finance", finance/100);
+        				}
+        				if (totalIncomeObj != null && totalIncomeObj != "") {
+        					Double totalIncome = Double.valueOf(totalIncomeObj.toString());
+                        	map.put("totalIncome", totalIncome/100);
+        				}
+                    	
+                    }
+        		}
         		POIUtils poi = new POIUtils();
         		String[] heads = {"用户账号","昵称","姓名","注册时间","代理商","经纪人","身份证号","银行卡","人民币余额","人民币冻结","人民币理财","利息","黄金"};
         		String[] colums = {"userName","nickName","realname","registertime","agentName","brokerName","idcard","accountNum","rmb","frozenRmb","finance","totalIncome","gold"};

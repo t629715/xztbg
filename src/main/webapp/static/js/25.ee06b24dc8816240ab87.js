@@ -330,12 +330,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           }
 
           list[i].shareAmount = this.amountHandle1(list[i].shareAmount);
+
           if (list[i].upOrDown == "0") {
             if (this.isNotEmpty(list[i].openPositionPrice)) {
               list[i].openPositionPrice = Number(list[i].openPositionPrice + Number(list[i].pointCount)).toFixed(2);
             }
             list[i].upOrDown = '买涨';
-          } else if (list[i].upOrDown == "1") {}{
+          } else if (list[i].upOrDown == "1") {
             if (this.isNotEmpty(list[i].closePositionPrice)) {
               list[i].closePositionPrice = Number(list[i].closePositionPrice + Number(list[i].pointCount)).toFixed(2);
             }
