@@ -5,18 +5,18 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
-import com.fx.xzt.sys.entity.InVestGoldOrder;
+import com.fx.xzt.sys.entity.SaveGoldRecord;
 
 /**
  * 
-* @ClassName: InVestGoldOrderMapper 
-* @Description: 金条投资订单
+* @ClassName: SaveGoldRecordMapper 
+* @Description: 存金记录
 * @author htt
-* @date 2018-4-19 下午3:49:42 
+* @date 2018-5-29 上午11:28:05 
 *
  */
 @Repository
-public interface InVestGoldOrderMapper extends BaseMapper<InVestGoldOrder> {
+public interface SaveGoldRecordMapper extends BaseMapper<SaveGoldRecord> {
 	
 	/**
 	 * 
@@ -32,7 +32,7 @@ public interface InVestGoldOrderMapper extends BaseMapper<InVestGoldOrder> {
 	
 	/**
 	 * 
-	* @Title: excelByAll 
+	* @Title: countByAllS 
 	* @Description: 查询统计
 	* @param map
 	* @return    设定文件 
@@ -42,15 +42,4 @@ public interface InVestGoldOrderMapper extends BaseMapper<InVestGoldOrder> {
 	 */
 	Map<String, Object> countByAll (Map<String,Object> map);
 
-	/**
-	 * 
-	* @Title: updateById 
-	* @Description: 修改
-	* @param inVestGoldOrder
-	* @return    设定文件 
-	* @return int    返回类型 
-	* @throws 
-	* @author htt
-	 */
-	int updateById(InVestGoldOrder inVestGoldOrder);
 }

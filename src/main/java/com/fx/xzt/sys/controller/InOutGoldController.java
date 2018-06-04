@@ -90,7 +90,8 @@ public class InOutGoldController {
 		        if (role != null && role.get("roleIsView") != null) {
 		            isView = role.get("roleIsView").toString();
 		        }
-                PageInfo<Map<String, Object>> pageInfo = inOutGoldService.selectByInOutGold(userName, agentName, brokerName, isView, pageNum, pageSize);
+                PageInfo<Map<String, Object>> pageInfo = inOutGoldService.selectByInOutGold(userName, agentName, brokerName, 
+                		isView, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
@@ -156,29 +157,13 @@ public class InOutGoldController {
                     agentNameStr = users.getUserName();
                 }
                 List<Map<String, Object>> list = inOutGoldService.excelInOutGold(userName, agentNameStr, brokerName, isView);
-                if (list != null && list.size() > 0) {
-                    for (Map<String, Object> map : list) {
-                    	Object registerTimeObj = map.get("registerTime");
-                    	
-               		 	if (registerTimeObj != null && registerTimeObj != "") {
-               		 		map.put("registerTime", sdf.format(sdf.parse(registerTimeObj.toString())));
-                        }
-                    	map.put("cj", StringUtil.fundsHandle(map.get("cj")));
-                    	map.put("rj", StringUtil.fundsHandle(map.get("rj")));
-                    	map.put("finance", StringUtil.fundsHandle(map.get("finance")));
-                    	map.put("totalIncome", StringUtil.fundsHandle(map.get("totalIncome")));
-                    	map.put("sjAmount", StringUtil.fundsHandle(map.get("sjAmount")));
-                    	map.put("cbf", StringUtil.fundsHandle(map.get("cbf")));
-                    	map.put("rmb", StringUtil.fundsHandle(map.get("rmb")));
-                    }
-                    POIUtils poi = new POIUtils();
-                    //判断是否为代理商账户
-                    String[] heads = {"姓名", "用户账号",  "代理商", "经纪人", "注册时间", "入金", "出金", "成本", "账户余额", "利息", "理财", "买入黄金资金"};
-                    String[] colums = {"realName", "userName", "agentName", "brokerName", "registerTime", "rj", "cj", "cbf", "rmb", "totalIncome", "finance","sjAmount"};
-                    poi.doExport(request, response, list, tieleName, excelName, heads, colums);
-                    log.setUserId(users.getId());
-                    log.setContent("导出成功，共：" + list.size() + "条数据");
-                }
+                POIUtils poi = new POIUtils();
+                //判断是否为代理商账户
+                String[] heads = {"姓名", "用户账号",  "代理商", "经纪人", "注册时间", "入金", "出金", "净入金", "账户余额", "黄金收益", "提金", "理财", "黄金资产买入", "黄金资产卖出"};
+                String[] colums = {"realName", "userName", "agentName", "brokerName", "registerTime", "rj", "cj", "jrj", "rmb", "tj", "tj","lc", "hjb", "hjs"};
+                poi.doExport(request, response, list, tieleName, excelName, heads, colums);
+                log.setUserId(users.getId());
+                log.setContent("导出成功，共：" + list.size() + "条数据");
             }
         } catch (Exception e) {
             throw e;

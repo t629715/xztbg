@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fx.xzt.sys.mapper.SaveGoldRecordMapper">
+
+    <!--存金记录开始-htt-->
+    <select id="selectByAll" resultType="java.util.Map" parameterType="java.util.Map">
+    select 
+    	<if test='isView == "1"'>
+			u.UserName userName,
+	    </if>
+	    <if test='isView != "1"'>
+			INSERT(u.UserName, 4, 4, '****') userName,
+	    </if>
+		o.id, o.user_id userId, o.amount, o.rmb_amount rmbAmount, o.description, o.type, o.create_time createTime, 
+		o.gold_price goldPrice, o.average_price averagePrice, o.discount_amount discountAmount, o.discount_price discountPrice, 
+		o.profit_and_loss profitAndLoss, o.sale_fee saleFee,
+		o.agent_id AS agentId, ua.user_name AS agentName, o.broker_id AS brokerId, ub.user_name AS brokerName,
+		i.RegisterTime registerTime
+	from save_gold_record o
+	LEFT JOIN User_Login u ON o.user_id = u.UserID
+	LEFT JOIN User_Info i ON u.UserID = i.UserID
+	LEFT JOIN users ua ON o.agent_id = ua.id 
+	LEFT JOIN users ub ON o.broker_id = ub.id
+    <where>
+    	<if test="userName != null and userName != '' ">
+	    	and u.UserName = #{userName,jdbcType=VARCHAR}
+	    </if>
+	    <if test="startTime !=null and startTime !='' ">
+	    	and o.create_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+	    </if>
+	    <if test="endTime !=null and endTime != '' ">
+	    	and o.create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+	    </if>
+	    <if test="regStartTime !=null and regStartTime !='' ">
+             and i.RegisterTime &gt;=#{regStartTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="regEndTime !=null and regEndTime != '' ">
+             and i.RegisterTime &lt;=#{regEndTime,jdbcType=TIMESTAMP}
+        </if>
+	    <if test="agentName != null and agentName !='' ">
+	    	and ua.id = #{agentName,jdbcType=BIGINT}
+	    </if>
+	    <if test="brokerName != null and brokerName !='' ">
+	    	and ub.id = #{brokerName,jdbcType=BIGINT}
+	    </if>
+	    <if test="type != null and type !='' ">
+	    	and o.type = #{type,jdbcType=INTEGER}
+	    </if>
+    </where>
+    
+    order by o.create_time DESC
+    </select>
+    <!--存金记录结束-htt-->
+    
+    <!--存金记录统计开始-htt-->
+    <select id="countByAll" resultType="java.util.Map" parameterType="java.util.Map">
+    select 
+    	format(sum(o.amount), 3) amountSum, sum(o.rmb_amount) rmbAmountSum, sum(o.profit_and_loss) profitAndLossSum,
+    	sum(o.sale_fee) saleFeeSum
+	from save_gold_record o
+	LEFT JOIN User_Login u ON o.user_id = u.UserID
+	LEFT JOIN User_Info i ON u.UserID = i.UserID
+	LEFT JOIN users ua ON o.agent_id = ua.id 
+	LEFT JOIN users ub ON o.broker_id = ub.id
+    <where>
+    	<if test="userName != null and userName != '' ">
+	    	and u.UserName = #{userName,jdbcType=VARCHAR}
+	    </if>
+	    <if test="startTime !=null and startTime !='' ">
+	    	and o.create_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+	    </if>
+	    <if test="endTime !=null and endTime != '' ">
+	    	and o.create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+	    </if>
+	    <if test="regStartTime !=null and regStartTime !='' ">
+             and i.RegisterTime &gt;=#{regStartTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="regEndTime !=null and regEndTime != '' ">
+             and i.RegisterTime &lt;=#{regEndTime,jdbcType=TIMESTAMP}
+        </if>
+	    <if test="agentName != null and agentName !='' ">
+	    	and ua.id = #{agentName,jdbcType=BIGINT}
+	    </if>
+	    <if test="brokerName != null and brokerName !='' ">
+	    	and ub.id = #{brokerName,jdbcType=BIGINT}
+	    </if>
+	    <if test="type != null and type !='' ">
+	    	and o.type = #{type,jdbcType=INTEGER}
+	    </if>
+    </where>
+    </select>
+    <!--存金记录统计结束-htt-->
+    
+</mapper>

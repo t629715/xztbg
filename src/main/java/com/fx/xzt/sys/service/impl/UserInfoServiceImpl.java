@@ -98,7 +98,12 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		return -1;
 	}
 
-	public PageInfo<Map<String, Object>> getByAccountMessage(String userName,String agentsName, String brokerName,String startTime,String endTime, String isView, Integer pageNum,Integer pageSize) {
+	/**
+	 * 账户信息
+	 * @throws ParseException 
+	 */
+	public PageInfo<Map<String, Object>> getByAccountMessage(String userName,String agentsName, String brokerName,
+			String startTime,String endTime, String isView, Integer pageNum,Integer pageSize) throws ParseException {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
 		map.put("agentsName", agentsName);
@@ -108,6 +113,7 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		map.put("isView", isView);
 		PageHelper.startPage(pageNum,pageSize);
 		List<Map<String, Object>> list = userInfoMapper.getByAccountMessage(map);
+		handleAccountMessage(list);
 		return new PageInfo<Map<String, Object>>(list);
 	}
 
@@ -121,7 +127,8 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 	 * @param pageSize
 	 * @return
 	 */
-	public PageInfo<Map<String, Object>> getByRealNameAuth(String userName, String realName, String applyTimeStart, String applyTimeEnd, String isView , Integer pageNum,
+	public PageInfo<Map<String, Object>> getByRealNameAuth(String userName, String realName, 
+			String applyTimeStart, String applyTimeEnd, String isView , Integer pageNum,
 											  Integer pageSize) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
@@ -168,8 +175,10 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 	 * @param startTime  注册开始时间
 	 * @param endTime  注册结束时间
 	 * @return
+	 * @throws ParseException 
 	 */
-	public List<Map<String, Object>> getExcelAccount(String userName, String agentsName, String brokerName, String startTime, String endTime, String isView) {
+	public List<Map<String, Object>> getExcelAccount(String userName, String agentsName, String brokerName, 
+			String startTime, String endTime, String isView) throws ParseException {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
 		map.put("agentsName", agentsName);
@@ -178,21 +187,63 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		map.put("endTime", endTime);
 		map.put("isView", isView);
 		List<Map<String, Object>> list = userInfoMapper.getByAccountMessage(map);
+		handleAccountMessage(list);
 		return list;
+	}
+	
+	/**
+	 * 
+	* @Title: handleAccountMessage 
+	* @Description: 账户信息数据处理
+	* @param list    设定文件 
+	* @return void    返回类型 
+	 * @throws ParseException 
+	* @throws 
+	* @author htt
+	 */
+	public void handleAccountMessage(List<Map<String, Object>> list) throws ParseException {
+		if (list != null && list.size() > 0) {
+			for (Map<String, Object> map : list) {
+				Object rmbObj = map.get("rmb");
+				if (rmbObj != null && rmbObj != "") {
+					Double rmb = Double.valueOf(rmbObj.toString());
+					map.put("rmb", rmb/100);
+				}
+				Object averagePriceObj = map.get("averagePrice");
+				if (averagePriceObj != null && averagePriceObj != "") {
+					Double averagePrice = Double.valueOf(averagePriceObj.toString());
+					map.put("averagePrice", averagePrice/100);
+				}
+				Object registerTimeObj = map.get("registerTime");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				if (registerTimeObj != null && registerTimeObj != "") {
+					map.put("registerTime", sdf.format(sdf.parse(registerTimeObj.toString())));
+				}
+			}
+		}
 	}
 
 	/**
 	 * 获取账户信息列表金额黄金统计
 	 * @return
 	 */
-	public Map<String,Object> getByAccountCount(String userName, String agentsName, String brokerName, String startTime, String endTime) {
+	public Map<String,Object> getByAccountCount(String userName, String agentsName, String brokerName, 
+			String startTime, String endTime) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
 		map.put("agentsName", agentsName);
 		map.put("brokerName", brokerName);
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
-		return userInfoMapper.getByAccountCount(map);
+		Map<String,Object> map1 = userInfoMapper.getByAccountCount(map);
+		if (map1 != null && map1.size() > 0) {
+			Object rmbSumObj = map1.get("rmbSum");
+			if (rmbSumObj != null && rmbSumObj != "") {
+				Double rmbSum = Double.valueOf(rmbSumObj.toString());
+				map1.put("rmbSum", rmbSum/100);
+			}
+		}
+		return map1;
 	}
 
 	/**
@@ -261,12 +312,17 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		map.put("brokerId",brokerId);
 		return userInfoMapper.updateUserInfoBrokerId(map);
 	}
-	@Override
-	public int alertAgentAndBroker(Long userId, Long brokerId,Long agentId) {
-		Map map = new HashMap();
+	
+	/**
+	 * 信息变更 
+	 */
+	public int alertAgentAndBroker(String realName, String idcard, Long userId, Long brokerId,Long agentId) {
+		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userId",userId);
-		map.put("brokerId",brokerId);
-		map.put("agentId",agentId);
+		map.put("realName", realName);
+		map.put("idcard", idcard);
+		map.put("brokerId", brokerId);
+		map.put("agentId", agentId);
 		return userInfoMapper.alertAgentAndBroker(map);
 	}
 

@@ -15,27 +15,33 @@ public class InVestGoldOrder implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Long id;
-	private Long investGoldId;
-	private String investGoldName;
-	private Integer investGoldWeight;
-	private Double investGoldService;
-	private Integer logisticsFee;
-	private String logisticsNo;
-	private Integer goldNum;
-	private Integer goldTotalWeight;
-	private Short payType;
-	private Integer goldBasePrice;
-	private Long totalMoney;
-	private Long goldMoney;
-	private Long serviceMoney;
-	private Short status;
-	private Date createTime;
-	private Date sendTime;
-	private Date updateTime;
-	private Long brokerId;
-	private Long agentId;
-	private Long userId;
+	private Long id;                   //id
+	private Long investGoldId;         //投资金条id
+	private Long userAddressId;        //用户收货地址id
+	private String investGoldName;     //投资金条产品名称
+	private Integer investGoldWeight;  //投资金条规格，单位克
+	private Double investGoldService;  //每笔提金服务费，按黄金价值算，ps：0.05表示黄金价值的5%
+	private Integer logisticsFee;      //物流费，单位分
+	private String logisticsNo;        //物流单号
+	private Integer goldNum;           //金条数量
+	private Integer goldTotalWeight;   //黄金总重量，单位克
+	private Short payType;             //1：现金支付2：存金宝支付
+	private Integer goldBasePrice;     //黄金基准价，单位克/分
+	private Long totalMoney;           //订单总价，单位分，存金宝支付时值计算服务费
+	private Long goldMoney;            //黄金总价，单位分，存金宝支付时为0
+	private Long serviceMoney;         //提金服务费，单位分
+	private String userAddress;        //用户收货地址
+	private String deliverName;        //收货人姓名
+	private String deliverPhone;       //收货人电话
+	private String imgUrl;             //订单图片地址
+	private Short status;              //0：待支付；10：未发货；20：已发货；30：已完成；40：未发货已取消；50：未支付已关闭；注：订单只要未发货，都可以取消
+	private Date createTime;           //订单创建时间
+	private Date sendTime;             //发货时间
+	private Date updateTime;           //修改时间
+	private Date payTime;              //支付时间
+	private Long brokerId;             //经纪人id
+	private Long agentId;              //代理商id
+	private Long userId;               //用户id
 
 	public Long getId() {
 		return id;
@@ -203,6 +209,54 @@ public class InVestGoldOrder implements Serializable {
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+
+	public Long getUserAddressId() {
+		return userAddressId;
+	}
+
+	public void setUserAddressId(Long userAddressId) {
+		this.userAddressId = userAddressId;
+	}
+
+	public String getUserAddress() {
+		return userAddress;
+	}
+
+	public void setUserAddress(String userAddress) {
+		this.userAddress = userAddress;
+	}
+
+	public String getDeliverName() {
+		return deliverName;
+	}
+
+	public void setDeliverName(String deliverName) {
+		this.deliverName = deliverName;
+	}
+
+	public String getDeliverPhone() {
+		return deliverPhone;
+	}
+
+	public void setDeliverPhone(String deliverPhone) {
+		this.deliverPhone = deliverPhone;
+	}
+
+	public String getImgUrl() {
+		return imgUrl;
+	}
+
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
+	}
+
+	public Date getPayTime() {
+		return payTime;
+	}
+
+	public void setPayTime(Date payTime) {
+		this.payTime = payTime;
 	}
 	
 
