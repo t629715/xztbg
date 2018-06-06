@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fx.xzt.sys.mapper.FinanceRegulargoldProductMapper" >
+  <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.FinanceRegulargoldProduct" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="product_no" property="productNo" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="product_type" property="productType" jdbcType="SMALLINT" />
+    <result column="product_year_incom_percent" property="productYearIncomPercent" jdbcType="DECIMAL" />
+    <result column="product_cycle" property="productCycle" jdbcType="INTEGER" />
+    <result column="product_min_gram" property="productMinGram" jdbcType="INTEGER" />
+    <result column="product_max_gram" property="productMaxGram" jdbcType="INTEGER" />
+    <result column="product_settle_method" property="productSettleMethod" jdbcType="SMALLINT" />
+    <result column="product_status" property="productStatus" jdbcType="SMALLINT" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="product_desc" property="productDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, product_no, product_name, product_type, product_year_incom_percent, product_cycle, 
+    product_min_gram, product_max_gram, product_settle_method, product_status, create_by, 
+    create_at, product_desc
+  </sql>
+  <select id="getByAll" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from finance_regulargold_product
+    order by product_name
+  </select>
+  <delete id="deleteOne" parameterType="java.lang.Long" >
+    delete from finance_regulargold_product
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insertOne" parameterType="com.fx.xzt.sys.entity.FinanceRegulargoldProduct" >
+    insert into finance_regulargold_product
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="productNo != null" >
+        product_no,
+      </if>
+      <if test="productName != null" >
+        product_name,
+      </if>
+      <if test="productType != null" >
+        product_type,
+      </if>
+      <if test="productYearIncomPercent != null" >
+        product_year_incom_percent,
+      </if>
+      <if test="productCycle != null" >
+        product_cycle,
+      </if>
+      <if test="productMinGram != null" >
+        product_min_gram,
+      </if>
+      <if test="productMaxGram != null" >
+        product_max_gram,
+      </if>
+      <if test="productSettleMethod != null" >
+        product_settle_method,
+      </if>
+      <if test="productStatus != null" >
+        product_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="productNo != null" >
+        #{productNo,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null" >
+        #{productType,jdbcType=SMALLINT},
+      </if>
+      <if test="yearIncomPercent != null" >
+        #{yearIncomPercent,jdbcType=REAL},
+      </if>
+      <if test="productCycle != null" >
+        #{productCycle,jdbcType=INTEGER},
+      </if>
+      <if test="productMinGram != null" >
+        #{productMinGram,jdbcType=INTEGER},
+      </if>
+      <if test="productMaxGram != null" >
+        #{productMaxGram,jdbcType=INTEGER},
+      </if>
+      <if test="productSettleMethod != null" >
+        #{productSettleMethod,jdbcType=SMALLINT},
+      </if>
+      <if test="productStatus != null" >
+        #{productStatus,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="modifyOneSelective" parameterType="com.fx.xzt.sys.entity.FinanceRegulargoldProduct" >
+    update finance_regulargold_product
+    <set >
+      <if test="productNo != null" >
+        product_no = #{productNo,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null" >
+        product_type = #{productType,jdbcType=SMALLINT},
+      </if>
+      <if test="productYearIncomPercent != null" >
+        product_year_incom_percent = #{productYearIncomPercent,jdbcType=REAL},
+      </if>
+      <if test="productCycle != null" >
+        product_cycle = #{productCycle,jdbcType=INTEGER},
+      </if>
+      <if test="productMinGram != null" >
+        product_min_gram = #{productMinGram,jdbcType=INTEGER},
+      </if>
+      <if test="productMaxGram != null" >
+        product_max_gram = #{productMaxGram,jdbcType=INTEGER},
+      </if>
+      <if test="productSettleMethod != null" >
+        product_settle_method = #{productSettleMethod,jdbcType=SMALLINT},
+      </if>
+      <if test="productStatus != null" >
+        product_status = #{productStatus,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
