@@ -649,7 +649,7 @@
 			parameterType="java.util.Map">
 		SELECT format(SUM(rmb)/100,2) rmbSum, format(SUM(finance)/100,2) finaceSum, format(SUM(frozen_rmb),2)
 		frozenRmbSum ,
-		format(SUM(total_income)/100,2) AS totalIncomeSum, SUM(gold) goldSum
+		format(SUM(a.total_income)/100,2) AS totalIncomeSum, SUM(gold) goldSum
 		FROM User_Info u
 		RIGHT JOIN User_Login l ON u.UserID = l.UserID
 		LEFT JOIN user_account a ON l.UserID = a.user_id
