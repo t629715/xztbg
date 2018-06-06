@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.fx.xzt.sys.service.PayWayService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +22,7 @@ import com.fx.xzt.sys.entity.LogRecord;
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.service.InOutGoldService;
 import com.fx.xzt.sys.service.LogRecordService;
+import com.fx.xzt.sys.service.PayWayService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
 import com.fx.xzt.sys.util.DateUtil;
@@ -160,7 +160,7 @@ public class InOutGoldController {
                 POIUtils poi = new POIUtils();
                 //判断是否为代理商账户
                 String[] heads = {"姓名", "用户账号",  "代理商", "经纪人", "注册时间", "入金", "出金", "净入金", "账户余额", "黄金收益", "提金", "理财", "黄金资产买入", "黄金资产卖出"};
-                String[] colums = {"realName", "userName", "agentName", "brokerName", "registerTime", "rj", "cj", "jrj", "rmb", "tj", "tj","lc", "hjb", "hjs"};
+                String[] colums = {"realName", "userName", "agentName", "brokerName", "registerTime", "rj", "cj", "jrj", "rmb", "totalIncome", "tj","lc", "hjb", "hjs"};
                 poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                 log.setUserId(users.getId());
                 log.setContent("导出成功，共：" + list.size() + "条数据");

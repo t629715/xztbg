@@ -1,5 +1,6 @@
 package com.fx.xzt.sys.service.impl;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -338,6 +339,7 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		map.put("agentName", agentName);
 		PageHelper.startPage(pageNum,pageSize);
 		List<Map<String, Object>> list = userInfoMapper.getByUserAnalysis(map);
+		handleUserAnalysis(list);
 		PageInfo<Map<String, Object>> pagehelper = new PageInfo<Map<String, Object>>(list);
 		return pagehelper;
 	}
@@ -352,7 +354,49 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		map.put("loginFrom", loginFrom);
 		map.put("agentName", agentName);
 		List<Map<String, Object>> list = userInfoMapper.getByUserAnalysis(map);
+		handleUserAnalysis(list);
 		return list;
+	}
+	
+	/**
+	 * 
+	* @Title: handleUserAnalysis 
+	* @Description: 用户分析查询数据处理
+	* @param list    设定文件 
+	* @return void    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	public void handleUserAnalysis(List<Map<String, Object>> list) {
+		if (list != null && list.size() > 0) {
+			for (Map<String, Object> map : list) {
+				Object xrjblObj = map.get("xrjbl");
+				Object xjqjyblObj = map.get("xjqjybl");
+				Object xdqjblObj = map.get("xdqjbl");
+				Object xcjbblObj = map.get("xcjbbl");
+				
+				if (xrjblObj != null && xrjblObj != "") {
+                	Double xrjbl = Double.valueOf(xrjblObj.toString());
+                	DecimalFormat df = new DecimalFormat("0.00%");
+                	map.put("xrjbl", df.format(xrjbl));
+                }
+				if (xjqjyblObj != null && xjqjyblObj != "") {
+                	Double xjqjybl = Double.valueOf(xjqjyblObj.toString());
+                	DecimalFormat df = new DecimalFormat("0.00%");
+                	map.put("xjqjybl", df.format(xjqjybl));
+                }
+				if (xdqjblObj != null && xdqjblObj != "") {
+                	Double xdqjbl = Double.valueOf(xdqjblObj.toString());
+                	DecimalFormat df = new DecimalFormat("0.00%");
+                	map.put("xdqjbl", df.format(xdqjbl));
+                }
+				if (xcjbblObj != null && xcjbblObj != "") {
+                	Double xcjbbl = Double.valueOf(xcjbblObj.toString());
+                	DecimalFormat df = new DecimalFormat("0.00%");
+                	map.put("xcjbbl", df.format(xcjbbl));
+                }
+			}
+		}
 	}
 
 	/**

@@ -573,7 +573,7 @@ public class UserInfoController {
         		List<Map<String, Object>> list = userInfoService.getExcelAccount(userName,agentsName, brokerName,startTime,endTime, isView);
         		POIUtils poi = new POIUtils();
         		String[] heads = {"用户账号","昵称","姓名","注册时间","代理商","经纪人","身份证号","银行卡","人民币余额","黄金","定期金","黄金收益","黄金单位成本价"};
-        		String[] colums = {"userName","nickName","realname","registerTime","agentName","brokerName","idcard","accountNum","rmb","gold","financeGold","financeGold","averagePrice"};
+        		String[] colums = {"userName","nickName","realname","registerTime","agentName","brokerName","idcard","accountNum","rmb","gold","financeGold","totalIncome","averagePrice"};
         		poi.doExport(request, response, list, "账户信息", "账户信息", heads, colums);
         		log.setUserId(users.getId());
                 log.setContent("导出成功，共：" + list.size() + "条数据");
@@ -1071,52 +1071,15 @@ public class UserInfoController {
             		}
             	}
 				List<Map<String, Object>> list = userInfoService.excelByUserAnalysis(sTime, eTime, loginFrom, agentName);
-				if (list != null && list.size() > 0) {
-					for (Map<String, Object> map : list) {
-						Object xrjblObj = map.get("xrjbl");
-						Object xjqjyblObj = map.get("xjqjybl");
-						Object xhjwzblObj = map.get("xhjwzbl");
-						Object xsycblObj = map.get("xsycbl");
-						Object xswhjblObj = map.get("xswhjbl");
-						
-						if (xrjblObj != null && xrjblObj != "") {
-	                    	Double xrjbl = Double.valueOf(xrjblObj.toString());
-	                    	DecimalFormat df = new DecimalFormat("0.00%");
-	                    	map.put("xrjbl", df.format(xrjbl));
-	                    }
-						if (xjqjyblObj != null && xjqjyblObj != "") {
-	                    	Double xjqjybl = Double.valueOf(xjqjyblObj.toString());
-	                    	DecimalFormat df = new DecimalFormat("0.00%");
-	                    	map.put("xjqjybl", df.format(xjqjybl));
-	                    }
-						if (xhjwzblObj != null && xhjwzblObj != "") {
-	                    	Double xhjwzbl = Double.valueOf(xhjwzblObj.toString());
-	                    	DecimalFormat df = new DecimalFormat("0.00%");
-	                    	map.put("xhjwzbl", df.format(xhjwzbl));
-	                    }
-						if (xsycblObj != null && xsycblObj != "") {
-	                    	Double xsycbl = Double.valueOf(xsycblObj.toString());
-	                    	DecimalFormat df = new DecimalFormat("0.00%");
-	                    	map.put("xsycbl", df.format(xsycbl));
-	                    }
-						if (xswhjblObj != null && xswhjblObj != "") {
-	                    	Double xswhjbl = Double.valueOf(xswhjblObj.toString());
-	                    	DecimalFormat df = new DecimalFormat("0.00%");
-	                    	map.put("xswhjbl", df.format(xswhjbl));
-	                    }
-					}
-				}
 				POIUtils poi = new POIUtils();
 				String[] heads = { "日期", "合计入金用户", "新入金用户", "新入金用户比例", 
-						"金权交易合计交易用户", "金权交易新交易用户", "金权交易新交易用户比例", "黄金稳赚合计交易用户",
-						"黄金稳赚新交易用户", "黄金稳赚新交易用户比例", "实物黄金合计交易用户", "实物黄金新交易用户",
-						"实物黄金新交易用户比例", "随意存合计交易用户", "随意存新交易用户", "随意存新交易用户比例",
-						"新注册用户", "总用户", "总入金用户" };
+						"金权交易合计交易用户", "金权交易新交易用户", "金权交易新交易用户比例", "稳赚金合计交易用户",
+						"稳赚金交易用户", "稳赚金新交易用户比例", "存金宝合计交易用户", "存金宝新交易用户",
+						"存金宝新交易用户比例", "新注册用户", "总用户", "总入金用户" };
 				String[] colums = { "date", "hjrj", "xrj", "xrjbl",
-						"hjjqjy", "xjqjy", "xjqjybl", "hjhjwz",
-						"xhjwz", "xhjwzbl", "hjswhj", "xswhj",
-						"xswhjbl", "hjsyc", "xsyc", "xsycbl",
-						"xzc", "zzc", "zrj" };
+						"hjjqjy", "xjqjy", "xjqjybl", "hjdqj",
+						"xdqj", "xdqjbl", "hjcjb", "xcjb",
+						"xcjbbl", "xzc", "zzc", "zrj" };
 				poi.doExport(request, response, list, tieleName, excelName,
 						heads, colums);
 				log.setUserId(users.getId());

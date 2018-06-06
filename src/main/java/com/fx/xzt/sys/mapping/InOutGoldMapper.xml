@@ -12,12 +12,13 @@
 		</if>
 		i.RealName realName,i.RegisterTime registerTime,
 		i.agent_id AS agentId, ua.user_name AS agentName, i.broker_id AS brokerId, ub.user_name AS brokerName,
-		a.rmb,
+		a.rmb, ga.total_income totalIncome,
 		ifnull(r.rj, 0) rj,ifnull(c.cj, 0) cj,ifnull(r.rj, 0)-ifnull(c.cj, 0) jrj,
 		ifnull(tj.tj, 0) tj, ifnull(lc.lc, 0) lc,
 		ifnull(hjb.hjb, 0) hjb,ifnull(hjs.hjs, 0) hjs
 		FROM User_Login l
 		LEFT JOIN user_account a ON a.user_id = l.UserID
+		LEFT JOIN user_gold_account ga ON ga.user_id = l.UserID
 		LEFT JOIN User_Info i ON l.UserID = i.UserID
 		LEFT JOIN users ua ON i.agent_id = ua.id
 		LEFT JOIN users ub ON i.broker_id = ub.id
