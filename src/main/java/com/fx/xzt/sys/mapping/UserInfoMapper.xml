@@ -197,12 +197,12 @@
 	
 	<!-- 用户分析查询统计开始-htt -->
 	<select id="getByUserAnalysisCount" resultType="java.util.Map" parameterType="java.util.Map">
-		SELECT t1.hjrj, t1.xrj, t1.xrj/t1.hjrj xrjbl, t1.hjjy, t1.xjy, t1.xjy/t1.hjjy xjybl, t1.xzc,
+		SELECT t1.hjrj, t1.xrj, ifnull(t1.xrj/t1.hjrj, 0) xrjbl, t1.hjjy, t1.xjy, ifnull(t1.xjy/t1.hjjy, 0) xjybl, t1.xzc,
 			(SELECT COUNT(DISTINCT r3.UserID) FROM User_Recharge r3) zrj,
 			(SELECT COUNT(i1.UserID) FROM User_Info i1) zyh from (
 			SELECT SUM(t.hjrj) hjrj, SUM(t.xrj) xrj,
-				SUM(t.hjjqjy) + SUM(t.hjhjwz) + SUM(t.hjsyc) + SUM(t.hjswhj) hjjy, 
-				SUM(t.xjqjy) + SUM(xhjwz) + SUM(t.xsyc) + SUM(t.xswhj) xjy,
+				SUM(t.hjjqjy) + SUM(t.hjdqj) + SUM(t.hjcjb) hjjy, 
+				SUM(t.xjqjy) + SUM(xdqj) + SUM(t.xcjb) xjy,
 				SUM(t.xzc) xzc FROM (
 				SELECT d.date,	
 					(SELECT COUNT(DISTINCT r.UserID) FROM User_Recharge r 
@@ -241,34 +241,34 @@
 							and u.RegisterFrom = #{registerFrom,jdbcType=BIGINT}
 						</if>
 						GROUP BY o1.user_id) d1 WHERE d1.minDate = d.date) xjqjy,
-					(SELECT COUNT(DISTINCT f.user_id) FROM finance_order f 
-						LEFT JOIN User_Info u ON u.UserID = f.user_id WHERE f.type = 2 AND DATE_FORMAT(f.buy_time,'%Y-%m-%d') = d.date
+					(SELECT COUNT(DISTINCT f.user_id) FROM finance_regulargold_order f 
+						LEFT JOIN User_Info u ON u.UserID = f.user_id WHERE 1=1 AND DATE_FORMAT(f.buy_time,'%Y-%m-%d') = d.date
 						<if test="agentName != null and agentName !='' ">
 							and u.agent_id = #{agentName,jdbcType=BIGINT}
 						</if>
 						<if test="registerFrom != null and registerFrom !='' ">
 							and u.RegisterFrom = #{registerFrom,jdbcType=BIGINT}
 						</if>
-					) hjhjwz,
-					(SELECT COUNT(e.user_id) FROM (SELECT f1.user_id,MIN(DATE_FORMAT(f1.buy_time,'%Y-%m-%d')) minDate FROM finance_order f1 
-						LEFT JOIN User_Info u ON u.UserID = f1.user_id WHERE f1.type = 2 
+					) hjdqj,
+					(SELECT COUNT(e.user_id) FROM (SELECT f1.user_id,MIN(DATE_FORMAT(f1.buy_time,'%Y-%m-%d')) minDate FROM finance_regulargold_order f1 
+						LEFT JOIN User_Info u ON u.UserID = f1.user_id WHERE 1=1
 						<if test="agentName != null and agentName !='' ">
 							and u.agent_id = #{agentName,jdbcType=BIGINT}
 						</if>
 						<if test="registerFrom != null and registerFrom !='' ">
 							and u.RegisterFrom = #{registerFrom,jdbcType=BIGINT}
 						</if>
-						GROUP BY f1.user_id) e WHERE e.minDate = d.date) xhjwz,
-					(SELECT COUNT(DISTINCT f2.user_id) FROM finance_order f2 
-						LEFT JOIN User_Info u ON u.UserID = f2.user_id WHERE f2.type = 1 AND DATE_FORMAT(f2.buy_time,'%Y-%m-%d') = d.date
+						GROUP BY f1.user_id) e WHERE e.minDate = d.date) xdqj,
+					(SELECT COUNT(DISTINCT f2.user_id) FROM save_gold_record f2 
+						LEFT JOIN User_Info u ON u.UserID = f2.user_id WHERE f2.type = 1 AND DATE_FORMAT(f2.create_time,'%Y-%m-%d') = d.date
 						<if test="agentName != null and agentName !='' ">
 							and u.agent_id = #{agentName,jdbcType=BIGINT}
 						</if>
 						<if test="registerFrom != null and registerFrom !='' ">
 							and u.RegisterFrom = #{registerFrom,jdbcType=BIGINT}
-						</if>	
-					) hjsyc,
-					(SELECT COUNT(g.user_id) FROM (SELECT f3.user_id,MIN(DATE_FORMAT(f3.buy_time,'%Y-%m-%d')) minDate FROM finance_order f3 
+						</if>
+					) hjcjb,
+					(SELECT COUNT(g.user_id) FROM (SELECT f3.user_id,MIN(DATE_FORMAT(f3.create_time,'%Y-%m-%d')) minDate FROM save_gold_record f3 
 						LEFT JOIN User_Info u ON u.UserID = f3.user_id WHERE f3.type = 1 
 						<if test="agentName != null and agentName !='' ">
 							and u.agent_id = #{agentName,jdbcType=BIGINT}
@@ -276,26 +276,7 @@
 						<if test="registerFrom != null and registerFrom !='' ">
 							and u.RegisterFrom = #{registerFrom,jdbcType=BIGINT}
 						</if>
-						GROUP BY f3.user_id) g WHERE g.minDate = d.date) xsyc,
-					(SELECT COUNT(DISTINCT rgo.user_id) FROM real_gold_order rgo 
-						LEFT JOIN User_Info u ON u.UserID = rgo.user_id WHERE DATE_FORMAT(rgo.buy_time,'%Y-%m-%d') = d.date
-						<if test="agentName != null and agentName !='' ">
-							and u.agent_id = #{agentName,jdbcType=BIGINT}
-						</if>
-						<if test="registerFrom != null and registerFrom !='' ">
-							and u.RegisterFrom = #{registerFrom,jdbcType=BIGINT}
-						</if>
-					) hjswhj,
-					(SELECT COUNT(rgo1.user_id) FROM (SELECT r.user_id,MIN(DATE_FORMAT(r.buy_time,'%Y-%m-%d')) minDate FROM real_gold_order r 
-						LEFT JOIN User_Info u ON u.UserID = r.user_id 
-						where 1=1 
-						<if test="agentName != null and agentName !='' ">
-							and u.agent_id = #{agentName,jdbcType=BIGINT}
-						</if>
-						<if test="registerFrom != null and registerFrom !='' ">
-							and u.RegisterFrom = #{registerFrom,jdbcType=BIGINT}
-						</if>
-						GROUP BY r.user_id) rgo1 WHERE rgo1.minDate = d.date) xswhj,
+						GROUP BY f3.user_id) g WHERE g.minDate = d.date) xcjb,
 					(SELECT COUNT(i.UserID) FROM User_Info i 
 						LEFT JOIN User_Info u ON u.UserID = i.UserID WHERE DATE_FORMAT(i.RegisterTime,'%Y-%m-%d') = d.date 
 						<if test="agentName != null and agentName !='' ">

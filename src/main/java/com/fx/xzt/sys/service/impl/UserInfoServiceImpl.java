@@ -409,6 +409,23 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		map.put("loginFrom", loginFrom);
 		map.put("agentName", agentName);
 		List<Map<String, Object>> list = userInfoMapper.getByUserAnalysisCount(map);
+		if (list != null && list.size() > 0) {
+			for (Map<String, Object> map1 : list) {
+				Object xrjblObj = map1.get("xrjbl");
+				Object xjyblObj = map1.get("xjybl");
+				
+				if (xrjblObj != null && xrjblObj != "") {
+                	Double xrjbl = Double.valueOf(xrjblObj.toString());
+                	DecimalFormat df = new DecimalFormat("0.00%");
+                	map1.put("xrjbl", df.format(xrjbl));
+                }
+				if (xjyblObj != null && xjyblObj != "") {
+                	Double xjybl = Double.valueOf(xjyblObj.toString());
+                	DecimalFormat df = new DecimalFormat("0.00%");
+                	map1.put("xjybl", df.format(xjybl));
+                }
+			}
+		}
 		return list;
 	}
 

@@ -1,6 +1,7 @@
 package com.fx.xzt.sys.service;
 
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -38,11 +39,12 @@ public interface UserRechargeService extends IService<UserRecharge>{
 	* @param pageSize
 	* @return    设定文件 
 	* @return PageInfo<Map<String,Object>>    返回类型 
+	 * @throws ParseException 
 	* @throws 
 	* @author htt
 	 */
 	PageInfo<Map<String, Object>> selectByRecharge(String userName, String startTime, String endTime, String agentName, String brokerName, 
-			String rechargechannel, Integer status, String isView, Integer pageNum, Integer pageSize);
+			String rechargechannel, Integer status, String isView, Integer pageNum, Integer pageSize) throws ParseException;
 
 	/**
 	 * 
@@ -58,11 +60,12 @@ public interface UserRechargeService extends IService<UserRecharge>{
 	 * @param isView 
 	* @return    设定文件 
 	* @return List<Map<String,Object>>    返回类型 
+	 * @throws ParseException 
 	* @throws 
 	* @author htt
 	 */
     List<Map<String, Object>> excelRecharge(String userName, String startTime, String endTime, String agentName, String brokerName, 
-			String rechargechannel, Integer status, String isView);
+			String rechargechannel, Integer status, String isView) throws ParseException;
 
     /**
      * 
