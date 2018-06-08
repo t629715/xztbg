@@ -110,15 +110,15 @@
         select
         o.order_id orderId, o.product_id productId, o.product_no productNo, o.product_name
         productName,
-        IF(o.product_type = 1,'定期金','特价金') productType, concat(convert(o.product_year_incom_percent*100,DECIMAL(6,2)),'%')
+        IF(o.product_type = 1,'稳赚金','特价金') productType, concat(convert(o.product_year_incom_percent*100,DECIMAL(6,2)),'%')
         productYearIncomPercent,
         o.product_cycle productCycle, o.product_min_gram productMinGram, o.product_max_gram
         productMaxGram,
         o.product_settle_method productSettleMethod, IF(o.buy_type=1,'现金买入','实金转入')
-        buyType,o.buy_amount buyAmount,
+        buyType,round(o.buy_amount/100,2) buyAmount,
         o.buy_time buyTime,
         o.expire_time expireTime, IF(o.status = 1,'持有中','已赎回') status, o.income_gram incomeGram,
-        o.buy_price buyPrice,
+        round(o.buy_price/100,2) buyPrice,
         o.back_total_gram backTotalGram,o.voucher_value voucherValue, o.voucher_deductible
         voucherDeductible,o.gram,
         <if test="isView != '1'.toString()">
@@ -174,7 +174,7 @@
         </where>
     </select>
 
-    <!--定期及买入统计-tianliya-->
+    <!--稳赚金买入统计-tianliya-->
     <select id="selectTotalCount" resultType="java.lang.Integer" parameterType="java.util.Map">
         select sum(buy_amount) totalAmount
         from finance_regulargold_order o

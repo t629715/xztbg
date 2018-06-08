@@ -1,8 +1,8 @@
 package com.fx.xzt.sys.service.impl;
 
 import com.fx.xzt.exception.GlobalException;
-import com.fx.xzt.sys.entity.FinanceConfRegulargold;
-import com.fx.xzt.sys.mapper.FinanceConfRegulargoldMapper;
+import com.fx.xzt.sys.entity.FinanceRegulargoldProduct;
+import com.fx.xzt.sys.mapper.FinanceRegulargoldProductMapper;
 import com.fx.xzt.sys.service.FinanceConfRegulargoldService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.Constant;
@@ -14,9 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -28,7 +26,7 @@ import javax.annotation.Resource;
 @Service
 public class FinanceConfRegulargoldServiceImpl implements FinanceConfRegulargoldService {
     @Resource
-    private FinanceConfRegulargoldMapper financeConfRegulargoldMapper;
+    private FinanceRegulargoldProductMapper financeRegulargoldProductMapper;
 
     public static final Logger logger = LoggerFactory.getLogger(FinanceConfRegulargoldServiceImpl.class);
 
@@ -39,11 +37,11 @@ public class FinanceConfRegulargoldServiceImpl implements FinanceConfRegulargold
      */
     @Override
     @Transactional
-    public CommonResponse addOne(FinanceConfRegulargold confRegulargold) throws GlobalException {
+    public CommonResponse addOne(FinanceRegulargoldProduct confRegulargold) throws GlobalException {
         CommonResponse commonResponse = new CommonResponse();
         logger.info("添加定期产品");
         try {
-            int i = financeConfRegulargoldMapper.insertOne(confRegulargold);
+            int i = financeRegulargoldProductMapper.insertOne(confRegulargold);
             if (i > 0) {
                 commonResponse.setCode(Constant.RESCODE_SUCCESS);
                 commonResponse.setMsg("添加成功");
@@ -71,7 +69,7 @@ public class FinanceConfRegulargoldServiceImpl implements FinanceConfRegulargold
         CommonResponse commonResponse = new CommonResponse();
         logger.info("删除定期产品");
         try {
-            int i = financeConfRegulargoldMapper.deleteOne(Long.valueOf(id));
+            int i = financeRegulargoldProductMapper.deleteOne(Long.valueOf(id));
             if (i > 0) {
                 commonResponse.setCode(Constant.RESCODE_SUCCESS);
                 commonResponse.setMsg("删除成功");
@@ -95,11 +93,11 @@ public class FinanceConfRegulargoldServiceImpl implements FinanceConfRegulargold
      */
     @Override
     @Transactional
-    public CommonResponse modifyOneSelective(FinanceConfRegulargold financeConfRegulargold) throws GlobalException {
+    public CommonResponse modifyOneSelective(FinanceRegulargoldProduct financeConfRegulargold) throws GlobalException {
         CommonResponse commonResponse = new CommonResponse();
         logger.info("修改定期产品");
         try {
-            int i = financeConfRegulargoldMapper.modifyOneSelective(financeConfRegulargold);
+            int i = financeRegulargoldProductMapper.modifyOneSelective(financeConfRegulargold);
             if (i > 0) {
                 commonResponse.setCode(Constant.RESCODE_SUCCESS);
                 commonResponse.setMsg("修改成功");
@@ -124,11 +122,11 @@ public class FinanceConfRegulargoldServiceImpl implements FinanceConfRegulargold
     @Override
     public CommonResponse getByConditions(Integer pageNum, Integer pageSize) throws GlobalException {
         CommonResponse commonResponse = new CommonResponse();
-        logger.info("查询定期产品");
+        logger.info("查询稳赚金产品-业务层入口");
         try {
             PageHelper.startPage(pageNum, pageSize);
-            List<FinanceConfRegulargold> financeConfRegulargoldList = financeConfRegulargoldMapper.getByAll();
-            PageInfo<FinanceConfRegulargold> financeConfRegulargoldPageInfo = new PageInfo<>(financeConfRegulargoldList);
+            List<FinanceRegulargoldProduct> financeConfRegulargoldList = financeRegulargoldProductMapper.getByAll();
+            PageInfo<FinanceRegulargoldProduct> financeConfRegulargoldPageInfo = new PageInfo<>(financeConfRegulargoldList);
             commonResponse.setData(financeConfRegulargoldPageInfo);
             commonResponse.setCode(Constant.RESCODE_SUCCESS);
             commonResponse.setMsg("查询成功");

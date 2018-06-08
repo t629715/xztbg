@@ -13,8 +13,9 @@
   </resultMap>
   <!--获取所有的黄金课堂-tianliya-start-->
   <select id="selectByInfoGoldlesson" resultType="java.util.Map" parameterType="java.util.Map" >
-    select info_id AS infoId,title,state,createtime,releasetime,imagepath,operator,contentpath
-    from info_goldlesson
+    select ig.info_id AS infoId,ig.title,ig.state,ig.createtime,ig.releasetime,ig.imagepath,ig.operator,ig.contentpath,
+    IF( ISNULL(ip.id),FALSE,TRUE) isSetPush
+    from info_goldlesson ig left join info_push ip on ig.title = ip.title
     <where>
       <if test="title != null and title !='' ">
         and title like concat(concat('%',#{title,jdbcType=VARCHAR}),'%')
