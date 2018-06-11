@@ -5,93 +5,85 @@
   <select id="getAnalysis" resultType="java.util.Map" parameterType="java.util.Map">
 
 
-    select tmp.* from
-    (SELECT t.date date,TRUNCATE(t1.realGoldAmount/100,2) realGoldAmount,t1.realGoldCount,
-    TRUNCATE(t2.goldRightAmount/100,2) goldRightAmount,t2.goldRightCount,
-    TRUNCATE(t3.financeAmount/100,2) financeAmount,t3.financeCount,
-    TRUNCATE(t4.goldUpAmount/100,2) goldUpAmount,t4.goldUpCount
-    FROM until_date t
-    LEFT JOIN (
-          SELECT DATE_FORMAT(rgo.buy_time,'%y-%m-%d') AS realGoldTime, COUNT(distinct rgo.user_id) AS realGoldCount, SUM(rmb_amount) AS realGoldAmount
-          FROM real_gold_order rgo
-            <where>
-              <if test="agentId != null and agentId != '' and agentId == 2">
-                AND rgo.agent_id = #{agentId,jdbcType=BIGINT}
-              </if>
-              <if test="agentId != null and agentId != '' and agentId != 2">
-                AND rgo.agent_id != 2
-              </if>
-            </where>
-          GROUP BY DATE_FORMAT(rgo.buy_time,'%m-%d-%Y')
-          ) t1
-    on t.date=t1.realGoldTime
-    left join (
-        SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldRightTime, COUNT(distinct dor.user_id) AS goldRightCount, SUM(dor.ensure_amount) AS goldRightAmount
-        FROM deal_order dor
-
-          <where>
-            <if test="agentId != null and agentId != '' and agentId == 2">
-              AND dor.agent_id = #{agentId,jdbcType=BIGINT}
-            </if>
-            <if test="agentId != null and agentId != '' and agentId != 2">
-              AND dor.agent_id != 2
-            </if>
-            <if test="profitLoss != null and profitLoss != ''">
-              AND dor.profit_loss = #{profitLoss,jdbcType=INTEGER}
-            </if>
-            <if test="upOrDown != null and upOrDown != ''">
-              AND dor.up_or_down = #{upOrDown,jdbcType=INTEGER}
-            </if>
-            <if test="orderState != null and upOrDown != ''">
-              AND dor.order_state = #{orderState,jdbcType=INTEGER}
-            </if>
-          </where>
-        GROUP BY DATE_FORMAT(dor.create_time,'%m-%d-%Y')
-        ) t2
-    on t.date = t2.goldRightTime
-    left join (
-        SELECT DATE_FORMAT(fof.buy_time,'%y-%m-%d') AS financeTime, COUNT(distinct fof.user_id) AS financeCount, SUM(fof.buy_amount) AS financeAmount
-        FROM finance_order fof
-          <where>
-            fof.type = 1
-            <if test="agentId != null and agentId != '' and agentId == 2">
-              AND fof.agent_id = #{agentId,jdbcType=BIGINT}
-            </if>
-            <if test="agentId != null and agentId != '' and agentId != 2">
-              AND fof.agent_id != 2
-            </if>
-          </where>
-        GROUP BY DATE_FORMAT(fof.buy_time,'%m-%d-%Y')
-        ) t3
-    on t.date = t3.financeTime
-    left join (
-        SELECT DATE_FORMAT(fog.buy_time,'%y-%m-%d') AS goldUpTime, COUNT(distinct fog.user_id) AS goldUpCount, SUM(fog.buy_amount) AS goldUpAmount
-        FROM finance_order fog
-
-        <where>
-            fog.type = 2
+      select * from (
+      select a.date,a.buyGoldUserAmount+a.saleGoldUserAmount goldUserAmount,
+      TRUNCATE(a.buyGoldAmount,3) buyGoldAmount, TRUNCATE(a.buyRmbAmount/100,2) buyRmbAmount,
+      TRUNCATE(a.saleGoldAmount,3) saleGoldAmount,TRUNCATE(a.saleRmbAmount/100,2) saleRmbAmount,
+      a.goldRightUserAmount,TRUNCATE(a.goldRightAmount/100,2) goldRightAmount,
+      a.financeUserAmount buyUserAmount, TRUNCATE(a.gram,3) gram,TRUNCATE(a.buyAmount/100,2) buyAmount
+      from
+      (SELECT *
+      FROM until_date t
+      LEFT JOIN
+      (SELECT DATE_FORMAT(rgo.create_time,'%y-%m-%d') AS buyTime, COUNT(distinct rgo.user_id) AS buyGoldUserAmount, SUM(rgo.amount) AS buyGoldAmount, SUM(rgo.rmb_amount) AS buyRmbAmount
+      FROM user_gold_account_record rgo
+      <where>
+          rgo.type = 1
           <if test="agentId != null and agentId != '' and agentId == 2">
-            AND fog.agent_id = #{agentId,jdbcType=BIGINT}
+              AND rgo.agent_id = #{agentId,jdbcType=BIGINT}
           </if>
           <if test="agentId != null and agentId != '' and agentId != 2">
-            AND fog.agent_id != 2
+              AND rgo.agent_id != 2
           </if>
-        </where>
-        GROUP BY DATE_FORMAT(fog.buy_time,'%m-%d-%Y')
-        ) t4
-    on t.date = t4.goldUpTime
+      </where>
 
-    <where>
-      <if test="startTime != null and startTime != ''">
-        AND t.date &gt;= #{startTime,jdbcType=TIMESTAMP}
-      </if>
-      <if test="endTime != null and endTime != ''">
-        AND t.date &lt;= #{endTime,jdbcType=TIMESTAMP}
-      </if>
-    </where>
-    ORDER BY t.date desc
-    ) tmp
-    where tmp.realGoldAmount is not null or tmp.goldRightAmount is not null or tmp.financeAmount is not null or goldUpAmount is not null
+      GROUP BY DATE_FORMAT(rgo.create_time,'%m-%d-%Y'))t1
+      on t.date = t1.buyTime
+      left join
+      (SELECT DATE_FORMAT(rgo.create_time,'%y-%m-%d') AS saleTime, COUNT(distinct rgo.user_id) AS saleGoldUserAmount, SUM(rgo.amount) AS saleGoldAmount, SUM(rgo.rmb_amount) AS saleRmbAmount
+      FROM user_gold_account_record rgo
+      <where>
+          rgo.type = 4
+          <if test="agentId != null and agentId != '' and agentId == 2">
+              AND rgo.agent_id = #{agentId,jdbcType=BIGINT}
+          </if>
+          <if test="agentId != null and agentId != '' and agentId != 2">
+              AND rgo.agent_id != 2
+          </if>
+      </where>
+
+      GROUP BY DATE_FORMAT(rgo.create_time,'%m-%d-%Y')) t2
+      on t.date = t2.saleTime
+      left join
+      (SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldRightTime, COUNT(distinct dor.user_id) AS goldRightUserAmount, SUM(dor.ensure_amount) AS goldRightAmount
+      FROM deal_order dor
+      <where>
+          <if test="agentId != null and agentId != '' and agentId == 2">
+              AND dor.agent_id = #{agentId,jdbcType=BIGINT}
+          </if>
+          <if test="agentId != null and agentId != '' and agentId != 2">
+              AND dor.agent_id != 2
+          </if>
+          <if test="profitLoss != null and profitLoss != ''">
+              AND dor.profit_loss = #{profitLoss,jdbcType=INTEGER}
+          </if>
+          <if test="upOrDown != null and upOrDown != ''">
+              AND dor.up_or_down = #{upOrDown,jdbcType=INTEGER}
+          </if>
+          <if test="orderState != null and upOrDown != ''">
+              AND dor.order_state = #{orderState,jdbcType=INTEGER}
+          </if>
+      </where>
+      GROUP BY DATE_FORMAT(dor.create_time,'%m-%d-%Y')) t3
+      on t.date = t3.goldRightTime
+      left join
+      (SELECT DATE_FORMAT(fof.buy_time,'%y-%m-%d') AS buyTime1, COUNT(distinct fof.user_id) AS financeUserAmount, SUM(fof.gram) AS gram,SUM(fof.buy_amount) AS buyAmount
+      FROM finance_regulargold_order fof
+      <where>
+          fof.buy_type = 1
+          <if test="agentId != null and agentId != '' and agentId == 2">
+              AND fof.agent_id = #{agentId,jdbcType=BIGINT}
+          </if>
+          <if test="agentId != null and agentId != '' and agentId != 2">
+              AND fof.agent_id != 2
+          </if>
+      </where>
+      GROUP BY DATE_FORMAT(fof.buy_time,'%m-%d-%Y'))t4
+      on t.date = t4.buyTime1
+      ) a ) b
+      where
+      b.goldUserAmount is not null or b.goldRightUserAmount is not null or b.buyUserAmount is not null
+      order by b.date desc
     limit #{start}, #{size}
   </select>
   <!--交易分析-tianliya-end-->
@@ -100,112 +92,101 @@
   <!--导出交易分析-tainliya-start-->
   <select id="exportAnalysis" resultType="java.util.Map" parameterType="java.util.Map">
 
-    select tmp.* from
-    (SELECT t.date date,TRUNCATE(t1.realGoldAmount/100,2) realGoldAmount,t1.realGoldCount,
-    TRUNCATE(t2.goldRightAmount/100,2) goldRightAmount,t2.goldRightCount,
-    TRUNCATE(t3.financeAmount/100,2) financeAmount,t3.financeCount,
-    TRUNCATE(t4.goldUpAmount/100,2) goldUpAmount,t4.goldUpCount
-    FROM until_date t
-    LEFT JOIN (
-    SELECT DATE_FORMAT(rgo.buy_time,'%y-%m-%d') AS realGoldTime, COUNT(distinct rgo.user_id) AS realGoldCount, SUM(rmb_amount) AS realGoldAmount
-    FROM real_gold_order rgo
-
-    <where>
-      <if test="agentId != null and agentId != '' and agentId == 2">
-        AND rgo.agent_id = #{agentId,jdbcType=BIGINT}
-      </if>
-      <if test="agentId != null and agentId != '' and agentId != 2">
-        AND rgo.agent_id != 2
-      </if>
-    </where>
-    GROUP BY DATE_FORMAT(rgo.buy_time,'%m-%d-%Y')
-    ) t1
-    on t.date=t1.realGoldTime
-    left join (
-    SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldRightTime, COUNT(distinct dor.user_id) AS goldRightCount, SUM(dor.ensure_amount) AS goldRightAmount
-    FROM deal_order dor
-
-    <where>
-      <if test="agentId != null and agentId != '' and agentId == 2">
-        AND dor.agent_id = #{agentId,jdbcType=BIGINT}
-      </if>
-      <if test="agentId != null and agentId != '' and agentId != 2">
-        AND dor.agent_id != 2
-      </if>
-      <if test="profitLoss != null and profitLoss != ''">
-        AND dor.profit_loss = #{profitLoss,jdbcType=INTEGER}
-      </if>
-      <if test="upOrDown != null and upOrDown != ''">
-        AND dor.up_or_down = #{upOrDown,jdbcType=INTEGER}
-      </if>
-      <if test="orderState != null and upOrDown != ''">
-        AND dor.order_state = #{orderState,jdbcType=INTEGER}
-      </if>
-    </where>
-    GROUP BY DATE_FORMAT(dor.create_time,'%m-%d-%Y')
-    ) t2
-    on t.date = t2.goldRightTime
-    left join (
-    SELECT DATE_FORMAT(fof.buy_time,'%y-%m-%d') AS financeTime, COUNT(distinct fof.user_id) AS financeCount, SUM(fof.buy_amount) AS financeAmount
-    FROM finance_order fof
-
-    <where>
-      fof.type = 1
-      <if test="agentId != null and agentId != '' and agentId == 2">
-        AND fof.agent_id = #{agentId,jdbcType=BIGINT}
-      </if>
-      <if test="agentId != null and agentId != '' and agentId != 2">
-        AND fof.agent_id != 2
-      </if>
-    </where>
-    GROUP BY DATE_FORMAT(fof.buy_time,'%m-%d-%Y')
-    ) t3
-    on t.date = t3.financeTime
-    left join (
-    SELECT DATE_FORMAT(fog.buy_time,'%y-%m-%d') AS goldUpTime, COUNT(distinct fog.user_id) AS goldUpCount, SUM(fog.buy_amount) AS goldUpAmount
-    FROM finance_order fog
-
-    <where>
-      fog.type = 2
-      <if test="agentId != null and agentId != '' and agentId == 2">
-        AND fog.agent_id = #{agentId,jdbcType=BIGINT}
-      </if>
-      <if test="agentId != null and agentId != '' and agentId != 2">
-        AND fog.agent_id != 2
-      </if>
-    </where>
-    GROUP BY DATE_FORMAT(fog.buy_time,'%m-%d-%Y')
-    ) t4
-    on t.date = t4.goldUpTime
-
-    <where>
-      <if test="startTime != null and startTime != ''">
-        AND t.date &gt;= #{startTime,jdbcType=TIMESTAMP}
-      </if>
-      <if test="endTime != null and endTime != ''">
-        AND t.date &lt;= #{endTime,jdbcType=TIMESTAMP}
-      </if>
-    </where>
-    ORDER BY t.date desc
-    ) tmp
-    where tmp.realGoldAmount is not null or tmp.goldRightAmount is not null or tmp.financeAmount is not null or goldUpAmount is not null
+      select * from (
+      select a.date,a.buyGoldUserAmount+a.saleGoldUserAmount goldUserAmount,
+      TRUNCATE(a.buyGoldAmount,3) buyGoldAmount, TRUNCATE(a.buyRmbAmount/100,2) buyRmbAmount,
+      TRUNCATE(a.saleGoldAmount,3) saleGoldAmount,TRUNCATE(a.saleRmbAmount/100,2) saleRmbAmount,
+      a.goldRightUserAmount,TRUNCATE(a.goldRightAmount/100,2) goldRightAmount,
+      a.financeUserAmount buyUserAmount, TRUNCATE(a.gram,3) gram,TRUNCATE(a.buyAmount/100,2) buyAmount
+      from
+      (SELECT *
+      FROM until_date t
+      LEFT JOIN
+      (SELECT DATE_FORMAT(rgo.create_time,'%y-%m-%d') AS buyTime, COUNT(distinct rgo.user_id) AS buyGoldUserAmount, SUM(rgo.amount) AS buyGoldAmount, SUM(rgo.rmb_amount) AS buyRmbAmount
+      FROM user_gold_account_record rgo
+      <where>
+          rgo.type = 1
+          <if test="agentId != null and agentId != '' and agentId == 2">
+              AND rgo.agent_id = #{agentId,jdbcType=BIGINT}
+          </if>
+          <if test="agentId != null and agentId != '' and agentId != 2">
+              AND rgo.agent_id != 2
+          </if>
+      </where>
+      GROUP BY DATE_FORMAT(rgo.create_time,'%m-%d-%Y'))t1
+      on t.date = t1.buyTime
+      left join
+      (SELECT DATE_FORMAT(rgo.create_time,'%y-%m-%d') AS saleTime, COUNT(distinct rgo.user_id) AS saleGoldUserAmount, SUM(rgo.amount) AS saleGoldAmount, SUM(rgo.rmb_amount) AS saleRmbAmount
+      FROM user_gold_account_record rgo
+      <where>
+          rgo.type = 4
+          <if test="agentId != null and agentId != '' and agentId == 2">
+              AND rgo.agent_id = #{agentId,jdbcType=BIGINT}
+          </if>
+          <if test="agentId != null and agentId != '' and agentId != 2">
+              AND rgo.agent_id != 2
+          </if>
+      </where>
+      GROUP BY DATE_FORMAT(rgo.create_time,'%m-%d-%Y')) t2
+      on t.date = t2.saleTime
+      left join
+      (SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldRightTime, COUNT(distinct dor.user_id) AS goldRightUserAmount, SUM(dor.ensure_amount) AS goldRightAmount
+      FROM deal_order dor
+      <where>
+          <if test="agentId != null and agentId != '' and agentId == 2">
+              AND dor.agent_id = #{agentId,jdbcType=BIGINT}
+          </if>
+          <if test="agentId != null and agentId != '' and agentId != 2">
+              AND dor.agent_id != 2
+          </if>
+          <if test="profitLoss != null and profitLoss != ''">
+              AND dor.profit_loss = #{profitLoss,jdbcType=INTEGER}
+          </if>
+          <if test="upOrDown != null and upOrDown != ''">
+              AND dor.up_or_down = #{upOrDown,jdbcType=INTEGER}
+          </if>
+          <if test="orderState != null and upOrDown != ''">
+              AND dor.order_state = #{orderState,jdbcType=INTEGER}
+          </if>
+      </where>
+      GROUP BY DATE_FORMAT(dor.create_time,'%m-%d-%Y')) t3
+      on t.date = t3.goldRightTime
+      left join
+      (SELECT DATE_FORMAT(fof.buy_time,'%y-%m-%d') AS buyTime1, COUNT(distinct fof.user_id) AS financeUserAmount, SUM(fof.buy_amount) AS buyAmount,sum(fof.gram) gram
+      FROM finance_regulargold_order fof
+      <where>
+          fof.buy_type = 1
+          <if test="agentId != null and agentId != '' and agentId == 2">
+              AND fof.agent_id = #{agentId,jdbcType=BIGINT}
+          </if>
+          <if test="agentId != null and agentId != '' and agentId != 2">
+              AND fof.agent_id != 2
+          </if>
+      </where>
+      GROUP BY DATE_FORMAT(fof.buy_time,'%m-%d-%Y'))t4
+      on t.date = t4.buyTime1
+      ) a ) b
+      where
+      b.goldUserAmount is not null or b.goldRightUserAmount is not null or b.buyUserAmount is not null
+      order by b.date desc
   </select>
   <!--交易分析-tianliya-end-->
   <!--交易分析统计 tianliya-->
   <select id="getAnalysisCount" resultType="java.util.Map" parameterType="java.util.Map">
 
-    SELECT  TRUNCATE(sum(a.realGoldAmount)/100,2) realGoldAmountTotal,sum(a.realGoldCount) realGoldCountTotal,
-    TRUNCATE(sum(a.goldRightAmount)/100,2) goldRightAmountTotal,sum(a.goldRightCount) goldRightCountTotal,
-    TRUNCATE(sum(a.financeAmount)/100,2) financeAmountTotal,sum(a.financeCount) financeCountTotal,
-    TRUNCATE(sum(a.goldUpAmount)/100,2) goldUpAmountTotal,sum(a.goldUpCount) goldUpCountTotal
-    FROM
+    select
+    TRUNCATE(sum(a.buyRmbAmount)/100,2) buyRmbAmount,sum(a.buyGoldUserAmount) buyGoldUserAmount,SUM(a.buyGoldAmount) buyGoldAmount,
+    TRUNCATE(sum(a.saleRmbAmount)/100,2) saleRmbAmount,sum(a.saleGoldUserAmount) saleGoldUserAmount,SUM(a.saleGoldAmount) saleGoldAmount,
+    TRUNCATE(sum(a.goldRightAmount)/100,2) goldRightAmount,sum(a.goldRightUserAmount) goldRightUserAmount,
+    TRUNCATE(sum(a.buyAmount)/100,2) buyAmount,sum(a.financeUserAmount) financeUserAmount,sum(a.gram) gram
+    from
     (SELECT *
     FROM until_date t
-    LEFT JOIN (
-    SELECT DATE_FORMAT(rgo.buy_time,'%y-%m-%d') AS realGoldTime, COUNT(distinct rgo.user_id) AS realGoldCount, SUM(rmb_amount) AS realGoldAmount
-    FROM real_gold_order rgo
-
+    LEFT JOIN
+    (SELECT DATE_FORMAT(rgo.create_time,'%y-%m-%d') AS buyTime, COUNT(distinct rgo.user_id) AS buyGoldUserAmount, SUM(rgo.amount) AS buyGoldAmount, SUM(rgo.rmb_amount) AS buyRmbAmount
+    FROM save_gold_record rgo
     <where>
+      rgo.type = 1
       <if test="agentId != null and agentId != '' and agentId == 2">
         AND rgo.agent_id = #{agentId,jdbcType=BIGINT}
       </if>
@@ -213,13 +194,25 @@
         AND rgo.agent_id != 2
       </if>
     </where>
-    GROUP BY DATE_FORMAT(rgo.buy_time,'%m-%d-%Y')
-    ) t1
-    on t.date=t1.realGoldTime
-    left join (
-    SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldRightTime, COUNT(distinct dor.user_id) AS goldRightCount, SUM(dor.ensure_amount) AS goldRightAmount
+    GROUP BY DATE_FORMAT(rgo.create_time,'%m-%d-%Y'))t1
+    on t.date = t1.buyTime
+    left join
+    (SELECT DATE_FORMAT(rgo.create_time,'%y-%m-%d') AS saleTime, COUNT(distinct rgo.user_id) AS saleGoldUserAmount, SUM(rgo.amount) AS saleGoldAmount, SUM(rgo.rmb_amount) AS saleRmbAmount
+    FROM save_gold_record rgo
+    <where>
+      rgo.type = 4
+      <if test="agentId != null and agentId != '' and agentId == 2">
+        AND rgo.agent_id = #{agentId,jdbcType=BIGINT}
+      </if>
+      <if test="agentId != null and agentId != '' and agentId != 2">
+        AND rgo.agent_id != 2
+      </if>
+    </where>
+    GROUP BY DATE_FORMAT(rgo.create_time,'%m-%d-%Y')) t2
+    on t.date = t2.saleTime
+    left join
+    (SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldRightTime, COUNT(distinct dor.user_id) AS goldRightUserAmount, SUM(dor.ensure_amount) AS goldRightAmount
     FROM deal_order dor
-
     <where>
       <if test="agentId != null and agentId != '' and agentId == 2">
         AND dor.agent_id = #{agentId,jdbcType=BIGINT}
@@ -237,15 +230,13 @@
         AND dor.order_state = #{orderState,jdbcType=INTEGER}
       </if>
     </where>
-    GROUP BY DATE_FORMAT(dor.create_time,'%m-%d-%Y')
-    ) t2
-    on t.date = t2.goldRightTime
-    left join (
-    SELECT DATE_FORMAT(fof.buy_time,'%y-%m-%d') AS financeTime, COUNT(distinct fof.user_id) AS financeCount, SUM(fof.buy_amount) AS financeAmount
-    FROM finance_order fof
-
+    GROUP BY DATE_FORMAT(dor.create_time,'%m-%d-%Y')) t3
+    on t.date = t3.goldRightTime
+    left join
+    (SELECT DATE_FORMAT(fof.buy_time,'%y-%m-%d') AS buyTime1, COUNT(distinct fof.user_id) AS financeUserAmount, SUM(fof.buy_amount) AS buyAmount ,sum(fof.gram) AS gram
+    FROM finance_regulargold_order fof
     <where>
-      fof.type = 1
+      fof.buy_type = 1
       <if test="agentId != null and agentId != '' and agentId == 2">
         AND fof.agent_id = #{agentId,jdbcType=BIGINT}
       </if>
@@ -253,37 +244,8 @@
         AND fof.agent_id != 2
       </if>
     </where>
-    GROUP BY DATE_FORMAT(fof.buy_time,'%m-%d-%Y')
-    ) t3
-    on t.date = t3.financeTime
-    left join (
-    SELECT DATE_FORMAT(fog.buy_time,'%y-%m-%d') AS goldUpTime, COUNT(distinct fog.user_id) AS goldUpCount, SUM(fog.buy_amount) AS goldUpAmount
-    FROM finance_order fog
-
-    <where>
-      fog.type = 2
-      <if test="agentId != null and agentId != '' and agentId == 2">
-        AND fog.agent_id = #{agentId,jdbcType=BIGINT}
-      </if>
-      <if test="agentId != null and agentId != '' and agentId != 2">
-        AND fog.agent_id != 2
-      </if>
-    </where>
-    GROUP BY DATE_FORMAT(fog.buy_time,'%m-%d-%Y')
-    ) t4
-    on t.date = t4.goldUpTime
-
-    <where>
-
-      <if test="startTime != null and startTime != ''">
-        AND t.date &gt;= #{startTime,jdbcType=TIMESTAMP}
-      </if>
-      <if test="endTime != null and endTime != ''">
-        AND t.date &lt;= #{endTime,jdbcType=TIMESTAMP}
-      </if>
-    </where>
-    ORDER BY t.date desc) a
-
+    GROUP BY DATE_FORMAT(fof.buy_time,'%m-%d-%Y'))t4
+    on t.date = t4.buyTime1) a
   </select>
   <!--交易分析统计 tianliya-->
   <!--交易分析的总条数 tianliya-->

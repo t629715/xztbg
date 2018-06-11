@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -54,8 +55,6 @@ public class SaveGoldRecordController {
 	* @param endTime 结束时间
 	* @param agentName 代理商id
 	* @param brokerName 经纪人id
-	* @param status 状态 0:待支付1:未发货2:已发货3、已完成4:未发货已取消5:未支付已关闭
-	* @param payType 支付方式
 	* @param pageNum
 	* @param pageSize
 	* @return
@@ -293,6 +292,13 @@ public class SaveGoldRecordController {
         logRecordService.add(log);
         AuditLog.info(log.toString());
         return cr;
+    }
+    @RequestMapping(value="/getSaveGoldAmount",method= RequestMethod.POST)
+    @ResponseBody
+    public Object getSaveGoldAmount(HttpServletRequest request) throws ParseException {
+        CommonResponse commonResponse = new CommonResponse();
+        commonResponse = saveGoldRecordService.countBuyGold();
+        return commonResponse;
     }
 
 }

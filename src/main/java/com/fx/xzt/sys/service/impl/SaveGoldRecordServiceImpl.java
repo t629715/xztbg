@@ -10,9 +10,14 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.fx.xzt.exception.GlobalException;
+import com.fx.xzt.sys.entity.FinanceRegulargoldOrder;
 import com.fx.xzt.sys.entity.SaveGoldRecord;
+import com.fx.xzt.sys.mapper.FinanceRegulargoldOrderMapper;
 import com.fx.xzt.sys.mapper.SaveGoldRecordMapper;
 import com.fx.xzt.sys.service.SaveGoldRecordService;
+import com.fx.xzt.sys.util.CommonResponse;
+import com.fx.xzt.sys.util.Constant;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -29,6 +34,8 @@ public class SaveGoldRecordServiceImpl extends BaseService<SaveGoldRecord> imple
 
 	@Resource
 	SaveGoldRecordMapper mapper;
+	@Resource
+	FinanceRegulargoldOrderMapper financeRegulargoldOrderMapper;
 
 	/**
 	 * 查询
@@ -172,5 +179,31 @@ public class SaveGoldRecordServiceImpl extends BaseService<SaveGoldRecord> imple
 		}
 	}
 
+	/**
+	 * @CreateBy：tianliya
+	 * @CreateTime：2018/6/11 11:07
+	 * @Description：存金宝买入总金额
+	 * @return
+	 */
+	public CommonResponse countBuyGold(){
+		CommonResponse commonResponse = new CommonResponse();
+		try{
+			Float saveGoldAmount = mapper.countBuyGold();
+			Float steadyGoldAmount = financeRegulargoldOrderMapper.countGramOnTime();
 
+			Map map = new HashMap();
+			if (saveGoldAmount != null){
+				map.put("saveGoldAmount",saveGoldAmount);
+			}
+			if (steadyGoldAmount != null){
+				map.put("steadyGoldAmount",steadyGoldAmount);
+			}
+			commonResponse.setCode(Constant.RESCODE_SUCCESS_MSG);
+			commonResponse.setData(map);
+		}catch (Exception e){
+			e.printStackTrace();
+			throw new GlobalException("对冲套利-稳赚金与存金宝","对冲套利-稳赚金与存金宝异常");
+		}
+		return  commonResponse;
+	}
 }

@@ -29,6 +29,7 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
                                                        Integer upOrDown,Integer orderState, Integer profitLoss,Long agentId,
                                                        Integer pageNum, Integer pageSize) throws ParseException {
         java.text.DecimalFormat   df   =new   java.text.DecimalFormat("#0.00");
+        java.text.DecimalFormat   df1   =new   java.text.DecimalFormat("#0.000");
         //df.setRoundingMode(RoundingMode.FLOOR);
         Map map = new HashMap();
         map.put("upOrDown",upOrDown);
@@ -52,35 +53,55 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
                int perCount = 0;
                Double perAmount = 0d;
                m.put("date",DateUtils.formatDateByMidLine1((Date)m.get("date")));
-               if (m.get("financeAmount") != null){
-                   perAmount = perAmount+Double.parseDouble((m.get("financeAmount")==null?0:m.get("financeAmount")).toString());
-                   m.put("financeAmount",df.format(Double.parseDouble((m.get("financeAmount")==null?0:m.get("financeAmount")).toString())));
+//               稳赚金kezhong
+               if (m.get("buyAmount") != null){
+                   perAmount = perAmount+Double.parseDouble((m.get("buyAmount")==null?0:m.get("buyAmount")).toString());
+
                }
+//               稳赚金克重
+               if (m.get("gram") != null){
+                   m.put("gram",df1.format(Double.parseDouble((m.get("gram")==null?0:m.get("gram")).toString())));
+               }
+//               金权交易金额
                if (m.get("goldRightAmount")!= null){
                    perAmount = perAmount+Double.parseDouble((m.get("goldRightAmount")==null?0:m.get("goldRightAmount")).toString());
                    m.put("goldRightAmount",df.format(Double.parseDouble((m.get("goldRightAmount")==null?0:m.get("goldRightAmount")).toString())));
                }
-               if (m.get("realGoldAmount")!= null){
-                   perAmount = perAmount+Double.parseDouble((m.get("realGoldAmount")==null?0:m.get("realGoldAmount")).toString());
-                   m.put("realGoldAmount",df.format(Double.parseDouble((m.get("realGoldAmount")==null?0:m.get("realGoldAmount")).toString())));
+//               黄金买入金额
+               if (m.get("buyRmbAmount")!= null){
+                   perAmount = perAmount+Double.parseDouble((m.get("buyRmbAmount")==null?0:m.get("buyRmbAmount")).toString());
+//
+
                }
-               if (m.get("goldUpAmount")!= null){
-                   perAmount = perAmount+Double.parseDouble((m.get("goldUpAmount")==null?0:m.get("goldUpAmount")).toString());
-                   m.put("goldUpAmount",df.format(Double.parseDouble((m.get("goldUpAmount")==null?0:m.get("goldUpAmount")).toString())));
+//               黄金买入克重
+               if (m.get("buyGoldAmount")!= null){
+                   m.put("buyGoldAmount",df1.format(Double.parseDouble((m.get("buyGoldAmount")==null?0:m.get("buyGoldAmount")).toString())));
                }
-               if (m.get("financeCount") != null){
-                   perCount = perCount+Integer.parseInt((m.get("financeCount")==null?0:m.get("financeCount")).toString());
+//               黄金卖出金额
+               if (m.get("saleRmbAmount")!= null){
+                   perAmount = perAmount+Double.parseDouble((m.get("saleRmbAmount")==null?0:m.get("saleRmbAmount")).toString());
+
                }
-               if (m.get("goldRightCount")!= null){
-                   perCount = perCount+Integer.parseInt((m.get("goldRightCount")==null?0:m.get("goldRightCount")).toString());
+               //                   黄金卖出克重
+               if (m.get("saleGoldAmount")!= null ){
+                   m.put("saleGoldAmount",df1.format(Double.parseDouble((m.get("saleGoldAmount")==null?0:m.get("saleGoldAmount")).toString())));
                }
-               if (m.get("realGoldCount")!= null){
-                   perCount = perCount+Integer.parseInt((m.get("realGoldCount")==null?0:m.get("realGoldCount")).toString());
+//               黄金用户
+               if (m.get("goldUserAmount") != null){
+                   perCount = perCount+Integer.parseInt((m.get("goldUserAmount")==null?0:m.get("goldUserAmount")).toString());
                }
-               if (m.get("goldUpCount")!= null){
-                   perCount = perCount+Integer.parseInt((m.get("goldUpCount")==null?0:m.get("goldUpCount")).toString());
+//               金权交易用户
+               if (m.get("goldRightUserAmount")!= null){
+                   perCount = perCount+Integer.parseInt((m.get("goldRightUserAmount")==null?0:m.get("goldRightUserAmount")).toString());
                }
+//               稳赚金用户
+               if (m.get("buyUserAmount")!= null){
+                   perCount = perCount+Integer.parseInt((m.get("buyUserAmount")==null?0:m.get("buyUserAmount")).toString());
+               }
+//
+//               总的交易用户
                m.put("perCount",perCount);
+//               总的交易金额
                m.put("perAmount",df.format(perAmount));
            }
         }catch(Exception e){
@@ -99,6 +120,7 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
                                                         Integer upOrDown,Integer orderState, Integer profitLoss, Long agentId,
                                                         Integer pageNum, Integer pageSize) {
         java.text.DecimalFormat   df   =new   java.text.DecimalFormat("#0.00");
+        java.text.DecimalFormat   df1   =new   java.text.DecimalFormat("#0.000");
         //df.setRoundingMode(RoundingMode.FLOOR);
         Map map = new HashMap();
         if (startTime != null && startTime != ""){
@@ -119,22 +141,34 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
         try{
             map1 = analysisOrderMapper.getAnalysisCount(map);
             double amountTotal = 0;
-            amountTotal = Double.parseDouble((map1.get("realGoldAmountTotal")==null?0.0:map1.get("realGoldAmountTotal")).toString())+
-                    Double.parseDouble((map1.get("goldRightAmountTotal")==null?0.0:map1.get("goldRightAmountTotal")).toString())+
-                    Double.parseDouble((map1.get("financeAmountTotal")==null?0.0:map1.get("financeAmountTotal")).toString())+
-                    Double.parseDouble((map1.get("goldUpAmountTotal")==null?0.0:map1.get("goldUpAmountTotal")).toString())
+            amountTotal = Double.parseDouble((map1.get("buyRmbAmount")==null?0.0:map1.get("buyRmbAmount")).toString())+
+                    Double.parseDouble((map1.get("saleRmbAmount")==null?0.0:map1.get("saleRmbAmount")).toString())+
+                    Double.parseDouble((map1.get("goldRightAmount")==null?0.0:map1.get("goldRightAmount")).toString())+
+                    Double.parseDouble((map1.get("buyAmount")==null?0.0:map1.get("buyAmount")).toString())
                     ;
             int userTotal = 0;
-            userTotal = Integer.valueOf((map1.get("realGoldCountTotal")==null?0:map1.get("realGoldCountTotal")).toString())+
-                    Integer.valueOf((map1.get("goldRightCountTotal")==null?0:map1.get("goldRightCountTotal")).toString())+
-                    Integer.valueOf((map1.get("financeCountTotal")==null?0:map1.get("financeCountTotal")).toString())+
-                    Integer.valueOf((map1.get("goldUpCountTotal")==null?0:map1.get("goldUpCountTotal")).toString())
+            userTotal = Integer.valueOf((map1.get("buyGoldUserAmount")==null?0:map1.get("buyGoldUserAmount")).toString())+
+                    Integer.valueOf((map1.get("saleGoldUserAmount")==null?0:map1.get("saleGoldUserAmount")).toString())+
+                    Integer.valueOf((map1.get("goldRightUserAmount")==null?0:map1.get("goldRightUserAmount")).toString())+
+                    Integer.valueOf((map1.get("financeUserAmount")==null?0:map1.get("financeUserAmount")).toString())
             ;
+//           黄金-用户数
+            map1.put("goldUserAmount",
+                    Integer.parseInt((map1.get("buyGoldUserAmount")==null?0:map1.get("buyGoldUserAmount")).toString())+Integer.parseInt((map1.get("saleGoldUserAmount")==null?0:map1.get("saleGoldUserAmount")).toString())
+            );
+//            买入黄金-克重
+            map1.put("buyGoldAmount",df1.format(Double.parseDouble((map1.get("buyGoldAmount")==null?0:map1.get("buyGoldAmount")).toString())));
+//            卖出黄金-克重
+            map1.put("saleGoldAmount",df1.format(Double.parseDouble((map1.get("saleGoldAmount")==null?0:map1.get("saleGoldAmount")).toString())));
+//            金权交易-金额
+            map1.put("goldRightAmount",df.format(Double.parseDouble((map1.get("goldRightAmount")==null?0:map1.get("goldRightAmount")).toString())));
+//            金权交易-用户数
+            map1.put("goldRightUserAmount",map1.get("goldRightUserAmount")==null?0:map1.get("goldRightUserAmount"));
+//            稳赚金-克重
+            map1.put("gram",df1.format(Double.parseDouble((map1.get("gram")==null?0:map1.get("gram")).toString())));
+//            稳赚金-用户数
+            map1.put("financeUserAmount",map1.get("financeUserAmount")==null?0:map1.get("financeUserAmount"));
 
-            map1.put("realGoldAmountTotal",df.format(Double.parseDouble((map1.get("realGoldAmountTotal")==null?0:map1.get("realGoldAmountTotal")).toString())));
-            map1.put("goldRightAmountTotal",df.format(Double.parseDouble((map1.get("goldRightAmountTotal")==null?0:map1.get("goldRightAmountTotal")).toString())));
-            map1.put("financeAmountTotal",df.format(Double.parseDouble((map1.get("financeAmountTotal")==null?0:map1.get("financeAmountTotal")).toString())));
-            map1.put("goldUpAmountTotal",df.format(Double.parseDouble((map1.get("goldUpAmountTotal")==null?0:map1.get("goldUpAmountTotal")).toString())));
             map1.put("amountTotal",df.format(amountTotal));
             map1.put("userTotal",userTotal);
 
@@ -162,6 +196,7 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
                                                     Integer upOrDown,Integer orderState, Integer profitLoss,Long agentId
                                                        ) {
         java.text.DecimalFormat   df   =new   java.text.DecimalFormat("#0.00");
+        java.text.DecimalFormat   df1   =new   java.text.DecimalFormat("#0.000");
         //df.setRoundingMode(RoundingMode.FLOOR);
         Map map = new HashMap();
         map.put("upOrDown",upOrDown);
@@ -183,35 +218,55 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
                 int perCount = 0;
                 Double perAmount = 0d;
                 m.put("date",DateUtils.formatDateByMidLine1((Date)m.get("date")));
-                if (m.get("financeAmount") != null){
-                    perAmount = perAmount+Double.parseDouble((m.get("financeAmount")==null?0:m.get("financeAmount")).toString());
-                    m.put("financeAmount",df.format(Double.parseDouble((m.get("financeAmount")==null?0:m.get("financeAmount")).toString())));
+                //               稳赚金kezhong
+                if (m.get("buyAmount") != null){
+                    perAmount = perAmount+Double.parseDouble((m.get("buyAmount")==null?0:m.get("buyAmount")).toString());
+
                 }
+//               稳赚金克重
+                if (m.get("gram") != null){
+                    m.put("gram",df1.format(Double.parseDouble((m.get("gram")==null?0:m.get("gram")).toString())));
+                }
+//               金权交易金额
                 if (m.get("goldRightAmount")!= null){
                     perAmount = perAmount+Double.parseDouble((m.get("goldRightAmount")==null?0:m.get("goldRightAmount")).toString());
                     m.put("goldRightAmount",df.format(Double.parseDouble((m.get("goldRightAmount")==null?0:m.get("goldRightAmount")).toString())));
                 }
-                if (m.get("realGoldAmount")!= null){
-                    perAmount = perAmount+Double.parseDouble((m.get("realGoldAmount")==null?0:m.get("realGoldAmount")).toString());
-                    m.put("realGoldAmount",df.format(Double.parseDouble((m.get("realGoldAmount")==null?0:m.get("realGoldAmount")).toString())));
+//               黄金买入金额
+                if (m.get("buyRmbAmount")!= null){
+                    perAmount = perAmount+Double.parseDouble((m.get("buyRmbAmount")==null?0:m.get("buyRmbAmount")).toString());
+//
+
                 }
-                if (m.get("goldUpAmount")!= null){
-                    perAmount = perAmount+Double.parseDouble((m.get("goldUpAmount")==null?0:m.get("goldUpAmount")).toString());
-                    m.put("goldUpAmount",df.format(Double.parseDouble((m.get("goldUpAmount")==null?0:m.get("goldUpAmount")).toString())));
+//               黄金买入克重
+                if (m.get("buyGoldAmount")!= null){
+                    m.put("buyGoldAmount",df1.format(Double.parseDouble((m.get("buyGoldAmount")==null?0:m.get("buyGoldAmount")).toString())));
                 }
-                if (m.get("financeCount") != null){
-                    perCount = perCount+Integer.parseInt((m.get("financeCount")==null?0:m.get("financeCount")).toString());
+//               黄金卖出金额
+                if (m.get("saleRmbAmount")!= null){
+                    perAmount = perAmount+Double.parseDouble((m.get("saleRmbAmount")==null?0:m.get("saleRmbAmount")).toString());
+
                 }
-                if (m.get("goldRightCount")!= null){
-                    perCount = perCount+Integer.parseInt((m.get("goldRightCount")==null?0:m.get("goldRightCount")).toString());
+                //                   黄金卖出克重
+                if (m.get("saleGoldAmount")!= null ){
+                    m.put("saleGoldAmount",df1.format(Double.parseDouble((m.get("saleGoldAmount")==null?0:m.get("saleGoldAmount")).toString())));
                 }
-                if (m.get("realGoldCount")!= null){
-                    perCount = perCount+Integer.parseInt((m.get("realGoldCount")==null?0:m.get("realGoldCount")).toString());
+//               黄金用户
+                if (m.get("goldUserAmount") != null){
+                    perCount = perCount+Integer.parseInt((m.get("goldUserAmount")==null?0:m.get("goldUserAmount")).toString());
                 }
-                if (m.get("goldUpCount")!= null){
-                    perCount = perCount+Integer.parseInt((m.get("goldUpCount")==null?0:m.get("goldUpCount")).toString());
+//               金权交易用户
+                if (m.get("goldRightUserAmount")!= null){
+                    perCount = perCount+Integer.parseInt((m.get("goldRightUserAmount")==null?0:m.get("goldRightUserAmount")).toString());
                 }
+//               稳赚金用户
+                if (m.get("buyUserAmount")!= null){
+                    perCount = perCount+Integer.parseInt((m.get("buyUserAmount")==null?0:m.get("buyUserAmount")).toString());
+                }
+//
+//               总的交易用户
                 m.put("perCount",perCount);
+//               总的交易金额
                 m.put("perAmount",df.format(perAmount));
             }
         }catch(Exception e){

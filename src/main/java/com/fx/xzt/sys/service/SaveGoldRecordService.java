@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
+import com.fx.xzt.sys.util.CommonResponse;
 import com.github.pagehelper.PageInfo;
 
 /**
@@ -83,5 +84,13 @@ public interface SaveGoldRecordService {
 	 */
 	Map<String, Object> countByAll(String userName, String startTime, String endTime, 
 			String regStartTime, String regEndTime, String agentName, String brokerName, Short type);
+
+	/**
+	 * @CreateBy：tianliya
+	 * @CreateTime：2018/6/11 11:06
+	 * @Description：存金宝买入总金额
+	 * @return
+	 */
+	CommonResponse countBuyGold();
 
 }

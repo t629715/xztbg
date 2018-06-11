@@ -232,10 +232,10 @@ public class OrderAnalysisController {
                         agentName,upOrDown,orderState,profitLoss,agentId
                 );
                 POIUtils poi = new POIUtils();
-                String[] heads = {"时间", "交易用户","交易金额","黄金稳赚交易用户",  "黄金稳赚交易金额", "随意存交易用户", "随意存交易金额", "金权交易用户",
-                        "金权交易金额","实物黄金交易用户","实物黄金交易金额"};
-                String[] colums = {"date", "perCount","perAmount","goldUpCount", "goldUpAmount", "financeCount", "financeAmount", "goldRightCount",
-                        "goldRightAmount","realGoldCount","realGoldAmount"};
+                String[] heads = {"时间", "交易用户","交易金额","稳赚金用户",  "稳赚金克重",  "金权交易用户", "金权交易金额",
+                        "黄金用户","黄金买入克重","黄金买入金额","黄金卖出克重","黄金卖出金额"};
+                String[] colums = {"date", "perCount","perAmount","buyUserAmount", "gram",  "goldRightUserAmount",
+                        "goldRightAmount","goldUserAmount","buyGoldAmount","buyRmbAmount","saleGoldAmount","saleRmbAmount"};
                 poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                 log.setUserId(users.getId());
                 log.setContent("导出成功");

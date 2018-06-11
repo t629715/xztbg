@@ -42,4 +42,12 @@ public interface SaveGoldRecordMapper extends BaseMapper<SaveGoldRecord> {
 	 */
 	Map<String, Object> countByAll (Map<String,Object> map);
 
+	/**
+	 * @CreateBy：tianliya
+	 * @CreateTime：2018/6/11 11:11
+	 * @Description：存金宝买入总金额
+	 * @return
+	 */
+	Float countBuyGold();
+
 }

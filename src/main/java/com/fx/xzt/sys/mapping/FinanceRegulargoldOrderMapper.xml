@@ -221,5 +221,8 @@
             </if>
         </where>
     </select>
-
+    <!--获取处于有效期的稳赚金-tianliya-->
+    <select id="countGramOnTime" resultType="java.lang.Float">
+        select round(sum(gram),3) from finance_regulargold_order where status = 1
+    </select>
 </mapper>
