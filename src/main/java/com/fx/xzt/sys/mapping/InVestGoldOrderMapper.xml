@@ -55,7 +55,7 @@
     <!--金条投资订单统计开始-htt-->
     <select id="countByAll" resultType="java.util.Map" parameterType="java.util.Map">
     select 
-    	sum(o.logistics_fee) logisticsFeeSum, sum(o.service_money) serviceMoneySum, sum(o.gold_num) goldNumSum
+    	sum(o.logistics_fee) logisticsFeeSum, sum(o.service_money) serviceMoneySum, sum(o.gold_total_weight) goldNumSum
 	from invest_gold_order o
 	LEFT JOIN User_Login u ON o.user_id = u.UserID
     LEFT JOIN users ua ON o.agent_id = ua.id 

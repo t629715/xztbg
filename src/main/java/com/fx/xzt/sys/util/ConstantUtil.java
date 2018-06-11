@@ -517,7 +517,8 @@ public class ConstantUtil {
         SCTSZX("删除推送资讯","49"),
         TJTSZX("添加推送资讯","50"),
         CXTSZX("查询推送资讯","51"),
-        HJJYB("黄金交易（买）","48");
+        HJJYB("黄金交易（买）","48"),
+        XTCS("系统参数","52");
 
 
         private String name;
@@ -750,6 +751,31 @@ public class ConstantUtil {
         	saveGoldRecordType[] ds = saveGoldRecordType.values();
             Map<String, String> rlt = new Hashtable<String, String>();
             for (saveGoldRecordType d : ds) {
+                rlt.put(d.index, d.name);
+            }
+            return rlt;
+        }
+    }
+    
+    /**
+     * 系统参数缓存数据区域
+     */
+    public static enum cacheRegion {
+    	Local("Local(map)","0"),
+    	Remote("Remote(redis)","1");
+        private String name;
+        private String index;
+        private cacheRegion(String name,String index){
+            this.name = name;
+            this.index = index;
+        }
+        public String toString() {
+            return this.index;
+        }
+        public static Map<String, String> toMap() {
+        	cacheRegion[] ds = cacheRegion.values();
+            Map<String, String> rlt = new Hashtable<String, String>();
+            for (cacheRegion d : ds) {
                 rlt.put(d.index, d.name);
             }
             return rlt;

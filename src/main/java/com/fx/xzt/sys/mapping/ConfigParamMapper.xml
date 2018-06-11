@@ -12,4 +12,87 @@
   <select id="selectConfigParamByKey" resultMap="BaseResultMap" parameterType="java.lang.String">
     select ParamValue from Config_Param where ParamName=#{parmName,jdbcType=VARCHAR} order BY ParamValue DESC
   </select>
+  
+  	<!--查询开始-htt-->
+ 	<select id="selectByAll" resultType="java.util.Map" parameterType="java.lang.String">
+        select ParamName paramName, ParamValue paramValue, ValueType valueType, Description description, CacheRegion cacheRegion
+        from Config_Param
+        <where>
+            <if test="paramName != null and paramName !='' ">
+                and paramName like CONCAT('%',#{paramName,jdbcType=VARCHAR},'%')
+            </if>
+        </where>
+        order by ParamName
+    </select>
+    <!--查询结束-htt-->
+  
+	<!-- 新增开始-htt -->
+	<insert id="add" parameterType="com.fx.xzt.sys.entity.ConfigParam">
+        insert into Config_Param
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="paramName != null" >
+                ParamName,
+            </if>
+            <if test="paramValue != null" >
+                ParamValue,
+            </if>
+            <if test="valueType != null" >
+                ValueType,
+            </if>
+            <if test="description != null" >
+                Description,
+            </if>
+            <if test="cacheRegion != null" >
+                CacheRegion,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="paramName != null" >
+                #{paramName,jdbcType=VARCHAR},
+            </if>
+            <if test="paramValue != null" >
+                #{paramValue,jdbcType=VARCHAR},
+            </if>
+            <if test="valueType != null" >
+                #{valueType,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null" >
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="cacheRegion != null" >
+                #{cacheRegion,jdbcType=SMALLINT},
+            </if>
+        </trim>
+    </insert>
+	<!-- 新增结束-htt -->
+	
+	<!--修改开始-htt-->
+    <update id="update" parameterType="com.fx.xzt.sys.entity.ConfigParam">
+        update Config_Param
+        <set>
+            <if test="paramValue != null">
+                ParamValue =#{paramValue,jdbcType=VARCHAR},
+            </if>
+            <if test="valueType != null">
+                ValueType =#{valueType,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                Description =#{description,jdbcType=VARCHAR},
+            </if>
+            <if test="cacheRegion != null ">
+                CacheRegion =#{cacheRegion,jdbcType=INTEGER},
+            </if>
+        </set>
+        where ParamName =#{paramName,jdbcType=SMALLINT}
+    </update>
+    <!--修改结束-htt-->
+    
+    <!--删除开始-htt-->
+    <delete id="deleteByName"  parameterType="java.lang.String" >
+        delete from Config_Param
+        where ParamName = #{paramName,jdbcType=VARCHAR}
+    </delete>
+    <!--删除结束-htt-->
+
+  
 </mapper>

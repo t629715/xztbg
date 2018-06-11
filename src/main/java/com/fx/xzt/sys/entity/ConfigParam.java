@@ -5,15 +5,15 @@ import javax.persistence.Table;
 
 @Table(name="Config_Param")
 public class ConfigParam {
-	@Column(name="ParamName")
+  @Column(name="ParamName")
     private String paramName;
-	@Column(name="ParamValue")
+  @Column(name="ParamValue")
     private String paramValue;
-	@Column(name="ValueType")
+  @Column(name="ValueType")
     private String valueType;
-	@Column(name="Description")
+  @Column(name="Description")
     private String description;
-	@Column(name="CacheRegion")
+  @Column(name="CacheRegion")
     private Short cacheRegion;
 
 	public String getParamName() {
