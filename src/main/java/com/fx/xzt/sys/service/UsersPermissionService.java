@@ -82,6 +82,14 @@ public interface UsersPermissionService extends IService<UsersPermission>{
 	* @author htt
 	 */
 	Map<String, Object> getByUsersPermissionAllNew();
+
+	/**
+	 * @CreateBy：tianliya
+	 * @CreateTime：2018/6/12 12:28
+	 * @Description：获取全部菜单
+	 * @return
+	 */
+	Map<String, Object> getByUsersPermissionAllNew1();
 	
 	/**
 	 * 

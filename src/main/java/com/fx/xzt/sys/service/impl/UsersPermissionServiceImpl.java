@@ -185,6 +185,7 @@ public class UsersPermissionServiceImpl extends BaseService<UsersPermission> imp
             	perMap.put("id", p.getId());
             	//perMap.put("index", StringUtil.isNotEmpty(p.getSref()) ? p.getSref() : p.getId() + "");
             	perMap.put("index", p.getSref() != null ? p.getSref() : p.getId() + "");
+            	perMap.put("sref", p.getSref() != null ? p.getSref() : p.getId() + "");
             	perMap.put("title", StringUtil.convertNullToEmpty(p.getText()));
             	handleMenu(perMap, data);
                 list.add(perMap);
@@ -194,6 +195,33 @@ public class UsersPermissionServiceImpl extends BaseService<UsersPermission> imp
         	map.put("subs", list);
         }
     }
+
+	/**
+	 * @CreateBy：tianliya
+	 * @CreateTime：2018/6/12 12:25
+	 * @Description：处理二级菜单
+	 * @param map
+	 * @param data
+	 */
+	public void handleMenu1(Map<String,Object> map, List<UsersPermission> data) {
+		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+		for (UsersPermission p : data) {
+			if (p.getPid().equals(map.get("id"))) {
+				Map<String,Object> perMap = new HashMap<String,Object>();
+				perMap.put("icon", StringUtil.convertNullToEmpty(p.getIcon()));
+				perMap.put("pid", p.getPid());
+				perMap.put("id", p.getId());
+				//perMap.put("index", StringUtil.isNotEmpty(p.getSref()) ? p.getSref() : p.getId() + "");
+				perMap.put("sref", p.getSref() != null ? p.getSref() :  "");
+				perMap.put("title", StringUtil.convertNullToEmpty(p.getText()));
+				handleMenu(perMap, data);
+				list.add(perMap);
+			}
+		}
+		if (list != null && list.size() > 0) {
+			map.put("subs", list);
+		}
+	}
 	
 	/**
 	 * 
@@ -213,6 +241,23 @@ public class UsersPermissionServiceImpl extends BaseService<UsersPermission> imp
 		permission.put("index", "0");
 		permission.put("title", "象智投后台");
 		handleMenu(permission, data);
+		return permission;
+	}
+
+	/**
+	 * @CreateBy：tianliya
+	 * @CreateTime：2018/6/12 12:27
+	 * @Description：获取全部菜单
+	 * @return
+	 */
+	public Map<String, Object> getByUsersPermissionAllNew1() {
+		List<UsersPermission> data = usersPermissionMapper.getByRidsAll();
+		Map<String,Object> permission = new HashMap<String,Object>();
+		permission.put("icon", "");
+		permission.put("pid", -1);
+		permission.put("id", 0);
+		permission.put("title", "象智投后台");
+		handleMenu1(permission, data);
 		return permission;
 	}
 
