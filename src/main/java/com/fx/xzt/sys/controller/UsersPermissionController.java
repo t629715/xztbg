@@ -71,7 +71,7 @@ public class UsersPermissionController {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
-            	Map<String, Object> permission = usersPermissionService.getByUsersPermissionAllNew();
+            	Map<String, Object> permission = usersPermissionService.getByUsersPermissionAllNew1();
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(permission);
                 cr.setMsg("操作成功！");
