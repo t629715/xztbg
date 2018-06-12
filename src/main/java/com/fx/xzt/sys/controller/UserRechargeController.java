@@ -165,8 +165,8 @@ public class UserRechargeController {
                 String agentNameStr = agentName;
                 List<Map<String, Object>> list = userRechargeService.excelRecharge(userName, startTime, endTime, agentNameStr, brokerName, rechargechannel, status, isView);
                 POIUtils poi = new POIUtils();
-                String[] heads = {"用户账号", "充值金额", "代理商", "经纪人", "充值渠道", "充值时间"};
-                String[] colums = {"UserName", "RMBAmt", "agentName", "brokerName","RechargeChannel", "RechargeTime"};
+                String[] heads = {"用户账号", "用户姓名", "代理商", "经纪人", "充值金额", "商户订单号", "充值渠道", "充值时间"};
+                String[] colums = {"UserName", "realName", "agentName", "brokerName", "RMBAmt", "MerchantOrderNum", "RechargeChannel", "RechargeTime"};
                 poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                 log.setUserId(users.getId());
                 log.setContent("导出成功，共：" + list.size() + "条数据");
