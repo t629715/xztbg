@@ -69,7 +69,7 @@ public class FinanceRegulargoldOrderController {
         CommonResponse cr = new CommonResponse();
         //操作日志
         LogRecord log = new LogRecord();
-        log.setTitle("定期金交易查询");
+        log.setTitle("稳赚金交易查询");
         log.setContent("查询失败");
         log.setModuleName(ConstantUtil.logRecordModule.DQJJY.getName());
         log.setType(ConstantUtil.logRecordType.CX.getIndex());

@@ -103,6 +103,7 @@
                 AND u.UserName like CONCAT(#{userName,jdbcType=VARCHAR},'%')
             </if>
         </where>
+        order by buyTime desc
     </select>
 
     <!--导出所有满足条件的数据-tianliya-->
@@ -172,6 +173,7 @@
                 AND u.UserName like CONCAT(#{userName,jdbcType=VARCHAR},'%')
             </if>
         </where>
+        order by buyTime desc
     </select>
 
     <!--稳赚金买入统计-tianliya-->
