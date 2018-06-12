@@ -26,6 +26,7 @@ public interface UsersPermissionService extends IService<UsersPermission>{
 	
 	int deleteById(Integer id);
 	
+	
 	/**
 	 * 根据 rids 获取 功能列表
 	 */
@@ -81,4 +82,53 @@ public interface UsersPermissionService extends IService<UsersPermission>{
 	* @author htt
 	 */
 	Map<String, Object> getByUsersPermissionAllNew();
+	
+	/**
+	 * 
+	* @Title: insert 
+	* @Description: 新增
+	* @param text 描述
+	* @param icon 图标
+	* @param label
+	* @param translate 现实的功能名 与 text同步
+	* @param pid 父级id
+	* @param type 层级类型
+	* @param sref 地址
+	* @return    设定文件 
+	* @return int    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	int insert(String text, String icon, String label, String translate, String pid, String type, String sref);
+	
+	/**
+	 * 
+	* @Title: update 
+	* @Description: 修改
+	* @param text 描述
+	* @param icon 图标
+	* @param label
+	* @param translate 现实的功能名 与 text同步
+	* @param pid 父级id
+	* @param type 层级类型
+	* @param sref 地址
+	* @param id id
+	* @return    设定文件 
+	* @return int    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	int update(String text, String icon, String label, String translate, String pid, String type, String sref, String id);
+	
+	/**
+	 * 
+	* @Title: deleteById 
+	* @Description: 删除
+	* @param id
+	* @return    设定文件 
+	* @return int    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	int deleteById(String id);
 }

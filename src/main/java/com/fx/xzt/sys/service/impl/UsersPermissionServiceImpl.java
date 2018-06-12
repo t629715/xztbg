@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fx.xzt.sys.entity.UsersPermission;
 import com.fx.xzt.sys.mapper.UsersPermissionMapper;
@@ -233,5 +234,80 @@ public class UsersPermissionServiceImpl extends BaseService<UsersPermission> imp
 		handleMenu(permission, data);
 		return permission;
 	}
+
+	/**
+	 * 新增
+	 */
+	@Transactional
+	public int insert(String text, String icon, String label, String translate,
+			String pid, String type, String sref) {
+		int flag = 0;
+		if (StringUtil.isNotEmpty(text)) {
+			UsersPermission permission = new UsersPermission();
+			permission.setText(text);
+			permission.setIcon(icon);
+			permission.setLabel(label);
+			permission.setTranslate(translate);
+			if (StringUtil.isNotEmpty(pid)) {
+				permission.setPid(Integer.valueOf(pid));
+			}
+			if (StringUtil.isNotEmpty(type)) {
+				permission.setType(Integer.valueOf(type));
+			}
+			permission.setSref(sref);
+			flag = usersPermissionMapper.insertSelective(permission);
+		}
+		return flag;
+	}
+
+	/**
+	 * 修改
+	 */
+	@Transactional
+	public int update(String text, String icon, String label, String translate,
+			String pid, String type, String sref, String id) {
+		int flag = 0;
+		if (StringUtil.isNotEmpty(id)) {
+			UsersPermission permission = new UsersPermission();
+			permission.setId(Integer.valueOf(id));
+			permission.setText(text);
+			permission.setIcon(icon);
+			permission.setLabel(label);
+			permission.setTranslate(translate);
+			if (StringUtil.isNotEmpty(pid)) {
+				permission.setPid(Integer.valueOf(pid));
+			}
+			if (StringUtil.isNotEmpty(type)) {
+				permission.setType(Integer.valueOf(type));
+			}
+			permission.setSref(sref);
+			flag = usersPermissionMapper.updateByIdSelective(permission);
+		}
+		return flag;
+	}
+	
+	/**
+	 * 
+	* @Title: deleteById 
+	* @Description: 删除
+	* @param id
+	* @return    设定文件 
+	* @return int    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	@Transactional
+	public int deleteById(String id) {
+		int flag = 0;
+		if (StringUtil.isNotEmpty(id)) {
+			flag = usersPermissionMapper.deleteById(Integer.valueOf(id));
+			if (flag > 0) {
+				usersPermissionMapper.deleteByPid(Integer.valueOf(id));
+			}
+		}
+		return flag;
+	}
+	
+	
 
 }

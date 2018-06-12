@@ -518,7 +518,8 @@ public class ConstantUtil {
         TJTSZX("添加推送资讯","50"),
         CXTSZX("查询推送资讯","51"),
         HJJYB("黄金交易（买）","48"),
-        XTCS("系统参数","52");
+        XTCS("系统参数","52"),
+        XTCD("系统菜单","53");
 
 
         private String name;
