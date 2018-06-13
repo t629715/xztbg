@@ -168,4 +168,8 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <update id="updateAll">
+    UPDATE activity SET is_popup = 0
+  </update>
 </mapper>

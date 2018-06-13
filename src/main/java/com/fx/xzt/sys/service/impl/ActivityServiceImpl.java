@@ -86,6 +86,9 @@ public class ActivityServiceImpl implements ActivityService {
     public CommonResponse modifyActivity(Activity activity) {
         CommonResponse commonResponse = new CommonResponse();
         try{
+            if (activity.getIsPopup() != null && activity.getIsPopup() == 1){
+                activityMapper.updateAll();
+            }
             int i = activityMapper.updateActivity(activity);
             if (i > 0){
                 commonResponse.setCode(Constant.RESCODE_SUCCESS_MSG);

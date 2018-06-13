@@ -31,4 +31,12 @@ public interface ActivityMapper extends BaseMapper<Activity> {
      * @return
      */
     int updateActivity(Activity activity);
+
+    /**
+     * @CreateBy：tianliya
+     * @CreateTime：2018/6/13 12:52
+     * @Description：将所有的活动设为不弹出
+     * @return
+     */
+    int updateAll();
 }

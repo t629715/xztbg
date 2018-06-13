@@ -42,7 +42,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/activity")
 public class ActivityController {
-	
+
     @Resource
     ActivityService activityService;
     @Resource
@@ -52,18 +52,15 @@ public class ActivityController {
      * @CreateBy：tianliya
      * @CreateTime：2018/6/12 16:19
      * @Description：获取所有的活动
-     * @param request
-     * @return
-     * @throws ParseException
      */
-    @RequestMapping(value="/getActivities")
+    @RequestMapping(value = "/getActivities")
     @ResponseBody
     public Object getActivities(HttpServletRequest request) throws ParseException {
 
         CommonResponse cr = new CommonResponse();
-        
+
         //操作日志
-    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         LogRecord log = new LogRecord();
         log.setTitle("活动查询");
         log.setContent("查询失败");
@@ -71,14 +68,14 @@ public class ActivityController {
         log.setType(ConstantUtil.logRecordType.CX.getIndex());
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
-        
+
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
                 log.setUserId(users.getId());
                 cr = activityService.getActivities();
-                if (cr.getCode() == 1001){
+                if (cr.getCode() == 1001) {
                     log.setContent("查询成功");
                 }
             } else {
@@ -103,13 +100,12 @@ public class ActivityController {
      * @CreateBy：tianliya
      * @CreateTime：2018/6/12 16:20
      * @Description：删除活动
-     * @throws Exception
      */
-    @RequestMapping(value="/removeActivity")
+    @RequestMapping(value = "/removeActivity")
     @ResponseBody
-    public CommonResponse removeActivity(HttpServletRequest request, Long id) throws Exception{
-    	//操作日志
-    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public CommonResponse removeActivity(HttpServletRequest request, Long id) throws Exception {
+        //操作日志
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         LogRecord log = new LogRecord();
         log.setTitle("活动控制-删除活动");
         log.setContent("删除失败");
@@ -118,13 +114,13 @@ public class ActivityController {
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
         CommonResponse commonResponse = new CommonResponse();
-    	try {
+        try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
                 log.setUserId(users.getId());
                 commonResponse = activityService.removeActivity(id);
-                if (commonResponse.getCode() == 1001){
+                if (commonResponse.getCode() == 1001) {
                     log.setContent("删除成功");
                 }
             } else {
@@ -134,7 +130,7 @@ public class ActivityController {
         } catch (Exception e) {
             throw e;
         }
-    	logRecordService.add(log);
+        logRecordService.add(log);
         AuditLog.info(log.toString());
         return commonResponse;
     }
@@ -143,19 +139,25 @@ public class ActivityController {
      * @CreateBy：tianliya
      * @CreateTime：2018/6/12 16:26
      * @Description：下架活动
-     * @param request
-     * @param activity
-     * @return
-     * @throws Exception
      */
-    @RequestMapping(value="/modifyActivity")
+    @RequestMapping(value = "/modifyActivity")
     @ResponseBody
-    public CommonResponse modifyActivity(HttpServletRequest request, Activity activity) throws Exception{
+    public CommonResponse modifyActivity(HttpServletRequest request, Activity activity) throws Exception {
         //操作日志
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         LogRecord log = new LogRecord();
-        log.setTitle("活动控制-下架活动");
-        log.setContent("下架失败");
+        if (activity.getIsPopup() != null) {
+            log.setTitle("活动控制-修改活动是否首页弹出");
+            if (activity.getIsPopup() == 0) {
+                log.setContent("取消弹出失败");
+            } else {
+                log.setContent("设置弹出失败");
+            }
+        } else {
+            log.setTitle("活动控制-修改活动");
+
+            log.setContent("修改失败");
+        }
         log.setModuleName(ConstantUtil.logRecordModule.HDKZ.getName());
         log.setType(ConstantUtil.logRecordType.XG.getIndex());
         log.setIp(IPUtil.getHost(request));
@@ -167,8 +169,8 @@ public class ActivityController {
             if (users != null) {
                 log.setUserId(users.getId());
                 commonResponse = activityService.modifyActivity(activity);
-                if (commonResponse.getCode() == 1001){
-                    log.setContent("下架成功");
+                if (commonResponse.getCode() == 1001) {
+                    log.setContent("成功");
                 }
             } else {
                 commonResponse.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
