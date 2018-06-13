@@ -29,6 +29,15 @@ public interface ActivityService {
      * @Description：修改选中的活动
      */
     CommonResponse modifyActivity(Activity activity);
+
+    /**
+     * @CreateBy：tianliya
+     * @CreateTime：2018/6/13 16:19
+     * @Description：添加活动
+     * @param activity
+     * @return
+     */
+    CommonResponse addActivity(Activity activity);
 }
 
 

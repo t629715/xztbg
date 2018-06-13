@@ -13,6 +13,8 @@ import com.fx.xzt.sys.util.log.AuditLog;
 import com.fx.xzt.util.POIUtils;
 import com.github.pagehelper.PageInfo;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,6 +49,8 @@ public class ActivityController {
     ActivityService activityService;
     @Resource
     LogRecordService logRecordService;
+
+    Logger logger = LoggerFactory.getLogger(ActivityController.class);
 
     /**
      * @CreateBy：tianliya
@@ -169,6 +173,46 @@ public class ActivityController {
             if (users != null) {
                 log.setUserId(users.getId());
                 commonResponse = activityService.modifyActivity(activity);
+                if (commonResponse.getCode() == 1001) {
+                    log.setContent("成功");
+                }
+            } else {
+                commonResponse.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                commonResponse.setMsg("操作失败！");
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
+        return commonResponse;
+    }
+
+    /**
+     * @CreateBy：tianliya
+     * @CreateTime：2018/6/12 16:26
+     * @Description：下架活动
+     */
+    @RequestMapping(value = "/addActivity")
+    @ResponseBody
+    public CommonResponse addActivity(HttpServletRequest request, Activity activity) throws Exception {
+        //操作日志
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        logger.info("进入活动控制-添加活动接口");
+        LogRecord log = new LogRecord();
+        log.setTitle("活动控制-添加活动");
+        log.setContent("添加失败");
+        log.setModuleName(ConstantUtil.logRecordModule.HDKZ.getName());
+        log.setType(ConstantUtil.logRecordType.XZ.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
+        CommonResponse commonResponse = new CommonResponse();
+        try {
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            if (users != null) {
+                log.setUserId(users.getId());
+                commonResponse = activityService.addActivity(activity);
                 if (commonResponse.getCode() == 1001) {
                     log.setContent("成功");
                 }
