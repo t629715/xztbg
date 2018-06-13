@@ -103,6 +103,39 @@ public class ActivityServiceImpl implements ActivityService {
         }
         return commonResponse;
     }
+
+    /**
+     * @CreateBy：tianliya
+     * @CreateTime：2018/6/13 16:20
+     * @Description：添加活动
+     * @param activity
+     * @return
+     */
+    @Override
+    @Transactional
+    public CommonResponse addActivity(Activity activity) {
+        CommonResponse commonResponse = new CommonResponse();
+        logger.info("进入活动业务层，调用添加方法");
+        try{
+            if (activity.getIsPopup() != null && activity.getIsPopup() == 1){
+                activityMapper.updateAll();
+            }
+            int i = activityMapper.insertActivity(activity);
+
+            if (i > 0){
+                commonResponse.setCode(Constant.RESCODE_SUCCESS_MSG);
+
+            }else {
+                commonResponse.setCode(Constant.RESCODE_EXCEPTION);
+            }
+            logger.info("添加成功");
+        }catch (Exception e){
+            logger.error("添加出现异常");
+            e.printStackTrace();
+            throw new GlobalException("活动控制-添加活动","活动控制-添加活动异常");
+        }
+        return commonResponse;
+    }
 }
 
 
