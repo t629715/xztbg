@@ -227,16 +227,16 @@ public class FinanceRegulargoldOrderController {
                 if (users.getPid() != null && users.getPid() == 1) {
                     //type=1交易管理-稳赚金交易 2：出入金管理-稳赚金交易计算  3：合作伙伴-交易结算-稳赚金交易结算
                     if (type == 1 || type ==3){
-                        String[] heads = {"用户账号", "注册时间", "代理商", "经纪人", "产品编号", "产品名称", "周期", "收益率", "买入价", "买入克重", "买入金额",
-                                "买入时间", "赎回时间", "状态", "收益", "交易分成"};
+                        String[] heads = {"用户账号", "注册时间", "代理商", "经纪人", "产品编号", "产品名称", "周期", "收益率", "买入来源","买入价", "买入克重", "买入金额",
+                                "买入时间", "赎回时间", "状态", "收益", "交易分成","到期总克重"};
                         String[] colums = {"userName", "registerTime", "agentName", "brokerName",  "productNo", "productName", "productCycle", "productYearIncomPercent",
-                                "buyPrice", "gram", "buyAmount", "buyTime", "expireTime", "status", "incomeGram", "shareAmount"};
+                                "buyType","buyPrice", "gram", "buyAmount", "buyTime", "expireTime", "status", "incomeGram", "shareAmount","backTotalGram"};
                         poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                     }else if (type == 2){
-                        String[] heads = {"用户账号", "注册时间", "代理商", "经纪人", "产品编号", "产品名称", "周期", "收益率", "买入价", "买入克重", "买入金额",
-                                "买入时间", "赎回时间", "收益", "交易分成"};
+                        String[] heads = {"用户账号", "注册时间", "代理商", "经纪人", "产品编号", "产品名称", "周期", "收益率", "买入来源","买入价", "买入克重", "买入金额",
+                                "买入时间", "赎回时间", "收益", "交易分成","到期总克重"};
                         String[] colums = {"userName", "registerTime", "agentName", "brokerName",  "productNo", "productName", "productCycle", "productYearIncomPercent",
-                                "buyPrice", "gram", "buyAmount", "buyTime", "expireTime", "incomeGram", "shareAmount"};
+                                "buyType","buyPrice", "gram", "buyAmount", "buyTime", "expireTime", "incomeGram", "shareAmount","backTotalGram"};
                         poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                     }
 
@@ -246,16 +246,16 @@ public class FinanceRegulargoldOrderController {
                         excelName = "稳赚金交易";
                     }
                     if (type == 1 || type ==3){
-                        String[] heads = {"用户账号", "注册时间", "代理商", "经纪人",  "产品编号", "产品名称", "周期", "收益率", "买入价", "买入克重", "买入金额",
-                                "买入时间", "赎回时间", "状态", "收益"};
+                        String[] heads = {"用户账号", "注册时间", "代理商", "经纪人",  "产品编号", "产品名称", "周期", "收益率","买入来源", "买入价", "买入克重", "买入金额",
+                                "买入时间", "赎回时间", "状态", "收益","到期总克重"};
                         String[] colums = {"userName", "registerTime", "agentName", "brokerName",  "productNo", "productName", "productCycle", "productYearIncomPercent",
-                                "buyPrice", "gram", "buyAmount", "buyTime", "expireTime", "status", "incomeGram"};
+                                "buyType","buyPrice", "gram", "buyAmount", "buyTime", "expireTime", "status", "incomeGram","backTotalGram"};
                         poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                     }else if (type ==2){
-                        String[] heads = {"用户账号", "注册时间", "代理商", "经纪人",  "产品编号", "产品名称", "周期", "收益率", "买入价", "买入克重", "买入金额",
-                                "买入时间", "赎回时间",  "收益"};
+                        String[] heads = {"用户账号", "注册时间", "代理商", "经纪人",  "产品编号", "产品名称", "周期", "收益率", "买入来源", "买入价", "买入克重", "买入金额",
+                                "买入时间", "赎回时间",  "收益","到期总克重"};
                         String[] colums = {"userName", "registerTime", "agentName", "brokerName",  "productNo", "productName", "productCycle", "productYearIncomPercent",
-                                "buyPrice", "gram", "buyAmount", "buyTime", "expireTime", "incomeGram"};
+                                "buyType","buyPrice", "gram", "buyAmount", "buyTime", "expireTime", "incomeGram","backTotalGram"};
                         poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                     }
 
