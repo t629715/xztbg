@@ -519,7 +519,8 @@ public class ConstantUtil {
         CXTSZX("查询推送资讯","51"),
         HJJYB("黄金交易（买）","48"),
         XTCS("系统参数","52"),
-        XTCD("系统菜单","53");
+        XTCD("系统菜单","53"),
+        HDKZ("活动查询","54");
 
 
         private String name;
