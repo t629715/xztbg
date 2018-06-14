@@ -330,13 +330,6 @@
             <profiles.active>pro</profiles.active>
         </properties>
     </profile>
-	  <profile>
-        <!-- 准生产环境 -->
-        <id>beforeProduct</id>
-        <properties>
-            <profiles.active>beforeProduct</profiles.active>
-        </properties>
-    </profile>
 </profiles>
 
 <build>
