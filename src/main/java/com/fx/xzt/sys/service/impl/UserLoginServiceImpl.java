@@ -66,7 +66,7 @@ public class UserLoginServiceImpl extends BaseService<UserLogin> implements User
         map.put("lastLoginFrom", lastLoginFrom);
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
-        map.put("attribution", attribution);
+        map.put("attributionProvince", attribution);
         map.put("isView", isView);
         List<Map<String, Object>> list = userLoginMapper.getByRegisterMessage(map);
         return list;

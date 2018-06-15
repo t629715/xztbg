@@ -170,7 +170,8 @@
 	<select id="getByAccountCount" resultType="java.util.Map"
 		parameterType="java.util.Map">
 		SELECT SUM(a.rmb) rmbSum, format(SUM(ga.gold), 3) goldSum, format(SUM(ga.finance_gold), 3) financeGoldSum2,
-		format(SUM(ifnull(wzj.wzj, 0)), 3) financeGoldSum
+		format(SUM(ifnull(wzj.wzj, 0)), 3) financeGoldSum,
+		format(SUM(ga.average_price * ga.gold)/SUM(ga.gold), 0) cbj
 		FROM User_Login l
 		LEFT JOIN User_Info u ON u.UserID = l.UserID
 		LEFT JOIN user_account a ON l.UserID = a.user_id
@@ -305,7 +306,9 @@
 	<select id="getByUserAnalysis" resultType="java.util.Map" parameterType="java.util.Map">
 	SELECT t.date, t.hjrj, t.xrj, ifnull(t.xrj/t.hjrj, 0) xrjbl, t.hjjqjy, t.xjqjy, ifnull(t.xjqjy/t.hjjqjy, 0) xjqjybl, 
 	t.hjdqj, t.xdqj, ifnull(t.xdqj/t.hjdqj, 0) xdqjbl, 
-	t.hjcjb, t.xcjb, ifnull(t.xcjb/t.hjcjb, 0) xcjbbl, t.xzc, t.zzc, t.zrj FROM (
+	t.hjcjb, t.xcjb, ifnull(t.xcjb/t.hjcjb, 0) xcjbbl, t.xzc, 
+	(ifnull(t.hjjqjy, 0) + ifnull(t.hjdqj, 0) + ifnull(t.hjcjb, 0)) zjy,
+	t.zzc, t.zrj FROM (
 		SELECT d.date,	
 			(SELECT COUNT(DISTINCT r.UserID) FROM User_Recharge r 
 				LEFT JOIN User_Info u ON u.UserID = u.UserID WHERE DATE_FORMAT(r.RechargeTime,'%Y-%m-%d') = d.date 
@@ -390,7 +393,8 @@
 				</if>
 			) xzc,
 			(SELECT COUNT(i1.UserID) FROM User_Info i1 
-				LEFT JOIN User_Info u ON u.UserID = i1.UserID WHERE DATE_FORMAT(i1.RegisterTime,'%Y-%m-%d') &lt;= d.date 
+				<!-- LEFT JOIN User_Info u ON u.UserID = i1.UserID  -->
+				 WHERE DATE_FORMAT(i1.RegisterTime,'%Y-%m-%d') &lt;= d.date 
 				<if test="agentName != null and agentName !='' ">
 					and u.agent_id = #{agentName,jdbcType=BIGINT}
 				</if>

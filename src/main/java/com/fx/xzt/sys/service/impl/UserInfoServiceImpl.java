@@ -243,6 +243,12 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 				Double rmbSum = Double.valueOf(rmbSumObj.toString());
 				map1.put("rmbSum", rmbSum/100);
 			}
+			DecimalFormat dFormat = new DecimalFormat("######0.00");  
+			Object cbjObj = map1.get("cbj");
+			if (cbjObj != null && cbjObj != "") {
+				Double cbj = Double.valueOf(cbjObj.toString());
+				map1.put("cbj", dFormat.format(cbj/100));
+			}
 		}
 		return map1;
 	}

@@ -573,7 +573,7 @@ public class UserInfoController {
         		List<Map<String, Object>> list = userInfoService.getExcelAccount(userName,agentsName, brokerName,startTime,endTime, isView);
         		POIUtils poi = new POIUtils();
         		String[] heads = {"用户账号","昵称","姓名","注册时间","代理商","经纪人","身份证号","银行卡","人民币余额","黄金","定期金","黄金收益","黄金单位成本价"};
-        		String[] colums = {"userName","nickName","realname","registerTime","agentName","brokerName","idcard","accountNum","rmb","gold","financeGold","totalIncome","averagePrice"};
+        		String[] colums = {"userName","nickName","RealName","registerTime","agentName","brokerName","idcard","accountNum","rmb","gold","financeGold","totalIncome","averagePrice"};
         		poi.doExport(request, response, list, "账户信息", "账户信息", heads, colums);
         		log.setUserId(users.getId());
                 log.setContent("导出成功，共：" + list.size() + "条数据");
@@ -1075,11 +1075,11 @@ public class UserInfoController {
 				String[] heads = { "日期", "合计入金用户", "新入金用户", "新入金用户比例", 
 						"金权交易合计交易用户", "金权交易新交易用户", "金权交易新交易用户比例", "稳赚金合计交易用户",
 						"稳赚金交易用户", "稳赚金新交易用户比例", "存金宝合计交易用户", "存金宝新交易用户",
-						"存金宝新交易用户比例", "新注册用户", "总用户", "总入金用户" };
+						"存金宝新交易用户比例", "新注册用户", "总交易用户", "总用户", "总入金用户" };
 				String[] colums = { "date", "hjrj", "xrj", "xrjbl",
 						"hjjqjy", "xjqjy", "xjqjybl", "hjdqj",
 						"xdqj", "xdqjbl", "hjcjb", "xcjb",
-						"xcjbbl", "xzc", "zzc", "zrj" };
+						"xcjbbl", "xzc", "zjy", "zzc", "zrj" };
 				poi.doExport(request, response, list, tieleName, excelName,
 						heads, colums);
 				log.setUserId(users.getId());
