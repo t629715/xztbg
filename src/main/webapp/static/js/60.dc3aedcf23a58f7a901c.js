@@ -147,6 +147,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     //model 初始数据
@@ -768,6 +769,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "prop": "xzc",
       "label": "新注册用户",
+      "width": "180"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "prop": "zjy",
+      "label": "总交易用户",
       "width": "180"
     }
   }), _vm._v(" "), _c('el-table-column', {

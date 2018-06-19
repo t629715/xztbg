@@ -1,19 +1,19 @@
-webpackJsonp([6],{
+webpackJsonp([10],{
 
-/***/ 576:
+/***/ 572:
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(809)
+__webpack_require__(840)
 
 var Component = __webpack_require__(197)(
   /* script */
-  __webpack_require__(649),
+  __webpack_require__(645),
   /* template */
-  __webpack_require__(737),
+  __webpack_require__(769),
   /* scopeId */
-  "data-v-01190ade",
+  "data-v-48657494",
   /* cssModules */
   null
 )
@@ -23,11 +23,58 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 649:
+/***/ 645:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -122,30 +169,47 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   data() {
     return {
       loading: true,
-      total: {
-        amountSum: "0",
-        rmbAmountSum: "0",
-        profitAndLossSum: "0",
-        saleFeeSum: "0"
-      },
+      stateOptions: [{
+        value: "",
+        label: "全部"
+      }, {
+        value: 0,
+        label: '持仓中'
+      }, {
+        value: 1,
+        label: '已平仓'
+      }],
+      upOrDownOptions: [{
+        value: "",
+        label: "全部"
+      }, {
+        value: 0,
+        label: '买涨'
+      }, {
+        value: 1,
+        label: '买跌'
+      }],
       agentOptions: "",
       brokerOptions: "",
       sform: {
         userName: '',
+        orderNo: '',
         startTime: '',
         endTime: '',
         regStartTime: '',
         regEndTime: '',
+        orderState: '',
         agentName: '',
         brokerName: '',
-        type: '1'
+        isUseCard: '',
+        upOrDown: ''
       },
-      url: "saveGoldRecord/selectByAll",
+      url: "dealOrder/selectByDealOrder",
       agentUrl: "user/selectByAgentMessage",
       brokeUrl: "user/selectByBrokerMessage",
       brokerUrl1: "user/selectByBrokerMessage1",
-      exportUrl: "saveGoldRecord/excelAll",
-      countUrl: "saveGoldRecord/countByAll",
+      exportUrl: "dealOrder/excelDealOrderMessage",
+      countUrl: "dealOrder/selectByDealOrderCount",
       currentPage: 0,
       pagesize: 10,
       pageNum: 1,
@@ -173,11 +237,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       console.log(error);
     });
     //获取统计数据
-    var params = new URLSearchParams();
-    params.append('type', 1);
-    axios.post(this.countUrl, params).then(function (response) {
+    axios.get(this.countUrl).then(function (response) {
       if (response.data.code == 1001) {
-        _this.total = response.data.data;
+        document.getElementById("bzjId").innerText = _this.amountHandle1(response.data.data.enSureAmountSum);
+        document.getElementById("ykId").innerText = "------";
+        //document.getElementById ("ykId").innerText = _this.amountHandle1(response.data.data.profitLossNumberCount);
+        /*document.getElementById ("ykId").innerText = Number(_this.amountHandle1(response.data.data.profitLossNumberCount) - _this.amountHandle1(response.data.data.enSureAmountSumYpc)).toFixed(2);*/
+        //document.getElementById ("ykId").innerText = Number(_this.amountHandle1(response.data.data.profitLossNumberCount) - _this.amountHandle1(response.data.data.enSureAmountSum)).toFixed(2);
+        document.getElementById("jycbId").innerText = _this.amountHandle1(response.data.data.costSum);
       }
     }).catch(function (error) {
       console.log(error);
@@ -215,9 +282,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       params.append('regStartTime', date3);
       params.append('regEndTime', date4);
       params.append('userName', sform.userName);
-      params.append('type', sform.type);
+      params.append('orderNo', sform.orderNo);
+      params.append('orderState', sform.orderState);
       params.append('agentName', sform.agentName);
       params.append('brokerName', sform.brokerName);
+      params.append('isUseCard', this.isNotEmpty(sform.isUseCard) ? Number(sform.isUseCard) : '');
+      params.append('upOrDown', sform.upOrDown);
 
       axios.post(this.url, params).then(function (response) {
         if (response.data.code == 1001) {
@@ -230,6 +300,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           //_this.pagesize = response.data.data.pageSize;
           _this.pageNum = response.data.data.pages;
           _this.totalNum = response.data.data.total;
+          _this.handelData(list);
           _this.tableData = list;
         } else {
           _this.$message({
@@ -242,7 +313,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       //获取统计金额
       axios.post(this.countUrl, params).then(function (response) {
         if (response.data.code == 1001) {
-          _this.total = response.data.data;
+          document.getElementById("bzjId").innerText = _this.amountHandle1(response.data.data.enSureAmountSum);
+          if (_this.sform.orderState == 0) {
+            document.getElementById("ykId").innerText = "------";
+          } else {
+            document.getElementById("ykId").innerText = Number(_this.amountHandle1(response.data.data.profitLossNumberCount) - _this.amountHandle1(response.data.data.enSureAmountSumYpc)).toFixed(2);
+          }
+          //document.getElementById ("ykId").innerText = Number(_this.amountHandle1(response.data.data.profitLossNumberCount) - _this.amountHandle1(response.data.data.enSureAmountSum)).toFixed(2);
+          document.getElementById("jycbId").innerText = _this.amountHandle1(response.data.data.costSum);
         }
       }).catch(function (error) {
         console.log(error);
@@ -278,14 +356,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       params.append('regStartTime', date3);
       params.append('regEndTime', date4);
       params.append('userName', this.sform.userName);
-      params.append('type', this.sform.type);
+      params.append('orderNo', this.sform.orderNo);
+      params.append('orderState', this.sform.orderState);
       params.append('agentName', this.sform.agentName);
       params.append('brokerName', this.sform.brokerName);
+      params.append('isUseCard', this.isNotEmpty(this.sform.isUseCard) ? Number(this.sform.isUseCard) : '');
+      params.append('upOrDown', this.sform.upOrDown);
 
       let _this = this;
       axios.post(this.url, params).then(function (response) {
         if (response.data.code == 1001) {
           var list = response.data.data.list;
+          _this.handelData(list);
           //_this.currentPage = response.data.data.pageNum == 0 ? 1 : response.data.data.pageNum;
           //_this.pagesize = response.data.data.pageSize;
           _this.pageNum = response.data.data.pages;
@@ -293,6 +375,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           _this.tableData = list;
         }
       }).catch(function (error) {});
+    },
+    //数据处理
+    handelData(list) {
+      if (list.length > 0) {
+        for (var i = 0; i < list.length; i++) {
+
+          list[i].buyPreRmb = this.amountHandle1(list[i].buyPreRmb);
+          list[i].buyAfterRmb = this.amountHandle1(list[i].buyAfterRmb);
+          list[i].ensureAmount = this.amountHandle1(list[i].ensureAmount);
+          list[i].voucherValue = this.amountHandle1(list[i].voucherValue);
+          list[i].cost = this.amountHandle1(list[i].cost);
+
+          if (this.isNotEmpty(list[i].profitLossNumber)) {
+            list[i].profitLossNumber = Number(this.amountHandle1(list[i].profitLossNumber) - list[i].ensureAmount).toFixed(2);
+          }
+
+          //买涨：买入+点差；买跌：卖出+点差
+          if (list[i].upOrDown == "0") {
+            if (this.isNotEmpty(list[i].openPositionPrice)) {
+              list[i].openPositionPrice = Number(list[i].openPositionPrice + Number(list[i].pointCount)).toFixed(2);
+            }
+            list[i].upOrDown = '买涨';
+          } else if (list[i].upOrDown == "1") {
+            if (this.isNotEmpty(list[i].closePositionPrice)) {
+              list[i].closePositionPrice = Number(list[i].closePositionPrice + Number(list[i].pointCount)).toFixed(2);
+            }
+            list[i].upOrDown = '买跌';
+          }
+        }
+      }
     },
     //根据代理商取经纪人列表
     getBrokerOptions() {
@@ -310,12 +422,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     resetForm(sform) {
       this.$refs.sform.resetFields();
       let _this = this;
-      var params = new URLSearchParams();
-      params.append('type', 1);
       //获取统计数据
-      axios.post(this.countUrl, params).then(function (response) {
+      axios.get(this.countUrl).then(function (response) {
         if (response.data.code == 1001) {
-          _this.total = response.data.data;
+          document.getElementById("bzjId").innerText = _this.amountHandle1(response.data.data.enSureAmountSum);
+          //document.getElementById ("ykId").innerText = _this.amountHandle1(response.data.data.profitLossNumberCount);
+          /*document.getElementById ("ykId").innerText = Number(_this.amountHandle1(response.data.data.profitLossNumberCount) - _this.amountHandle1(response.data.data.enSureAmountSumYpc)).toFixed(2);*/
+          document.getElementById("ykId").innerText = "------";
+          //document.getElementById ("ykId").innerText = Number(_this.amountHandle1(response.data.data.profitLossNumberCount) - _this.amountHandle1(response.data.data.enSureAmountSum)).toFixed(2);
+          document.getElementById("jycbId").innerText = _this.amountHandle1(response.data.data.costSum);
         }
       }).catch(function (error) {
         console.log(error);
@@ -349,9 +464,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       params.append('regStartTime', date3);
       params.append('regEndTime', date4);
       params.append('userName', sform.userName);
-      params.append('type', sform.type);
+      params.append('orderNo', sform.orderNo);
+      params.append('orderState', sform.orderState);
       params.append('agentName', sform.agentName);
       params.append('brokerName', sform.brokerName);
+      params.append('isUseCard', this.isNotEmpty(sform.isUseCard) ? Number(sform.isUseCard) : '');
+      params.append('upOrDown', sform.upOrDown);
 
       console.info(this.exportUrl + "?" + params);
       window.location = this.exportUrl + "?" + params;
@@ -390,7 +508,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 652:
+/***/ 683:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(136)(false);
@@ -398,14 +516,14 @@ exports = module.exports = __webpack_require__(136)(false);
 
 
 // module
-exports.push([module.i, ".el-row[data-v-01190ade]{margin-bottom:20px;&:last-child{margin-bottom:0}}.el-col[data-v-01190ade]{border-radius:4px}.bg-purple-dark[data-v-01190ade]{background:#99a9bf}.bg-color1[data-v-01190ade]{color:#da542e;border:.5px solid #da542e;background:#f2dede}.bg-color2[data-v-01190ade]{color:#468849;background:#dff0d8;border:.5px solid #468847}.bg-color3[data-v-01190ade]{color:#27a9e3;background:#d9edf7;border:.5px solid #3a87ad}.bg-color4[data-v-01190ade]{color:#c3881f;background:#fcf8e3;border:.5px solid #c3881e}.bg-color5[data-v-01190ade]{background:#d3dce6}.bg-purple-light[data-v-01190ade]{background:#e5e9f2}.gridBox[data-v-01190ade]{padding-left:20px}.grid-content[data-v-01190ade]{height:75px;border-radius:4px;min-height:75px;text-align:center;font-size:14px}.row-bg[data-v-01190ade]{padding:10px 0;background-color:#f9fafc}", ""]);
+exports.push([module.i, ".el-row[data-v-48657494]{margin-bottom:20px;&:last-child{margin-bottom:0}}.el-col[data-v-48657494]{border-radius:4px}.bg-purple-dark[data-v-48657494]{background:#99a9bf}.bg-color1[data-v-48657494]{color:#da542e;border:.5px solid #da542e;background:#f2dede}.bg-color2[data-v-48657494]{color:#468849;background:#dff0d8;border:.5px solid #468847}.bg-color3[data-v-48657494]{color:#27a9e3;background:#d9edf7;border:.5px solid #3a87ad}.bg-color4[data-v-48657494]{color:#c3881f;background:#fcf8e3;border:.5px solid #c3881e}.bg-color5[data-v-48657494]{background:#d3dce6}.bg-purple-light[data-v-48657494]{background:#e5e9f2}.gridBox[data-v-48657494]{padding-left:20px}.grid-content[data-v-48657494]{height:75px;border-radius:4px;min-height:75px;text-align:center;font-size:14px}.row-bg[data-v-48657494]{padding:10px 0;background-color:#f9fafc}", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ 737:
+/***/ 769:
 /***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -441,7 +559,48 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
-      "label": "申请时间：",
+      "label": "交易订单号：",
+      "prop": "orderNo"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "size": "small"
+    },
+    model: {
+      value: (_vm.sform.orderNo),
+      callback: function($$v) {
+        _vm.$set(_vm.sform, "orderNo", $$v)
+      },
+      expression: "sform.orderNo"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "订单状态：",
+      "prop": "orderState"
+    }
+  }, [_c('el-select', {
+    attrs: {
+      "size": "small",
+      "placeholder": "请选择"
+    },
+    model: {
+      value: (_vm.sform.orderState),
+      callback: function($$v) {
+        _vm.$set(_vm.sform, "orderState", $$v)
+      },
+      expression: "sform.orderState"
+    }
+  }, _vm._l((_vm.stateOptions), function(item) {
+    return _c('el-option', {
+      key: item.value,
+      attrs: {
+        "label": item.label,
+        "value": item.value
+      }
+    })
+  }))], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "建仓时间：",
       "prop": "startTime"
     }
   }, [_c('el-col', {
@@ -531,6 +690,31 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })], 1)], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
+      "label": "方向：",
+      "prop": "upOrDown"
+    }
+  }, [_c('el-select', {
+    attrs: {
+      "size": "small",
+      "placeholder": "请选择"
+    },
+    model: {
+      value: (_vm.sform.upOrDown),
+      callback: function($$v) {
+        _vm.$set(_vm.sform, "upOrDown", $$v)
+      },
+      expression: "sform.upOrDown"
+    }
+  }, _vm._l((_vm.upOrDownOptions), function(item) {
+    return _c('el-option', {
+      key: item.value,
+      attrs: {
+        "label": item.label,
+        "value": item.value
+      }
+    })
+  }))], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
       "label": "代理商：",
       "prop": "agentName"
     }
@@ -584,7 +768,37 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "value": item.id
       }
     })
-  }))], 1), _vm._v(" "), _c('el-form-item', [_c('el-button', {
+  }))], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "是否使用卡券：",
+      "prop": "isUseCard",
+      "label-width": "130px"
+    }
+  }, [_c('el-radio', {
+    staticClass: "radio",
+    attrs: {
+      "label": "0"
+    },
+    model: {
+      value: (_vm.sform.isUseCard),
+      callback: function($$v) {
+        _vm.$set(_vm.sform, "isUseCard", $$v)
+      },
+      expression: "sform.isUseCard"
+    }
+  }, [_vm._v("未使用")]), _vm._v(" "), _c('el-radio', {
+    staticClass: "radio",
+    attrs: {
+      "label": "1"
+    },
+    model: {
+      value: (_vm.sform.isUseCard),
+      callback: function($$v) {
+        _vm.$set(_vm.sform, "isUseCard", $$v)
+      },
+      expression: "sform.isUseCard"
+    }
+  }, [_vm._v("使用")])], 1), _vm._v(" "), _c('el-form-item', [_c('el-button', {
     attrs: {
       "size": "small",
       "type": "primary"
@@ -626,7 +840,31 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('div', {
     staticClass: "grid-content bg-color1"
-  }, [_c('p', [_vm._v("黄金买入总计（克）")]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.total.amountSum))])])])], 1), _vm._v(" "), _c('el-table', {
+  }, [_c('p', [_vm._v("保证金总计（元）")]), _vm._v(" "), _c('p', {
+    attrs: {
+      "id": "bzjId"
+    }
+  })])]), _vm._v(" "), _c('el-col', {
+    attrs: {
+      "span": 5
+    }
+  }, [_c('div', {
+    staticClass: "grid-content bg-color2"
+  }, [_c('p', [_vm._v("盈亏总计（元）")]), _vm._v(" "), _c('p', {
+    attrs: {
+      "id": "ykId"
+    }
+  })])]), _vm._v(" "), _c('el-col', {
+    attrs: {
+      "span": 5
+    }
+  }, [_c('div', {
+    staticClass: "grid-content bg-color3"
+  }, [_c('p', [_vm._v("交易成本总计（元）")]), _vm._v(" "), _c('p', {
+    attrs: {
+      "id": "jycbId"
+    }
+  })])])], 1), _vm._v(" "), _c('el-table', {
     staticStyle: {
       "width": "auto",
       "display": "inline-block"
@@ -670,27 +908,93 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
-      "prop": "goldPrice",
-      "label": "买入价",
-      "width": "200"
+      "prop": "orderNo",
+      "label": "交易订单号",
+      "width": "220"
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
-      "prop": "amount",
-      "label": "黄金克重",
+      "prop": "productName",
+      "label": "合约类型",
+      "width": "180"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "prop": "upOrDown",
+      "label": "方向",
       "width": "100"
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
-      "prop": "rmbAmount",
+      "prop": "handNumber",
+      "label": "黄金克数",
+      "width": "100"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "prop": "buyPreRmb",
+      "label": "建仓前余额",
+      "width": "180"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "prop": "buyAfterRmb",
+      "label": "建仓后余额",
+      "width": "180"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "prop": "ensureAmount",
+      "label": "合约金额",
+      "width": "180"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "prop": "ensureAmount",
       "label": "买入金额",
+      "width": "180"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "prop": "voucherValue",
+      "label": "卡券抵扣",
+      "width": "100"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "prop": "cost",
+      "label": "交易成本",
+      "width": "180"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "prop": "openPositionPrice",
+      "label": "买入点数",
+      "width": "100"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "prop": "closePositionPrice",
+      "label": "卖出点数",
       "width": "100"
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
       "prop": "createTime",
-      "label": "买入时间",
+      "label": "建仓时间",
       "width": "180"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "prop": "endTime",
+      "label": "平仓时间",
+      "width": "180"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "prop": "profitLossNumber",
+      "label": "盈亏",
+      "width": "100"
     }
   })], 1), _vm._v(" "), _c('br'), _c('br'), _vm._v(" "), _c('el-pagination', {
     attrs: {
@@ -727,22 +1031,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "href": "javascript:;"
     }
-  }, [_vm._v("黄金交易（买）")])]), _vm._v(" "), _c('h1')])
+  }, [_vm._v("金权交易")])]), _vm._v(" "), _c('h1')])
 }]}
 
 /***/ }),
 
-/***/ 809:
+/***/ 840:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(652);
+var content = __webpack_require__(683);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(198)("5edf325d", content, true);
+var update = __webpack_require__(198)("164e4236", content, true);
 
 /***/ })
 

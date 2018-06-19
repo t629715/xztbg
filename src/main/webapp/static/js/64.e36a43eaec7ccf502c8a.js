@@ -183,6 +183,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     //model 初始数据
@@ -319,10 +325,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         //根据代理商取经纪人列表
         getBrokerOptions() {
             let _this = this;
+            _this.form.brokerName = "";
             var params = new URLSearchParams();
-            params.append('pid', _this.form.agentName);
+            params.append('pid', Number(_this.form.agentName));
             axios.post(_this.brokerUrl, params).then(function (response) {
-                _this.brokerList = response.data.data;
+                _this.brokerOptions = response.data.data;
             }).catch(function (error) {
                 console.log(error);
             });
@@ -708,7 +715,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('div', {
     staticClass: "grid-content bg-color3"
-  }, [_c('p', [_vm._v("稳赚金总计（克）")]), _vm._v(" "), _c('p', [_vm._v(" " + _vm._s(_vm.countList.financeGoldSum))])])])], 1), _vm._v(" "), _c('div', {
+  }, [_c('p', [_vm._v("稳赚金总计（克）")]), _vm._v(" "), _c('p', [_vm._v(" " + _vm._s(_vm.countList.financeGoldSum))])])]), _vm._v(" "), _c('el-col', {
+    attrs: {
+      "span": 5
+    }
+  }, [_c('div', {
+    staticClass: "grid-content bg-color4"
+  }, [_c('p', [_vm._v("单位成本价（元）")]), _vm._v(" "), _c('p', [_vm._v(" " + _vm._s(_vm.countList.cbj))])])])], 1), _vm._v(" "), _c('div', {
     staticClass: "tableBox"
   }, [_c('el-table', {
     attrs: {
