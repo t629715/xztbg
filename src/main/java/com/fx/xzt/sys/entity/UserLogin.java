@@ -10,6 +10,9 @@ public class UserLogin implements Serializable {
     private String password;
 
     private Short status;
+    
+    private Long agentId;
+    private Long brokerId;
 
     private static final long serialVersionUID = 1L;
 
@@ -44,4 +47,21 @@ public class UserLogin implements Serializable {
     public void setStatus(Short status) {
         this.status = status;
     }
+
+	public Long getAgentId() {
+		return agentId;
+	}
+
+	public void setAgentId(Long agentId) {
+		this.agentId = agentId;
+	}
+
+	public Long getBrokerId() {
+		return brokerId;
+	}
+
+	public void setBrokerId(Long brokerId) {
+		this.brokerId = brokerId;
+	}
+    
 }

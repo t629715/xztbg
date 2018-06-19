@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fx.xzt.sys.entity.UserInfo;
+import com.fx.xzt.sys.entity.UserLogin;
 import com.fx.xzt.sys.mapper.UserInfoMapper;
+import com.fx.xzt.sys.mapper.UserLoginMapper;
 import com.fx.xzt.sys.model.UserInfoModel;
 import com.fx.xzt.sys.service.UserInfoService;
 import com.fx.xzt.sys.util.StringUtil;
@@ -27,6 +29,8 @@ import com.github.pagehelper.PageInfo;
 public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserInfoService{
 	@Resource
 	UserInfoMapper userInfoMapper;
+	@Resource
+	UserLoginMapper userLoginMapper;
 	
 	public PageInfo<UserInfoModel> getfindAll(String userName, String realName, String applyTimeStart, String applyTimeEnd, Integer pageNum,
 			Integer pageSize) {
@@ -324,13 +328,25 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 	 * 信息变更 
 	 */
 	public int alertAgentAndBroker(String realName, String idcard, Long userId, Long brokerId,Long agentId) {
-		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("userId",userId);
-		map.put("realName", realName);
-		map.put("idcard", idcard);
-		map.put("brokerId", brokerId);
-		map.put("agentId", agentId);
-		return userInfoMapper.alertAgentAndBroker(map);
+		int flag = 0;
+		if (userId != null) {
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("userId",userId);
+			map.put("realName", realName);
+			map.put("idcard", idcard);
+			map.put("brokerId", brokerId);
+			map.put("agentId", agentId);
+			flag = userInfoMapper.alertAgentAndBroker(map);
+			if (flag > 0 && agentId != null) {
+				UserLogin userLogin = new UserLogin();
+				userLogin.setAgentId(agentId);
+				userLogin.setBrokerId(brokerId);
+				userLogin.setUserid(userId);
+				userLoginMapper.updateByIdSelective(userLogin);
+			}
+		}
+		
+		return flag;
 	}
 
 	/**

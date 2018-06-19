@@ -97,7 +97,7 @@
 
    <update id="updateByIdSelective" parameterType="com.fx.xzt.sys.entity.UserLogin" >
     update User_Login
-    <set >
+    <set>
       <if test="username != null" >
         UserName = #{username,jdbcType=VARCHAR},
       </if>
@@ -106,6 +106,12 @@
       </if>
       <if test="status != null" >
         Status = #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="agentId != null" >
+        agent_id = #{agentId,jdbcType=BIGINT},
+      </if>
+      <if test="brokerId != null" >
+        broker_id = #{brokerId,jdbcType=BIGINT},
       </if>
     </set>
     where UserID = #{userid,jdbcType=BIGINT}
