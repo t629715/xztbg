@@ -323,6 +323,16 @@ public class UserInfoController {
         			for (Map<String, Object> u : list) {
         				String name = ConstantUtil.userStatus.toMap().get(u.get("Status").toString());
         				u.put("Status", name);
+        				
+        				Object RegisterTimeObj = u.get("RegisterTime");
+        				if (RegisterTimeObj != null && RegisterTimeObj != "") {
+        					u.put("RegisterTime", sdf.format(sdf.parse(RegisterTimeObj.toString())));
+        				}
+        				
+        				Object lastlogintimeObj = u.get("lastlogintime");
+        				if (lastlogintimeObj != null && lastlogintimeObj != "") {
+        					u.put("lastlogintime", sdf.format(sdf.parse(lastlogintimeObj.toString())));
+        				}
         			}
         		}
         		POIUtils poi = new POIUtils();
@@ -572,8 +582,8 @@ public class UserInfoController {
 		        }
         		List<Map<String, Object>> list = userInfoService.getExcelAccount(userName,agentsName, brokerName,startTime,endTime, isView);
         		POIUtils poi = new POIUtils();
-        		String[] heads = {"用户账号","昵称","姓名","注册时间","代理商","经纪人","身份证号","银行卡","人民币余额","黄金","定期金","黄金收益","黄金单位成本价"};
-        		String[] colums = {"userName","nickName","RealName","registerTime","agentName","brokerName","idcard","accountNum","rmb","gold","financeGold","totalIncome","averagePrice"};
+        		String[] heads = {"用户账号","昵称","姓名","注册时间","代理商","经纪人","身份证号","银行卡","支付宝","人民币余额","黄金","稳赚金","黄金收益","黄金单位成本价"};
+        		String[] colums = {"userName","nickName","RealName","registerTime","agentName","brokerName","idcard","alipayNumber","accountNum","rmb","gold","financeGold","totalIncome","averagePrice"};
         		poi.doExport(request, response, list, "账户信息", "账户信息", heads, colums);
         		log.setUserId(users.getId());
                 log.setContent("导出成功，共：" + list.size() + "条数据");

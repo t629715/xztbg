@@ -171,7 +171,7 @@
 		parameterType="java.util.Map">
 		SELECT SUM(a.rmb) rmbSum, format(SUM(ga.gold), 3) goldSum, format(SUM(ga.finance_gold), 3) financeGoldSum2,
 		format(SUM(ifnull(wzj.wzj, 0)), 3) financeGoldSum,
-		format(SUM(ga.average_price * ga.gold)/SUM(ga.gold), 0) cbj
+		SUM(ga.average_price * ga.gold)/SUM(ga.gold) cbj
 		FROM User_Login l
 		LEFT JOIN User_Info u ON u.UserID = l.UserID
 		LEFT JOIN user_account a ON l.UserID = a.user_id
