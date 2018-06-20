@@ -360,7 +360,7 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
-		map.put("loginFrom", loginFrom);
+		map.put("registerFrom", loginFrom);
 		map.put("agentName", agentName);
 		PageHelper.startPage(pageNum,pageSize);
 		List<Map<String, Object>> list = userInfoMapper.getByUserAnalysis(map);
@@ -376,7 +376,7 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
-		map.put("loginFrom", loginFrom);
+		map.put("registerFrom", loginFrom);
 		map.put("agentName", agentName);
 		List<Map<String, Object>> list = userInfoMapper.getByUserAnalysis(map);
 		handleUserAnalysis(list);
@@ -431,7 +431,7 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
-		map.put("loginFrom", loginFrom);
+		map.put("registerFrom", loginFrom);
 		map.put("agentName", agentName);
 		List<Map<String, Object>> list = userInfoMapper.getByUserAnalysisCount(map);
 		if (list != null && list.size() > 0) {

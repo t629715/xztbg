@@ -851,7 +851,7 @@ public class UserInfoController {
 	* @param request
 	* @param startTime  开始时间
 	* @param endTime  结束时间
-	* @param loginFrom  登录来源
+	* @param registerFrom  登录来源
 	* @param agentName 代理商id
 	* @param pageNum
 	* @param pageSize
@@ -863,7 +863,7 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/getByUserAnalysis")
 	@ResponseBody
-	public Object getByUserAnalysis(HttpServletRequest request, String type, String startTime, String endTime, String loginFrom, String agentName,
+	public Object getByUserAnalysis(HttpServletRequest request, String type, String startTime, String endTime, String registerFrom, String agentName,
 			 @RequestParam Integer pageNum, @RequestParam Integer pageSize) throws Exception {
 		CommonResponse cr = new CommonResponse();
 		//操作日志
@@ -909,7 +909,7 @@ public class UserInfoController {
             			eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
             		}
             	}
-                PageInfo<Map<String, Object>> pageInfo = userInfoService.getByUserAnalysis(sTime, eTime, loginFrom, agentName, pageNum, pageSize);
+                PageInfo<Map<String, Object>> pageInfo = userInfoService.getByUserAnalysis(sTime, eTime, registerFrom, agentName, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
@@ -940,7 +940,7 @@ public class UserInfoController {
 	* @param request
 	* @param startTime  开始时间
 	* @param endTime  结束时间
-	* @param loginFrom  登录来源
+	* @param registerFrom  登录来源
 	* @param agentName 代理商id
 	* @param
 	* @return    设定文件 
@@ -951,7 +951,7 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/getByUserAnalysisCount")
 	@ResponseBody
-	public Object getByUserAnalysisCount(HttpServletRequest request, String type, String startTime, String endTime, String loginFrom, String agentName) throws Exception {
+	public Object getByUserAnalysisCount(HttpServletRequest request, String type, String startTime, String endTime, String registerFrom, String agentName) throws Exception {
 		CommonResponse cr = new CommonResponse();
 		//操作日志
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -994,7 +994,7 @@ public class UserInfoController {
             			eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
             		}
             	}
-                List<Map<String, Object>> list = userInfoService.getByUserAnalysisCount(sTime, eTime, loginFrom, agentName);
+                List<Map<String, Object>> list = userInfoService.getByUserAnalysisCount(sTime, eTime, registerFrom, agentName);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(list);
                 cr.setMsg("操作成功！");
@@ -1026,7 +1026,7 @@ public class UserInfoController {
 	* @param response
 	* @param startTime  开始时间
 	* @param endTime  结束时间
-	* @param loginFrom 来源
+	* @param registerFrom 来源
 	* @param agentName 代理商id
 	* @throws Exception    设定文件 
 	* @return void    返回类型 
@@ -1036,7 +1036,7 @@ public class UserInfoController {
 	@RequestMapping(value = "/excelByUserAnalysis")
 	@ResponseBody
 	public void excelByUserAnalysis(HttpServletRequest request, HttpServletResponse response, String type, String startTime, String endTime,
-			String loginFrom, String agentName) throws Exception {
+			String registerFrom, String agentName) throws Exception {
 		//操作日志
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         LogRecord log = new LogRecord();
@@ -1080,7 +1080,7 @@ public class UserInfoController {
             			eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
             		}
             	}
-				List<Map<String, Object>> list = userInfoService.excelByUserAnalysis(sTime, eTime, loginFrom, agentName);
+				List<Map<String, Object>> list = userInfoService.excelByUserAnalysis(sTime, eTime, registerFrom, agentName);
 				POIUtils poi = new POIUtils();
 				String[] heads = { "日期", "合计入金用户", "新入金用户", "新入金用户比例", 
 						"金权交易合计交易用户", "金权交易新交易用户", "金权交易新交易用户比例", "稳赚金合计交易用户",
