@@ -129,6 +129,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     //model 初始数据
@@ -583,13 +584,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('div', {
     staticClass: "grid-content bg-purple2"
-  }, [_c('p', [_vm._v("黄金总计（克）")]), _vm._v(" "), _c('p', [_vm._v("  " + _vm._s(_vm.countList.frozenRmbSum))])])]), _vm._v(" "), _c('el-col', {
+  }, [_c('p', [_vm._v("黄金总计（克）")]), _vm._v(" "), _c('p', [_vm._v("  " + _vm._s(_vm.countList.goldSum))])])]), _vm._v(" "), _c('el-col', {
     attrs: {
       "span": 5
     }
   }, [_c('div', {
     staticClass: "grid-content bg-purple3"
-  }, [_c('p', [_vm._v("定期金总计（克）")]), _vm._v(" "), _c('p', [_vm._v("  " + _vm._s(_vm.countList.finaceSum))])])])], 1), _vm._v(" "), _c('div', {
+  }, [_c('p', [_vm._v("稳赚金总计（克）")]), _vm._v(" "), _c('p', [_vm._v("  " + _vm._s(_vm.countList.financeGoldSum))])])])], 1), _vm._v(" "), _c('div', {
     staticClass: "tableBox"
   }, [_c('el-table', {
     attrs: {
@@ -630,18 +631,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
-      "prop": "frozenRmb",
-      "label": "人民币冻结"
-    }
-  }), _vm._v(" "), _c('el-table-column', {
-    attrs: {
-      "prop": "finance",
-      "label": "人民币理财"
-    }
-  }), _vm._v(" "), _c('el-table-column', {
-    attrs: {
       "prop": "gold",
       "label": "黄金"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "prop": "financeGold",
+      "label": "稳赚金"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "prop": "totalIncome",
+      "label": "黄金收益"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "prop": "averagePrice",
+      "label": "黄金成本价"
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {

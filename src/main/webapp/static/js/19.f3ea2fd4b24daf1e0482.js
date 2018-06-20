@@ -221,7 +221,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         /*转换产品类型*/
         convertType(value) {
             if (value.productType == 1) {
-                return "定期金";
+                return "稳赚金";
             } else {
                 return "特价金";
             }

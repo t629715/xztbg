@@ -693,7 +693,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('div', {
     staticClass: "grid-content bg-color1"
-  }, [_c('p', [_vm._v("定期金买入总计（元）")]), _vm._v(" "), _c('p', {
+  }, [_c('p', [_vm._v("稳赚金买入总计（元）")]), _vm._v(" "), _c('p', {
     attrs: {
       "id": "lczjId"
     }
