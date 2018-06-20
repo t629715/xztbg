@@ -214,8 +214,10 @@ public class ConstantUtil {
      */
     public static enum rechargeChannel {
         YL("银联","01"),
-        WX("微信","02"),
-        ZFB("支付宝","03");
+        WXSM("微信扫码","02"),
+        ZFB("支付宝","03"),
+        ZFBSM("支付宝扫码","05"),
+        WX("微信","04");
         private String name;
         private String index;
         private rechargeChannel(String name,String index){
