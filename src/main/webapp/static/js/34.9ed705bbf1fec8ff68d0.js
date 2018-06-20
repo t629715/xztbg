@@ -251,7 +251,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             params.append('regStartTime', date3);
             params.append('regEndTime', date4);
             params.append('userName', this.sform.userName);
-            params.append('status', this.sform.status);
+            params.append('status', 1);
             params.append('agentName', this.sform.agentName);
             params.append('brokerName', this.sform.brokerName);
 
@@ -328,7 +328,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             params.append('regStartTime', date3);
             params.append('regEndTime', date4);
             params.append('userName', this.sform.userName);
-            params.append('status', this.sform.status);
+            params.append('status', 1);
             params.append('agentName', this.sform.agentName);
             params.append('brokerName', this.sform.brokerName);
             axios.get(this.url, { params }).then(function (response) {
@@ -594,31 +594,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })], 1)], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
-      "label": "订单状态：",
-      "prop": "status"
-    }
-  }, [_c('el-select', {
-    attrs: {
-      "size": "small",
-      "placeholder": "请选择"
-    },
-    model: {
-      value: (_vm.sform.status),
-      callback: function($$v) {
-        _vm.$set(_vm.sform, "status", $$v)
-      },
-      expression: "sform.status"
-    }
-  }, _vm._l((_vm.stateOptions), function(item) {
-    return _c('el-option', {
-      key: item.id,
-      attrs: {
-        "label": item.label,
-        "value": item.value
-      }
-    })
-  }))], 1), _vm._v(" "), _c('el-form-item', {
-    attrs: {
       "label": "经纪人：",
       "prop": "brokerName"
     }
@@ -682,7 +657,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('div', {
     staticClass: "grid-content bg-color1"
-  }, [_c('p', [_vm._v("定期金买入总计（元）")]), _vm._v(" "), _c('p', {
+  }, [_c('p', [_vm._v("稳赚金买入总计（元）")]), _vm._v(" "), _c('p', {
     attrs: {
       "id": "lczjId"
     }
