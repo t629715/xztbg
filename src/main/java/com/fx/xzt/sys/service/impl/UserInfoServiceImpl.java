@@ -175,7 +175,6 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 	/**
 	 * 导出账户信息
 	 * @param userName  用户名
-	 * @param  代理商用户名
 	 * @param brokerName 经纪人用户名
 	 * @param startTime  注册开始时间
 	 * @param endTime  注册结束时间
@@ -321,6 +320,10 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		Map map = new HashMap();
 		map.put("userId",userId);
 		map.put("brokerId",brokerId);
+		UserLogin userLogin = new UserLogin();
+		userLogin.setUserid(userId);
+		userLogin.setBrokerId(brokerId);
+		userLoginMapper.updateByIdSelective(userLogin);
 		return userInfoMapper.updateUserInfoBrokerId(map);
 	}
 	

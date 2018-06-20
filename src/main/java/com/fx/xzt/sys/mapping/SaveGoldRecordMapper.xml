@@ -93,6 +93,6 @@
 
 	<!--获取存金宝买入的金额总克重-tianliya-->
     <select id="countBuyGold" resultType="java.lang.Float">
-		select round(SUM(amount),3) goldGram from save_gold_record where type = 1
+		select round(SUM(gold),3) goldGram from user_gold_account
 	</select>
 </mapper>

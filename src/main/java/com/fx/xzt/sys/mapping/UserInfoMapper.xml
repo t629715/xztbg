@@ -591,38 +591,50 @@
 	</update>
 	<!--合作伙伴-获取下级客户信息 tianliya-->
 	<select id="getSubClients" resultType="java.util.Map" parameterType="java.util.Map">
-		SELECT u.UserID AS userId,
+		SELECT CAST(u.UserID AS  CHAR ) AS userId,
 		<if test='isView == "1"'>
 			l.UserName userName,
 		</if>
 		<if test='isView != "1"'>
 			INSERT(l.UserName, 4, 4, '****') userName,
 		</if>
-		l.Status AS
+		u.NickName nickName, u.RealNameAuthStatus realNameAuthStatus, l.Status AS
 		STATUS,u.RealName,u.RegisterTime registerTime,
 		u.agent_id AS agentId, ua.user_name AS agentName, u.broker_id AS brokerId,
 		u1.user_name AS brokerName ,
-		format(a.rmb/100,2) AS rmb,format(a.finance/100,2) AS finance,format(a.frozen_rmb/100,2) AS frozenRmb,format(a.total_income/100,2) AS
+		u.IDCard AS idcard,
+		(SELECT GROUP_CONCAT(AccountNum) FROM User_BankCard where u.UserID = UserID) accountNum,
+		round(a.rmb/100,2) AS rmb,a.finance AS finance,a.frozen_rmb AS frozenRmb,g.total_income AS
 		totalIncome,
-		g.gold as gold
-		FROM User_Info u
-		RIGHT JOIN User_Login l ON u.UserID = l.UserID
+		g.gold as gold, g.finance_gold financeGold2, round(g.average_price/100,2) averagePrice,
+		ifnull(wzj.wzj, 0) financeGold
+		<!--, a.frozen_gold as frozenGold -->
+		FROM User_Login l
+		RIGHT JOIN User_Info u ON u.UserID = l.UserID
 		LEFT JOIN users ua ON u.agent_id = ua.id
 		LEFT JOIN users u1 ON u.broker_id = u1.id
-		LEFT JOIN user_account a ON a.user_id = u.UserID
-		left join user_gold_account g on g.user_id = u.UserID
-			<where>
-				<if test="userName != null and userName != '' ">
-					and l.UserName = #{userName,jdbcType=VARCHAR}
-				</if>
-				<if test="agentName != null and agentName !='' ">
-					and ua.user_name = #{agentName,jdbcType=VARCHAR}
-				</if>
-				<if test="brokerName != null and brokerName !='' ">
-					and u1.id = #{brokerName,jdbcType=VARCHAR}
-				</if>
-			</where>
-			order by RegisterTime DESC
+		LEFT JOIN user_account a ON a.user_id = l.UserID
+		left join user_gold_account g on g.user_id = l.UserID
+		LEFT JOIN (SELECT user_id, format(sum(gram), 3) wzj from finance_regulargold_order where status = 1 GROUP BY user_id) wzj on wzj.user_id = l.UserID
+		<where>
+			<!-- and l.Status = 1  -->
+			<if test="userName != null and userName != '' ">
+				and l.UserName = #{userName,jdbcType=VARCHAR}
+			</if>
+			<if test="agentsName != null and agentsName !='' ">
+				and ua.id = #{agentsName,jdbcType=BIGINT}
+			</if>
+			<if test="brokerName != null and brokerName !='' ">
+				and u1.id = #{brokerName,jdbcType=BIGINT}
+			</if>
+			<if test="startTime !=null and startTime !='' ">
+				and u.RegisterTime &gt;=#{startTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime !=null and endTime != '' ">
+				and u.RegisterTime &lt;#{endTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		order by RegisterTime DESC
 	</select>
 	<!--合作伙伴-获取下级客户信息 tianliya-->
 	<!--根据代理商获取客户信息 -tianliya-->
@@ -636,26 +648,33 @@
 	<!--下级客户-财产信息统计 tianliya-->
 	<select id="getSubClientsAccountCount" resultType="java.util.Map"
 			parameterType="java.util.Map">
-		SELECT format(SUM(rmb)/100,2) rmbSum, format(SUM(finance)/100,2) finaceSum, format(SUM(frozen_rmb),2)
-		frozenRmbSum ,
-		format(SUM(a.total_income)/100,2) AS totalIncomeSum, SUM(gold) goldSum
-		FROM User_Info u
-		RIGHT JOIN User_Login l ON u.UserID = l.UserID
+		SELECT SUM(a.rmb) rmbSum, format(SUM(ga.gold), 3) goldSum, format(SUM(ga.finance_gold), 3) financeGoldSum2,
+		format(SUM(ifnull(wzj.wzj, 0)), 3) financeGoldSum,
+		SUM(ga.average_price * ga.gold)/SUM(ga.gold) cbj
+		FROM User_Login l
+		LEFT JOIN User_Info u ON u.UserID = l.UserID
 		LEFT JOIN user_account a ON l.UserID = a.user_id
 		LEFT JOIN user_gold_account ga ON ga.user_id = l.UserID
 		LEFT JOIN users ua ON u.agent_id = ua.id
 		LEFT JOIN users ub ON u.broker_id = ub.id
+		LEFT JOIN (SELECT user_id, format(sum(gram), 3) wzj from finance_regulargold_order where status = 1 GROUP BY user_id) wzj on wzj.user_id = l.UserID
 		<where>
+			<!-- and l.Status = 1 -->
 			<if test="userName != null and userName != '' ">
 				and l.UserName = #{userName,jdbcType=VARCHAR}
 			</if>
-			<if test="agentName != null and agentName !='' ">
-				and ua.user_name = #{agentName,jdbcType=VARCHAR}
+			<if test="agentsName != null and agentsName !='' ">
+				and ua.id = #{agentsName,jdbcType=BIGINT}
 			</if>
 			<if test="brokerName != null and brokerName !='' ">
-				and ub.id = #{brokerName,jdbcType=VARCHAR}
+				and ub.id = #{brokerName,jdbcType=BIGINT}
 			</if>
-
+			<if test="startTime !=null and startTime !='' ">
+				and u.RegisterTime &gt;=#{startTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime !=null and endTime != '' ">
+				and u.RegisterTime &lt;#{endTime,jdbcType=TIMESTAMP}
+			</if>
 		</where>
 	</select>
 	<!--下级客户-财产信息 tianliya-->

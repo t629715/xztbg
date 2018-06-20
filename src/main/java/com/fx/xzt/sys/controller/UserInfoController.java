@@ -705,8 +705,8 @@ public class UserInfoController {
 	        }
 			List<Map<String, Object>> list = userInfoService.getExcelSubClientsAccount(userName,agentName, brokerName, isView);
 			POIUtils poi = new POIUtils();
-			String[] heads = {"用户账号","代理商","经纪人","人民币余额","人民币冻结","人民币理财","利息","黄金"};
-			String[] colums = {"userName","agentName","brokerName","rmb","frozenRmb","finance","totalIncome","gold"};
+			String[] heads = {"用户账号","代理商","经纪人","人民币余额","黄金","稳赚金","黄金收益","黄金成本价"};
+			String[] colums = {"userName","agentName","brokerName","rmb","gold","financeGold","totalIncome","averagePrice"};
 			poi.doExport(request, response, list, "账户信息", "账户信息", heads, colums);
 		}
 
