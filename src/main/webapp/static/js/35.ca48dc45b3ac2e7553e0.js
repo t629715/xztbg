@@ -292,7 +292,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (form.operator != '') {
                 operator = form.operator;
             }
-            params.append('pageSize', 10);
+            params.append('pageSize', _this.pageSize);
             params.append('pageNum', 1);
             params.append('title', title);
             params.append('startTime', datetime1);
@@ -301,10 +301,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             params.append('operator', operator);
             axios.post(this.url, params).then(function (response) {
                 _this.tableData = response.data.data.list;
+                _this.currentPage = 1;
+                //_this.pagesize = response.data.data.pageSize;
+                _this.pageNum = response.data.data.pages;
+                _this.totalNum = response.data.data.total;
             }).catch(function (error) {});
         },
         //清空表单
-        resetForm() {
+        resetForm1() {
+            this.loadData(this.pageSize, 1);
             this.$refs.form.resetFields();
         },
         jdState(value) {
@@ -315,12 +320,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         //刷新表格方法
         loadData(pageSize, pageNum) {
             var params = new URLSearchParams();
+            let _this = this;
+            var datetime1 = '',
+                datetime2 = "",
+                title = "",
+                state = "",
+                operator = "";
+            if (_this.form.title == undefined) {
+                title = "";
+            } else {
+                title = _this.form.title;
+            }
+            if (_this.form.date1 != "") {
+                datetime1 = Date.parse(_this.form.date1);
+            }
+            if (_this.form.date2 != '') {
+                datetime2 = Date.parse(_this.form.date2);
+            }
+            if (_this.form.state !== '') {
+                state = _this.form.state;
+            }
+            if (_this.form.operator != '') {
+                operator = _this.form.operator;
+            }
             params.append('pageSize', pageSize);
             params.append('pageNum', pageNum);
-            let _this = this;
+            params.append('title', title);
+            params.append('startTime', datetime1);
+            params.append('endTime', datetime2);
+            params.append('state', state);
+            params.append('operator', operator);
             axios.post(this.url, params).then(function (response) {
-                _this.currentPage = response.data.data.pageNum;
-                _this.pageSize = response.data.data.pageSize;
+                _this.currentPage = 1;
+                //_this.pagesize = response.data.data.pageSize;
                 _this.pageNum = response.data.data.pages;
                 _this.totalNum = response.data.data.total;
                 _this.tableData = response.data.data.list;
@@ -491,10 +523,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         //当前页改变是执行
         handleCurrentChange(val) {
+            this.pageNum = val;
             this.loadData(this.pageSize, val);
         },
         //页数size 改变时执行
         handleSizeChange(val) {
+            this.pageSize = val;
             this.loadData(val, 1);
         }
     }
@@ -666,7 +700,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     on: {
       "click": function($event) {
-        _vm.resetForm(_vm.form)
+        _vm.resetForm1(_vm.form)
       }
     }
   }, [_vm._v("清除")])], 1), _vm._v(" "), _c('el-form-item', [_c('el-button', {

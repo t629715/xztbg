@@ -112,8 +112,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         validateCode() {
             var ipAddress = document.location.hostname;
             var port = document.location.port;
-            var yzmUrl = "http://127.0.0.1:18080/login/captcha?" + Math.random();
-            var yzmUrl = 'http://' + ipAddress + ':18080/login/captcha?' + Math.random();
+            // var yzmUrl = "http://127.0.0.1:18080/login/captcha?"+ Math.random();
+            // var yzmUrl = 'http://'+ipAddress+':18080/login/captcha?'+ Math.random();
             var yzmUrl = 'http://' + ipAddress + ':' + port + '/login/captcha?' + Math.random();
 
             this.pathAndName = yzmUrl;

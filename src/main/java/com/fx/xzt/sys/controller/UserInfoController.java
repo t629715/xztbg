@@ -1,5 +1,7 @@
 package com.fx.xzt.sys.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -364,9 +366,10 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/selectByRealNameAuth")
 	@ResponseBody
-	public Object selectByRealNameAuth(HttpServletRequest request, String userName, String realName, String applyTimeStart, String applyTimeEnd, @RequestParam Integer pageNum, @RequestParam Integer pageSize) throws ParseException{
+	public Object selectByRealNameAuth(HttpServletRequest request, String userName, String realName, String applyTimeStart, String applyTimeEnd, @RequestParam Integer pageNum, @RequestParam Integer pageSize) throws ParseException, UnsupportedEncodingException {
 		CommonResponse cr = new CommonResponse();
 		//操作日志
+
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         LogRecord log = new LogRecord();
         log.setTitle("实名认证查询");
@@ -391,7 +394,9 @@ public class UserInfoController {
 		         if (role != null && role.get("roleIsView") != null) {
 		              isView = role.get("roleIsView").toString();
 		          }
-            	
+            	if (realName != null && realName != ""){
+		         	realName = URLDecoder.decode(realName, "utf-8").trim();
+				}
             	PageInfo<Map<String, Object>> pageInfo = userInfoService.getByRealNameAuth(userName, realName, applyTimeStart, applyTimeEnd, isView, pageNum, pageSize);
             	List<Map<String, Object>> list = pageInfo.getList();
     			/*if (list != null && list.size() > 0) {
@@ -440,7 +445,7 @@ public class UserInfoController {
 	@RequestMapping(value="/selectByRealNameAuthApprove")
 	@ResponseBody
 	public Object selectByRealNameAuthApprove(HttpServletRequest request, String userName, String realName, String state, 
-			String applyTimeStart, String applyTimeEnd, @RequestParam Integer pageNum, @RequestParam Integer pageSize) throws ParseException{
+			String applyTimeStart, String applyTimeEnd, @RequestParam Integer pageNum, @RequestParam Integer pageSize) throws ParseException, UnsupportedEncodingException {
 		CommonResponse cr = new CommonResponse();
 		//操作日志
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -467,7 +472,9 @@ public class UserInfoController {
 		         if (role != null && role.get("roleIsView") != null) {
 		              isView = role.get("roleIsView").toString();
 		          }
-            	
+				if (realName != null && realName != ""){
+					realName = URLDecoder.decode(realName, "utf-8").trim();
+				}
             	PageInfo<Map<String, Object>> pageInfo = userInfoService.getByRealNameAuthApprove(userName, realName, state, applyTimeStart, applyTimeEnd, isView, pageNum, pageSize);
             	List<Map<String, Object>> list = pageInfo.getList();
     			if (list != null && list.size() > 0) {

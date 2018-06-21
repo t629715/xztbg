@@ -42,7 +42,7 @@ public class InfoNoticeServiceImpl extends BaseService<InfoNotice> implements In
 		return infoNoticeMapper.deleteById(serialNo);
 	}
 
-	public PageInfo<InfoNotice> getInfoNoticeAll(String title, String startTime, String endTime, String operator,
+	public PageInfo<Map<String, Object>> getInfoNoticeAll(String title, String startTime, String endTime, String operator,
 			Integer pageNum, Integer pageSize) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		if (startTime != null && startTime != ""){
@@ -61,7 +61,7 @@ public class InfoNoticeServiceImpl extends BaseService<InfoNotice> implements In
 		map.put("endTime", endTime);
 		map.put("operator", operator);
 		PageHelper.startPage(pageNum,pageSize);
-		return new PageInfo<InfoNotice>(infoNoticeMapper.getInfoNoticeAll(map));
+		return new PageInfo<Map<String, Object>>(infoNoticeMapper.getInfoNoticeAll(map));
 	}
 
 	public InfoNotice getBySerialNo(Long serialNo) {

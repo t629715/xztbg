@@ -25,10 +25,13 @@
         from Info_Notice
         where SerialNo = #{serialNo,jdbcType=BIGINT}
     </select>
-    <select id="getInfoNoticeAll" resultMap="BaseResultMap" parameterType="map" >
-        select 
-        <include refid="Base_Column_List" />
-        from Info_Notice
+    <select id="getInfoNoticeAll" resultType="java.util.Map" parameterType="map" >
+        select
+        ig.SerialNo seriaNo, ig.Title title, ig.Content content, ig.AppID appID, ig.SkipPath skipPath,
+        ig.SkipType skipType, ig.SortNo sortNo, ig.Valid valid,
+        ig.CreateTime createTime, ig.ModifyTime modifyTime,
+        ig.Operator operator,IF( ISNULL(ip.id),FALSE,TRUE) isSetPush
+        from Info_Notice ig left join info_push ip on ig.Title = ip.title
         <where>
         	<if test="title != null and title !='' ">
 	    	and Title like concat(concat('%',#{title,jdbcType=VARCHAR}),'%')

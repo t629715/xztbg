@@ -275,6 +275,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             let _this = this;
             axios.post(this.url, params).then(function (response) {
                 _this.tableData = response.data.data;
+                _this.currentPage = 1;
+                //_this.pagesize = response.data.data.pageSize;
+                _this.pageNum = response.data.data.pages;
+                _this.totalNum = response.data.data.total;
             }).catch(function (error) {});
         },
 

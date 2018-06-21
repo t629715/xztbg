@@ -67,6 +67,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   //model 初始数据
@@ -302,7 +303,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("支付宝")]), _vm._v(" "), _c('el-checkbox', {
     attrs: {
-      "label": "2",
+      "label": "4",
       "name": "payWays"
     }
   }, [_vm._v("微信扫码")]), _vm._v(" "), _c('el-checkbox', {
@@ -312,7 +313,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("银联")]), _vm._v(" "), _c('el-checkbox', {
     attrs: {
-      "label": "4",
+      "label": "2",
       "name": "payWays"
     }
   }, [_vm._v("微信")])], 1)], 1)], 1), _vm._v(" "), _c('div', {

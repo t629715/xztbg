@@ -239,6 +239,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             editUrl: "infoNotice/edit",
             deleteUrl: "infoNotice/delete",
             operatorListUrl: "infoNotice/getOperators",
+            setInfoPush: "infoPush/addPushInfo",
             currentPage: 0,
             pageSize: 10,
             pageNum: 1,
@@ -309,9 +310,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     message: '查询成功',
                     type: 'success'
                 });
-                _this.currentPage = response.data.pageNum;
-                _this.pageSize = response.data.pageSize;
-                _this.pageNum = response.data.pages;
+                _this.totalPage = response.data.pages;
                 _this.totalNum = response.data.total;
                 _this.tableData = response.data.list;
             }).catch(function (error) {});
@@ -319,6 +318,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         //清空表单
         resetForm() {
             this.$refs.form.resetFields();
+            this.loadData(this.pageSize, 1);
         },
         resetForm1(formName) {
             this.$refs[formName].resetFields();
@@ -329,7 +329,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.row = row;
         },
         // 设为首页推送
-        pushToFirstPage(index, row) {},
+        pushToFirstPage(index, row) {
+            let _this = this;
+            var params = new URLSearchParams();
+            params.append("title", row.title);
+            params.append("content", row.contentPath);
+            axios.post(this.setInfoPush, params).then(function (res) {
+                if (res.data.code == 1001 || res.data.code == 1000) {
+                    _this.loadData(_this.pageSize, _this.pageNum);
+                    _this.$message({
+                        message: '设置成功',
+                        type: 'success'
+                    });
+                } else if (res.data.code == 1004) {
+                    _this.$message({
+                        message: '登录过期请登录',
+                        type: 'warning'
+                    });
+                    _this.$router.push('/login');
+                }
+            }).catch(function () {
+                _this.$message({
+                    message: '网络异常',
+                    type: 'error'
+                });
+            });
+        },
+        jdSet(row) {
+            if (row.isSetPush == 0) {
+                return false;
+            }return true;
+        },
         jdState(value) {
             if (value.state == 1) return "已发布";
             if (value.state == 0) return "已创建";
@@ -337,14 +367,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         //刷新表格方法
         loadData(pageSize, pageNum) {
+            let _this = this;
             var params = new URLSearchParams();
+            var datetime1 = '',
+                datetime2 = "",
+                title = "",
+                operator = "";
+            if (_this.form.title == undefined) {
+                title = "";
+            } else {
+                title = _this.form.title;
+            }
+            if (_this.form.date1 != "") {
+                datetime1 = Date.parse(_this.form.date1);
+            }
+            if (_this.form.date2 != '') {
+                datetime2 = Date.parse(_this.form.date2);
+            }
+            if (_this.form.operator != '') {
+                operator = _this.form.operator;
+            }
             params.append('pageSize', pageSize);
             params.append('pageNum', pageNum);
-            let _this = this;
+            params.append('title', title);
+            params.append('startTime', datetime1);
+            params.append('endTime', datetime2);
+            params.append('operator', operator);
             axios.post(this.url, params).then(function (response) {
-                _this.currentPage = response.data.pageNum;
-                _this.pageSize = response.data.pageSize;
-                _this.pageNum = response.data.pages;
+                _this.totalPage = response.data.pages;
                 _this.totalNum = response.data.total;
                 _this.tableData = response.data.list;
             }).catch(function (error) {});
@@ -480,10 +530,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         //当前页改变是执行
         handleCurrentChange(val) {
+            this.pageNum = val;
             this.loadData(this.pageSize, val);
         },
         //页数size 改变时执行
         handleSizeChange(val) {
+            this.pageSize = val;
             this.loadData(val, 1);
         }
     }
@@ -715,7 +767,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           }
         }, [_vm._v("删除")]), _vm._v(" "), _c('el-button', {
           attrs: {
-            "size": "small"
+            "size": "small",
+            "disabled": _vm.jdSet(scope.row)
           },
           on: {
             "click": function($event) {

@@ -13,7 +13,7 @@ public interface InfoNoticeService extends IService<InfoNotice>{
 
 	int deleteById(Long serialNo);
 
-	PageInfo<InfoNotice> getInfoNoticeAll(String title,String startTime,String endTime,String operator, Integer pageNum, Integer pageSize);
+	PageInfo<Map<String, Object>> getInfoNoticeAll(String title,String startTime,String endTime,String operator, Integer pageNum, Integer pageSize);
 
 	InfoNotice getBySerialNo(Long serialNo);
 	

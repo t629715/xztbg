@@ -430,17 +430,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
               _vm.dialogForModify(scope.row)
             }
           }
-        }, [_vm._v("编辑\n                        ")]), _vm._v(" "), _c('el-button', {
-          attrs: {
-            "size": "small",
-            "type": "danger"
-          },
-          on: {
-            "click": function($event) {
-              _vm.dialogForDelete(scope.row)
-            }
-          }
-        }, [_vm._v("删除\n                        ")])]
+        }, [_vm._v("编辑\n                        ")])]
       }
     }])
   })], 1), _vm._v(" "), _c('el-dialog', {
