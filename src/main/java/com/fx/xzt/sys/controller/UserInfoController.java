@@ -670,7 +670,9 @@ public class UserInfoController {
 			Users users = (Users) httpSession.getAttribute("currentUser");
 			Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
 			if (users != null){
-				agentsName = users.getUserName();
+                if (!"admin".equals(users.getUserName())){
+                    agentsName = users.getId()+"";
+                }
 				String isView = "0";
 		        if (role != null && role.get("roleIsView") != null) {
 		            isView = role.get("roleIsView").toString();
@@ -705,7 +707,9 @@ public class UserInfoController {
 		Users users = (Users) httpSession.getAttribute("currentUser");
 		Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
 		if (users != null){
-			agentName = users.getUserName();
+            if (!"admin".equals(users.getUserName())){
+                agentName = users.getId()+"";
+            }
 			String isView = "0";
 	        if (role != null && role.get("roleIsView") != null) {
 	            isView = role.get("roleIsView").toString();
@@ -745,8 +749,13 @@ public class UserInfoController {
 			HttpSession httpSession = request.getSession();
 			Users users = (Users) httpSession.getAttribute("currentUser");
 			if (users != null){
-				agentName = users.getUserName();
+
+			    if (!"admin".equals(users.getUserName())){
+                    agentName = users.getId()+"";
+                }
+
 				Map<String,Object> map = new HashMap<String,Object>();
+
 				map = userInfoService.getSubClientsAccountCount(userName,agentName, brokerName);
 				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 				cr.setData(map);

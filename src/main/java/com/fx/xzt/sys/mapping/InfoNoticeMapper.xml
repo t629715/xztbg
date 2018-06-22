@@ -34,16 +34,16 @@
         from Info_Notice ig left join info_push ip on ig.Title = ip.title
         <where>
         	<if test="title != null and title !='' ">
-	    	and Title like concat(concat('%',#{title,jdbcType=VARCHAR}),'%')
+	    	and ig.Title like concat(concat('%',#{title,jdbcType=VARCHAR}),'%')
 		    </if>
 		    <if test="startTime !=null and startTime !='' ">
-				and CreateTime &gt;=#{startTime,jdbcType=TIMESTAMP}
+				and ig.CreateTime &gt;=#{startTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="endTime !=null and endTime !='' ">
-				and CreateTime &lt;=#{endTime,jdbcType=TIMESTAMP}
+				and ig.CreateTime &lt;=#{endTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="operator != null and operator !='' ">
-				and Operator = #{operator,jdbcType=VARCHAR}
+				and ig.Operator = #{operator,jdbcType=VARCHAR}
 			</if>
         </where>
         order by CreateTime desc

@@ -17,19 +17,19 @@
     from info_xioude ix left join info_push ip on ix.title = ip.title
     <where>
       <if test="title != null and title !='' ">
-        and title like concat(concat('%',#{title,jdbcType=VARCHAR}),'%')
+        and ix.title like concat(concat('%',#{title,jdbcType=VARCHAR}),'%')
       </if>
       <if test="startTime !=null and startTime !='' ">
-        and releasetime &gt;=#{startTime,jdbcType=TIMESTAMP}
+        and ix.releasetime &gt;=#{startTime,jdbcType=TIMESTAMP}
       </if>
       <if test="endTime !=null and endTime !='' ">
-        and releasetime &lt;=#{endTime,jdbcType=TIMESTAMP}
+        and ix.releasetime &lt;=#{endTime,jdbcType=TIMESTAMP}
       </if>
       <if test="state != null">
-        and state = #{state,jdbcType=SMALLINT}
+        and ix.state = #{state,jdbcType=SMALLINT}
       </if>
       <if test="operator != null and operator !='' ">
-        and operator = #{operator,jdbcType=VARCHAR}
+        and ix.operator = #{operator,jdbcType=VARCHAR}
       </if>
     </where>
     order by createtime desc

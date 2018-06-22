@@ -48,13 +48,13 @@ public class InfoNoticeServiceImpl extends BaseService<InfoNotice> implements In
 		if (startTime != null && startTime != ""){
 			Date startDate = null;
 			startDate = DateUtil.convertTimeMillisToDate(Long.parseLong(startTime));
-			startTime = DateUtils.formatDateByMidLine1(startDate);
+			startTime = DateUtils.formatDateByMidLine(startDate);
 		}
 
 		if (endTime != null && endTime != ""){
 			Date endDate = null;
 			endDate = DateUtil.convertTimeMillisToDate(Long.parseLong(endTime));
-			endTime = DateUtils.formatDateByMidLine1(endDate);
+			endTime = DateUtils.formatDateByMidLine(endDate);
 		}
 		map.put("title", title);
 		map.put("startTime", startTime);

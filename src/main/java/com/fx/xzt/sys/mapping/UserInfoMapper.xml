@@ -621,8 +621,8 @@
 			<if test="userName != null and userName != '' ">
 				and l.UserName = #{userName,jdbcType=VARCHAR}
 			</if>
-			<if test="agentsName != null and agentsName !='' ">
-				and ua.id = #{agentsName,jdbcType=BIGINT}
+			<if test="agentName != null and agentName !='' ">
+				and ua.id = #{agentName,jdbcType=BIGINT}
 			</if>
 			<if test="brokerName != null and brokerName !='' ">
 				and u1.id = #{brokerName,jdbcType=BIGINT}
@@ -663,7 +663,7 @@
 			<if test="userName != null and userName != '' ">
 				and l.UserName = #{userName,jdbcType=VARCHAR}
 			</if>
-			<if test="agentsName != null and agentsName !='' ">
+			<if test="agentName != null and agentName !='' ">
 				and ua.id = #{agentsName,jdbcType=BIGINT}
 			</if>
 			<if test="brokerName != null and brokerName !='' ">
