@@ -105,7 +105,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
               } else {
                 str += "支付宝";
               }
-            } else if (list[i].payWays[j].payWay == 2) {
+            } else if (list[i].payWays[j].payWay == 4) {
               if (str != "") {
                 str += "，微信扫码";
               } else {
@@ -117,7 +117,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
               } else {
                 str += "银联";
               }
-            } else if (list[i].payWays[j].payWay == 4) {
+            } else if (list[i].payWays[j].payWay == 2) {
               if (str != "") {
                 str += "，微信";
               } else {
