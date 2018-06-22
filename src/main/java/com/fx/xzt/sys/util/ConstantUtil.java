@@ -214,8 +214,10 @@ public class ConstantUtil {
      */
     public static enum rechargeChannel {
         YL("银联","01"),
-        WX("微信","02"),
-        ZFB("支付宝","03");
+        WXSM("微信扫码","02"),
+        ZFB("支付宝","03"),
+        WX("微信","04"),
+        ZFBSM("支付宝扫码","05");
         private String name;
         private String index;
         private rechargeChannel(String name,String index){
@@ -509,11 +511,18 @@ public class ConstantUtil {
         XSLC("新手理财","40"),
         BZHTJ("标准户统计","41"),
         TJYHMX("推荐用户明细","42"),
-        DQJGL("定期金管理","43"),
-        SJTZGL("实金投资管理","44"),
-        CJBGL("存金宝管理","45"),
+        DQJGL("稳赚金管理","43"),
+        SJTZGL("金条订单","44"),
+        HJJYS("黄金交易（卖）","45"),
         RGCZ("人工充值","46"),
-        DQJJY("定期金交易","47");
+        DQJJY("稳赚金交易","47"),
+        SCTSZX("删除推送资讯","49"),
+        TJTSZX("添加推送资讯","50"),
+        CXTSZX("查询推送资讯","51"),
+        HJJYB("黄金交易（买）","48"),
+        XTCS("系统参数","52"),
+        XTCD("系统菜单","53"),
+        HDKZ("活动查询","54");
 
 
         private String name;
@@ -652,6 +661,125 @@ public class ConstantUtil {
         	acceptPrize[] ds = acceptPrize.values();
             Map<String, String> rlt = new Hashtable<String, String>();
             for (acceptPrize d : ds) {
+                rlt.put(d.index, d.name);
+            }
+            return rlt;
+        }
+    }
+    
+    /**
+     * 
+    * @ClassName: payType 
+    * @Description: 金条订单-提取类型
+    * @author htt
+    * @date 2018-5-25 下午2:29:26 
+    *
+     */
+    public static enum payType {
+        SJTQ("实金提取","1"),
+        SJDH("实金兑换","2");
+        private String name;
+        private String index;
+        private payType(String name,String index){
+            this.name = name;
+            this.index = index;
+        }
+        public String toString() {
+            return this.index;
+        }
+        public static Map<String, String> toMap() {
+        	payType[] ds = payType.values();
+            Map<String, String> rlt = new Hashtable<String, String>();
+            for (payType d : ds) {
+                rlt.put(d.index, d.name);
+            }
+            return rlt;
+        }
+    }
+    
+    /**
+     * 
+    * @ClassName: inVestGoldOrderStatus 
+    * @Description: 今条订单状态
+    * @author htt
+    * @date 2018-5-28 下午4:09:02 
+    *
+     */
+    public static enum inVestGoldOrderStatus {
+        WZF("未支付","0"),
+        WFH("未发货","10"),
+        YFH("已发货","20"),
+        YWC("已完成","30"),
+        YQX("已取消","40"),
+        YGB("已关闭","50");
+        private String name;
+        private String index;
+        private inVestGoldOrderStatus(String name,String index){
+            this.name = name;
+            this.index = index;
+        }
+        public String toString() {
+            return this.index;
+        }
+        public static Map<String, String> toMap() {
+        	inVestGoldOrderStatus[] ds = inVestGoldOrderStatus.values();
+            Map<String, String> rlt = new Hashtable<String, String>();
+            for (inVestGoldOrderStatus d : ds) {
+                rlt.put(d.index, d.name);
+            }
+            return rlt;
+        }
+    }
+    
+    /**
+     * 
+    * @ClassName: saveGoldRecordType 
+    * @Description: 存金记录类型
+    * @author htt
+    * @date 2018-5-29 下午3:26:43 
+    *
+     */
+    public static enum saveGoldRecordType {
+        B("买黄金","1"),
+        S("卖黄金","4");
+        private String name;
+        private String index;
+        private saveGoldRecordType(String name,String index){
+            this.name = name;
+            this.index = index;
+        }
+        public String toString() {
+            return this.index;
+        }
+        public static Map<String, String> toMap() {
+        	saveGoldRecordType[] ds = saveGoldRecordType.values();
+            Map<String, String> rlt = new Hashtable<String, String>();
+            for (saveGoldRecordType d : ds) {
+                rlt.put(d.index, d.name);
+            }
+            return rlt;
+        }
+    }
+    
+    /**
+     * 系统参数缓存数据区域
+     */
+    public static enum cacheRegion {
+    	Local("Local(map)","0"),
+    	Remote("Remote(redis)","1");
+        private String name;
+        private String index;
+        private cacheRegion(String name,String index){
+            this.name = name;
+            this.index = index;
+        }
+        public String toString() {
+            return this.index;
+        }
+        public static Map<String, String> toMap() {
+        	cacheRegion[] ds = cacheRegion.values();
+            Map<String, String> rlt = new Hashtable<String, String>();
+            for (cacheRegion d : ds) {
                 rlt.put(d.index, d.name);
             }
             return rlt;

@@ -49,7 +49,7 @@ public class FinanceRegulargoldOrderController {
 
 
     /**
-     * 定期金交易查询
+     * 稳赚金交易查询
      *
      * @param userName     用户名
      * @param orderNo      订单号
@@ -69,7 +69,7 @@ public class FinanceRegulargoldOrderController {
         CommonResponse cr = new CommonResponse();
         //操作日志
         LogRecord log = new LogRecord();
-        log.setTitle("定期金交易查询");
+        log.setTitle("稳赚金交易查询");
         log.setContent("查询失败");
         log.setModuleName(ConstantUtil.logRecordModule.DQJJY.getName());
         log.setType(ConstantUtil.logRecordType.CX.getIndex());
@@ -80,6 +80,7 @@ public class FinanceRegulargoldOrderController {
             Users users = (Users) httpSession.getAttribute("currentUser");
             Map<String, Object> role = (Map<String, Object>) httpSession.getAttribute("currentUserRole");
             if (users != null) {
+                log.setUserId(users.getId());
                 String isView = "1";
                 if (role != null && role.get("roleIsView") != null) {
                     isView = role.get("roleIsView").toString();
@@ -93,7 +94,7 @@ public class FinanceRegulargoldOrderController {
                 }
                 cr = financeRegulargoldOrderService.getAllByConditions(userName, orderNo, startTime, endTime, regStartTime, regEndTime,
                         redeemStartTime, redeemEndTime, buyType, agentName, brokerName, status, isView, pageNum, pageSize);
-                log.setUserId(users.getId());
+
                 log.setContent("查询成功");
             } else {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
@@ -109,7 +110,7 @@ public class FinanceRegulargoldOrderController {
         return cr;
     }
     /**
-     * 定期金买入统计
+     * 稳赚金买入统计
      *
      * @param userName     用户名
      * @param orderNo      订单号
@@ -129,7 +130,7 @@ public class FinanceRegulargoldOrderController {
         CommonResponse cr = new CommonResponse();
         //操作日志
         LogRecord log = new LogRecord();
-        log.setTitle("定期金买入统计");
+        log.setTitle("稳赚金买入统计");
         log.setContent("统计失败");
         log.setModuleName(ConstantUtil.logRecordModule.DQJJY.getName());
         log.setType(ConstantUtil.logRecordType.CX.getIndex());
@@ -140,6 +141,7 @@ public class FinanceRegulargoldOrderController {
             Users users = (Users) httpSession.getAttribute("currentUser");
             Map<String, Object> role = (Map<String, Object>) httpSession.getAttribute("currentUserRole");
             if (users != null) {
+                log.setUserId(users.getId());
                 String isView = "1";
                 if (role != null && role.get("roleIsView") != null) {
                     isView = role.get("roleIsView").toString();
@@ -153,7 +155,7 @@ public class FinanceRegulargoldOrderController {
                 }
                 cr = financeRegulargoldOrderService.getTotalAmountBuy(userName, orderNo, startTime, endTime, regStartTime, regEndTime,
                         redeemStartTime, redeemEndTime, buyType, agentName, brokerName, status, isView, pageNum, pageSize);
-                log.setUserId(users.getId());
+
                 log.setContent("统计成功");
             } else {
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
@@ -180,15 +182,16 @@ public class FinanceRegulargoldOrderController {
      * @param agentName    代理商用户名
      * @param brokerName   经纪人用户名
      * @param status       订单状态 1：持有中；2：已赎回
+     * @param type 1交易管理-稳赚金交易 2：出入金管理-稳赚金交易计算  3：合作伙伴-交易结算-稳赚金交易结算
      */
     @RequestMapping(value = "/exportFinanceOrder")
     @ResponseBody
     public void excelFinanceOrder(HttpServletRequest request, HttpServletResponse response, String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime,
-                                  String redeemStartTime, String redeemEndTime, String agentName, String brokerName, Integer status, String buyType, Integer pageNum, Integer pageSize) throws ParseException, GlobalException {
+                                  String redeemStartTime, String redeemEndTime, String agentName, String brokerName, Integer status, String buyType, Integer pageNum, Integer pageSize,Integer type) throws ParseException, GlobalException {
         //操作日志
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         LogRecord log = new LogRecord();
-        log.setTitle("定期金交易导出");
+        log.setTitle("稳赚金交易导出");
         log.setContent("导出失败");
         log.setModuleName(ConstantUtil.logRecordModule.LCJY.getName());
         log.setType(ConstantUtil.logRecordType.DC.getIndex());
@@ -218,25 +221,44 @@ public class FinanceRegulargoldOrderController {
                 POIUtils poi = new POIUtils();
                 //理财产品交易导出
                 // if (type != null && type > 0 && type == ConstantUtil.FINANCE_TYPE_LCCP ) {
-                tieleName = "定期金交易";
-                excelName = "定期金交易";
+                tieleName = "稳赚金交易";
+                excelName = "稳赚金交易";
                 //判断是否为代理商账户
                 if (users.getPid() != null && users.getPid() == 1) {
-                    String[] heads = {"用户账号", "注册时间", "代理商", "经纪人", "交易订单号", "产品编号", "产品名称", "周期", "收益率", "买入价", "买入克重", "买入金额",
-                            "买入时间", "赎回时间", "状态", "收益", "交易分成"};
-                    String[] colums = {"userName", "registerTime", "agentName", "brokerName", "orderNo", "productNo", "productName", "productCycle", "productYearIncomPercent",
-                            "initialPrice", "gram", "buyAmount", "buyTime", "redeemTime", "status", "incomeGram", "shareAmount"};
-                    poi.doExport(request, response, list, tieleName, excelName, heads, colums);
+                    //type=1交易管理-稳赚金交易 2：出入金管理-稳赚金交易计算  3：合作伙伴-交易结算-稳赚金交易结算
+                    if (type == 1 || type ==3){
+                        String[] heads = {"用户账号", "注册时间", "代理商", "经纪人", "产品编号", "产品名称", "周期", "收益率", "买入来源","买入价", "买入克重", "买入金额",
+                                "买入时间", "赎回时间", "状态", "收益", "交易分成","到期总克重"};
+                        String[] colums = {"userName", "registerTime", "agentName", "brokerName",  "productNo", "productName", "productCycle", "productYearIncomPercent",
+                                "buyType","buyPrice", "gram", "buyAmount", "buyTime", "expireTime", "status", "incomeGram", "shareAmount","backTotalGram"};
+                        poi.doExport(request, response, list, tieleName, excelName, heads, colums);
+                    }else if (type == 2){
+                        String[] heads = {"用户账号", "注册时间", "代理商", "经纪人", "产品编号", "产品名称", "周期", "收益率", "买入来源","买入价", "买入克重", "买入金额",
+                                "买入时间", "赎回时间", "收益", "交易分成","到期总克重"};
+                        String[] colums = {"userName", "registerTime", "agentName", "brokerName",  "productNo", "productName", "productCycle", "productYearIncomPercent",
+                                "buyType","buyPrice", "gram", "buyAmount", "buyTime", "expireTime", "incomeGram", "shareAmount","backTotalGram"};
+                        poi.doExport(request, response, list, tieleName, excelName, heads, colums);
+                    }
+
                 } else if (users.getPid() == null || users.getPid() == 0) {
                     if (status != null && status == 2) {
-                        tieleName = "定期金交易";
-                        excelName = "定期金交易";
+                        tieleName = "稳赚金交易";
+                        excelName = "稳赚金交易";
                     }
-                    String[] heads = {"用户账号", "注册时间", "代理商", "经纪人", "交易订单号", "产品编号", "产品名称", "周期", "收益率", "买入价", "买入克重", "买入金额",
-                            "买入时间", "赎回时间", "状态", "收益"};
-                    String[] colums = {"userName", "registerTime", "agentName", "brokerName", "orderNo", "productNo", "productName", "productCycle", "productYearIncomPercent",
-                            "initialPrice", "gram", "buyAmount", "buyTime", "redeemTime", "status", "incomeGram"};
-                    poi.doExport(request, response, list, tieleName, excelName, heads, colums);
+                    if (type == 1 || type ==3){
+                        String[] heads = {"用户账号", "注册时间", "代理商", "经纪人",  "产品编号", "产品名称", "周期", "收益率","买入来源", "买入价", "买入克重", "买入金额",
+                                "买入时间", "赎回时间", "状态", "收益","到期总克重"};
+                        String[] colums = {"userName", "registerTime", "agentName", "brokerName",  "productNo", "productName", "productCycle", "productYearIncomPercent",
+                                "buyType","buyPrice", "gram", "buyAmount", "buyTime", "expireTime", "status", "incomeGram","backTotalGram"};
+                        poi.doExport(request, response, list, tieleName, excelName, heads, colums);
+                    }else if (type ==2){
+                        String[] heads = {"用户账号", "注册时间", "代理商", "经纪人",  "产品编号", "产品名称", "周期", "收益率", "买入来源", "买入价", "买入克重", "买入金额",
+                                "买入时间", "赎回时间",  "收益","到期总克重"};
+                        String[] colums = {"userName", "registerTime", "agentName", "brokerName",  "productNo", "productName", "productCycle", "productYearIncomPercent",
+                                "buyType","buyPrice", "gram", "buyAmount", "buyTime", "expireTime", "incomeGram","backTotalGram"};
+                        poi.doExport(request, response, list, tieleName, excelName, heads, colums);
+                    }
+
                 }
                 log.setUserId(users.getId());
                 log.setContent("导出成功，共：" + list.size() + "条数据");

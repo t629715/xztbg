@@ -1,5 +1,6 @@
 package com.fx.xzt.sys.service.impl;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,6 +29,7 @@ import com.fx.xzt.sys.model.UserRechargeModel;
 import com.fx.xzt.sys.service.UserRechargeService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.Constant;
+import com.fx.xzt.sys.util.ConstantUtil;
 import com.fx.xzt.sys.util.RechargeChannelEnum;
 import com.fx.xzt.sys.util.RechargeStatus;
 import com.fx.xzt.util.IdUtil;
@@ -98,11 +100,12 @@ public class UserRechargeServiceImpl extends BaseService<UserRecharge> implement
 
 	/**
 	 * 现金充值记录查询
+	 * @throws ParseException 
 	 */
 	public PageInfo<Map<String, Object>> selectByRecharge(String userName,
 			String startTime, String endTime, String agentName,
 			String brokerName, String rechargechannel, Integer status, String isView ,
-			Integer pageNum, Integer pageSize) {
+			Integer pageNum, Integer pageSize) throws ParseException {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("startTime", startTime);
@@ -114,16 +117,18 @@ public class UserRechargeServiceImpl extends BaseService<UserRecharge> implement
         map.put("isView", isView);
         PageHelper.startPage(pageNum,pageSize);
         List<Map<String, Object>> list = userRechargeMapper.selectByRecharge(map);
+        handleRecharge(list);
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
         return pagehelper;
 	}
 
 	/**
 	 * 现金充值记录导出
+	 * @throws ParseException 
 	 */
 	public List<Map<String, Object>> excelRecharge(String userName,
 			String startTime, String endTime, String agentName,
-			String brokerName, String rechargechannel, Integer status, String isView ) {
+			String brokerName, String rechargechannel, Integer status, String isView ) throws ParseException {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("startTime", startTime);
@@ -134,7 +139,43 @@ public class UserRechargeServiceImpl extends BaseService<UserRecharge> implement
         map.put("status", status);
         map.put("isView", isView);
         List<Map<String, Object>> list = userRechargeMapper.selectByRecharge(map);
+        handleRecharge(list);
         return list;
+	}
+	
+	/**
+	 * 
+	* @Title: handleRecharge 
+	* @Description: 现金充值记录数据处理
+	* @param list
+	* @throws ParseException    设定文件 
+	* @return void    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	public void handleRecharge(List<Map<String, Object>> list) throws ParseException {
+		if (list != null && list.size() > 0) {
+			for (Map<String, Object> map : list) {
+				Object RMBAmtObj = map.get("RMBAmt");
+				if (RMBAmtObj != null && RMBAmtObj != "") {
+					Double RMBAmt = Double.valueOf(RMBAmtObj.toString());
+					map.put("RMBAmt", RMBAmt/100);
+				}
+				Object RechargeTimeObj = map.get("RechargeTime");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+       		 	if (RechargeTimeObj != null && RechargeTimeObj != "") {
+       		 		map.put("RechargeTime", sdf.format(sdf.parse(RechargeTimeObj.toString())));
+                }
+       		 	Object StatusObj = map.get("Status");
+       		 	if (StatusObj != null && StatusObj != "") {
+       		 		map.put("Status", ConstantUtil.rechargeStatus.toMap().get(map.get("Status").toString()));
+       		 	}
+       		 	Object RechargeChannelObj = map.get("RechargeChannel");
+    		 	if (RechargeChannelObj != null && RechargeChannelObj != "") {
+    		 		map.put("RechargeChannel", ConstantUtil.rechargeChannel.toMap().get(map.get("RechargeChannel").toString()));
+    		 	}
+			}
+		}
 	}
 
 	/**
@@ -151,7 +192,15 @@ public class UserRechargeServiceImpl extends BaseService<UserRecharge> implement
         map.put("brokerName", brokerName);
         map.put("rechargechannel", rechargechannel);
         map.put("status", status);
-        return userRechargeMapper.selectByRechargeCount(map);
+        Map<String, Object> map1 = userRechargeMapper.selectByRechargeCount(map);
+        if (map1 != null && map1.size() > 0) {
+        	Object rmbAmtSumObj = map1.get("rmbAmtSum");
+			if (rmbAmtSumObj != null && rmbAmtSumObj != "") {
+				Double rmbAmtSum = Double.valueOf(rmbAmtSumObj.toString());
+				map1.put("rmbAmtSum", rmbAmtSum/100);
+			}
+        }
+        return map1;
 	}
 
 	/**

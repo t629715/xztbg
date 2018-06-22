@@ -42,26 +42,26 @@ public class InfoNoticeServiceImpl extends BaseService<InfoNotice> implements In
 		return infoNoticeMapper.deleteById(serialNo);
 	}
 
-	public PageInfo<InfoNotice> getInfoNoticeAll(String title, String startTime, String endTime, String operator,
+	public PageInfo<Map<String, Object>> getInfoNoticeAll(String title, String startTime, String endTime, String operator,
 			Integer pageNum, Integer pageSize) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		if (startTime != null && startTime != ""){
 			Date startDate = null;
 			startDate = DateUtil.convertTimeMillisToDate(Long.parseLong(startTime));
-			startTime = DateUtils.formatDateByMidLine1(startDate);
+			startTime = DateUtils.formatDateByMidLine(startDate);
 		}
 
 		if (endTime != null && endTime != ""){
 			Date endDate = null;
 			endDate = DateUtil.convertTimeMillisToDate(Long.parseLong(endTime));
-			endTime = DateUtils.formatDateByMidLine1(endDate);
+			endTime = DateUtils.formatDateByMidLine(endDate);
 		}
 		map.put("title", title);
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
 		map.put("operator", operator);
 		PageHelper.startPage(pageNum,pageSize);
-		return new PageInfo<InfoNotice>(infoNoticeMapper.getInfoNoticeAll(map));
+		return new PageInfo<Map<String, Object>>(infoNoticeMapper.getInfoNoticeAll(map));
 	}
 
 	public InfoNotice getBySerialNo(Long serialNo) {

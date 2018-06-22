@@ -41,6 +41,7 @@ public class InOutGoldServiceImpl extends BaseService<InOutGold> implements InOu
         map.put("isView", isView);
         PageHelper.startPage(pageNum,pageSize);
         List<Map<String, Object>> list = inOutGoldMapper.selectByInOutGold(map);
+        handelInOutGold(list);
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
         return pagehelper;
 	}
@@ -56,7 +57,44 @@ public class InOutGoldServiceImpl extends BaseService<InOutGold> implements InOu
         map.put("brokerName", brokerName);
         map.put("isView", isView);
         List<Map<String, Object>> list = inOutGoldMapper.selectByInOutGold(map);
+        handelInOutGold(list);
         return list;
+	}
+	
+	/**
+	 * 
+	* @Title: handelInOutGold 
+	* @Description: 出入金数据处理
+	* @param list    设定文件 
+	* @return void    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	public void handelInOutGold (List<Map<String, Object>> list) {
+		if (list != null && list.size() > 0) {
+			for (Map<String, Object> map : list) {
+				Object rmbObj = map.get("rmb");
+				if (rmbObj != null && rmbObj != "") {
+					Double rmb = Double.valueOf(rmbObj.toString());
+					map.put("rmb", rmb/100);
+				}
+				Object rjObj = map.get("rj");
+				if (rjObj != null && rjObj != "") {
+					Double rj = Double.valueOf(rjObj.toString());
+					map.put("rj", rj/100);
+				}
+				Object cjObj = map.get("cj");
+				if (cjObj != null && cjObj != "") {
+					Double cj = Double.valueOf(cjObj.toString());
+					map.put("cj", cj/100);
+				}
+				Object jrjObj = map.get("jrj");
+				if (jrjObj != null && jrjObj != "") {
+					Double jrj = Double.valueOf(jrjObj.toString());
+					map.put("jrj", jrj/100);
+				}
+            }
+		}
 	}
 
 	/**

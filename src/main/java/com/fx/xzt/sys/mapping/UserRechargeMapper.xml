@@ -33,16 +33,15 @@
 		r.RMBAmt, r.RechargeTime,
 		r.RechargeChannel, r.PlatformName,
 		r.MerchantOrderNum, r.Status,
-		i.agent_id AS agentId, ua.user_name AS agentName, i.broker_id AS
-		brokerId,
-		ub.user_name AS brokerName
+		i.agent_id AS agentId, ua.user_name AS agentName, i.broker_id AS brokerId, ub.user_name AS brokerName,
+		i.RealName realName
 		FROM User_Recharge r
 		LEFT JOIN User_Login u ON r.UserID = u.UserID
 		LEFT JOIN User_Info i ON r.UserID = i.UserID
 		LEFT JOIN users ua ON r.agent_id = ua.id
 		LEFT JOIN users ub ON r.broker_id = ub.id
 		<where>
-			 and r.Status = 1
+			 <!-- and r.Status = 1  -->
 			<if test="userName != null and userName != '' ">
 				and r.userName = #{userName,jdbcType=VARCHAR}
 			</if>
@@ -79,7 +78,7 @@
 		LEFT JOIN users ua ON r.agent_id = ua.id
 		LEFT JOIN users ub ON r.broker_id = ub.id
 		<where>
-			 and r.Status = 1
+			 <!-- and r.Status = 1  -->
 			<if test="userName != null and userName != '' ">
 				and r.userName = #{userName,jdbcType=VARCHAR}
 			</if>

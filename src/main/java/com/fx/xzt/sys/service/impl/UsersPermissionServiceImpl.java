@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fx.xzt.sys.entity.UsersPermission;
 import com.fx.xzt.sys.mapper.UsersPermissionMapper;
@@ -184,6 +185,7 @@ public class UsersPermissionServiceImpl extends BaseService<UsersPermission> imp
             	perMap.put("id", p.getId());
             	//perMap.put("index", StringUtil.isNotEmpty(p.getSref()) ? p.getSref() : p.getId() + "");
             	perMap.put("index", p.getSref() != null ? p.getSref() : p.getId() + "");
+            	perMap.put("sref", p.getSref() != null ? p.getSref() : p.getId() + "");
             	perMap.put("title", StringUtil.convertNullToEmpty(p.getText()));
             	handleMenu(perMap, data);
                 list.add(perMap);
@@ -193,6 +195,33 @@ public class UsersPermissionServiceImpl extends BaseService<UsersPermission> imp
         	map.put("subs", list);
         }
     }
+
+	/**
+	 * @CreateBy：tianliya
+	 * @CreateTime：2018/6/12 12:25
+	 * @Description：处理二级菜单
+	 * @param map
+	 * @param data
+	 */
+	public void handleMenu1(Map<String,Object> map, List<UsersPermission> data) {
+		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+		for (UsersPermission p : data) {
+			if (p.getPid().equals(map.get("id"))) {
+				Map<String,Object> perMap = new HashMap<String,Object>();
+				perMap.put("icon", StringUtil.convertNullToEmpty(p.getIcon()));
+				perMap.put("pid", p.getPid());
+				perMap.put("id", p.getId());
+				//perMap.put("index", StringUtil.isNotEmpty(p.getSref()) ? p.getSref() : p.getId() + "");
+				perMap.put("sref", p.getSref() != null ? p.getSref() :  "");
+				perMap.put("title", StringUtil.convertNullToEmpty(p.getText()));
+				handleMenu(perMap, data);
+				list.add(perMap);
+			}
+		}
+		if (list != null && list.size() > 0) {
+			map.put("subs", list);
+		}
+	}
 	
 	/**
 	 * 
@@ -216,6 +245,23 @@ public class UsersPermissionServiceImpl extends BaseService<UsersPermission> imp
 	}
 
 	/**
+	 * @CreateBy：tianliya
+	 * @CreateTime：2018/6/12 12:27
+	 * @Description：获取全部菜单
+	 * @return
+	 */
+	public Map<String, Object> getByUsersPermissionAllNew1() {
+		List<UsersPermission> data = usersPermissionMapper.getByRidsAll();
+		Map<String,Object> permission = new HashMap<String,Object>();
+		permission.put("icon", "");
+		permission.put("pid", -1);
+		permission.put("id", 0);
+		permission.put("title", "象智投后台");
+		handleMenu1(permission, data);
+		return permission;
+	}
+
+	/**
 	 * 根据用户角色获取菜单
 	 */
 	public Map<String, Object> getByUsersPermission(List<Integer> rids) {
@@ -233,5 +279,80 @@ public class UsersPermissionServiceImpl extends BaseService<UsersPermission> imp
 		handleMenu(permission, data);
 		return permission;
 	}
+
+	/**
+	 * 新增
+	 */
+	@Transactional
+	public int insert(String text, String icon, String label, String translate,
+			String pid, String type, String sref) {
+		int flag = 0;
+		if (StringUtil.isNotEmpty(text)) {
+			UsersPermission permission = new UsersPermission();
+			permission.setText(text);
+			permission.setIcon(icon);
+			permission.setLabel(label);
+			permission.setTranslate(translate);
+			if (StringUtil.isNotEmpty(pid)) {
+				permission.setPid(Integer.valueOf(pid));
+			}
+			if (StringUtil.isNotEmpty(type)) {
+				permission.setType(Integer.valueOf(type));
+			}
+			permission.setSref(sref);
+			flag = usersPermissionMapper.insertSelective(permission);
+		}
+		return flag;
+	}
+
+	/**
+	 * 修改
+	 */
+	@Transactional
+	public int update(String text, String icon, String label, String translate,
+			String pid, String type, String sref, String id) {
+		int flag = 0;
+		if (StringUtil.isNotEmpty(id)) {
+			UsersPermission permission = new UsersPermission();
+			permission.setId(Integer.valueOf(id));
+			permission.setText(text);
+			permission.setIcon(icon);
+			permission.setLabel(label);
+			permission.setTranslate(translate);
+			if (StringUtil.isNotEmpty(pid)) {
+				permission.setPid(Integer.valueOf(pid));
+			}
+			if (StringUtil.isNotEmpty(type)) {
+				permission.setType(Integer.valueOf(type));
+			}
+			permission.setSref(sref);
+			flag = usersPermissionMapper.updateByIdSelective(permission);
+		}
+		return flag;
+	}
+	
+	/**
+	 * 
+	* @Title: deleteById 
+	* @Description: 删除
+	* @param id
+	* @return    设定文件 
+	* @return int    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	@Transactional
+	public int deleteById(String id) {
+		int flag = 0;
+		if (StringUtil.isNotEmpty(id)) {
+			flag = usersPermissionMapper.deleteById(Integer.valueOf(id));
+			if (flag > 0) {
+				usersPermissionMapper.deleteByPid(Integer.valueOf(id));
+			}
+		}
+		return flag;
+	}
+	
+	
 
 }

@@ -46,8 +46,9 @@ public interface UserInfoService extends IService<UserInfo> {
     /**
      * 账户信息列表
      * @param isView 
+     * @throws ParseException 
      */
-    PageInfo<Map<String, Object>> getByAccountMessage(String userName, String agentsName, String brokerName, String startTime, String endTime, String isView, Integer pageNum, Integer pageSize);
+    PageInfo<Map<String, Object>> getByAccountMessage(String userName, String agentsName, String brokerName, String startTime, String endTime, String isView, Integer pageNum, Integer pageSize) throws ParseException;
 
     /**
      * 实名认证
@@ -73,8 +74,9 @@ public interface UserInfoService extends IService<UserInfo> {
      * @param endTime  注册结束时间
      * @param isView 
      * @return
+     * @throws ParseException 
      */
-    List<Map<String, Object>> getExcelAccount(String userName, String agentName, String brokerName, String startTime, String endTime, String isView);
+    List<Map<String, Object>> getExcelAccount(String userName, String agentName, String brokerName, String startTime, String endTime, String isView) throws ParseException;
 
     /**
      * 获取账户信息列表金额黄金统计
@@ -118,7 +120,7 @@ public interface UserInfoService extends IService<UserInfo> {
      * @return
      */
     int changeBroker(Long userId, Long brokerId);
-    int alertAgentAndBroker(Long userId, Long brokerId,Long agent);
+    int alertAgentAndBroker(String realName, String idcard, Long userId, Long brokerId,Long agent);
     
     /**
      * 

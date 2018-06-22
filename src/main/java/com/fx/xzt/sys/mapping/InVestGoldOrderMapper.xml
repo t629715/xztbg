@@ -4,8 +4,108 @@
 
     <!--金条投资订单开始-htt-->
     <select id="selectByAll" resultType="java.util.Map" parameterType="java.util.Map">
-      select 1 from dual;
+    select 
+    	<if test='isView == "1"'>
+			u.UserName userName,
+	    </if>
+	    <if test='isView != "1"'>
+			INSERT(u.UserName, 4, 4, '****') userName,
+	    </if>
+		cast(o.id as CHAR) id, cast(o.user_id as CHAR) userId, o.invest_gold_id investGoldId, o.invest_gold_name investGoldName, o.invest_gold_weight investGoldWeight, 
+		o.invest_gold_service investGoldService, o.logistics_fee logisticsFee, o.logistics_no logisticsNo, o.gold_num goldNum,
+		o.gold_total_weight goldTotalWeight, o.pay_type payType, o.gold_base_price goldBasePrice, 
+		o.total_money totalMoney, o.gold_money goldMoney, o.service_money serviceMoney, o.img_url imgUrl, 
+		o.status, o.create_time createTime, o.send_time sendTime, o.update_time updateTime, o.pay_time payTime,
+		o.agent_id AS agentId, ua.user_name AS agentName, o.broker_id AS brokerId, ub.user_name AS brokerName, 
+		a.contact_name contactName, a.contact_phone contactPhone, a.delivery_address deliveryAddress
+	from invest_gold_order o
+	LEFT JOIN User_Login u ON o.user_id = u.UserID
+	LEFT JOIN user_address a on o.user_address_id = a.id
+    LEFT JOIN users ua ON o.agent_id = ua.id 
+    LEFT JOIN users ub ON o.broker_id = ub.id
+    <where>
+    	and o.status != 0
+    	<if test="userName != null and userName != '' ">
+	    	and u.UserName = #{userName,jdbcType=VARCHAR}
+	    </if>
+	    <if test="startTime !=null and startTime !='' ">
+	    	and o.create_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+	    </if>
+	    <if test="endTime !=null and endTime != '' ">
+	    	and o.create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+	    </if>
+	    <if test="status != null">
+	    	and o.status = #{status,jdbcType=INTEGER}
+	    </if>
+	    <if test="payType != null">
+	    	and o.pay_type = #{payType,jdbcType=INTEGER}
+	    </if>
+	    <if test="agentName != null and agentName !='' ">
+	    	and ua.id = #{agentName,jdbcType=BIGINT}
+	    </if>
+	    <if test="brokerName != null and brokerName !='' ">
+	    	and ub.id = #{brokerName,jdbcType=BIGINT}
+	    </if>
+    </where>
+    
+    order by o.create_time DESC
     </select>
     <!--金条投资订单结束-htt-->
+    
+    <!--金条投资订单统计开始-htt-->
+    <select id="countByAll" resultType="java.util.Map" parameterType="java.util.Map">
+    select 
+    	sum(o.logistics_fee) logisticsFeeSum, sum(o.service_money) serviceMoneySum, sum(o.gold_total_weight) goldNumSum
+	from invest_gold_order o
+	LEFT JOIN User_Login u ON o.user_id = u.UserID
+    LEFT JOIN users ua ON o.agent_id = ua.id 
+    LEFT JOIN users ub ON o.broker_id = ub.id
+    <where>
+    	and o.status != 0
+    	<if test="userName != null and userName != '' ">
+	    	and u.UserName = #{userName,jdbcType=VARCHAR}
+	    </if>
+	    <if test="startTime !=null and startTime !='' ">
+	    	and o.create_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+	    </if>
+	    <if test="endTime !=null and endTime != '' ">
+	    	and o.create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+	    </if>
+	    <if test="status != null">
+	    	and o.status = #{status,jdbcType=INTEGER}
+	    </if>
+	    <if test="payType != null">
+	    	and o.pay_type = #{payType,jdbcType=INTEGER}
+	    </if>
+	    <if test="agentName != null and agentName !='' ">
+	    	and ua.id = #{agentName,jdbcType=BIGINT}
+	    </if>
+	    <if test="brokerName != null and brokerName !='' ">
+	    	and ub.id = #{brokerName,jdbcType=BIGINT}
+	    </if>
+    </where>
+    </select>
+    <!--金条投资订单统计结束-htt-->
+    
+    <!-- 金条投资订单修改开始-htt -->
+	<update id="updateById" parameterType="com.fx.xzt.sys.entity.InVestGoldOrder">
+    	update invest_gold_order
+    	<set>
+	        <if test="sendTime != null">
+	        	send_time = #{sendTime,jdbcType=TIMESTAMP},
+	        </if>
+	        <if test="status != null and status !=''">
+	        	status = #{status,jdbcType=SMALLINT},
+	        </if>
+	        <if test="logisticsNo != null and logisticsNo !=''">
+	        	logistics_no = #{logisticsNo,jdbcType=VARCHAR},
+	        </if>
+	        <if test="updateTime != null and updateTime !=''">
+	        	update_time = #{updateTime,jdbcType=TIMESTAMP},
+	        </if>
+    	</set>
+    	where id = #{id,jdbcType=BIGINT}
+  </update>
+	<!-- 金条投资订单修改结束-htt -->
     
 </mapper>

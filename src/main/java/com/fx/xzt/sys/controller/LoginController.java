@@ -12,35 +12,32 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import com.alibaba.druid.sql.visitor.functions.Char;
-import com.fx.xzt.redis.RedisService;
-import com.fx.xzt.sys.util.CommonResponse;
-import com.fx.xzt.sys.util.ConstantUtil;
-import com.fx.xzt.sys.util.StringUtil;
-import com.fx.xzt.util.CaptchaUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import tk.mybatis.mapper.entity.Example;
+
+import com.fx.xzt.redis.RedisService;
 import com.fx.xzt.shiro.MyAuthenticationToken;
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.service.UsersService;
+import com.fx.xzt.sys.util.CommonResponse;
+import com.fx.xzt.sys.util.ConstantUtil;
+import com.fx.xzt.sys.util.StringUtil;
+import com.fx.xzt.util.CaptchaUtil;
 import com.fx.xzt.util.LoggerUtils;
 import com.fx.xzt.util.MD5Utils;
 import com.fx.xzt.util.OSCache;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-
-import tk.mybatis.mapper.entity.Example;
 
 /**
  * 

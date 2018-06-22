@@ -164,29 +164,12 @@ public class UserRechargeController {
 		        }
                 String agentNameStr = agentName;
                 List<Map<String, Object>> list = userRechargeService.excelRecharge(userName, startTime, endTime, agentNameStr, brokerName, rechargechannel, status, isView);
-                if (list != null && list.size() > 0) {
-                    for (Map<String, Object> map : list) {
-                    	Object RMBAmtObj =  map.get("RMBAmt");
-                    	Object RechargeTimeObj = map.get("RechargeTime");
-                    	
-               		 	if (RechargeTimeObj != null && RechargeTimeObj != "") {
-               		 		map.put("RechargeTime", sdf.format(sdf.parse(RechargeTimeObj.toString())));
-                        }
-                    	
-                    	if (RMBAmtObj != null && RMBAmtObj != "") {
-                        	Double RMBAmt = Double.valueOf(RMBAmtObj.toString());
-                        	map.put("RMBAmt", RMBAmt/100);
-                        }
-                        map.put("Status", ConstantUtil.rechargeStatus.toMap().get(map.get("Status").toString()));
-                        map.put("RechargeChannel", ConstantUtil.rechargeChannel.toMap().get(map.get("RechargeChannel").toString()));
-                    }
-                    POIUtils poi = new POIUtils();
-                    String[] heads = {"用户账号", "充值金额", "代理商", "经纪人", "充值渠道", "充值时间"};
-                    String[] colums = {"UserName", "RMBAmt", "agentName", "brokerName","RechargeChannel", "RechargeTime"};
-                    poi.doExport(request, response, list, tieleName, excelName, heads, colums);
-                    log.setUserId(users.getId());
-                    log.setContent("导出成功，共：" + list.size() + "条数据");
-                }
+                POIUtils poi = new POIUtils();
+                String[] heads = {"用户账号", "用户姓名", "代理商", "经纪人", "充值金额", "商户订单号", "充值渠道", "充值时间"};
+                String[] colums = {"UserName", "realName", "agentName", "brokerName", "RMBAmt", "MerchantOrderNum", "RechargeChannel", "RechargeTime"};
+                poi.doExport(request, response, list, tieleName, excelName, heads, colums);
+                log.setUserId(users.getId());
+                log.setContent("导出成功，共：" + list.size() + "条数据");
             }
         } catch (Exception e) {
             throw e;

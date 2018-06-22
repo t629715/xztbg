@@ -1,24 +1,18 @@
 package com.fx.xzt.sys.controller;
 
 import com.fx.xzt.exception.GlobalException;
-import com.fx.xzt.redis.RedisService;
-import com.fx.xzt.sys.entity.FinanceConfNewplayer;
-import com.fx.xzt.sys.entity.FinanceConfRegulargold;
+import com.fx.xzt.sys.entity.FinanceRegulargoldProduct;
 import com.fx.xzt.sys.entity.LogRecord;
 import com.fx.xzt.sys.entity.Users;
-import com.fx.xzt.sys.service.FinanceConfNewplayerService;
 import com.fx.xzt.sys.service.FinanceConfRegulargoldService;
-import com.fx.xzt.sys.service.FinanceConfService;
 import com.fx.xzt.sys.service.LogRecordService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
 import com.fx.xzt.sys.util.IPUtil;
 import com.fx.xzt.sys.util.log.AuditLog;
-import com.github.pagehelper.PageInfo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,7 +22,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -54,7 +47,7 @@ public class FinanceConfRegulargoldController {
     /**
      * @CreateBy：tianliya
      * @CreateTime：2018/4/17 13:55
-     * @Description：获取所有的定期产品信息
+     * @Description：获取所有的稳赚金信息
      * @param request
      * @param pageNum
      * @param pageSize
@@ -105,7 +98,7 @@ public class FinanceConfRegulargoldController {
      */
     @RequestMapping(value = "/removeById",method=RequestMethod.POST)
     @ResponseBody
-    public Object removeById(HttpServletRequest request, Long id) throws ParseException, GlobalException {
+    public Object removeById(HttpServletRequest request, String id) throws ParseException, GlobalException {
         logger.debug("删除定期金理财产品");
         CommonResponse response = new CommonResponse();
         //操作日志
@@ -147,7 +140,7 @@ public class FinanceConfRegulargoldController {
      */
     @RequestMapping(value = "/modifySelective",method=RequestMethod.POST)
     @ResponseBody
-    public Object modifySelective(HttpServletRequest request, FinanceConfRegulargold financeConfRegulargold) throws ParseException, GlobalException {
+    public Object modifySelective(HttpServletRequest request, FinanceRegulargoldProduct financeConfRegulargold) throws ParseException, GlobalException {
         logger.debug("获取修改定期金理财产品");
         CommonResponse response = new CommonResponse();
         //操作日志

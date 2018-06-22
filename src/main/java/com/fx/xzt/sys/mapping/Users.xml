@@ -221,14 +221,16 @@
     <select id="selectByAgentMessage" resultType="java.util.Map">
       SELECT CAST(id as CHAR) id,user_name agentName
       FROM users
-      WHERE STATUS=1 AND pid=1 ORDER  by user_name
+      WHERE 
+      <!-- STATUS=1 AND  -->
+      pid=1 ORDER  by user_name
     </select>
     <!--获取代理商列表结束-->
     <!--获取经纪人列表开始-->
     <select id="selectByBrokerMessage" resultType="java.util.Map" parameterType="java.util.Map">
         SELECT CAST(id as CHAR) id,user_name brokerName,CAST(pid as CHAR) pid,phone,create_time createTime FROM users
         <where>
-            status = 1
+            <!-- status = 1-->
             <if test="pid != null and pid!='' ">
                 and pid = #{pid,jdbcType=BIGINT}
             </if>

@@ -1,7 +1,7 @@
 package com.fx.xzt.sys.service;
 
 import com.fx.xzt.exception.GlobalException;
-import com.fx.xzt.sys.entity.FinanceConfRegulargold;
+import com.fx.xzt.sys.entity.FinanceRegulargoldProduct;
 import com.fx.xzt.sys.util.CommonResponse;
 
 /**
@@ -17,7 +17,7 @@ public interface FinanceConfRegulargoldService  {
      * @param confRegulargold
      * @return
      */
-    CommonResponse addOne(FinanceConfRegulargold confRegulargold) throws GlobalException;
+    CommonResponse addOne(FinanceRegulargoldProduct confRegulargold) throws GlobalException;
 
     /**
      * @CreateBy：tianliya
@@ -35,7 +35,7 @@ public interface FinanceConfRegulargoldService  {
      * @param financeConfRegulargold
      * @return
      */
-    CommonResponse modifyOneSelective(FinanceConfRegulargold financeConfRegulargold) throws GlobalException;
+    CommonResponse modifyOneSelective(FinanceRegulargoldProduct financeConfRegulargold) throws GlobalException;
 
     /**
      * @CreateBy：tianliya

@@ -34,4 +34,12 @@ public interface FinanceRegulargoldOrderMapper extends BaseMapper<FinanceRegular
      */
     Integer selectTotalCount(Map<String, Object> conditions);
 
+    /**
+     * @CreateBy：tianliya
+     * @CreateTime：2018/6/11 11:26
+     * @Description：获取未赎回的稳赚金的总克重
+     * @return
+     */
+    Float countGramOnTime();
+
 }
