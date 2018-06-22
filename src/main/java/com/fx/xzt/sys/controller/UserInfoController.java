@@ -442,7 +442,7 @@ public class UserInfoController {
 	 * @return
 	 * @throws ParseException 
 	 */
-	@RequestMapping(value="/selectByRealNameAuthApprove")
+	@RequestMapping(value="/selectByRealNameAuthApprove" )
 	@ResponseBody
 	public Object selectByRealNameAuthApprove(HttpServletRequest request, String userName, String realName, String state, 
 			String applyTimeStart, String applyTimeEnd, @RequestParam Integer pageNum, @RequestParam Integer pageSize) throws ParseException, UnsupportedEncodingException {
@@ -473,7 +473,9 @@ public class UserInfoController {
 		              isView = role.get("roleIsView").toString();
 		          }
 				if (realName != null && realName != ""){
+					logger.info("用户管理-用户信息-用户的真实姓名编码前=======》{}",realName);
 					realName = URLDecoder.decode(realName, "utf-8").trim();
+					logger.info("用户管理-用户信息-用户的真实姓名编码后=======》{}",realName);
 				}
             	PageInfo<Map<String, Object>> pageInfo = userInfoService.getByRealNameAuthApprove(userName, realName, state, applyTimeStart, applyTimeEnd, isView, pageNum, pageSize);
             	List<Map<String, Object>> list = pageInfo.getList();
