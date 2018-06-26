@@ -169,8 +169,8 @@
 	<!--账户信息查询金额统计开始 -htt -->
 	<select id="getByAccountCount" resultType="java.util.Map"
 		parameterType="java.util.Map">
-		SELECT SUM(a.rmb) rmbSum, format(SUM(ga.gold), 3) goldSum, format(SUM(ga.finance_gold), 3) financeGoldSum2,
-		format(SUM(ifnull(wzj.wzj, 0)), 3) financeGoldSum,
+		SELECT SUM(a.rmb) rmbSum, round(SUM(ga.gold), 3) goldSum, round(SUM(ga.finance_gold), 3) financeGoldSum2,
+        round(SUM(ifnull(wzj.wzj, 0)), 3) financeGoldSum,
 		SUM(ga.average_price * ga.gold)/SUM(ga.gold) cbj
 		FROM User_Login l
 		LEFT JOIN User_Info u ON u.UserID = l.UserID
@@ -178,7 +178,7 @@
 		LEFT JOIN user_gold_account ga ON ga.user_id = l.UserID
 		LEFT JOIN users ua ON u.agent_id = ua.id
 		LEFT JOIN users ub ON u.broker_id = ub.id
-		LEFT JOIN (SELECT user_id, format(sum(gram), 3) wzj from finance_regulargold_order where status = 1 GROUP BY user_id) wzj on wzj.user_id = l.UserID
+		LEFT JOIN (SELECT user_id, round(sum(gram), 3) wzj from finance_regulargold_order where status = 1 GROUP BY user_id) wzj on wzj.user_id = l.UserID
 		<where>
 			<!-- and l.Status = 1 -->
 			<if test="userName != null and userName != '' ">

@@ -281,10 +281,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         changeBroker(index, row) {
             let _this = this;
             this.newformEdit = {
-                realName: "",
-                idcard: "",
-                agentId: "",
-                brokerId: ""
+                realName: row.RealName,
+                idcard: row.idcard,
+                agentId: row.agentId + "",
+                brokerId: row.brokerId == null ? "" : row.agentId + ""
             };
             var params = new URLSearchParams();
             params.append("pid", row.agentId);

@@ -158,14 +158,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 value: "",
                 label: "全部"
             }, {
-                value: 'iOS',
-                label: 'iOS'
+                value: 'IOS',
+                label: 'IOS'
             }, {
                 value: 'Android',
                 label: 'Android'
             }, {
-                value: 'WAP',
-                label: 'WAP'
+                value: 'web',
+                label: 'web'
             }],
             agentOptions: "",
             brokerOptions: "",

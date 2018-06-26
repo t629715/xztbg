@@ -48,6 +48,6 @@ public interface SaveGoldRecordMapper extends BaseMapper<SaveGoldRecord> {
 	 * @Description：存金宝买入总金额
 	 * @return
 	 */
-	Float countBuyGold();
+	Double countBuyGold();
 
 }

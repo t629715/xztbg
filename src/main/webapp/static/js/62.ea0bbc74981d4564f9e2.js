@@ -187,7 +187,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       params.append('realName', this.sform.realName);
       params.append('state', this.sform.state);
       let _this = this;
-      axios.get(this.url + "?" + params).then(function (response) {
+      axios.post(this.url + "?" + params).then(function (response) {
         if (response.data.code == 1001) {
           _this.$message({
             message: '查询成功',
@@ -229,7 +229,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       params.append('realName', this.sform.realName);
       params.append('state', this.sform.state);
       let _this = this;
-      axios.get(this.url + "?" + params).then(function (response) {
+      axios.post(this.url + "?" + params).then(function (response) {
         if (response.data.code == 1001) {
           var list = response.data.data.list;
           _this.pageNum = response.data.data.pages;

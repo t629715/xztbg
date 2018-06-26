@@ -92,7 +92,7 @@
     <!--存金记录统计结束-htt-->
 
 	<!--获取存金宝买入的金额总克重-tianliya-->
-    <select id="countBuyGold" resultType="java.lang.Float">
-		select round(SUM(gold),3) goldGram from user_gold_account
+    <select id="countBuyGold" resultType="java.lang.Double">
+		select SUM(gg.gold) goldGram  from User_Login ul left join  user_gold_account gg on gg.user_id = ul.UserId
 	</select>
 </mapper>

@@ -188,7 +188,7 @@ public class SaveGoldRecordServiceImpl extends BaseService<SaveGoldRecord> imple
 	public CommonResponse countBuyGold(){
 		CommonResponse commonResponse = new CommonResponse();
 		try{
-			Float saveGoldAmount = mapper.countBuyGold();
+			Double saveGoldAmount = mapper.countBuyGold();
 			Float steadyGoldAmount = financeRegulargoldOrderMapper.countGramOnTime();
 
 			Map map = new HashMap();
