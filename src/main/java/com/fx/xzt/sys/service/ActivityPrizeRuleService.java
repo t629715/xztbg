@@ -6,6 +6,6 @@ import com.fx.xzt.sys.entity.ActivityPrizeRule;
 public interface ActivityPrizeRuleService extends IService<ActivityPrizeRule> {
 
 
-    Object extractPrizeWorldCup(String prizeCode);
+    Object extractPrizeWorldCup(String prizeCode,Long userId);
 
 }

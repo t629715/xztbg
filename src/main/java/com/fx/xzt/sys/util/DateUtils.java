@@ -1,6 +1,7 @@
 package com.fx.xzt.sys.util;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -75,5 +76,15 @@ public class DateUtils {
 	 */
 	public static String formatDateTime(Date date){
 		return sdf3.format(date);
+	}
+
+	public static Date addDay(Date date, int day) {
+		if (day == 0) {
+			return date;
+		}
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.DAY_OF_MONTH, day);
+		return calendar.getTime();
 	}
 }
