@@ -1,8 +1,10 @@
 package com.fx.xzt.shiro;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -22,7 +24,13 @@ import org.apache.shiro.subject.Subject;
 
 import com.fx.xzt.exception.AuthenticateException;
 import com.fx.xzt.sys.entity.Users;
+import com.fx.xzt.sys.entity.UsersPermission;
+import com.fx.xzt.sys.entity.UsersRole;
+import com.fx.xzt.sys.entity.UsersUserRole;
+import com.fx.xzt.sys.mapper.UsersUserRoleMapper;
+import com.fx.xzt.sys.service.UsersRoleService;
 import com.fx.xzt.sys.service.UsersService;
+import com.fx.xzt.sys.service.UsersUserRoleService;
 
 /**
  * 
@@ -36,6 +44,12 @@ public class MyRealm extends AuthorizingRealm{
 	
 	@Resource
 	private UsersService userService;
+	@Resource
+	UsersUserRoleService usersUserRoleService;
+	@Resource
+	UsersRoleService usersRoleService;
+	@Resource
+	private UsersUserRoleMapper usersUserRoleMapper;
 	
 	public MyRealm() {
 		setAuthenticationTokenClass(AuthenticationToken.class);
@@ -47,6 +61,7 @@ public class MyRealm extends AuthorizingRealm{
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		Users userInfo = null;
+		
 		if(token instanceof MyAuthenticationToken){
 			MyAuthenticationToken myToken = (MyAuthenticationToken) token;
 			String phone = myToken.getPhone();
@@ -68,6 +83,23 @@ public class MyRealm extends AuthorizingRealm{
 			//比对成功则返回authcInfo
     	    AuthenticationInfo authcInfo = new SimpleAuthenticationInfo(userInfo, userInfo.getPassword().toCharArray(),this.getName());  
     	    this.setSession("currentUser", userInfo);
+    	    
+    	    Map<String, Object> map = new HashMap<String, Object>();
+    	    String id = "";
+    	    String roleIsView = "0";
+			
+    	    List<Integer> rids = usersUserRoleService.selectByUserId(userInfo.getId().intValue());
+    	    if (rids != null && rids.size() == 1) {
+    	    	Integer rid = rids.get(0);
+    	    	Map<String, Object> map1 = usersRoleService.getById(rid.toString());
+    	    	if (map1 != null) {
+    	    		id = map1.get("id").toString();
+    	    		roleIsView = map1.get("isView").toString();
+    	    	}
+    	    } 
+    	    map.put("id",id);
+			map.put("roleIsView",roleIsView);
+    	    this.setSession("currentUserRole", map);
     	    return authcInfo; 
 		}
 		return null;
@@ -86,20 +118,18 @@ public class MyRealm extends AuthorizingRealm{
     			List<String> roleList = new ArrayList<String>();
     			List<String> permissionList = new ArrayList<String>();
     			//查询用户角色
-//    			RoleInfo userRole = roleInfoMapper.selectByUserId(userInfo.getId());
-//    			if(null !=userRole){
-//    				roleList.add(userRole.getRoleName());
-//    				List<MenuChild> roleMenus = menuChildMapper.getMenuChildByRoleId(userRole.getId());
-//    				if(null !=roleMenus){
-//    					for(MenuChild menu:roleMenus){
-//    						permissionList.add(menu.getMenuName());
-//    					}
-//    				}
-//    			}
+    			List<UsersPermission> usersPermissions = usersUserRoleService.getByUserId(userInfo.getId());
+    			if(null !=usersPermissions){
+    				if(null !=usersPermissions){
+    					for(UsersPermission menu:usersPermissions){
+    						permissionList.add(menu.getText());
+    					}
+    				}
+    			}
     			
     			//为用户添加权限，角色
     			SimpleAuthorizationInfo simpleAuthorInfo = new SimpleAuthorizationInfo();
-    			simpleAuthorInfo.addRoles(roleList);
+    			simpleAuthorInfo.addRoles(permissionList);
     			simpleAuthorInfo.addStringPermissions(permissionList);
     			return simpleAuthorInfo;
     		}
@@ -110,7 +140,7 @@ public class MyRealm extends AuthorizingRealm{
 
     /** 
      * 将一些数据放到ShiroSession中,以便于其它地方使用 
-     * @see  比如Controller,使用时直接用HttpSession.getAttribute(key)就可以取到 
+     *  比如Controller,使用时直接用HttpSession.getAttribute(key)就可以取到
      * 也可以直接从subject的身份对象中取
      */  
     private void setSession(Object key, Object value){  

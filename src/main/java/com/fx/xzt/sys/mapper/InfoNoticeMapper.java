@@ -21,7 +21,7 @@ public interface InfoNoticeMapper extends BaseMapper<InfoNotice> {
 
 	int deleteById(Long serialNo);
 
-	List<InfoNotice> getInfoNoticeAll(Map<String, Object> map);
+	List<Map<String, Object>> getInfoNoticeAll(Map<String, Object> map);
 
 	InfoNotice getBySerialNo(Long serialNo);
 

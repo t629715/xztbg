@@ -17,6 +17,8 @@ public class UsersRole implements Serializable {
     private String name;
 
     private Date createTime;
+    
+    private Integer isView;
 
     private static final long serialVersionUID = 1L;
 
@@ -43,4 +45,13 @@ public class UsersRole implements Serializable {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
+	public Integer getIsView() {
+		return isView;
+	}
+
+	public void setIsView(Integer isView) {
+		this.isView = isView;
+	}
+    
 }

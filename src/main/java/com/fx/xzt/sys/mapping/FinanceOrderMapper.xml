@@ -19,7 +19,14 @@
 
   <!--理财交易订单查询开始-htt-->
   <select id="selectByFinanceOrder" resultType="java.util.Map" parameterType="java.util.Map">
-    SELECT o.id id, o.order_no orderNo, o.user_id userID, u.UserName userName, i.RegisterTime  registerTime,
+    SELECT o.id id, o.order_no orderNo, o.user_id userID, 
+    <if test='isView == "1"'>
+		u.UserName userName,
+	</if>
+	<if test='isView != "1"'>
+		INSERT(u.UserName, 4, 4, '****') userName,
+	</if>
+    i.RegisterTime  registerTime,
     o.agent_id AS agentId, ua.user_name AS agentName, o.broker_id AS brokerId, ub.user_name AS brokerName ,
     o.product_id productId, c.product_name productName,c.product_no productNo,o.cycle,o.year_incom_percent yearIncomPercent,
     o.float_percent floatPercent, o.nper nper, c.type type,
@@ -139,7 +146,14 @@
   
   <!--黄金稳赚交易订单查询开始-htt-->
   <select id="selectByGoldFinanceOrder" resultType="java.util.Map" parameterType="java.util.Map">
-    SELECT o.id id, o.order_no orderNo, o.user_id userID, u.UserName userName, i.RegisterTime  registerTime,
+    SELECT o.id id, o.order_no orderNo, o.user_id userID, 
+    <if test='isView == "1"'>
+		u.UserName userName,
+	</if>
+	<if test='isView != "1"'>
+		INSERT(u.UserName, 4, 4, '****') userName,
+	</if>
+    i.RegisterTime  registerTime,
     o.agent_id AS agentId, ua.user_name AS agentName, o.broker_id AS brokerId, ub.user_name AS brokerName ,
     o.product_id productId, c.product_name productName,c.product_no productNo,o.cycle,o.year_incom_percent yearIncomPercent,
     o.float_percent floatPercent, o.nper nper, c.type type,

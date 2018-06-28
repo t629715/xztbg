@@ -82,10 +82,15 @@ public class GoldIncomeRecordController {
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             String startTypeTime = "";
             String endTypeTime = "";
             Date today = DateUtil.getTodayZeroDate();
             if (users != null) {
+            	String isView = "0";
+		        if (role != null && role.get("roleIsView") != null) {
+		            isView = role.get("roleIsView").toString();
+		        }
             	if (type != null && type.equals(ConstantUtil.GOLD_INCOME_RECORD_TYPE_ZT)) {
             		Date yesterday = DateUtil.modify(today, 0, 0, -1, 0, 0, 0);
             		startTypeTime = DateUtil.convertDateToString(yesterday, "yyyy-MM-dd HH:mm:ss");
@@ -101,7 +106,7 @@ public class GoldIncomeRecordController {
             		endTypeTime = DateUtil.getFirstDateOfMonth(DateUtil.convertDateToString(today, "yyyy-MM-dd HH:mm:ss"), "yyyy-MM-dd HH:mm:ss");
             	}
                 PageInfo<Map<String, Object>> pageInfo = goldIncomeRecordService.selectByGoldIncome(userName, startTime, endTime, 
-                		startTypeTime, endTypeTime, agentName, brokerName, type, pageNum, pageSize);
+                		startTypeTime, endTypeTime, agentName, brokerName, type, isView, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
@@ -159,10 +164,15 @@ public class GoldIncomeRecordController {
             String excelName = "黄金收益记录";
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             String startTypeTime = "";
             String endTypeTime = "";
             Date today = DateUtil.getTodayZeroDate();
             if (users != null) {
+            	String isView = "0";
+		        if (role != null && role.get("roleIsView") != null) {
+		            isView = role.get("roleIsView").toString();
+		        }
             	if (type != null && type.equals(ConstantUtil.GOLD_INCOME_RECORD_TYPE_ZT)) {
             		Date yesterday = DateUtil.modify(today, 0, 0, -1, 0, 0, 0);
             		startTypeTime = DateUtil.convertDateToString(yesterday, "yyyy-MM-dd HH:mm:ss");
@@ -179,7 +189,7 @@ public class GoldIncomeRecordController {
             				DateUtil.modify(today, 0, -1, 0, 0, 0, 0), "yyyy-MM-dd HH:mm:ss"), "yyyy-MM-dd HH:mm:ss");
             	}
                 List<Map<String, Object>> list = goldIncomeRecordService.excelGoldIncome(userName, startTime, endTime, 
-                		startTypeTime, endTypeTime, agentName, brokerName, type);
+                		startTypeTime, endTypeTime, agentName, brokerName, type, isView);
                 if (list != null && list.size() > 0) {
                     for (Map<String, Object> map : list) {
                     	Object incomeObj =  map.get("income");

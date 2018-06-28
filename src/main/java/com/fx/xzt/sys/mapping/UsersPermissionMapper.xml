@@ -125,4 +125,8 @@
     delete from users_permission
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  <delete id="deleteByPid" parameterType="java.lang.Integer">
+    delete from users_permission
+    where pid = #{pid,jdbcType=INTEGER}
+  </delete>
 </mapper>

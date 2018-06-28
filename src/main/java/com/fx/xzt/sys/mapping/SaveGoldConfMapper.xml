@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fx.xzt.sys.mapper.SaveGoldConfMapper" >
+  <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.SaveGoldConf" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="buy_fee" property="buyFee" jdbcType="BIGINT" />
+    <result column="sale_fee" property="saleFee" jdbcType="BIGINT" />
+    <result column="buy_min" property="buyMin" jdbcType="DECIMAL" />
+    <result column="buy_max" property="buyMax" jdbcType="DECIMAL" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, buy_fee, sale_fee, buy_min, buy_max, name, code
+  </sql>
+
+  <!--获取所有的存金宝产品-tianliya-->
+  <select id="selectAllProduct" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from save_gold_conf
+  </select>
+
+  <!--根据id删除存金宝产品-tianliya-->
+  <delete id="deleteOneById" parameterType="java.lang.Long" >
+    delete from save_gold_conf
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+<!--修改选中的产品信息-tianliya-->
+  <update id="updateProductById" parameterType="com.fx.xzt.sys.entity.SaveGoldConf" >
+    update save_gold_conf
+    <set >
+      <if test="buyFee != null" >
+        buy_fee = #{buyFee,jdbcType=BIGINT},
+      </if>
+      <if test="saleFee != null" >
+        sale_fee = #{saleFee,jdbcType=BIGINT},
+      </if>
+      <if test="buyMin != null" >
+        buy_min = #{buyMin,jdbcType=DECIMAL},
+      </if>
+      <if test="buyMax != null" >
+        buy_max = #{buyMax,jdbcType=DECIMAL},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

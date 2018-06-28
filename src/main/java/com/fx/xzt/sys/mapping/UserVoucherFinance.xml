@@ -3,7 +3,14 @@
 <mapper namespace="com.fx.xzt.sys.mapper.UserVoucherFinanceMapper">
     <!--优惠券查询开始-htt-->
     <select id="selectByUserVoucherFinance" resultType="java.util.Map" parameterType="java.util.Map">
-      SELECT CAST(v.id AS CHAR) id,CAST(v.user_id AS CHAR) userId,u.UserName userName,v.deduction_value deductionValue,v.deduction_percent deductionPercent,
+      SELECT CAST(v.id AS CHAR) id,CAST(v.user_id AS CHAR) userId,
+      <if test='isView == "1"'>
+	  	u.UserName userName,
+	  </if>
+	  <if test='isView != "1"'>
+	  	INSERT(u.UserName, 4, 4, '****') userName,
+	  </if>
+      v.deduction_value deductionValue,v.deduction_percent deductionPercent,
 	  v.description,v.create_time createTime,v.use_status useStatus,v.use_time useTime,
 	  v.date_start dateStart,v.date_end dateEnd,v.add_type addType,v.validate_days validateDays, v.validate_cycle validateCycle,v.source,
       CAST(v.agent_id AS CHAR) AS agentId, ua.user_name AS agentName, CAST(v.broker_id AS CHAR) AS brokerId, ub.user_name AS brokerName 

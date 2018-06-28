@@ -1,5 +1,6 @@
 package com.fx.xzt.sys.service.impl;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fx.xzt.sys.entity.UserInfo;
+import com.fx.xzt.sys.entity.UserLogin;
 import com.fx.xzt.sys.mapper.UserInfoMapper;
+import com.fx.xzt.sys.mapper.UserLoginMapper;
 import com.fx.xzt.sys.model.UserInfoModel;
 import com.fx.xzt.sys.service.UserInfoService;
 import com.fx.xzt.sys.util.StringUtil;
@@ -26,6 +29,8 @@ import com.github.pagehelper.PageInfo;
 public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserInfoService{
 	@Resource
 	UserInfoMapper userInfoMapper;
+	@Resource
+	UserLoginMapper userLoginMapper;
 	
 	public PageInfo<UserInfoModel> getfindAll(String userName, String realName, String applyTimeStart, String applyTimeEnd, Integer pageNum,
 			Integer pageSize) {
@@ -98,15 +103,22 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		return -1;
 	}
 
-	public PageInfo<Map<String, Object>> getByAccountMessage(String userName,String agentsName, String brokerName,String startTime,String endTime,Integer pageNum,Integer pageSize) {
+	/**
+	 * 账户信息
+	 * @throws ParseException 
+	 */
+	public PageInfo<Map<String, Object>> getByAccountMessage(String userName,String agentsName, String brokerName,
+			String startTime,String endTime, String isView, Integer pageNum,Integer pageSize) throws ParseException {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
 		map.put("agentsName", agentsName);
 		map.put("brokerName", brokerName);
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
+		map.put("isView", isView);
 		PageHelper.startPage(pageNum,pageSize);
 		List<Map<String, Object>> list = userInfoMapper.getByAccountMessage(map);
+		handleAccountMessage(list);
 		return new PageInfo<Map<String, Object>>(list);
 	}
 
@@ -120,13 +132,15 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 	 * @param pageSize
 	 * @return
 	 */
-	public PageInfo<Map<String, Object>> getByRealNameAuth(String userName, String realName, String applyTimeStart, String applyTimeEnd, Integer pageNum,
+	public PageInfo<Map<String, Object>> getByRealNameAuth(String userName, String realName, 
+			String applyTimeStart, String applyTimeEnd, String isView , Integer pageNum,
 											  Integer pageSize) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
 		map.put("realName", realName);
 		map.put("applyTimeStart", applyTimeStart);
 		map.put("applyTimeEnd", applyTimeEnd);
+		map.put("isView", isView);
 		PageHelper.startPage(pageNum,pageSize);
 		List<Map<String, Object>> list = userInfoMapper.getByRealNameAuth(map);
 		PageInfo<Map<String, Object>> pagehelper = new PageInfo<Map<String, Object>>(list);
@@ -144,13 +158,14 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 	 * @return
 	 */
 	public PageInfo<Map<String, Object>> getByRealNameAuthApprove(String userName, String realName, String state, 
-			String applyTimeStart, String applyTimeEnd, Integer pageNum, Integer pageSize) {
+			String applyTimeStart, String applyTimeEnd, String isView , Integer pageNum, Integer pageSize) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
 		map.put("realName", realName);
 		map.put("state", state);
 		map.put("applyTimeStart", applyTimeStart);
 		map.put("applyTimeEnd", applyTimeEnd);
+		map.put("isView", isView);
 		PageHelper.startPage(pageNum,pageSize);
 		List<Map<String, Object>> list = userInfoMapper.getByRealNameAuthApprove(map);
 		PageInfo<Map<String, Object>> pagehelper = new PageInfo<Map<String, Object>>(list);
@@ -160,35 +175,85 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 	/**
 	 * 导出账户信息
 	 * @param userName  用户名
-	 * @param  代理商用户名
 	 * @param brokerName 经纪人用户名
 	 * @param startTime  注册开始时间
 	 * @param endTime  注册结束时间
 	 * @return
+	 * @throws ParseException 
 	 */
-	public List<Map<String, Object>> getExcelAccount(String userName, String agentsName, String brokerName, String startTime, String endTime) {
+	public List<Map<String, Object>> getExcelAccount(String userName, String agentsName, String brokerName, 
+			String startTime, String endTime, String isView) throws ParseException {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
 		map.put("agentsName", agentsName);
 		map.put("brokerName", brokerName);
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
+		map.put("isView", isView);
 		List<Map<String, Object>> list = userInfoMapper.getByAccountMessage(map);
+		handleAccountMessage(list);
 		return list;
+	}
+	
+	/**
+	 * 
+	* @Title: handleAccountMessage 
+	* @Description: 账户信息数据处理
+	* @param list    设定文件 
+	* @return void    返回类型 
+	 * @throws ParseException 
+	* @throws 
+	* @author htt
+	 */
+	public void handleAccountMessage(List<Map<String, Object>> list) throws ParseException {
+		if (list != null && list.size() > 0) {
+			for (Map<String, Object> map : list) {
+				Object rmbObj = map.get("rmb");
+				if (rmbObj != null && rmbObj != "") {
+					Double rmb = Double.valueOf(rmbObj.toString());
+					map.put("rmb", rmb/100);
+				}
+				Object averagePriceObj = map.get("averagePrice");
+				if (averagePriceObj != null && averagePriceObj != "") {
+					Double averagePrice = Double.valueOf(averagePriceObj.toString());
+					map.put("averagePrice", averagePrice/100);
+				}
+				Object registerTimeObj = map.get("registerTime");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				if (registerTimeObj != null && registerTimeObj != "") {
+					map.put("registerTime", sdf.format(sdf.parse(registerTimeObj.toString())));
+				}
+			}
+		}
 	}
 
 	/**
 	 * 获取账户信息列表金额黄金统计
 	 * @return
 	 */
-	public Map<String,Object> getByAccountCount(String userName, String agentsName, String brokerName, String startTime, String endTime) {
+	public Map<String,Object> getByAccountCount(String userName, String agentsName, String brokerName, 
+			String startTime, String endTime) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
 		map.put("agentsName", agentsName);
 		map.put("brokerName", brokerName);
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
-		return userInfoMapper.getByAccountCount(map);
+		Map<String,Object> map1 = userInfoMapper.getByAccountCount(map);
+		if (map1 != null && map1.size() > 0) {
+			Object rmbSumObj = map1.get("rmbSum");
+			if (rmbSumObj != null && rmbSumObj != "") {
+				Double rmbSum = Double.valueOf(rmbSumObj.toString());
+				map1.put("rmbSum", rmbSum/100);
+			}
+			DecimalFormat dFormat = new DecimalFormat("######0.00");  
+			Object cbjObj = map1.get("cbj");
+			if (cbjObj != null && cbjObj != "") {
+				Double cbj = Double.valueOf(cbjObj.toString());
+				map1.put("cbj", dFormat.format(cbj/100));
+			}
+		}
+		return map1;
 	}
 
 	/**
@@ -201,11 +266,12 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 	 * @return
 	 */
 	@Override
-	public PageInfo<Map<String,Object>> getSubClients(String userName, String agentName, String brokerName, Integer pageNum, Integer pageSize) {
+	public PageInfo<Map<String,Object>> getSubClients(String userName, String agentName, String brokerName, String isView , Integer pageNum, Integer pageSize) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
 		map.put("agentName", agentName);
 		map.put("brokerName", brokerName);
+		map.put("isView", isView);
 		PageHelper.startPage(pageNum,pageSize);
 		List<Map<String, Object>> list = userInfoMapper.getSubClients(map);
 		for (Map m:list){
@@ -222,11 +288,12 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 	 * @return
 	 */
 	@Override
-	public List<Map<String, Object>> getExcelSubClientsAccount(String userName, String agentName, String brokerName) {
+	public List<Map<String, Object>> getExcelSubClientsAccount(String userName, String agentName, String brokerName, String isView) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
 		map.put("agentName", agentName);
 		map.put("brokerName", brokerName);
+		map.put("isView", isView);
 		List<Map<String, Object>> list = userInfoMapper.getSubClients(map);
 
 		return list;
@@ -253,15 +320,36 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		Map map = new HashMap();
 		map.put("userId",userId);
 		map.put("brokerId",brokerId);
+		UserLogin userLogin = new UserLogin();
+		userLogin.setUserid(userId);
+		userLogin.setBrokerId(brokerId);
+		userLoginMapper.updateByIdSelective(userLogin);
 		return userInfoMapper.updateUserInfoBrokerId(map);
 	}
-	@Override
-	public int alertAgentAndBroker(Long userId, Long brokerId,Long agentId) {
-		Map map = new HashMap();
-		map.put("userId",userId);
-		map.put("brokerId",brokerId);
-		map.put("agentId",agentId);
-		return userInfoMapper.alertAgentAndBroker(map);
+	
+	/**
+	 * 信息变更 
+	 */
+	public int alertAgentAndBroker(String realName, String idcard, Long userId, Long brokerId,Long agentId) {
+		int flag = 0;
+		if (userId != null) {
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("userId",userId);
+			map.put("realName", realName);
+			map.put("idcard", idcard);
+			map.put("brokerId", brokerId);
+			map.put("agentId", agentId);
+			flag = userInfoMapper.alertAgentAndBroker(map);
+			if (flag > 0 && agentId != null) {
+				UserLogin userLogin = new UserLogin();
+				userLogin.setAgentId(agentId);
+				userLogin.setBrokerId(brokerId);
+				userLogin.setUserid(userId);
+				userLoginMapper.updateByIdSelective(userLogin);
+			}
+		}
+		
+		return flag;
 	}
 
 	/**
@@ -272,10 +360,11 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
-		map.put("loginFrom", loginFrom);
+		map.put("registerFrom", loginFrom);
 		map.put("agentName", agentName);
 		PageHelper.startPage(pageNum,pageSize);
 		List<Map<String, Object>> list = userInfoMapper.getByUserAnalysis(map);
+		handleUserAnalysis(list);
 		PageInfo<Map<String, Object>> pagehelper = new PageInfo<Map<String, Object>>(list);
 		return pagehelper;
 	}
@@ -287,10 +376,52 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
-		map.put("loginFrom", loginFrom);
+		map.put("registerFrom", loginFrom);
 		map.put("agentName", agentName);
 		List<Map<String, Object>> list = userInfoMapper.getByUserAnalysis(map);
+		handleUserAnalysis(list);
 		return list;
+	}
+	
+	/**
+	 * 
+	* @Title: handleUserAnalysis 
+	* @Description: 用户分析查询数据处理
+	* @param list    设定文件 
+	* @return void    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	public void handleUserAnalysis(List<Map<String, Object>> list) {
+		if (list != null && list.size() > 0) {
+			for (Map<String, Object> map : list) {
+				Object xrjblObj = map.get("xrjbl");
+				Object xjqjyblObj = map.get("xjqjybl");
+				Object xdqjblObj = map.get("xdqjbl");
+				Object xcjbblObj = map.get("xcjbbl");
+				
+				if (xrjblObj != null && xrjblObj != "") {
+                	Double xrjbl = Double.valueOf(xrjblObj.toString());
+                	DecimalFormat df = new DecimalFormat("0.00%");
+                	map.put("xrjbl", df.format(xrjbl));
+                }
+				if (xjqjyblObj != null && xjqjyblObj != "") {
+                	Double xjqjybl = Double.valueOf(xjqjyblObj.toString());
+                	DecimalFormat df = new DecimalFormat("0.00%");
+                	map.put("xjqjybl", df.format(xjqjybl));
+                }
+				if (xdqjblObj != null && xdqjblObj != "") {
+                	Double xdqjbl = Double.valueOf(xdqjblObj.toString());
+                	DecimalFormat df = new DecimalFormat("0.00%");
+                	map.put("xdqjbl", df.format(xdqjbl));
+                }
+				if (xcjbblObj != null && xcjbblObj != "") {
+                	Double xcjbbl = Double.valueOf(xcjbblObj.toString());
+                	DecimalFormat df = new DecimalFormat("0.00%");
+                	map.put("xcjbbl", df.format(xcjbbl));
+                }
+			}
+		}
 	}
 
 	/**
@@ -300,9 +431,26 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
-		map.put("loginFrom", loginFrom);
+		map.put("registerFrom", loginFrom);
 		map.put("agentName", agentName);
 		List<Map<String, Object>> list = userInfoMapper.getByUserAnalysisCount(map);
+		if (list != null && list.size() > 0) {
+			for (Map<String, Object> map1 : list) {
+				Object xrjblObj = map1.get("xrjbl");
+				Object xjyblObj = map1.get("xjybl");
+				
+				if (xrjblObj != null && xrjblObj != "") {
+                	Double xrjbl = Double.valueOf(xrjblObj.toString());
+                	DecimalFormat df = new DecimalFormat("0.00%");
+                	map1.put("xrjbl", df.format(xrjbl));
+                }
+				if (xjyblObj != null && xjyblObj != "") {
+                	Double xjybl = Double.valueOf(xjyblObj.toString());
+                	DecimalFormat df = new DecimalFormat("0.00%");
+                	map1.put("xjybl", df.format(xjybl));
+                }
+			}
+		}
 		return list;
 	}
 

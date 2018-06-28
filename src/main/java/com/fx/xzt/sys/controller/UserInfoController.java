@@ -1,5 +1,7 @@
 package com.fx.xzt.sys.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,6 +67,7 @@ public class UserInfoController {
 	ConfigParamService configParamService;
 	@Resource
 	UserMessageService userMessageService;
+	private static Logger logger = LoggerFactory.getLogger(UserInfoController.class);
 	
 	/**
 	 * 获取认证集合
@@ -173,9 +178,14 @@ public class UserInfoController {
 		try {
 			HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
 			 if (users != null) {
+				 String isView = "0";
+		         if (role != null && role.get("roleIsView") != null) {
+		              isView = role.get("roleIsView").toString();
+		          }
 				  PageInfo<Map<String, Object>> pageInfo = userLoginService.getByRegisterMessage(userName, startTime, endTime, registerFrom, registerIp,
-							lastStartTime, lastEndTime, lastLoginFrom, agentName, brokerName, attribution, pageNum, pageSize);
+							lastStartTime, lastEndTime, lastLoginFrom, agentName, brokerName, attribution, isView, pageNum, pageSize);
 					cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 					cr.setData(pageInfo);
 					cr.setMsg("操作成功！");
@@ -288,7 +298,7 @@ public class UserInfoController {
 	@ResponseBody
 	public void excelRegisterMessage(HttpServletRequest request, HttpServletResponse response,String userName, String startTime, String endTime,
 		String registerFrom, String registerIp, String lastStartTime, String lastEndTime, String lastLoginFrom,
-		String agentsName, String brokerName, String attribution) throws ParseException{
+		String agentName, String brokerName, String attribution) throws ParseException{
 		
 		//操作日志
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -303,18 +313,33 @@ public class UserInfoController {
 		try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
+            	String isView = "0";
+		         if (role != null && role.get("roleIsView") != null) {
+		              isView = role.get("roleIsView").toString();
+		          }
             	List<Map<String, Object>> list = userLoginService.getExcelByRegister(userName,startTime,endTime,registerFrom,registerIp,lastStartTime,
-        				lastEndTime,lastLoginFrom,agentsName,brokerName,attribution);
+        				lastEndTime,lastLoginFrom,agentName,brokerName,attribution, isView);
         		if (list != null && !list.isEmpty()) {
         			for (Map<String, Object> u : list) {
         				String name = ConstantUtil.userStatus.toMap().get(u.get("Status").toString());
         				u.put("Status", name);
+        				
+        				Object RegisterTimeObj = u.get("RegisterTime");
+        				if (RegisterTimeObj != null && RegisterTimeObj != "") {
+        					u.put("RegisterTime", sdf.format(sdf.parse(RegisterTimeObj.toString())));
+        				}
+        				
+        				Object lastlogintimeObj = u.get("lastlogintime");
+        				if (lastlogintimeObj != null && lastlogintimeObj != "") {
+        					u.put("lastlogintime", sdf.format(sdf.parse(lastlogintimeObj.toString())));
+        				}
         			}
         		}
         		POIUtils poi = new POIUtils();
         		String[] heads = {"用户账号","代理商","经纪人","注册时间","注册来源","注册IP","归属地省","归属地市","最后一次登录时间","最后一次登录方式","最后一次登录IP","状态"};
-        		String[] colums = {"UserName","agentsName","brokerName","RegisterTime","RegisterFrom","RegisterIp","attributionProvince",
+        		String[] colums = {"UserName","agentName","brokerName","RegisterTime","RegisterFrom","RegisterIp","attributionProvince",
         				"attribution","lastlogintime","lastloginfrom","lastfromip","Status"};
         		poi.doExport(request, response, list, "注册信息", "注册信息", heads, colums);
         		log.setUserId(users.getId());
@@ -341,9 +366,10 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/selectByRealNameAuth")
 	@ResponseBody
-	public Object selectByRealNameAuth(HttpServletRequest request, String userName, String realName, String applyTimeStart, String applyTimeEnd, @RequestParam Integer pageNum, @RequestParam Integer pageSize) throws ParseException{
+	public Object selectByRealNameAuth(HttpServletRequest request, String userName, String realName, String applyTimeStart, String applyTimeEnd, @RequestParam Integer pageNum, @RequestParam Integer pageSize) throws ParseException, UnsupportedEncodingException {
 		CommonResponse cr = new CommonResponse();
 		//操作日志
+
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         LogRecord log = new LogRecord();
         log.setTitle("实名认证查询");
@@ -355,6 +381,7 @@ public class UserInfoController {
 		try {
 			HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
             	//获取图片地址
             	ConfigParam configParam = configParamService.selectConfigParamByKey(ConstantUtil.PHOTO_URL);
@@ -362,7 +389,15 @@ public class UserInfoController {
             	if (configParam != null) {
             		purl = configParam.getParamValue();
             	}
-            	PageInfo<Map<String, Object>> pageInfo = userInfoService.getByRealNameAuth(userName, realName, applyTimeStart, applyTimeEnd, pageNum, pageSize);
+            	
+            	String isView = "0";
+		         if (role != null && role.get("roleIsView") != null) {
+		              isView = role.get("roleIsView").toString();
+		          }
+            	if (realName != null && realName != ""){
+		         	realName = URLDecoder.decode(realName, "utf-8").trim();
+				}
+            	PageInfo<Map<String, Object>> pageInfo = userInfoService.getByRealNameAuth(userName, realName, applyTimeStart, applyTimeEnd, isView, pageNum, pageSize);
             	List<Map<String, Object>> list = pageInfo.getList();
     			/*if (list != null && list.size() > 0) {
     				for (Map<String, Object> map : list) {
@@ -410,7 +445,7 @@ public class UserInfoController {
 	@RequestMapping(value="/selectByRealNameAuthApprove")
 	@ResponseBody
 	public Object selectByRealNameAuthApprove(HttpServletRequest request, String userName, String realName, String state, 
-			String applyTimeStart, String applyTimeEnd, @RequestParam Integer pageNum, @RequestParam Integer pageSize) throws ParseException{
+			String applyTimeStart, String applyTimeEnd, @RequestParam Integer pageNum, @RequestParam Integer pageSize) throws ParseException, UnsupportedEncodingException {
 		CommonResponse cr = new CommonResponse();
 		//操作日志
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -424,6 +459,7 @@ public class UserInfoController {
 		try {
 			HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
             	//获取图片地址
             	ConfigParam configParam = configParamService.selectConfigParamByKey(ConstantUtil.PHOTO_URL);
@@ -431,7 +467,15 @@ public class UserInfoController {
             	if (configParam != null) {
             		purl = configParam.getParamValue();
             	}
-            	PageInfo<Map<String, Object>> pageInfo = userInfoService.getByRealNameAuthApprove(userName, realName, state, applyTimeStart, applyTimeEnd, pageNum, pageSize);
+            	
+            	String isView = "0";
+		         if (role != null && role.get("roleIsView") != null) {
+		              isView = role.get("roleIsView").toString();
+		          }
+				if (realName != null && realName != ""){
+					realName = URLDecoder.decode(realName, "utf-8").trim();
+				}
+            	PageInfo<Map<String, Object>> pageInfo = userInfoService.getByRealNameAuthApprove(userName, realName, state, applyTimeStart, applyTimeEnd, isView, pageNum, pageSize);
             	List<Map<String, Object>> list = pageInfo.getList();
     			if (list != null && list.size() > 0) {
     				for (Map<String, Object> map : list) {
@@ -472,7 +516,8 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/selectByAccountMessage")
 	@ResponseBody
-	public Object selectByAccountMessage(HttpServletRequest request, String userName,String agentsName, String brokerName,String startTime,String endTime,@RequestParam Integer pageNum,@RequestParam Integer pageSize) throws ParseException{
+	public Object selectByAccountMessage(HttpServletRequest request, String userName,String agentsName, String brokerName,
+			String startTime,String endTime,@RequestParam Integer pageNum,@RequestParam Integer pageSize) throws ParseException{
 		CommonResponse cr = new CommonResponse();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         LogRecord log = new LogRecord();
@@ -486,8 +531,13 @@ public class UserInfoController {
 		try {
 			HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
 			 if (users != null) {
-				 PageInfo<Map<String, Object>> pageInfo = userInfoService.getByAccountMessage(userName, agentsName, brokerName, startTime, endTime, pageNum, pageSize);
+				 String isView = "0";
+		         if (role != null && role.get("roleIsView") != null) {
+		              isView = role.get("roleIsView").toString();
+		          }
+				 PageInfo<Map<String, Object>> pageInfo = userInfoService.getByAccountMessage(userName, agentsName, brokerName, startTime, endTime, isView, pageNum, pageSize);
 					cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 					cr.setData(pageInfo);
 					cr.setMsg("操作成功！");
@@ -516,7 +566,8 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/excelAccountMessage")
 	@ResponseBody
-	public void excelAccountMessage(HttpServletRequest request, HttpServletResponse response,String userName,String agentsName, String brokerName,String startTime,String endTime) throws ParseException{
+	public void excelAccountMessage(HttpServletRequest request, HttpServletResponse response,String userName,
+			String agentsName, String brokerName,String startTime,String endTime) throws ParseException{
 		//操作日志
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         LogRecord log = new LogRecord();
@@ -530,11 +581,16 @@ public class UserInfoController {
 		try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
-        		List<Map<String, Object>> list = userInfoService.getExcelAccount(userName,agentsName, brokerName,startTime,endTime);
+            	String isView = "0";
+		        if (role != null && role.get("roleIsView") != null) {
+		        	isView = role.get("roleIsView").toString();
+		        }
+        		List<Map<String, Object>> list = userInfoService.getExcelAccount(userName,agentsName, brokerName,startTime,endTime, isView);
         		POIUtils poi = new POIUtils();
-        		String[] heads = {"用户账号","昵称","姓名","注册时间","代理商","经纪人","身份证号","银行卡","人民币余额","人民币冻结","人民币理财","利息","黄金"};
-        		String[] colums = {"userName","nickName","realname","registertime","agentName","brokerName","idcard","accountNum","rmb","frozenRmb","finance","totalIncome","gold"};
+        		String[] heads = {"用户账号","昵称","姓名","注册时间","代理商","经纪人","身份证号","银行卡","支付宝","人民币余额","黄金","稳赚金","黄金收益","黄金单位成本价"};
+        		String[] colums = {"userName","nickName","RealName","registerTime","agentName","brokerName","idcard","alipayNumber","accountNum","rmb","gold","financeGold","totalIncome","averagePrice"};
         		poi.doExport(request, response, list, "账户信息", "账户信息", heads, colums);
         		log.setUserId(users.getId());
                 log.setContent("导出成功，共：" + list.size() + "条数据");
@@ -553,7 +609,8 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/selectAccountCount")
 	@ResponseBody
-	public String selectAccountCount(HttpServletRequest request, String userName,String agentsName, String brokerName,String startTime,String endTime) throws ParseException{
+	public String selectAccountCount(HttpServletRequest request, String userName,String agentsName, String brokerName,
+			String startTime,String endTime) throws ParseException{
 		CommonResponse cr = new CommonResponse();
 		
 		//操作日志
@@ -597,17 +654,35 @@ public class UserInfoController {
 
 	@RequestMapping(value="/selectSubClients")
 	@ResponseBody
-	public Object selectSubClients(HttpServletRequest request,String userName,String agentsName, String brokerName,String startTime,String endTime,@RequestParam Integer pageNum,@RequestParam Integer pageSize){
+	public Object selectSubClients(HttpServletRequest request,String userName,String agentsName, String brokerName,String startTime,String endTime,@RequestParam Integer pageNum,@RequestParam Integer pageSize) throws ParseException {
 		CommonResponse cr = new CommonResponse();
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("查询下级客户");
+		log.setContent("查询失败");
+		log.setModuleName(ConstantUtil.logRecordModule.XJKH.getName());
+		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		try {
 			HttpSession httpSession = request.getSession();
 			Users users = (Users) httpSession.getAttribute("currentUser");
+			Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
 			if (users != null){
-				agentsName = users.getUserName();
-				PageInfo<Map<String, Object>> pageInfo = userInfoService.getSubClients(userName, agentsName, brokerName, pageNum, pageSize);
+                if (!"admin".equals(users.getUserName())){
+                    agentsName = users.getId()+"";
+                }
+				String isView = "0";
+		        if (role != null && role.get("roleIsView") != null) {
+		            isView = role.get("roleIsView").toString();
+		        }
+				PageInfo<Map<String, Object>> pageInfo = userInfoService.getSubClients(userName, agentsName, brokerName, isView, pageNum, pageSize);
 				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 				cr.setData(pageInfo);
 				cr.setMsg("操作成功！");
+				log.setUserId(users.getId());
+				log.setContent("查询成功");
 			}
 
 		} catch (Exception e) {
@@ -617,6 +692,8 @@ public class UserInfoController {
 			throw e;
 			// e.printStackTrace();
 		}
+		logRecordService.add(log);
+		AuditLog.info(log.toString());
 		return cr;
 	}
 	/**
@@ -624,15 +701,23 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/excelSubClients")
 	@ResponseBody
-	public void excelSubClients(HttpServletRequest request, HttpServletResponse response,String userName,String agentName, String brokerName,String startTime,String endTime){
+	public void excelSubClients(HttpServletRequest request, HttpServletResponse response,String userName,
+			String agentName, String brokerName,String startTime,String endTime){
 		HttpSession httpSession = request.getSession();
 		Users users = (Users) httpSession.getAttribute("currentUser");
+		Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
 		if (users != null){
-			agentName = users.getUserName();
-			List<Map<String, Object>> list = userInfoService.getExcelSubClientsAccount(userName,agentName, brokerName);
+            if (!"admin".equals(users.getUserName())){
+                agentName = users.getId()+"";
+            }
+			String isView = "0";
+	        if (role != null && role.get("roleIsView") != null) {
+	            isView = role.get("roleIsView").toString();
+	        }
+			List<Map<String, Object>> list = userInfoService.getExcelSubClientsAccount(userName,agentName, brokerName, isView);
 			POIUtils poi = new POIUtils();
-			String[] heads = {"用户账号","代理商","经纪人","人民币余额","人民币冻结","人民币理财","利息","黄金"};
-			String[] colums = {"userName","agentName","brokerName","rmb","frozenRmb","finance","totalIncome","gold"};
+			String[] heads = {"用户账号","代理商","经纪人","人民币余额","黄金","稳赚金","黄金收益","黄金成本价"};
+			String[] colums = {"userName","agentName","brokerName","rmb","gold","financeGold","totalIncome","averagePrice"};
 			poi.doExport(request, response, list, "账户信息", "账户信息", heads, colums);
 		}
 
@@ -649,18 +734,34 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/selectSubClientsCount")
 	@ResponseBody
-	public String selectSubClientsCount(HttpServletRequest request, String userName,String agentName, String brokerName,String startTime,String endTime){
+	public String selectSubClientsCount(HttpServletRequest request, String userName,String agentName, String brokerName,String startTime,String endTime) throws ParseException {
 		CommonResponse cr = new CommonResponse();
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("下级客户-金额统计");
+		log.setContent("查询失败");
+		log.setModuleName(ConstantUtil.logRecordModule.XJKH.getName());
+		log.setType(ConstantUtil.logRecordType.CX.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		try {
 			HttpSession httpSession = request.getSession();
 			Users users = (Users) httpSession.getAttribute("currentUser");
 			if (users != null){
-				agentName = users.getUserName();
+
+			    if (!"admin".equals(users.getUserName())){
+                    agentName = users.getId()+"";
+                }
+
 				Map<String,Object> map = new HashMap<String,Object>();
+
 				map = userInfoService.getSubClientsAccountCount(userName,agentName, brokerName);
 				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 				cr.setData(map);
 				cr.setMsg("操作成功！");
+				log.setUserId(users.getId());
+				log.setContent("查询成功");
 			}
 
 		} catch (Exception e) {
@@ -670,6 +771,8 @@ public class UserInfoController {
 			throw e;
 			// e.printStackTrace();
 		}
+		logRecordService.add(log);
+		AuditLog.info(log.toString());
 		return JSON.toJSONString(cr);
 	}
 
@@ -679,8 +782,17 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/cheageBroker")
 	@ResponseBody
-	 public CommonResponse cheageBroker(HttpServletRequest request,String userId,Long  brokerId){
+	 public CommonResponse cheageBroker(HttpServletRequest request,String userId,Long  brokerId) throws ParseException {
 	 	CommonResponse response = new CommonResponse();
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("变更经济人");
+		log.setContent("变更失败");
+		log.setModuleName(ConstantUtil.logRecordModule.ZHXX.getName());
+		log.setType(ConstantUtil.logRecordType.XG.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 	 	try{
 	 		HttpSession session = request.getSession();
 	 		Users users = (Users)session.getAttribute("currentUser");
@@ -690,6 +802,8 @@ public class UserInfoController {
 	 				response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 					response.setData(msg);
 					response.setMsg("变更成功");
+					log.setUserId(users.getId());
+					log.setContent("变更成功");
 	 			}else{
 					response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 					response.setData(msg);
@@ -699,6 +813,8 @@ public class UserInfoController {
 		}catch (Exception e){
 	 		e.printStackTrace();
 		}
+		logRecordService.add(log);
+		AuditLog.info(log.toString());
 		return response;
 	 }
 
@@ -707,17 +823,29 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/alertAgentAndBroker")
 	@ResponseBody
-	public CommonResponse alertAgentAndBroker(HttpServletRequest request,String userId,Long  brokerId,Long agentId){
+	public CommonResponse alertAgentAndBroker(HttpServletRequest request, String userId, String realName, String idcard,
+			Long  brokerId, Long agentId) throws ParseException {
 		CommonResponse response = new CommonResponse();
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("变更经济人");
+		log.setContent("变更失败");
+		log.setModuleName(ConstantUtil.logRecordModule.ZHXX.getName());
+		log.setType(ConstantUtil.logRecordType.XG.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		try{
 			HttpSession session = request.getSession();
 			Users users = (Users)session.getAttribute("currentUser");
 			if (users != null){
-				int msg = userInfoService.alertAgentAndBroker(Long.valueOf(userId),brokerId,agentId);
+				int msg = userInfoService.alertAgentAndBroker(realName, idcard, Long.valueOf(userId), brokerId,agentId);
 				if (msg>0){
 					response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 					response.setData(msg);
 					response.setMsg("变更成功");
+					log.setUserId(users.getId());
+					log.setContent("变更成功");
 				}else{
 					response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 					response.setData(msg);
@@ -727,6 +855,8 @@ public class UserInfoController {
 		}catch (Exception e){
 			e.printStackTrace();
 		}
+		logRecordService.add(log);
+		AuditLog.info(log.toString());
 		return response;
 	}
 	
@@ -737,7 +867,7 @@ public class UserInfoController {
 	* @param request
 	* @param startTime  开始时间
 	* @param endTime  结束时间
-	* @param loginFrom  登录来源
+	* @param registerFrom  登录来源
 	* @param agentName 代理商id
 	* @param pageNum
 	* @param pageSize
@@ -749,7 +879,7 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/getByUserAnalysis")
 	@ResponseBody
-	public Object getByUserAnalysis(HttpServletRequest request, String type, String startTime, String endTime, String loginFrom, String agentName,
+	public Object getByUserAnalysis(HttpServletRequest request, String type, String startTime, String endTime, String registerFrom, String agentName,
 			 @RequestParam Integer pageNum, @RequestParam Integer pageSize) throws Exception {
 		CommonResponse cr = new CommonResponse();
 		//操作日志
@@ -795,7 +925,7 @@ public class UserInfoController {
             			eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
             		}
             	}
-                PageInfo<Map<String, Object>> pageInfo = userInfoService.getByUserAnalysis(sTime, eTime, loginFrom, agentName, pageNum, pageSize);
+                PageInfo<Map<String, Object>> pageInfo = userInfoService.getByUserAnalysis(sTime, eTime, registerFrom, agentName, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
@@ -826,7 +956,7 @@ public class UserInfoController {
 	* @param request
 	* @param startTime  开始时间
 	* @param endTime  结束时间
-	* @param loginFrom  登录来源
+	* @param registerFrom  登录来源
 	* @param agentName 代理商id
 	* @param
 	* @return    设定文件 
@@ -837,7 +967,7 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/getByUserAnalysisCount")
 	@ResponseBody
-	public Object getByUserAnalysisCount(HttpServletRequest request, String type, String startTime, String endTime, String loginFrom, String agentName) throws Exception {
+	public Object getByUserAnalysisCount(HttpServletRequest request, String type, String startTime, String endTime, String registerFrom, String agentName) throws Exception {
 		CommonResponse cr = new CommonResponse();
 		//操作日志
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -880,7 +1010,7 @@ public class UserInfoController {
             			eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
             		}
             	}
-                List<Map<String, Object>> list = userInfoService.getByUserAnalysisCount(sTime, eTime, loginFrom, agentName);
+                List<Map<String, Object>> list = userInfoService.getByUserAnalysisCount(sTime, eTime, registerFrom, agentName);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(list);
                 cr.setMsg("操作成功！");
@@ -912,7 +1042,7 @@ public class UserInfoController {
 	* @param response
 	* @param startTime  开始时间
 	* @param endTime  结束时间
-	* @param loginFrom 来源
+	* @param registerFrom 来源
 	* @param agentName 代理商id
 	* @throws Exception    设定文件 
 	* @return void    返回类型 
@@ -922,7 +1052,7 @@ public class UserInfoController {
 	@RequestMapping(value = "/excelByUserAnalysis")
 	@ResponseBody
 	public void excelByUserAnalysis(HttpServletRequest request, HttpServletResponse response, String type, String startTime, String endTime,
-			String loginFrom, String agentName) throws Exception {
+			String registerFrom, String agentName) throws Exception {
 		//操作日志
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         LogRecord log = new LogRecord();
@@ -966,53 +1096,16 @@ public class UserInfoController {
             			eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
             		}
             	}
-				List<Map<String, Object>> list = userInfoService.excelByUserAnalysis(sTime, eTime, loginFrom, agentName);
-				if (list != null && list.size() > 0) {
-					for (Map<String, Object> map : list) {
-						Object xrjblObj = map.get("xrjbl");
-						Object xjqjyblObj = map.get("xjqjybl");
-						Object xhjwzblObj = map.get("xhjwzbl");
-						Object xsycblObj = map.get("xsycbl");
-						Object xswhjblObj = map.get("xswhjbl");
-						
-						if (xrjblObj != null && xrjblObj != "") {
-	                    	Double xrjbl = Double.valueOf(xrjblObj.toString());
-	                    	DecimalFormat df = new DecimalFormat("0.00%");
-	                    	map.put("xrjbl", df.format(xrjbl));
-	                    }
-						if (xjqjyblObj != null && xjqjyblObj != "") {
-	                    	Double xjqjybl = Double.valueOf(xjqjyblObj.toString());
-	                    	DecimalFormat df = new DecimalFormat("0.00%");
-	                    	map.put("xjqjybl", df.format(xjqjybl));
-	                    }
-						if (xhjwzblObj != null && xhjwzblObj != "") {
-	                    	Double xhjwzbl = Double.valueOf(xhjwzblObj.toString());
-	                    	DecimalFormat df = new DecimalFormat("0.00%");
-	                    	map.put("xhjwzbl", df.format(xhjwzbl));
-	                    }
-						if (xsycblObj != null && xsycblObj != "") {
-	                    	Double xsycbl = Double.valueOf(xsycblObj.toString());
-	                    	DecimalFormat df = new DecimalFormat("0.00%");
-	                    	map.put("xsycbl", df.format(xsycbl));
-	                    }
-						if (xswhjblObj != null && xswhjblObj != "") {
-	                    	Double xswhjbl = Double.valueOf(xswhjblObj.toString());
-	                    	DecimalFormat df = new DecimalFormat("0.00%");
-	                    	map.put("xswhjbl", df.format(xswhjbl));
-	                    }
-					}
-				}
+				List<Map<String, Object>> list = userInfoService.excelByUserAnalysis(sTime, eTime, registerFrom, agentName);
 				POIUtils poi = new POIUtils();
 				String[] heads = { "日期", "合计入金用户", "新入金用户", "新入金用户比例", 
-						"金权交易合计交易用户", "金权交易新交易用户", "金权交易新交易用户比例", "黄金稳赚合计交易用户",
-						"黄金稳赚新交易用户", "黄金稳赚新交易用户比例", "实物黄金合计交易用户", "实物黄金新交易用户",
-						"实物黄金新交易用户比例", "随意存合计交易用户", "随意存新交易用户", "随意存新交易用户比例",
-						"新注册用户", "总用户", "总入金用户" };
+						"金权交易合计交易用户", "金权交易新交易用户", "金权交易新交易用户比例", "稳赚金合计交易用户",
+						"稳赚金交易用户", "稳赚金新交易用户比例", "存金宝合计交易用户", "存金宝新交易用户",
+						"存金宝新交易用户比例", "新注册用户", "总交易用户", "总用户", "总入金用户" };
 				String[] colums = { "date", "hjrj", "xrj", "xrjbl",
-						"hjjqjy", "xjqjy", "xjqjybl", "hjhjwz",
-						"xhjwz", "xhjwzbl", "hjswhj", "xswhj",
-						"xswhjbl", "hjsyc", "xsyc", "xsycbl",
-						"xzc", "zzc", "zrj" };
+						"hjjqjy", "xjqjy", "xjqjybl", "hjdqj",
+						"xdqj", "xdqjbl", "hjcjb", "xcjb",
+						"xcjbbl", "xzc", "zjy", "zzc", "zrj" };
 				poi.doExport(request, response, list, tieleName, excelName,
 						heads, colums);
 				log.setUserId(users.getId());

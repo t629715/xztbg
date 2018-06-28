@@ -18,27 +18,29 @@
   </resultMap>
   <!--获取满足条件的咨询信息 -tianliya-start-->
   <select id="getByAll" resultType="java.util.Map" parameterType="java.util.Map" >
-  	select info_id as infoId, title, state, createtime, releasetime, operator, contentpath contentPath,
-            content_from_type contentFromType,information_from informationFrom, imagepath imagePath, state
-    from info_information
+  	select ii.info_id as infoId, ii.title, ii.state, ii.createtime, ii.releasetime, ii.operator,
+          ii.contentpath contentPath,
+            ii.content_from_type contentFromType,ii.information_from informationFrom, ii.imagepath imagePath,
+      IF( ISNULL(ip.id),FALSE,TRUE) isSetPush
+    from info_information ii left join info_push ip on ii.title = ip.title
     <where>
 	    <if test="title != null and title !='' ">
-	    	and title like concat(concat('%',#{title,jdbcType=VARCHAR}),'%')
+	    	and ii.title like concat(concat('%',#{title,jdbcType=VARCHAR}),'%')
 	    </if>
 	    <if test="startTime !=null and startTime !='' ">
-			and releasetime &gt;=#{startTime,jdbcType=TIMESTAMP}
+			and ii.releasetime &gt;=#{startTime,jdbcType=TIMESTAMP}
 		</if>
 		<if test="endTime !=null and endTime !='' ">
-			and releasetime &lt;=#{endTime,jdbcType=TIMESTAMP}
+			and ii.releasetime &lt;=#{endTime,jdbcType=TIMESTAMP}
 		</if>
 		<if test="state != null">
-			and state = #{state,jdbcType=SMALLINT}
+			and ii.state = #{state,jdbcType=SMALLINT}
 		</if>
 		<if test="operator != null and operator !='' ">
-			and operator = #{operator,jdbcType=VARCHAR}
+			and ii.operator = #{operator,jdbcType=VARCHAR}
 		</if>
     </where>
-    order by  createtime desc
+    order by  ii.createtime desc
   </select>
   <!--获取满足条件的咨询信息 -tianliya-end-->
     <!--根据主键查询一条数据-tianliya-start-->

@@ -33,7 +33,7 @@ public class GoldIncomeRecordServiceImpl extends BaseService<GoldIncomeRecord> i
 	 */
 	public PageInfo<Map<String, Object>> selectByGoldIncome(String userName,
 			String startTime, String endTime, String startTypeTime, String endTypeTime, 
-			String agentName, String brokerName, Integer type, Integer pageNum, Integer pageSize) {
+			String agentName, String brokerName, Integer type, String isView, Integer pageNum, Integer pageSize) {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("startTime", startTime);
@@ -43,6 +43,7 @@ public class GoldIncomeRecordServiceImpl extends BaseService<GoldIncomeRecord> i
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         map.put("type", type);
+        map.put("isView", isView);
         PageHelper.startPage(pageNum,pageSize);
         List<Map<String, Object>> list = goldIncomeRecordMapper.selectByGoldIncome(map);
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
@@ -54,7 +55,7 @@ public class GoldIncomeRecordServiceImpl extends BaseService<GoldIncomeRecord> i
 	 */
 	public List<Map<String, Object>> excelGoldIncome(String userName,
 			String startTime, String endTime, String startTypeTime, String endTypeTime, 
-			String agentName, String brokerName, Integer type) {
+			String agentName, String brokerName, Integer type, String isView) {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("startTime", startTime);
@@ -64,6 +65,7 @@ public class GoldIncomeRecordServiceImpl extends BaseService<GoldIncomeRecord> i
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         map.put("type", type);
+        map.put("isView", isView);
         List<Map<String, Object>> list = goldIncomeRecordMapper.selectByGoldIncome(map);
         return list;
 	}

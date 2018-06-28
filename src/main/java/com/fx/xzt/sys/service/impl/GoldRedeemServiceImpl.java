@@ -44,12 +44,13 @@ public class GoldRedeemServiceImpl extends BaseService<GoldRedeem> implements Go
 	 * 黄金赎回查询
 	 */
 	public PageInfo<Map<String, Object>> selectByGoldRedeem(String userName, String startTime, String endTime, 
-			String channelName, Integer pageNum, Integer pageSize) {
+			String channelName, String isView, Integer pageNum, Integer pageSize) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("userName", userName);
         map.put("startTime", startTime);
         map.put("endTime", endTime);
         map.put("channelName", channelName);
+        map.put("isView", isView);
         PageHelper.startPage(pageNum,pageSize);
         List<Map<String, Object>> list = goldRedeemMapper.selectByGoldRedeem(map);
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
@@ -59,12 +60,13 @@ public class GoldRedeemServiceImpl extends BaseService<GoldRedeem> implements Go
 	/**
 	 * 黄金赎回-导出
 	 */
-	public List<Map<String, Object>> excelGoldRedeem(String userName, String startTime, String endTime, String channelName) {
+	public List<Map<String, Object>> excelGoldRedeem(String userName, String startTime, String endTime, String channelName, String isView) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("userName", userName);
         map.put("startTime", startTime);
         map.put("endTime", endTime);
         map.put("channelName", channelName);
+        map.put("isView", isView);
         List<Map<String, Object>> list = goldRedeemMapper.selectByGoldRedeem(map);
         return list;
 	}

@@ -68,8 +68,13 @@ public class RiskaccessController {
         try {
         	HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
 			 if (users != null) {
-				 PageInfo<Map<String, Object>> pageInfo = riskaccessService.getByRiskaccessAll(userName, realName, startTime, endTime, accessLevel, pageNum, pageSize);
+				 String isView = "0";
+		         if (role != null && role.get("roleIsView") != null) {
+		              isView = role.get("roleIsView").toString();
+		          }
+				 PageInfo<Map<String, Object>> pageInfo = riskaccessService.getByRiskaccessAll(userName, realName, startTime, endTime, accessLevel, isView, pageNum, pageSize);
 		            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 		            cr.setData(pageInfo);
 		            cr.setMsg("操作成功！");

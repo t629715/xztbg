@@ -15,7 +15,14 @@
 
     <!--实金交易开始-htt-->
     <select id="selectByRealGoldOrder" resultType="java.util.Map" parameterType="java.util.Map">
-      SELECT o.id id, o.order_no orderNo, o.user_id userID, u.UserName userName,i.RegisterTime registerTime,
+      SELECT o.id id, o.order_no orderNo, o.user_id userID, 
+      	<if test='isView == "1"'>
+			u.UserName userName,
+		</if>
+		<if test='isView != "1"'>
+			INSERT(u.UserName, 4, 4, '****') userName,
+		</if>
+      i.RegisterTime registerTime,
       o.agent_id AS agentId, ua.user_name AS agentName, o.broker_id AS brokerId, ub.user_name AS brokerName ,
       o.gold_product_id goldProductId, c.name productName,o.buy_price buyPrice, o.gram gram,
       o.rmb_amount rmbAmount, o.fee fee,o.buy_time buyTime, s.share_amount shareAmount,

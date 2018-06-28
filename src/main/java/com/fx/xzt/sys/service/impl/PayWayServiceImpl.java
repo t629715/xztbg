@@ -1,11 +1,19 @@
 package com.fx.xzt.sys.service.impl;
 
+import com.fx.xzt.exception.GlobalException;
 import com.fx.xzt.sys.entity.IncomeSharingConf;
 import com.fx.xzt.sys.entity.PayWay;
+import com.fx.xzt.sys.entity.UserLogin;
+import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.mapper.IncomeSharingConfMapper;
 import com.fx.xzt.sys.mapper.PayWayMapper;
+import com.fx.xzt.sys.mapper.UserLoginMapper;
+import com.fx.xzt.sys.mapper.UserRechargeMapper;
 import com.fx.xzt.sys.service.IncomeSharingConfService;
 import com.fx.xzt.sys.service.PayWayService;
+import com.fx.xzt.sys.util.CommonResponse;
+import com.fx.xzt.sys.util.Constant;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +26,8 @@ import java.util.Map;
 public class PayWayServiceImpl extends BaseService<PayWay> implements PayWayService {
     @Resource
     private PayWayMapper payWayMapper;
+
+
 
     /**
      * 获取设备所支持的支付方式
@@ -46,4 +56,6 @@ public class PayWayServiceImpl extends BaseService<PayWay> implements PayWayServ
         }
         return msg;
     }
+
+
 }

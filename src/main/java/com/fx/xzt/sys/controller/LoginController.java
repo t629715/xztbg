@@ -12,35 +12,32 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import com.alibaba.druid.sql.visitor.functions.Char;
-import com.fx.xzt.redis.RedisService;
-import com.fx.xzt.sys.util.CommonResponse;
-import com.fx.xzt.sys.util.ConstantUtil;
-import com.fx.xzt.sys.util.StringUtil;
-import com.fx.xzt.util.CaptchaUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import tk.mybatis.mapper.entity.Example;
+
+import com.fx.xzt.redis.RedisService;
 import com.fx.xzt.shiro.MyAuthenticationToken;
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.service.UsersService;
+import com.fx.xzt.sys.util.CommonResponse;
+import com.fx.xzt.sys.util.ConstantUtil;
+import com.fx.xzt.sys.util.StringUtil;
+import com.fx.xzt.util.CaptchaUtil;
 import com.fx.xzt.util.LoggerUtils;
 import com.fx.xzt.util.MD5Utils;
 import com.fx.xzt.util.OSCache;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-
-import tk.mybatis.mapper.entity.Example;
 
 /**
  * 
@@ -71,6 +68,7 @@ public class LoginController {
 	@ResponseBody
 	public Map checkLogin(String userName,String password,Model model,HttpServletRequest request,String validateCode){
 		Map<String,Object> map = new HashMap<String,Object>();
+		String sessionId = request.getSession().getId();
 		logger.debug("userInfo", userName);
 		 password = MD5Utils.encrypt(password);
 		MyAuthenticationToken token = new MyAuthenticationToken(userName, password, true, null);
@@ -87,10 +85,12 @@ public class LoginController {
 				}
 			}
 			validateCode = String.valueOf(strs);
-			if (!validateCode.equals(redisService.get("validateCode").toString())){
+
+			if (!validateCode.equals(redisService.get(sessionId).toString())){
 				map.put("msg","验证码错误");
 				return map;
 			}
+			redisService.delete(sessionId);
 			subject.login(token);//会到自定义的Realm中进行验证返回
 			if(subject.isAuthenticated()){
 				    Example example = new Example(Users.class);
@@ -141,12 +141,13 @@ public class LoginController {
 	 */
 	@RequestMapping(value = "/captcha", method = RequestMethod.GET)
 	@ResponseBody
-	public void captcha(HttpServletRequest request, HttpServletResponse response)
+	public void captcha(HttpServletRequest request, HttpServletResponse response, String randomCode)
 			throws ServletException, IOException
 	{
+		String sessionId = request.getSession().getId();
 		Map map = CaptchaUtil.outputCaptcha();
 		// 将四位数字的验证码保存到Session中。
-		redisService.put("validateCode",map.get("code").toString(),1000*50);
+		redisService.put(sessionId,map.get("code").toString(),1000*50);
 		// 禁止图像缓存。
 		response.setHeader("Pragma", "no-cache");
 		response.setHeader("Cache-Control", "no-cache");

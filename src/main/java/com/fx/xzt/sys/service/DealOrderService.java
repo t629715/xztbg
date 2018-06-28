@@ -23,13 +23,14 @@ public interface DealOrderService {
      * @param agentName
      * @param brokerName
      * @param orderState
+     * @param isView 
      * @param pageNum
      * @param pageSize
      * @return
      */
     PageInfo<Map<String, Object>> selectByDealOrder(String userName, String orderNo, String startTime, String endTime, 
     		String regStartTime, String regEndTime, String agentName, String brokerName, Integer orderState, 
-    		Integer isUseCard,String upOrDown, Integer pageNum, Integer pageSize);
+    		Integer isUseCard,String upOrDown, String isView, Integer pageNum, Integer pageSize);
 
     /**
      *
@@ -42,11 +43,12 @@ public interface DealOrderService {
      * @param agentName
      * @param brokerName
      * @param orderState
+     * @param isView 
      * @return
      */
     List<Map<String, Object>> excelDealOrderMessage(String userName, String orderNo, String startTime, String endTime, 
     		String regStartTime, String regEndTime, String agentName, String brokerName, 
-    		Integer orderState, Integer isUseCard, String upOrDown);
+    		Integer orderState, Integer isUseCard, String upOrDown, String isView);
 
     /**
      *

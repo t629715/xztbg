@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.fx.xzt.sys.service.PayWayService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +22,7 @@ import com.fx.xzt.sys.entity.LogRecord;
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.service.InOutGoldService;
 import com.fx.xzt.sys.service.LogRecordService;
+import com.fx.xzt.sys.service.PayWayService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
 import com.fx.xzt.sys.util.DateUtil;
@@ -84,8 +84,14 @@ public class InOutGoldController {
         try {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
-                PageInfo<Map<String, Object>> pageInfo = inOutGoldService.selectByInOutGold(userName, agentName, brokerName, pageNum, pageSize);
+            	String isView = "0";
+		        if (role != null && role.get("roleIsView") != null) {
+		            isView = role.get("roleIsView").toString();
+		        }
+                PageInfo<Map<String, Object>> pageInfo = inOutGoldService.selectByInOutGold(userName, agentName, brokerName, 
+                		isView, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
@@ -140,35 +146,24 @@ public class InOutGoldController {
             String excelName = "出入金查询";
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
             if (users != null) {
+            	String isView = "0";
+		        if (role != null && role.get("roleIsView") != null) {
+		            isView = role.get("roleIsView").toString();
+		        }
                 String agentNameStr = agentName;
                 if (users.getPid() != null &&  users.getPid() == 1) {
                     agentNameStr = users.getUserName();
                 }
-                List<Map<String, Object>> list = inOutGoldService.excelInOutGold(userName, agentNameStr, brokerName);
-                if (list != null && list.size() > 0) {
-                    for (Map<String, Object> map : list) {
-                    	Object registerTimeObj = map.get("registerTime");
-                    	
-               		 	if (registerTimeObj != null && registerTimeObj != "") {
-               		 		map.put("registerTime", sdf.format(sdf.parse(registerTimeObj.toString())));
-                        }
-                    	map.put("cj", StringUtil.fundsHandle(map.get("cj")));
-                    	map.put("rj", StringUtil.fundsHandle(map.get("rj")));
-                    	map.put("finance", StringUtil.fundsHandle(map.get("finance")));
-                    	map.put("totalIncome", StringUtil.fundsHandle(map.get("totalIncome")));
-                    	map.put("sjAmount", StringUtil.fundsHandle(map.get("sjAmount")));
-                    	map.put("cbf", StringUtil.fundsHandle(map.get("cbf")));
-                    	map.put("rmb", StringUtil.fundsHandle(map.get("rmb")));
-                    }
-                    POIUtils poi = new POIUtils();
-                    //判断是否为代理商账户
-                    String[] heads = {"姓名", "用户账号",  "代理商", "经纪人", "注册时间", "入金", "出金", "成本", "账户余额", "利息", "理财", "买入黄金资金"};
-                    String[] colums = {"realName", "userName", "agentName", "brokerName", "registerTime", "cj", "rj", "cbf", "rmb", "totalIncome", "finance","sjAmount"};
-                    poi.doExport(request, response, list, tieleName, excelName, heads, colums);
-                    log.setUserId(users.getId());
-                    log.setContent("导出成功，共：" + list.size() + "条数据");
-                }
+                List<Map<String, Object>> list = inOutGoldService.excelInOutGold(userName, agentNameStr, brokerName, isView);
+                POIUtils poi = new POIUtils();
+                //判断是否为代理商账户
+                String[] heads = {"姓名", "用户账号",  "代理商", "经纪人", "注册时间", "入金", "出金", "净入金", "账户余额", "黄金收益", "提金", "理财", "黄金资产买入", "黄金资产卖出"};
+                String[] colums = {"realName", "userName", "agentName", "brokerName", "registerTime", "rj", "cj", "jrj", "rmb", "totalIncome", "tj","lc", "hjb", "hjs"};
+                poi.doExport(request, response, list, tieleName, excelName, heads, colums);
+                log.setUserId(users.getId());
+                log.setContent("导出成功，共：" + list.size() + "条数据");
             }
         } catch (Exception e) {
             throw e;

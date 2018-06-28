@@ -16,7 +16,7 @@
     </collection>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, create_time
+    id, name, create_time, isView
   </sql>
   <select id="getByAll" resultMap="BaseResultMap" parameterType="com.fx.xzt.sys.entity.UsersRole" >
   	select 
@@ -40,6 +40,9 @@
       <if test="createTime != null" >
         create_time,
       </if>
+      <if test="isView != null" >
+        isView,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -51,6 +54,9 @@
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="isView != null" >
+        #{isView,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
 
@@ -60,6 +66,9 @@
     <set >
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="isView != null" >
+        isView = #{isView,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -76,7 +85,7 @@
 
   <!--tianliya-->
   <select id="getRoles" resultType="java.util.Map" parameterType="java.util.Map">
-    select ur.id, ur.`name` rname, ur.create_time  rCreateTime, group_concat(us.user_name) userNames
+    select ur.id, ur.`name` rname, ur.create_time  rCreateTime, ur.isView isView, group_concat(us.user_name) userNames
     from users_role ur
     left join users_user_role uur
     on ur.id = uur.rid
@@ -97,6 +106,17 @@
     group by ur.name
     order by ur.id
   </select>
+  
+  <!-- 根据id获取角色信息-开始 -->
+  <select id="getById" resultType="java.util.Map" parameterType="java.lang.String">
+    select id, name, isView from users_role
+    <where>
+      <if test="id != null and id != ''">
+        and id = #{id,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+  <!-- 根据id获取角色信息-结束 -->
 
 <!--   <sql id="Example_Where_Clause" >
     <where >

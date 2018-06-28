@@ -1,6 +1,7 @@
 package com.fx.xzt.sys.service.impl;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
@@ -251,8 +252,27 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 	 *  获取代理商列表
 	 * @return
 	 */
-	public List<Map<String,Object>> selectByAgentMessage(){
-		return usersMapper.selectByAgentMessage();
+	public List<Map<String,Object>> selectByAgentMessage(Long pid){
+		Map map = new HashMap();
+		map.put("pid",pid);
+		Map<String, Object> result = new ConcurrentHashMap<>();
+		result.put("id","");
+		result.put("agentName","默认");
+		List<Map<String, Object>> resultList = new ArrayList<>();
+		if (usersMapper.selectByAgentMessage().size() != 0 && usersMapper.selectByAgentMessage() != null){
+			resultList.add(result);
+			if (pid == null){
+				resultList.addAll(usersMapper.selectByAgentMessage());
+			}
+		}
+		return resultList;
+	}
+	public List<Map<String,Object>> selectByAgentMessage1(){
+		List<Map<String, Object>> resultList = new ArrayList<>();
+		if (usersMapper.selectByAgentMessage().size() != 0 && usersMapper.selectByAgentMessage() != null){
+			resultList.addAll(usersMapper.selectByAgentMessage());
+		}
+		return resultList;
 	}
 
 	/**
@@ -263,7 +283,25 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 	public List<Map<String,Object>> selectByBrokerMessage(Long pid) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("pid",pid);
-		return usersMapper.selectByBrokerMessage(map);
+		List<Map<String, Object>> resultList = new ArrayList<>();
+		if (usersMapper.selectByBrokerMessage(map).size() != 0 && usersMapper.selectByBrokerMessage(map) != null){
+			resultList.addAll(usersMapper.selectByBrokerMessage(map));
+		}
+		return resultList;
+	}
+	public List<Map<String,Object>> selectByBrokerMessage1(Long pid) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("pid",pid);
+		List<Map<String, Object>> resultList = new ArrayList<>();
+		Map<String, Object> result = new ConcurrentHashMap<>();
+        result.put("id","");
+        result.put("brokerName","默认");
+        resultList.add(result);
+		if (usersMapper.selectByBrokerMessage(map).size() != 0 && usersMapper.selectByBrokerMessage(map) != null){
+
+			resultList.addAll(usersMapper.selectByBrokerMessage(map));
+		}
+		return resultList;
 	}
 
 

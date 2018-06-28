@@ -2,7 +2,9 @@ export default{
     install(Vue,options){
       //  Vue.prototype.url= "http://www.baidu.com/"   //可以自定义变量
       //自定义方法 调用时 this.fun1
-
+      Vue.prototype.fun1=function(){
+        alert('hello1')
+      };
 
       //判断是否为空
       Vue.prototype.isNotEmpty = function(str) {

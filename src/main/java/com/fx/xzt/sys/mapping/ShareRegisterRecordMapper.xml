@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fx.xzt.sys.mapper.ShareRegisterRecordMapper">
+   
+    <!--查询开始-htt-->
+    <select id="selectByAll" resultType="java.util.Map" parameterType="java.util.Map">
+    select sr.id, sr.share_userid shareUserId, 
+    		<if test='isView == "1"'>
+				l2.UserName shareUserName,
+			</if>
+			<if test='isView != "1"'>
+			    INSERT(l2.UserName, 4, 4, '****') shareUserName,
+			</if>
+    	sr.new_userid newUserId,
+    		<if test='isView == "1"'>
+				l1.UserName newUserName,
+			</if>
+			<if test='isView != "1"'>
+			    INSERT(l1.UserName, 4, 4, '****') newUserName,
+			</if>
+		sr.accept_prize acceptPrize, sr.create_time createTime, sr.update_time updateTime, sr.remark, 
+		sr.agent_id AS agentId, ua.user_name AS agentName, sr.broker_id AS brokerId, ub.user_name AS brokerName 
+	from share_register_record sr
+	left join User_Login l1 on sr.new_userid = l1.UserID
+	left join User_Login l2 on sr.share_userid = l2.UserID
+	LEFT JOIN users ua ON sr.agent_id = ua.id
+	LEFT JOIN users ub ON sr.broker_id = ub.id
+      <where>
+        <!--   and l2.Status = 1 -->
+          <if test="userName != null and userName != '' ">
+            and l2.UserName = #{userName,jdbcType=VARCHAR}
+          </if>
+          <if test="acceptPrize != null and acceptPrize != '' ">
+              and sr.accept_prize = #{acceptPrize,jdbcType=INTEGER}
+          </if>
+          <if test="startTime !=null and startTime !='' ">
+              and sr.create_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+          </if>
+          <if test="endTime !=null and endTime != '' ">
+              and sr.create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+          </if>
+          <if test="agentName != null and agentName !='' ">
+              and ua.id = #{agentName,jdbcType=BIGINT}
+          </if>
+          <if test="brokerName != null and brokerName !='' ">
+              and ub.id = #{brokerName,jdbcType=BIGINT}
+          </if>
+      </where>
+        order by sr.create_time DESC
+    </select>
+    <!--查询结束-htt-->
+</mapper>

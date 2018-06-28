@@ -1,13 +1,17 @@
 package com.fx.xzt.sys.controller;
 
+import com.fx.xzt.sys.entity.LogRecord;
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.entity.UsersPermission;
 import com.fx.xzt.sys.model.TreeModel;
 import com.fx.xzt.sys.model.UsersModel;
+import com.fx.xzt.sys.service.LogRecordService;
 import com.fx.xzt.sys.service.UsersPermissionService;
 import com.fx.xzt.sys.service.UsersService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.ConstantUtil;
+import com.fx.xzt.sys.util.IPUtil;
+import com.fx.xzt.sys.util.log.AuditLog;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +19,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +43,9 @@ public class UserPermissionController {
 	private UsersService userService;
 	@Resource
 	UsersPermissionService usersPermissionService;
+
+	@Resource
+	LogRecordService logRecordService;
 	
 	/**
 	 * 插入新用户
@@ -97,11 +108,29 @@ public class UserPermissionController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="/delete", method=RequestMethod.DELETE)
-	public String delete(@RequestParam Long uid){
+	public String delete(HttpServletRequest request,@RequestParam Long uid) throws ParseException {
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("删除用户");
+		log.setContent("删除失败");
+		log.setModuleName("账号管理");
+		log.setType(ConstantUtil.logRecordType.WLSC.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
+		HttpSession session = request.getSession();
+		Users users = (Users) session.getAttribute("currentUser");
 		Integer count = userService.delete(uid);
 		if(count>0){
+			log.setContent("删除成功");
+			log.setUserId(users.getId());
+			logRecordService.add(log);
+			AuditLog.info(log.toString());
 			return "删除用户信息成功";
 		}
+		log.setContent("删除失败");
+		log.setUserId(users.getId());
+		logRecordService.add(log);
 		return "删除用户信息失败";
 	}
 	/**
@@ -109,9 +138,26 @@ public class UserPermissionController {
 	 */
 	@RequestMapping(value="/insertUser")
 	@ResponseBody
-	public Map<String,Object> insertUser(Users users,@RequestParam(value="rids", required=false)List<Integer> rids){
+	public Map<String,Object> insertUser(HttpServletRequest request,@RequestParam(value="rids", required=false)List<Integer> rids) throws ParseException {
 		Map<String,Object> map = new HashMap<String,Object>();
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("添加后台用户");
+		log.setContent("添加失败");
+		log.setModuleName("账号管理");
+		log.setType(ConstantUtil.logRecordType.WLSC.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
+		HttpSession session = request.getSession();
+		Users users = (Users) session.getAttribute("currentUser");
 		int msg = userService.insertUsers(users, rids);
+		if (msg > 0){
+			log.setUserId(users.getId());
+			log.setContent("添加后台用户成功");
+		}
+		logRecordService.add(log);
+		AuditLog.info(log.toString());
 		map.put("msg", msg);
 		return map;
 	}
@@ -120,9 +166,26 @@ public class UserPermissionController {
 	 */
 	@RequestMapping(value="/deleteUser")
 	@ResponseBody
-	public Map<String,Object> deleteUser(Long id){
+	public Map<String,Object> deleteUser(HttpServletRequest request,Long id) throws ParseException {
 		Map<String,Object> map = new HashMap<String,Object>();
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("删除后台用户");
+		log.setContent("删除失败");
+		log.setModuleName("账号管理");
+		log.setType(ConstantUtil.logRecordType.WLSC.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
+		HttpSession session = request.getSession();
+		Users users = (Users) session.getAttribute("currentUser");
 		int msg = userService.deleteById(id);
+		if (msg > 0){
+			log.setUserId(users.getId());
+			log.setContent("删除后台用户成功");
+		}
+		logRecordService.add(log);
+		AuditLog.info(log.toString());
 		map.put("msg", msg);
 		return map;
 	}
@@ -131,9 +194,26 @@ public class UserPermissionController {
 	 */
 	@RequestMapping(value="/updateUser")
 	@ResponseBody
-	public Map<String,Object> updateUser(Users users,@RequestParam(value="rids", required=false)List<Integer> rids){
+	public Map<String,Object> updateUser(HttpServletRequest request,Users user,@RequestParam(value="rids", required=false)List<Integer> rids) throws ParseException {
 		Map<String,Object> map = new HashMap<String,Object>();
-		int msg = userService.updateByIdSelective(users, rids);
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("修改后台用户");
+		log.setContent("修改失败");
+		log.setModuleName("账号管理");
+		log.setType(ConstantUtil.logRecordType.WLSC.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
+		HttpSession session = request.getSession();
+		Users users = (Users) session.getAttribute("currentUser");
+		int msg = userService.updateByIdSelective(user, rids);
+		if (msg>0){
+			log.setUserId(users.getId());
+			log.setContent("修改后台用户成功");
+		}
+		logRecordService.add(log);
+		AuditLog.info(log.toString());
 		map.put("msg", msg);
 		return map;
 	}
@@ -153,10 +233,12 @@ public class UserPermissionController {
 	 */
 	@RequestMapping(value="/selectByAgentMessage")
 	@ResponseBody
-	public Object selectByAgentMessage(){
+	public Object selectByAgentMessage(HttpServletRequest request){
 		CommonResponse cr = new CommonResponse();
         try {
-        	List<Map<String, Object>> list = userService.selectByAgentMessage();
+			HttpSession session = request.getSession();
+			Users users = (Users) session.getAttribute("currentUser");
+        	List<Map<String, Object>> list = userService.selectByAgentMessage(users.getPid());
         	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
             cr.setData(list);
             cr.setMsg("操作成功！");

@@ -45,7 +45,7 @@ public class FinanceOrderServiceImpl extends BaseService<FinanceOrder> implement
      * @return
      */
     public PageInfo<Map<String, Object>> selectByFinanceOrder(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime,
-    		String redeemStartTime, String redeemEndTime, String agentName, String brokerName, Integer status, Integer type, String nper, Integer pageNum, Integer pageSize) {
+    		String redeemStartTime, String redeemEndTime, String agentName, String brokerName, Integer status, Integer type, String nper, String isView, Integer pageNum, Integer pageSize) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("orderNo", orderNo);
@@ -60,6 +60,7 @@ public class FinanceOrderServiceImpl extends BaseService<FinanceOrder> implement
         map.put("status", status);
         map.put("type", type);
         map.put("nper", nper);
+        map.put("isView", isView);
         PageHelper.startPage(pageNum,pageSize);
         List<Map<String, Object>> list = financeOrderMapper.selectByFinanceOrder(map);
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
@@ -82,7 +83,7 @@ public class FinanceOrderServiceImpl extends BaseService<FinanceOrder> implement
      * @return
      */
     public List<Map<String, Object>> excelFinanceOrder(String userName, String orderNo, String startTime, String endTime, String regStartTime, String regEndTime,
-    		String redeemStartTime, String redeemEndTime, String agentName, String brokerName, Integer status, Integer type, String nper) throws ParseException {
+    		String redeemStartTime, String redeemEndTime, String agentName, String brokerName, Integer status, Integer type, String nper, String isView) throws ParseException {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("orderNo", orderNo);
@@ -97,6 +98,7 @@ public class FinanceOrderServiceImpl extends BaseService<FinanceOrder> implement
         map.put("status", status);
         map.put("type", type);
         map.put("nper", nper);
+        map.put("isView", isView);
         List<Map<String, Object>> list = financeOrderMapper.selectByFinanceOrder(map);
         return list;
     }
@@ -140,7 +142,7 @@ public class FinanceOrderServiceImpl extends BaseService<FinanceOrder> implement
      */
 	public PageInfo<Map<String, Object>> selectByGoldFinanceOrder(String userName, String orderNo, String startTime, String endTime,
 			String regStartTime, String regEndTime, String redeemStartTime, String redeemEndTime, String agentName, String brokerName,
-			Integer status, Integer type, String nper, Integer pageNum, Integer pageSize) {
+			Integer status, Integer type, String nper, String isView, Integer pageNum, Integer pageSize) {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("orderNo", orderNo);
@@ -155,6 +157,7 @@ public class FinanceOrderServiceImpl extends BaseService<FinanceOrder> implement
         map.put("status", status);
         map.put("type", type);
         map.put("nper", nper);
+        map.put("isView", isView);
         PageHelper.startPage(pageNum,pageSize);
         List<Map<String, Object>> list = financeOrderMapper.selectByGoldFinanceOrder(map);
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
@@ -166,7 +169,7 @@ public class FinanceOrderServiceImpl extends BaseService<FinanceOrder> implement
 	 */
 	public List<Map<String, Object>> excelGoldFinanceOrder(String userName, String orderNo, String startTime, String endTime,
 			String regStartTime, String regEndTime, String redeemStartTime, String redeemEndTime, String agentName, String brokerName,
-			Integer status, Integer type, String nper) throws ParseException {
+			Integer status, Integer type, String nper, String isView) throws ParseException {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("orderNo", orderNo);
@@ -181,6 +184,7 @@ public class FinanceOrderServiceImpl extends BaseService<FinanceOrder> implement
         map.put("status", status);
         map.put("type", type);
         map.put("nper", nper);
+        map.put("isView", isView);
         List<Map<String, Object>> list = financeOrderMapper.selectByGoldFinanceOrder(map);
         return list;
 	}

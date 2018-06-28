@@ -44,7 +44,6 @@ public class FinanceConfNewpalyerServiceImpl implements FinanceConfNewplayerServ
             e.printStackTrace();
             commonResponse.setCode(Constant.RESCODE_NOEXIST);
             commonResponse.setMsg("获取所有新手理财产品失败");
-            commonResponse.setData("{}");
         }
         return commonResponse;
     }

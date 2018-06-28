@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fx.xzt.sys.mapper.FinanceRegulargoldOrderMapper">
+    <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.FinanceRegulargoldOrder">
+        <id column="order_id" property="orderId" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="product_id" property="productId" jdbcType="BIGINT"/>
+        <result column="product_no" property="productNo" jdbcType="VARCHAR"/>
+        <result column="product_name" property="productName" jdbcType="VARCHAR"/>
+        <result column="product_type" property="productType" jdbcType="SMALLINT"/>
+        <result column="product_year_incom_percent" property="productYearIncomPercent"
+                jdbcType="REAL"/>
+        <result column="product_cycle" property="productCycle" jdbcType="INTEGER"/>
+        <result column="product_min_gram" property="productMinGram" jdbcType="INTEGER"/>
+        <result column="product_max_gram" property="productMaxGram" jdbcType="INTEGER"/>
+        <result column="product_settle_method" property="productSettleMethod" jdbcType="SMALLINT"/>
+        <result column="buy_type" property="buyType" jdbcType="SMALLINT"/>
+        <result column="buy_amount" property="buyAmount" jdbcType="BIGINT"/>
+        <result column="buy_time" property="buyTime" jdbcType="TIMESTAMP"/>
+        <result column="expire_time" property="expireTime" jdbcType="TIMESTAMP"/>
+        <result column="status" property="status" jdbcType="SMALLINT"/>
+        <result column="income_gram" property="incomeGram" jdbcType="BIGINT"/>
+        <result column="buy_price" property="buyPrice" jdbcType="INTEGER"/>
+        <result column="back_total_gram" property="backTotalGram" jdbcType="BIGINT"/>
+        <result column="voucher_value" property="voucherValue" jdbcType="BIGINT"/>
+        <result column="voucher_deductible" property="voucherDeductible" jdbcType="DOUBLE"/>
+        <result column="voucher_id" property="voucherId" jdbcType="BIGINT"/>
+        <result column="agent_id" property="agentId" jdbcType="BIGINT"/>
+        <result column="broker_id" property="brokerId" jdbcType="BIGINT"/>
+        <result column="gram" property="gram" jdbcType="DOUBLE"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    order_id, user_id, product_id, product_no, product_name, product_type, product_year_incom_percent, 
+    product_cycle, product_min_gram, product_max_gram, product_settle_method, buy_type, 
+    buy_amount, buy_time, expire_time, status, income_gram, buy_price, back_total_gram, 
+    voucher_value, voucher_deductible, voucher_id, agent_id, broker_id, gram
+  </sql>
+
+    <!--查询满足所有条件的数据-tianliya-->
+    <select id="selectAllByConditions" resultType="java.util.Map" parameterType="java.util.Map">
+        select
+        o.order_id orderId, o.product_id productId, o.product_no productNo, o.product_name
+        productName,
+        o.product_type productType, concat(convert(o.product_year_incom_percent*100,DECIMAL(6,2)),'%') productYearIncomPercent,
+        o.product_cycle productCycle, o.product_min_gram productMinGram, o.product_max_gram
+        productMaxGram,
+        o.product_settle_method productSettleMethod, o.buy_type buyType,o.buy_amount buyAmount,
+        o.buy_time buyTime,
+        o.expire_time expireTime, o.status, o.income_gram incomeGram, o.buy_price buyPrice,
+        o.back_total_gram backTotalGram,o.voucher_value voucherValue, o.voucher_deductible
+        voucherDeductible,o.gram,
+        <if test="isView != '1'.toString()">
+            INSERT(u.UserName, 4, 4, '****') userName,
+        </if>
+        <if test="isView == '1'.toString()">
+            u.UserName userName,
+        </if>
+
+        (select user_name from users where id = o.agent_id) agentName,
+        (select user_name from users where id = o.broker_id) brokerName,
+        u1.RegisterTime registerTime
+        from finance_regulargold_order o
+        left join User_Login u
+        on o.user_id = u.UserID
+        left join User_Info u1
+        on u.UserId = u1.UserId
+        <where>
+            <if test="startTime != null and startTime != ''">
+                AND o.buy_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND o.buy_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="redeemStartTime != null and redeemStartTime != ''">
+                AND o.expire_time &gt;= #{redeemStartTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="redeemEndTime != null and redeemEndTime != ''">
+                AND o.expire_time &lt;= #{redeemEndTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="status != null and status != ''">
+                AND o.status = #{status,jdbcType=SMALLINT}
+            </if>
+            <if test="buyType != null and buyType != ''">
+                AND o.buy_time = #{buyType,jdbcType=SMALLINT}
+            </if>
+            <if test="agentName != null and agentName != ''">
+                AND o.agent_id = #{agentName,jdbcType=BIGINT}
+            </if>
+            <if test="brokerName != null and brokerName != ''">
+                AND o.broker_id = #{brokerName,jdbcType=BIGINT}
+            </if>
+
+            <if test="regStartTime != null and regStartTime != ''">
+                AND u1.RegisterTime &gt;= #{regStartTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="regEndTime != null and regEndTime != ''">
+                AND u1.RegisterTime &lt;= #{regEndTime,jdbcType=TIMESTAMP}
+            </if>
+
+
+            <if test="userName != null and userName != ''">
+                AND u.UserName like CONCAT(#{userName,jdbcType=VARCHAR},'%')
+            </if>
+        </where>
+        order by buyTime desc
+    </select>
+
+    <!--导出所有满足条件的数据-tianliya-->
+    <select id="exportAllByConditions" resultType="java.util.Map" parameterType="java.util.Map">
+        select
+        o.order_id orderId, o.product_id productId, o.product_no productNo,
+        o.product_name productName,
+
+        IF(o.product_type = 1,'稳赚金','特价金') productType,
+        concat(convert(o.product_year_incom_percent*100,DECIMAL(6,2)),'%')
+        productYearIncomPercent,
+        o.product_cycle productCycle, o.product_min_gram productMinGram,
+        o.product_max_gram productMaxGram,
+        o.product_settle_method productSettleMethod,
+        IF(o.buy_type=1,'现金买入','实金转入')
+        buyType,round(o.buy_amount/100,2) buyAmount,
+        DATE_FORMAT(o.buy_time,'%Y-%m-%d') buyTime,
+        o.expire_time expireTime,
+        IF(o.status = 1,'持有中','已赎回') status, o.income_gram incomeGram,
+        round(o.buy_price/100,2) buyPrice,
+        o.back_total_gram backTotalGram,o.voucher_value voucherValue, o.voucher_deductible
+        voucherDeductible,o.gram,
+        <if test="isView != '1'.toString()">
+            INSERT(u.UserName, 4, 4, '****') userName,
+        </if>
+        <if test="isView == '1'.toString()">
+            u.UserName userName,
+        </if>
+
+        (select user_name from users where id = o.agent_id) agentName,
+        (select user_name from users where id = o.broker_id) brokerName,
+        DATE_FORMAT(u1.RegisterTime,'%Y-%m-%d %k:%i:%s') registerTime
+        from finance_regulargold_order o
+        left join User_Login u
+        on o.user_id = u.UserID
+        left join User_Info u1
+        on u.UserId = u1.UserId
+        <where>
+            <if test="startTime != null and startTime != ''">
+                AND o.buy_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND o.buy_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="redeemStartTime != null and redeemStartTime != ''">
+                AND o.expire_time &gt;= #{redeemStartTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="redeemEndTime != null and redeemEndTime != ''">
+                AND o.expire_time &lt;= #{redeemEndTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="status != null and status != ''">
+                AND o.status = #{status,jdbcType=SMALLINT}
+            </if>
+            <if test="buyType != null and buyType != ''">
+                AND o.buy_time = #{buyType,jdbcType=SMALLINT}
+            </if>
+            <if test="agentName != null and agentName != ''">
+                AND o.agent_id = #{agentName,jdbcType=BIGINT}
+            </if>
+            <if test="brokerName != null and brokerName != ''">
+                AND o.broker_id = #{brokerName,jdbcType=BIGINT}
+            </if>
+
+            <if test="regStartTime != null and regStartTime != ''">
+                AND u1.RegisterTime &gt;= #{regStartTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="regEndTime != null and regEndTime != ''">
+                AND u1.RegisterTime &lt;= #{regEndTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="userName != null and userName != ''">
+                AND u.UserName like CONCAT(#{userName,jdbcType=VARCHAR},'%')
+            </if>
+        </where>
+        order by buyTime desc
+    </select>
+
+    <!--稳赚金买入统计-tianliya-->
+    <select id="selectTotalCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select sum(buy_amount) totalAmount
+        from finance_regulargold_order o
+        left join User_Login u
+        on o.user_id = u.UserID
+        left join User_Info u1
+        on u.UserId = u1.UserId
+        <where>
+            <if test="startTime != null and startTime != ''">
+                AND o.buy_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND o.buy_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="redeemStartTime != null and redeemStartTime != ''">
+                AND o.expire_time &gt;= #{redeemStartTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="redeemEndTime != null and redeemEndTime != ''">
+                AND o.expire_time &lt;= #{redeemEndTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="status != null and status != ''">
+                AND o.status = #{status,jdbcType=SMALLINT}
+            </if>
+            <if test="buyType != null and buyType != ''">
+                AND o.buy_time = #{buyType,jdbcType=SMALLINT}
+            </if>
+            <if test="agentName != null and agentName != ''">
+                AND o.agent_id = #{agentName,jdbcType=BIGINT}
+            </if>
+            <if test="brokerName != null and brokerName != ''">
+                AND o.broker_id = #{brokerName,jdbcType=BIGINT}
+            </if>
+
+            <if test="regStartTime != null and regStartTime != ''">
+                AND u1.RegisterTime &gt;= #{regStartTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="regEndTime != null and regEndTime != ''">
+                AND u1.RegisterTime &lt;= #{regEndTime,jdbcType=TIMESTAMP}
+            </if>
+
+
+            <if test="userName != null and userName != ''">
+                AND u.UserName like CONCAT(#{userName,jdbcType=VARCHAR},'%')
+            </if>
+        </where>
+    </select>
+    <!--获取处于有效期的稳赚金-tianliya-->
+    <select id="countGramOnTime" resultType="java.lang.Float">
+        select round(sum(gram),3) from finance_regulargold_order where status = 1
+    </select>
+</mapper>

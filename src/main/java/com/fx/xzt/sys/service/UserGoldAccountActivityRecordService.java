@@ -25,6 +25,7 @@ public interface UserGoldAccountActivityRecordService {
 	* @param agentName 代理商用户名
 	* @param brokerName 经纪人用户名
 	* @param activityType 活动类型
+	 * @param isView 
 	* @param pageNum
 	* @param pageSize
 	* @return    设定文件 
@@ -33,7 +34,7 @@ public interface UserGoldAccountActivityRecordService {
 	* @author htt
 	 */
     PageInfo<Map<String, Object>> selectByAll(String userName, String startTime, String endTime, 
-    		String agentName, String brokerName, Integer activityType, Integer pageNum, Integer pageSize);
+    		String agentName, String brokerName, Integer activityType, String isView, Integer pageNum, Integer pageSize);
 
     /**
      * 
@@ -51,6 +52,6 @@ public interface UserGoldAccountActivityRecordService {
     * @author htt
      */
     List<Map<String, Object>> excelAll(String userName, String startTime, String endTime, 
-    		String agentName, String brokerName, Integer activityType);
+    		String agentName, String brokerName, Integer activityType, String isView);
 
 }

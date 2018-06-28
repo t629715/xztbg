@@ -28,6 +28,18 @@ public interface UsersPermissionMapper extends BaseMapper<UsersPermission> {
 	int deleteById(Integer id);
 	
 	/**
+	 * 
+	* @Title: deleteByPId 
+	* @Description: 根据pid删除子菜单
+	* @param pid
+	* @return    设定文件 
+	* @return int    返回类型 
+	* @throws 
+	* @author htt
+	 */
+	int deleteByPid(Integer pid);
+	
+	/**
 	 * 根据 rids 获取 功能列表
 	 */
 	
