@@ -1,6 +1,7 @@
 package com.fx.xzt.sys.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class UserVoucherFinance implements Serializable {
@@ -21,6 +22,11 @@ public class UserVoucherFinance implements Serializable {
 	private Short validateDays;      //加息时间
 	private String validateCycle;    //可用的交易周期
 	private String source;           //来源
+
+	private Long agentId;//归宿代理商id
+	private Long brokerId;//归宿经纪人id
+	private Short type;//卡券类型
+	private BigDecimal goldCondition;
 	
 	public Long getId() {
 		return id;
@@ -134,4 +140,35 @@ public class UserVoucherFinance implements Serializable {
 		this.source = source;
 	}
 
+	public Long getAgentId() {
+		return agentId;
+	}
+
+	public void setAgentId(Long agentId) {
+		this.agentId = agentId;
+	}
+
+	public Long getBrokerId() {
+		return brokerId;
+	}
+
+	public void setBrokerId(Long brokerId) {
+		this.brokerId = brokerId;
+	}
+
+	public Short getType() {
+		return type;
+	}
+
+	public void setType(Short type) {
+		this.type = type;
+	}
+
+	public BigDecimal getGoldCondition() {
+		return goldCondition;
+	}
+
+	public void setGoldCondition(BigDecimal goldCondition) {
+		this.goldCondition = goldCondition;
+	}
 }

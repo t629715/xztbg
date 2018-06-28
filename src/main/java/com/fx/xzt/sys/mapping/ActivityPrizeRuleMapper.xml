@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fx..xzt.sys.mapper.ActivityPrizeRuleMapper" >
+  <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.ActivityPrizeRule" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="act_id" property="actId" jdbcType="BIGINT" />
+    <result column="pri_act_id" property="priActId" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="init_num" property="initNum" jdbcType="BIGINT" />
+    <result column="surplus_num" property="surplusNum" jdbcType="BIGINT" />
+    <result column="unit" property="unit" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="info" property="info" jdbcType="VARCHAR" />
+    <result column="img" property="img" jdbcType="VARCHAR" />
+    <result column="use_days" property="useDays" jdbcType="INTEGER" />
+    <result column="value_range_min" property="valueRangeMin" jdbcType="DECIMAL" />
+    <result column="value_range_max" property="valueRangeMax" jdbcType="DECIMAL" />
+    <result column="probability_min" property="probabilityMin" jdbcType="DECIMAL" />
+    <result column="probability_max" property="probabilityMax" jdbcType="DECIMAL" />
+    <result column="invest_gold_min" property="investGoldMin" jdbcType="INTEGER" />
+    <result column="valid_time" property="validTime" jdbcType="INTEGER" />
+    <result column="validate_cycle" property="validateCycle" jdbcType="VARCHAR" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="udpate_at" property="udpateAt" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="update_remark" property="updateRemark" jdbcType="VARCHAR" />
+    <result column="activity_code" property="activityCode" jdbcType="VARCHAR" />
+    <result column="prize_code" property="prizeCode" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="getByPrizeCode" resultMap="BaseResultMap">
+    SELECT * FROM activity_prize_rule apr WHERE apr.prize_code=#{prizeCode}
+  </select>
+</mapper>
