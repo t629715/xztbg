@@ -147,7 +147,7 @@ public class LoginController {
 		String sessionId = request.getSession().getId();
 		Map map = CaptchaUtil.outputCaptcha();
 		// 将四位数字的验证码保存到Session中。
-		redisService.put(sessionId,map.get("code").toString(),1000*50);
+		redisService.put(sessionId,map.get("code").toString(),1);
 		// 禁止图像缓存。
 		response.setHeader("Pragma", "no-cache");
 		response.setHeader("Cache-Control", "no-cache");
