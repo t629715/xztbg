@@ -28,7 +28,7 @@ public class ActivityPrizeRuleServiceImpl extends BaseService<ActivityPrizeRule>
     private UserVoucherFinanceMapper userVoucherFinanceMapper;
 
     /**
-     *
+     * 发卡券方法
      * @param prizeCode 奖品code
      * @param userId userId
      * @return
@@ -41,7 +41,8 @@ public class ActivityPrizeRuleServiceImpl extends BaseService<ActivityPrizeRule>
             Date nowDate=new Date();
             UserVoucherFinance userVoucherFinance=new UserVoucherFinance();
             userVoucherFinance.setId(IdUtil.generateyymmddhhMMssSSSAnd4Random());
-            userVoucherFinance.setDeductionValue(0L);//todo
+            BigDecimal value=activityPrizeRule.getValueRangeMax();
+            userVoucherFinance.setDeductionValue(value.longValue());
             userVoucherFinance.setDescription(activityPrizeRule.getInfo());
             userVoucherFinance.setUserId(userId);
             userVoucherFinance.setCreateTime(nowDate);
