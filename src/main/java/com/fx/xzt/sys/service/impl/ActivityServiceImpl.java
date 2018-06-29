@@ -2,14 +2,17 @@ package com.fx.xzt.sys.service.impl;
 
 import com.fx.xzt.exception.GlobalException;
 import com.fx.xzt.sys.entity.Activity;
+import com.fx.xzt.sys.entity.WorldCupRecord;
 import com.fx.xzt.sys.mapper.ActivityMapper;
+import com.fx.xzt.sys.mapper.WorldCupRecordMapper;
+import com.fx.xzt.sys.service.ActivityPrizeRuleService;
 import com.fx.xzt.sys.service.ActivityService;
-import com.fx.xzt.sys.service.IService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.Constant;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,10 +28,16 @@ import javax.annotation.Resource;
 @Service
 public class ActivityServiceImpl implements ActivityService {
 
+    Logger logger = LoggerFactory.getLogger(ActivityServiceImpl.class);
     @Resource
     private ActivityMapper activityMapper;
 
-    Logger logger = LoggerFactory.getLogger(ActivityServiceImpl.class);
+    @Resource
+    private WorldCupRecordMapper worldCupRecordMapper;
+
+    @Autowired
+    private ActivityPrizeRuleService activityPrizeRuleService;
+
     /**
      * @CreateBy：tianliya
      * @CreateTime：2018/6/12 15:59
@@ -134,6 +143,33 @@ public class ActivityServiceImpl implements ActivityService {
             e.printStackTrace();
             throw new GlobalException("活动控制-添加活动","活动控制-添加活动异常");
         }
+        return commonResponse;
+    }
+
+    /**
+     *  世界杯竞猜胜负比分活动结算
+     * @author xiejunxing
+     * @param competitionId 比赛ID
+     * @param type  1:常规比赛竞猜,2:八队冠军竞猜 只有guessing_winner有值
+     */
+    public Object worldCupSettlement(Long competitionId,short type){
+        CommonResponse commonResponse=new CommonResponse();
+        List<WorldCupRecord> worldCupRecordList=worldCupRecordMapper.findByCompetitionIdAndType(competitionId,type);
+        if(worldCupRecordList!=null&&worldCupRecordList.size()>0){
+            int size=worldCupRecordList.size();
+            for (int i=0;i<size;i++){
+                WorldCupRecord worldCupRecord=worldCupRecordList.get(i);
+                long userId=worldCupRecord.getUserId();
+                short isGuessing=worldCupRecord.getIsGuessing();
+                try{
+                    activityPrizeRuleService.extractPrizeWorldCup(isGuessing, competitionId, userId);
+                }catch (Exception e){
+                    logger.error("给UserId={},发放卡券失败，失败原因："+e.toString());
+                }
+            }
+        }
+        commonResponse.setCode(Constant.RESCODE_SUCCESS);
+        commonResponse.setMsg("发放成功");
         return commonResponse;
     }
 }

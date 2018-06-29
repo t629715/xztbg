@@ -38,6 +38,8 @@ public interface ActivityService {
      * @return
      */
     CommonResponse addActivity(Activity activity);
+
+    Object worldCupSettlement(Long competitionId,short type);
 }
 
 

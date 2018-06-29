@@ -161,4 +161,14 @@
       type = #{type,jdbcType=SMALLINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  
+  
+  <select id="findByCompetitionIdAndType" resultMap="BaseResultMap">
+    SELECT * FROM world_cup_record wcr WHERE wcr.competition_id=#{competitionId} AND wcr.type=#{type}
+  </select>
+
+  <update id="updateSettlement">
+    UPDATE  world_cup_record wcr SET wcr.Settlement=1,wcr.Settlement_time=now() WHERE wcr.competition_id=#{competitionId} AND wcr.Settlement=0 AND wcr.user_id=#{userId}
+  </update>
+
 </mapper>

@@ -2,8 +2,10 @@ package com.fx.xzt.sys.service.impl;
 
 import com.fx.xzt.sys.entity.ActivityPrizeRule;
 import com.fx.xzt.sys.entity.UserVoucherFinance;
+import com.fx.xzt.sys.entity.WorldCupRecord;
 import com.fx.xzt.sys.mapper.ActivityPrizeRuleMapper;
 import com.fx.xzt.sys.mapper.UserVoucherFinanceMapper;
+import com.fx.xzt.sys.mapper.WorldCupRecordMapper;
 import com.fx.xzt.sys.service.ActivityPrizeRuleService;
 import com.fx.xzt.sys.util.DateUtils;
 import com.fx.xzt.util.IdUtil;
@@ -26,16 +28,30 @@ public class ActivityPrizeRuleServiceImpl extends BaseService<ActivityPrizeRule>
     private ActivityPrizeRuleMapper activityPrizeRuleMapper;
     @Resource
     private UserVoucherFinanceMapper userVoucherFinanceMapper;
+    @Resource
+    private WorldCupRecordMapper worldCupRecordMapper;
 
     /**
      * 发卡券方法
-     * @param prizeCode 奖品code
+     * @param competitionId 比赛Id
      * @param userId userId
      * @return
      */
     @Override
     @Transactional
-    public Object extractPrizeWorldCup(String prizeCode,Long userId) {
+    public void extractPrizeWorldCup(short isGuessing,Long competitionId,Long userId) {
+        int updateNum=worldCupRecordMapper.updateSettlement(competitionId,userId);
+        if(updateNum==1){//修改状态成功，发放卡券
+            if(isGuessing==1){//1竞猜胜负正确
+                this.extract(userId,"world_cup_68mg_coupon");//发放68mg稳赚金加赠券
+            }else if(isGuessing==2){//2:竞猜胜负比分都正确
+                this.extract(userId,"world_cup_18yuan_voucher");//发放18元存金宝代金券
+                this.extract(userId,"world_cup_68mg_coupon");//发放68mg稳赚金加赠券
+            }
+        }
+    }
+
+    private void extract(Long userId,String prizeCode) {
         ActivityPrizeRule activityPrizeRule=activityPrizeRuleMapper.getByPrizeCode(prizeCode);
         if(activityPrizeRule!=null){
             Date nowDate=new Date();
@@ -62,6 +78,5 @@ public class ActivityPrizeRuleServiceImpl extends BaseService<ActivityPrizeRule>
             }
             userVoucherFinanceMapper.insertSelective(userVoucherFinance);
         }
-        return null;
     }
 }
