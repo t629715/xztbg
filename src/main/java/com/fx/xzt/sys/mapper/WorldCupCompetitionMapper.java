@@ -3,16 +3,17 @@ package com.fx.xzt.sys.mapper;
 
 import com.fx.xzt.sys.entity.WorldCupCompetition;
 
-public interface WorldCupCompetitionMapper {
-    int deleteByPrimaryKey(Long id);
+import java.util.List;
 
-    int insert(WorldCupCompetition record);
+public interface WorldCupCompetitionMapper extends BaseMapper<WorldCupCompetition>{
+    int deleteOne(Long id);
 
-    int insertSelective(WorldCupCompetition record);
 
-    WorldCupCompetition selectByPrimaryKey(Long id);
+    int insertOne(WorldCupCompetition record);
 
-    int updateByPrimaryKeySelective(WorldCupCompetition record);
+    WorldCupCompetition selectOne(Long id);
 
-    int updateByPrimaryKey(WorldCupCompetition record);
+    List<WorldCupCompetition> selectCompetions();
+
+    int updateOne(WorldCupCompetition record);
 }

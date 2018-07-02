@@ -3,16 +3,15 @@ package com.fx.xzt.sys.mapper;
 
 import com.fx.xzt.sys.entity.WorldCupTeams;
 
-public interface WorldCupTeamsMapper {
-    int deleteByPrimaryKey(Long id);
+public interface WorldCupTeamsMapper extends BaseMapper<WorldCupTeams>{
+    int deleteOne(Long id);
 
-    int insert(WorldCupTeams record);
+    int insertOne(WorldCupTeams record);
 
-    int insertSelective(WorldCupTeams record);
 
-    WorldCupTeams selectByPrimaryKey(Long id);
+    WorldCupTeams selectOne(Long id);
 
-    int updateByPrimaryKeySelective(WorldCupTeams record);
+    int updateOneSelective(WorldCupTeams record);
 
-    int updateByPrimaryKey(WorldCupTeams record);
+    int updateOne(WorldCupTeams record);
 }
