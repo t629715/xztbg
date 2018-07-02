@@ -10,7 +10,7 @@
   <sql id="Base_Column_List" >
     id, team_name, team_img, base
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <!--<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from world_cup_teams
@@ -78,5 +78,5 @@
       team_img = #{teamImg,jdbcType=VARCHAR},
       base = #{base,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
-  </update>
+  </update>-->
 </mapper>

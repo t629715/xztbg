@@ -18,7 +18,7 @@
     id, user_id, competition_id, guessing_time, guessing_winner, guessing_a_score, guessing_b_score, 
     is_guessing, Settlement, Settlement_time, type
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <!--<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from world_cup_record
@@ -169,6 +169,6 @@
 
   <update id="updateSettlement">
     UPDATE  world_cup_record wcr SET wcr.Settlement=1,wcr.Settlement_time=now() WHERE wcr.competition_id=#{competitionId} AND wcr.Settlement=0 AND wcr.user_id=#{userId}
-  </update>
+  </update>-->
 
 </mapper>
