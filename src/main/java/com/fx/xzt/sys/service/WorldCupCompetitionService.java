@@ -19,4 +19,13 @@ public interface WorldCupCompetitionService {
      * @return
      */
     public CommonResponse getAllCompetitons(Users users);
+
+    /**
+     * @CreateBy：tianliya
+     * @CreateTime：2018/7/3 17:19
+     * @Description：获取竞猜统计
+     * @param users
+     * @return
+     */
+    public CommonResponse selectGuessResult(Users users);
 }

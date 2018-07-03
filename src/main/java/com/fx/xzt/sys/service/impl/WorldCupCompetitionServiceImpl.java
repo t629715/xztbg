@@ -134,4 +134,33 @@ public class WorldCupCompetitionServiceImpl implements WorldCupCompetitionServic
         }
         return commonResponse;
     }
+
+    /**
+     * @CreateBy：tianliya
+     * @CreateTime：2018/7/3 17:20
+     * @Description：获取竞猜结果统计
+     * @param users
+     * @return
+     */
+    @Override
+    public CommonResponse selectGuessResult(Users users) {
+        CommonResponse commonResponse = new CommonResponse();
+        if (users == null) {
+            commonResponse.setCode(1004);
+            commonResponse.setMsg("登录已过期");
+            return commonResponse;
+        }
+        try{
+            List<Map<String, Object>> guessResult = worldCupRecordMapper.selectGuessResult();
+            commonResponse.setMsg("查询成功");
+            commonResponse.setCode(Constant.RESCODE_SUCCESS_MSG);
+            commonResponse.setData(guessResult);
+        }catch (Exception e){
+            commonResponse.setCode(Constant.RESCODE_EXCEPTION);
+            commonResponse.setMsg("获取竞猜统计异常");
+            e.printStackTrace();
+            throw new GlobalException("获取竞猜统计","获取竞猜统计异常");
+        }
+        return commonResponse;
+    }
 }

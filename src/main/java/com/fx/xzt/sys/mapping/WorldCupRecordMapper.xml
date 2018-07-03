@@ -1,183 +1,197 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fx.xzt.sys.mapper.WorldCupRecordMapper" >
-  <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.WorldCupRecord" >
-    <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="user_id" property="userId" jdbcType="BIGINT" />
-    <result column="competition_id" property="competitionId" jdbcType="BIGINT" />
-    <result column="guessing_time" property="guessingTime" jdbcType="TIMESTAMP" />
-    <result column="guessing_winner" property="guessingWinner" jdbcType="BIGINT" />
-    <result column="guessing_a_score" property="guessingAScore" jdbcType="SMALLINT" />
-    <result column="guessing_b_score" property="guessingBScore" jdbcType="SMALLINT" />
-    <result column="is_guessing" property="isGuessing" jdbcType="SMALLINT" />
-    <result column="Settlement" property="settlement" jdbcType="SMALLINT" />
-    <result column="Settlement_time" property="settlementTime" jdbcType="TIMESTAMP" />
-    <result column="type" property="type" jdbcType="SMALLINT" />
-  </resultMap>
-  <sql id="Base_Column_List" >
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fx.xzt.sys.mapper.WorldCupRecordMapper">
+    <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.WorldCupRecord">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="competition_id" property="competitionId" jdbcType="BIGINT"/>
+        <result column="guessing_time" property="guessingTime" jdbcType="TIMESTAMP"/>
+        <result column="guessing_winner" property="guessingWinner" jdbcType="BIGINT"/>
+        <result column="guessing_a_score" property="guessingAScore" jdbcType="SMALLINT"/>
+        <result column="guessing_b_score" property="guessingBScore" jdbcType="SMALLINT"/>
+        <result column="is_guessing" property="isGuessing" jdbcType="SMALLINT"/>
+        <result column="Settlement" property="settlement" jdbcType="SMALLINT"/>
+        <result column="Settlement_time" property="settlementTime" jdbcType="TIMESTAMP"/>
+        <result column="type" property="type" jdbcType="SMALLINT"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     id, user_id, competition_id, guessing_time, guessing_winner, guessing_a_score, guessing_b_score, 
     is_guessing, Settlement, Settlement_time, type
   </sql>
-  <!-- 统计竞猜各国家队冠军人次 laj -->
-<select id="countGuess" resultMap="BaseResultMap" >
- select  wct.team_name, count(wcr.guessing_winner) FROM world_cup_record wcr ,world_cup_teams wct
-WHERE wcr.guessing_winner=wct.id and wcr.type=2 group BY wcr.guessing_winner
-</select>
 
 
+    <select id="selectSettlement" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT
+        <include refid="Base_Column_List"/>
+        from world_cup_record
+        where competition_id = #{competitionId,jdbcType=BIGINT} and Settlement = 0
+    </select>
 
-
-  <!--<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
-    <include refid="Base_Column_List" />
-    from world_cup_record
-    where id = #{id,jdbcType=BIGINT}
+    <!--竞猜结果统计-tianliya-->
+    <select id="selectGuessResult" resultType="java.util.Map">
+    select wcc.team_a_name teamAName, wcc.team_b_name teamBName,
+ (select count(id)from world_cup_record where competition_id = wcc.id and type=1) guessNum,
+(select count(id)from world_cup_record where guessing_winner = wcc.win and type=1) winNum,
+(select count(id)from world_cup_record where competition_id = wcc.id and type=1)-(select count(id)from world_cup_record where guessing_winner = wcc.win and type=1) lossNum,
+(select count(id) from world_cup_record where guessing_winner = wcc.win and type=1) voucherNum1,
+(select count(id) from world_cup_record where guessing_a_score = wcc.team_a_score and guessing_b_score = wcc.team_b_score and type=1) voucherNum2,
+DATE_FORMAT(wcc.start_time,'%Y-%m-%d %H:%i') startTime
+from world_cup_competition wcc
+where wcc.team_a_name is not null and wcc.team_b_name is not null
+ORDER BY wcc.start_time
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from world_cup_record
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="com.fx.xzt.sys.entity.WorldCupRecord" >
-    insert into world_cup_record (id, user_id, competition_id, 
-      guessing_time, guessing_winner, guessing_a_score, 
-      guessing_b_score, is_guessing, Settlement, 
-      Settlement_time, type)
-    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{competitionId,jdbcType=BIGINT}, 
-      #{guessingTime,jdbcType=TIMESTAMP}, #{guessingWinner,jdbcType=BIGINT}, #{guessingAScore,jdbcType=SMALLINT}, 
-      #{guessingBScore,jdbcType=SMALLINT}, #{isGuessing,jdbcType=SMALLINT}, #{settlement,jdbcType=SMALLINT}, 
-      #{settlementTime,jdbcType=TIMESTAMP}, #{type,jdbcType=SMALLINT})
-  </insert>
-  <insert id="insertSelective" parameterType="com.fx.xzt.sys.entity.WorldCupRecord" >
-    insert into world_cup_record
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="userId != null" >
-        user_id,
-      </if>
-      <if test="competitionId != null" >
-        competition_id,
-      </if>
-      <if test="guessingTime != null" >
-        guessing_time,
-      </if>
-      <if test="guessingWinner != null" >
-        guessing_winner,
-      </if>
-      <if test="guessingAScore != null" >
-        guessing_a_score,
-      </if>
-      <if test="guessingBScore != null" >
-        guessing_b_score,
-      </if>
-      <if test="isGuessing != null" >
-        is_guessing,
-      </if>
-      <if test="settlement != null" >
-        Settlement,
-      </if>
-      <if test="settlementTime != null" >
-        Settlement_time,
-      </if>
-      <if test="type != null" >
-        type,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="userId != null" >
-        #{userId,jdbcType=BIGINT},
-      </if>
-      <if test="competitionId != null" >
-        #{competitionId,jdbcType=BIGINT},
-      </if>
-      <if test="guessingTime != null" >
-        #{guessingTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="guessingWinner != null" >
-        #{guessingWinner,jdbcType=BIGINT},
-      </if>
-      <if test="guessingAScore != null" >
-        #{guessingAScore,jdbcType=SMALLINT},
-      </if>
-      <if test="guessingBScore != null" >
-        #{guessingBScore,jdbcType=SMALLINT},
-      </if>
-      <if test="isGuessing != null" >
-        #{isGuessing,jdbcType=SMALLINT},
-      </if>
-      <if test="settlement != null" >
-        #{settlement,jdbcType=SMALLINT},
-      </if>
-      <if test="settlementTime != null" >
-        #{settlementTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="type != null" >
-        #{type,jdbcType=SMALLINT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.fx.xzt.sys.entity.WorldCupRecord" >
-    update world_cup_record
-    <set >
-      <if test="userId != null" >
-        user_id = #{userId,jdbcType=BIGINT},
-      </if>
-      <if test="competitionId != null" >
+    <!--<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+      select
+      <include refid="Base_Column_List" />
+      from world_cup_record
+      where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+      delete from world_cup_record
+      where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.fx.xzt.sys.entity.WorldCupRecord" >
+      insert into world_cup_record (id, user_id, competition_id,
+        guessing_time, guessing_winner, guessing_a_score,
+        guessing_b_score, is_guessing, Settlement,
+        Settlement_time, type)
+      values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{competitionId,jdbcType=BIGINT},
+        #{guessingTime,jdbcType=TIMESTAMP}, #{guessingWinner,jdbcType=BIGINT}, #{guessingAScore,jdbcType=SMALLINT},
+        #{guessingBScore,jdbcType=SMALLINT}, #{isGuessing,jdbcType=SMALLINT}, #{settlement,jdbcType=SMALLINT},
+        #{settlementTime,jdbcType=TIMESTAMP}, #{type,jdbcType=SMALLINT})
+    </insert>
+    <insert id="insertSelective" parameterType="com.fx.xzt.sys.entity.WorldCupRecord" >
+      insert into world_cup_record
+      <trim prefix="(" suffix=")" suffixOverrides="," >
+        <if test="id != null" >
+          id,
+        </if>
+        <if test="userId != null" >
+          user_id,
+        </if>
+        <if test="competitionId != null" >
+          competition_id,
+        </if>
+        <if test="guessingTime != null" >
+          guessing_time,
+        </if>
+        <if test="guessingWinner != null" >
+          guessing_winner,
+        </if>
+        <if test="guessingAScore != null" >
+          guessing_a_score,
+        </if>
+        <if test="guessingBScore != null" >
+          guessing_b_score,
+        </if>
+        <if test="isGuessing != null" >
+          is_guessing,
+        </if>
+        <if test="settlement != null" >
+          Settlement,
+        </if>
+        <if test="settlementTime != null" >
+          Settlement_time,
+        </if>
+        <if test="type != null" >
+          type,
+        </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <if test="id != null" >
+          #{id,jdbcType=BIGINT},
+        </if>
+        <if test="userId != null" >
+          #{userId,jdbcType=BIGINT},
+        </if>
+        <if test="competitionId != null" >
+          #{competitionId,jdbcType=BIGINT},
+        </if>
+        <if test="guessingTime != null" >
+          #{guessingTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="guessingWinner != null" >
+          #{guessingWinner,jdbcType=BIGINT},
+        </if>
+        <if test="guessingAScore != null" >
+          #{guessingAScore,jdbcType=SMALLINT},
+        </if>
+        <if test="guessingBScore != null" >
+          #{guessingBScore,jdbcType=SMALLINT},
+        </if>
+        <if test="isGuessing != null" >
+          #{isGuessing,jdbcType=SMALLINT},
+        </if>
+        <if test="settlement != null" >
+          #{settlement,jdbcType=SMALLINT},
+        </if>
+        <if test="settlementTime != null" >
+          #{settlementTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="type != null" >
+          #{type,jdbcType=SMALLINT},
+        </if>
+      </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.fx.xzt.sys.entity.WorldCupRecord" >
+      update world_cup_record
+      <set >
+        <if test="userId != null" >
+          user_id = #{userId,jdbcType=BIGINT},
+        </if>
+        <if test="competitionId != null" >
+          competition_id = #{competitionId,jdbcType=BIGINT},
+        </if>
+        <if test="guessingTime != null" >
+          guessing_time = #{guessingTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="guessingWinner != null" >
+          guessing_winner = #{guessingWinner,jdbcType=BIGINT},
+        </if>
+        <if test="guessingAScore != null" >
+          guessing_a_score = #{guessingAScore,jdbcType=SMALLINT},
+        </if>
+        <if test="guessingBScore != null" >
+          guessing_b_score = #{guessingBScore,jdbcType=SMALLINT},
+        </if>
+        <if test="isGuessing != null" >
+          is_guessing = #{isGuessing,jdbcType=SMALLINT},
+        </if>
+        <if test="settlement != null" >
+          Settlement = #{settlement,jdbcType=SMALLINT},
+        </if>
+        <if test="settlementTime != null" >
+          Settlement_time = #{settlementTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="type != null" >
+          type = #{type,jdbcType=SMALLINT},
+        </if>
+      </set>
+      where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.fx.xzt.sys.entity.WorldCupRecord" >
+      update world_cup_record
+      set user_id = #{userId,jdbcType=BIGINT},
         competition_id = #{competitionId,jdbcType=BIGINT},
-      </if>
-      <if test="guessingTime != null" >
         guessing_time = #{guessingTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="guessingWinner != null" >
         guessing_winner = #{guessingWinner,jdbcType=BIGINT},
-      </if>
-      <if test="guessingAScore != null" >
         guessing_a_score = #{guessingAScore,jdbcType=SMALLINT},
-      </if>
-      <if test="guessingBScore != null" >
         guessing_b_score = #{guessingBScore,jdbcType=SMALLINT},
-      </if>
-      <if test="isGuessing != null" >
         is_guessing = #{isGuessing,jdbcType=SMALLINT},
-      </if>
-      <if test="settlement != null" >
         Settlement = #{settlement,jdbcType=SMALLINT},
-      </if>
-      <if test="settlementTime != null" >
         Settlement_time = #{settlementTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=SMALLINT},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.fx.xzt.sys.entity.WorldCupRecord" >
-    update world_cup_record
-    set user_id = #{userId,jdbcType=BIGINT},
-      competition_id = #{competitionId,jdbcType=BIGINT},
-      guessing_time = #{guessingTime,jdbcType=TIMESTAMP},
-      guessing_winner = #{guessingWinner,jdbcType=BIGINT},
-      guessing_a_score = #{guessingAScore,jdbcType=SMALLINT},
-      guessing_b_score = #{guessingBScore,jdbcType=SMALLINT},
-      is_guessing = #{isGuessing,jdbcType=SMALLINT},
-      Settlement = #{settlement,jdbcType=SMALLINT},
-      Settlement_time = #{settlementTime,jdbcType=TIMESTAMP},
-      type = #{type,jdbcType=SMALLINT}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  
-  
-  <select id="findByCompetitionIdAndType" resultMap="BaseResultMap">
-    SELECT * FROM world_cup_record wcr WHERE wcr.competition_id=#{competitionId} AND wcr.type=#{type}
-  </select>
+        type = #{type,jdbcType=SMALLINT}
+      where id = #{id,jdbcType=BIGINT}
+    </update>
 
-  <update id="updateSettlement">
-    UPDATE  world_cup_record wcr SET wcr.Settlement=1,wcr.Settlement_time=now() WHERE wcr.competition_id=#{competitionId} AND wcr.Settlement=0 AND wcr.user_id=#{userId}
-  </update>-->
+
+    <select id="findByCompetitionIdAndType" resultMap="BaseResultMap">
+      SELECT * FROM world_cup_record wcr WHERE wcr.competition_id=#{competitionId} AND wcr.type=#{type}
+    </select>
+
+    <update id="updateSettlement">
+      UPDATE  world_cup_record wcr SET wcr.Settlement=1,wcr.Settlement_time=now() WHERE wcr.competition_id=#{competitionId} AND wcr.Settlement=0 AND wcr.user_id=#{userId}
+    </update>-->
 
 </mapper>
