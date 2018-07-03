@@ -5,29 +5,29 @@ import java.util.Date;
 public class WorldCupCompetition {
     private Long id;
 
-    private Short teamA;
+    private Short teamA;//球队a
 
-    private String teamAName;
+    private String teamAName;//球队a名字
 
-    private String teamAFlag;
+    private String teamAFlag;//球队a国旗
 
-    private Short teamB;
+    private Short teamB;//球队b
 
-    private String teamBName;
+    private String teamBName;//球队b名字
 
-    private String teamBFlag;
+    private String teamBFlag;//球队b国旗
 
-    private Date startTime;
+    private Date startTime;//开始时间
 
-    private Integer course;
+    private Integer course;//1:1/4赛,2:半决赛3:季军赛4:决赛
 
-    private Short win;
+    private Short win;//胜利的球队
 
-    private Short teamAScore;
+    private Short teamAScore;//球队a进球数
 
-    private Short teamBScore;
+    private Short teamBScore;//球队b进球数
 
-    private Short type;
+    private Short type;//0:未开始1:已结束
 
     public Long getId() {
         return id;

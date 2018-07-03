@@ -3,11 +3,11 @@ package com.fx.xzt.sys.entity;
 public class WorldCupTeams {
     private Long id;
 
-    private String teamName;
+    private String teamName;//球队名称
 
-    private String teamImg;
+    private String teamImg;//球队国旗
 
-    private Integer base;
+    private Integer base;//基数
 
     public Long getId() {
         return id;
