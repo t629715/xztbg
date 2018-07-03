@@ -42,7 +42,7 @@ public class UserGoldAccountController {
 	 */
 	@RequestMapping(value="/updateUserGoldAccount")
 	@ResponseBody
-	public CommonResponse updateUserGoldAccount(HttpServletRequest request, Double gram, Long userId,Short type,String description,String operatorName) throws ParseException {
+	public CommonResponse updateUserGoldAccount(HttpServletRequest request, Double gram, String  userName,Short type,String description,String operatorName) throws ParseException {
 		//操作日志
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		LogRecord log = new LogRecord();
@@ -54,7 +54,7 @@ public class UserGoldAccountController {
 		log.setCreateTime(sdf.parse(sdf.format(new Date())));
 		HttpSession httpSession = request.getSession();
 		Users users = (Users) httpSession.getAttribute("currentUser");
-		CommonResponse commonResponse = userGoldAccountService.updateUserGoldAccount(users,gram,userId,type,description,operatorName);
+		CommonResponse commonResponse = userGoldAccountService.updateUserGoldAccount(users,gram,userName,type,description,operatorName);
 		if(commonResponse.getCode() == 1001){
 			log.setContent("查询成功");
 		}

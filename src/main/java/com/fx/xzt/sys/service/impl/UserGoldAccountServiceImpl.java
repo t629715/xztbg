@@ -62,25 +62,26 @@ public class UserGoldAccountServiceImpl extends BaseService<UserGoldAccount> imp
 	 * @CreateTime：2018/7/3 11:22
 	 * @Description：修改用户黄金账户余额
 	 * @param gold
-	 * @param id
+	 * @param userName
 	 * @return
 	 */
 	@Transactional
-	public CommonResponse updateUserGoldAccount(Users users, Double gold, Long id,Short type,String description,String operatorName) {
+	public CommonResponse updateUserGoldAccount(Users users, Double gold, String  userName,Short type,String description,String operatorName) {
 		CommonResponse commonResponse = new CommonResponse();
-		logger.info("修改用户的黄金余额：{}，-----用户的用于的id：{}",gold,id);
+		logger.info("修改用户的黄金余额：{}，-----用户名：{}",gold,userName);
 		if (users == null) {
 			commonResponse.setCode(1004);
 			commonResponse.setMsg("登录已过期");
 			return commonResponse;
 		}
-		if (gold == null || id == null){
+		if (gold == null || userName == null){
 			commonResponse.setCode(Constant.RESCODE_EXCEPTION);
 			commonResponse.setMsg("请输入充值克重");
 		}
 		UserGoldAccount userGoldAccount = new UserGoldAccount();
+		UserLogin userLogin = userLoginMapper.selectByUserName(userName);
 		try{
-			userGoldAccount.setUserId(id);
+			userGoldAccount.setUserId(userLogin.getUserid());
 			userGoldAccount = userGoldAccountMapper.lockForUpdate(userGoldAccount);
 
 		}catch (Exception e){
@@ -97,24 +98,23 @@ public class UserGoldAccountServiceImpl extends BaseService<UserGoldAccount> imp
 			int i = userGoldAccountMapper.updateOne(userGoldAccount);
 			if (i>0){
 				UserInfo userInfo = new UserInfo();
-				userInfo = userInfoMapper.selectOneUserInfo(id);
+				userInfo = userInfoMapper.selectOneUserInfo(userLogin.getUserid());
 				if (userInfo == null){
-					logger.warn("充值黄金失败：id-{},userInfo信息不存在",id);
+					logger.warn("充值黄金失败：id-{},userInfo信息不存在",userLogin.getUserid());
 					commonResponse.setMsg("充值黄金失败");
 					commonResponse.setCode(Constant.RESCODE_EXCEPTION);
 					return commonResponse;
 				}
-				UserLogin userLogin = new UserLogin();
-				userLogin = userLoginMapper.selectUserLogin(id);
+
 				if (userInfo == null){
-					logger.warn("充值黄金失败：id-{},userLong信息不存在",id);
+					logger.warn("充值黄金失败：用户名-{},信息不存在",userName);
 					commonResponse.setMsg("充值黄金失败");
 					commonResponse.setCode(Constant.RESCODE_EXCEPTION);
 					return commonResponse;
 				}
 				UserGoldAccountRecord userGoldAccountRecord = new UserGoldAccountRecord();
 				userGoldAccountRecord.setId(IdUtil.generateyyyymmddhhMMssSSSAnd2Random());
-				userGoldAccountRecord.setUserId(id);
+				userGoldAccountRecord.setUserId(userLogin.getUserid());
 				userGoldAccountRecord.setAmount(gold);
 				if (userInfo.getAgentId() != null){
 					userGoldAccountRecord.setAgentId(Long.valueOf(userInfo.getAgentId()));

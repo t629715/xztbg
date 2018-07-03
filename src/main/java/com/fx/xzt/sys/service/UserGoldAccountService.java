@@ -19,9 +19,9 @@ public interface UserGoldAccountService {
      * @CreateTime：2018/7/3 11:20
      * @Description：修改用户黄金账户余额
      * @param gold
-     * @param id
+     * @param userName
      * @return
      */
-    CommonResponse updateUserGoldAccount(Users users, Double gold, Long id,Short type,String description,String operatorName);
+    CommonResponse updateUserGoldAccount(Users users, Double gold,String  userName,Short type,String description,String operatorName);
 
 }
