@@ -41,6 +41,13 @@
 	<select id="selectUserInfoById" parameterType="java.lang.Long" resultType="java.util.Map">
 		select UserID,agent_id agentId,broker_id brokerId, channel_id channelId from User_Info where UserID = #{userID,jdbcType=BIGINT}
 	</select>
+	<!--根据用户id获取用户信息-tianliya-->
+	<select id="selectOneUserInfo" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		agent_id, broker_id
+		from User_Info
+		where UserID = #{userId,jdbcType=BIGINT}
+	</select>
 	<!-- 根据id获取用户信息结束-htt -->
 	
 	<!--实名认证查询开始-htt -->

@@ -515,6 +515,7 @@ public class ConstantUtil {
         SJTZGL("金条订单","44"),
         HJJYS("黄金交易（卖）","45"),
         RGCZ("人工充值","46"),
+
         DQJJY("稳赚金交易","47"),
         SCTSZX("删除推送资讯","49"),
         TJTSZX("添加推送资讯","50"),
@@ -524,6 +525,7 @@ public class ConstantUtil {
         XTCD("系统菜单","53"),
         SCKZ("世界杯赛程控制","55"),
         CSDCX("参赛队查询","56"),
+        RGHJCZ("人工黄金充值","57"),
         HDKZ("活动查询","54");
 
 

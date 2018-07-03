@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fx.xzt.sys.mapper.UserGoldAccountMapper" >
+  <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.UserGoldAccount" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="gold" property="gold" jdbcType="DOUBLE" />
+    <result column="frozen_gold" property="frozenGold" jdbcType="DOUBLE" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="agent_id" property="agentId" jdbcType="BIGINT" />
+    <result column="broker_id" property="brokerId" jdbcType="BIGINT" />
+    <result column="total_income" property="totalIncome" jdbcType="DECIMAL" />
+    <result column="finance_gold" property="financeGold" jdbcType="DOUBLE" />
+    <result column="average_price" property="averagePrice" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, gold, frozen_gold, update_time, agent_id, broker_id, total_income, finance_gold, 
+    average_price
+  </sql>
+  <!--行级锁，用于更新前锁行-tianliya-->
+  <select id="lockForUpdate" resultMap="BaseResultMap" parameterType="com.fx.xzt.sys.entity.UserGoldAccount" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_gold_account
+    where user_id = #{userId,jdbcType=BIGINT} FOR UPDATE
+  </select>
+  <!--更新用户黄金账户余额-tianliya-->
+  <update id="updateOne" parameterType="com.fx.xzt.sys.entity.UserGoldAccount" >
+    update user_gold_account
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="gold != null" >
+        gold = #{gold,jdbcType=DOUBLE},
+      </if>
+      <if test="frozenGold != null" >
+        frozen_gold = #{frozenGold,jdbcType=DOUBLE},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="agentId != null" >
+        agent_id = #{agentId,jdbcType=BIGINT},
+      </if>
+      <if test="brokerId != null" >
+        broker_id = #{brokerId,jdbcType=BIGINT},
+      </if>
+      <if test="totalIncome != null" >
+        total_income = #{totalIncome,jdbcType=DECIMAL},
+      </if>
+      <if test="financeGold != null" >
+        finance_gold = #{financeGold,jdbcType=DOUBLE},
+      </if>
+      <if test="averagePrice != null" >
+        average_price = #{averagePrice,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

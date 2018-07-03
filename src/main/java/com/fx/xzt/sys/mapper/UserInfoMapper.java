@@ -137,4 +137,13 @@ public interface UserInfoMapper extends BaseMapper<UserInfo>{
 
 	List<Map<String, Object>> selectUserInfoById(Long userID);
 
+	/**
+	 * @CreateBy：tianliya
+	 * @CreateTime：2018/7/3 13:26
+	 * @Description：根据用户的id获取用户信息
+	 * @param userId
+	 * @return
+	 */
+	UserInfo selectOneUserInfo(Long userId);
+
 }

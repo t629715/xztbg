@@ -34,6 +34,9 @@
     <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap" >
         SELECT UserID, UserName FROM User_Login where Status = 1 and UserName = #{userName,jdbcType=VARCHAR}
     </select>
+    <select id="selectUserLogin" parameterType="java.lang.Long" resultMap="BaseResultMap" >
+        SELECT UserID, UserName FROM User_Login where UserID = #{userId,jdbcType=VARCHAR}
+    </select>
     <!-- 注册信息查询-归属地结束-htt -->
     
     <!--注册信息查询开始-htt-->

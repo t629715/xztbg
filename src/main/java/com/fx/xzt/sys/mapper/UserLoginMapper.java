@@ -55,4 +55,13 @@ public interface UserLoginMapper extends BaseMapper<UserLogin>{
 	 */
 	UserLogin selectByUserName(String userName);
 
+	/**
+	 * @CreateBy：tianliya
+	 * @CreateTime：2018/7/3 13:32
+	 * @Description：根据用户id获取用户信息
+	 * @param userId
+	 * @return
+	 */
+	UserLogin selectUserLogin(Long userId);
+
 }
