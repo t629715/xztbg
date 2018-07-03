@@ -2,11 +2,12 @@ package com.fx.xzt.sys.mapper;
 
 import com.fx.xzt.sys.entity.WorldCupRecord;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 
+@Repository
 public interface WorldCupRecordMapper extends BaseMapper<WorldCupRecord>{
     /**
      * 通过比赛id和竞猜类型得到竞猜记录list
@@ -25,19 +26,9 @@ public interface WorldCupRecordMapper extends BaseMapper<WorldCupRecord>{
     int updateSettlement(@Param("competitionId") Long competitionId,@Param("userId") Long userId);
 
     /**
-     * @CreateBy：tianliya
-     * @CreateTime：2018/7/3 14:31
-     * @Description：竞猜结果统计
+     * 统计竞猜各国家队冠军人次 
+     *
      * @return
      */
-    List<Map<String, Object>>  selectGuessResult();
-
-    /**
-     * @CreateBy：tianliya
-     * @CreateTime：2018/7/3 15:16
-     * @Description：获取
-     * @param competitionId
-     * @return
-     */
-    List<WorldCupRecord> selectSettlement(Long competitionId);
+    List<WorldCupRecord> countGuess();
 }

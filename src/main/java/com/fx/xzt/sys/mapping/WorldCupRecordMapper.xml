@@ -18,16 +18,15 @@
     id, user_id, competition_id, guessing_time, guessing_winner, guessing_a_score, guessing_b_score, 
     is_guessing, Settlement, Settlement_time, type
   </sql>
+  <!-- 统计竞猜各国家队冠军人次 laj -->
+<select id="countGuess" resultMap="BaseResultMap" >
+ select  wct.team_name, count(wcr.guessing_winner) FROM world_cup_record wcr ,world_cup_teams wct
+WHERE wcr.guessing_winner=wct.id and wcr.type=2 group BY wcr.guessing_winner
+</select>
 
-  <!--<select id="selectGuessResult" resultType="java.util.Map">
 
-  </select>-->
-  <select id="selectSettlement" resultMap="BaseResultMap" parameterType="java.lang.Long">
-    SELECT
-    <include refid="Base_Column_List" />
-    from world_cup_record
-    where competition_id = #{competitionId,jdbcType=BIGINT} and Settlement = 0
-  </select>
+
+
   <!--<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
