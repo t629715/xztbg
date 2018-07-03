@@ -3,10 +3,10 @@
 <mapper namespace="com.fx.xzt.sys.mapper.WorldCupCompetitionMapper" >
   <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.WorldCupCompetition" >
     <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="team_a" property="teamA" jdbcType="SMALLINT" />
+    <result column="team_a" property="teamA" jdbcType="BIGINT" />
     <result column="team_a_name" property="teamAName" jdbcType="VARCHAR" />
     <result column="team_a_flag" property="teamAFlag" jdbcType="VARCHAR" />
-    <result column="team_b" property="teamB" jdbcType="SMALLINT" />
+    <result column="team_b" property="teamB" jdbcType="BIGINT" />
     <result column="team_b_name" property="teamBName" jdbcType="VARCHAR" />
     <result column="team_b_flag" property="teamBFlag" jdbcType="VARCHAR" />
     <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
@@ -20,5 +20,44 @@
     id, team_a, team_a_name, team_a_flag, team_b, team_b_name, team_b_flag, start_time, 
     course, win, team_a_score, team_b_score, type
   </sql>
-
+  <!--laj  -->
+<update id="updateOne" parameterType="com.fx.xzt.sys.entity.WorldCupCompetition">
+  UPDATE  world_cup_competition
+  <set >
+    <if test="teamA != null" >
+      team_a= #{teamA,jdbcType=BIGINT},
+    </if>
+    <if test="teamAName != null" >
+      team_a_name= #{teamAName,jdbcType=VARCHAR},
+    </if>
+    <if test="teamAFlag != null" >
+      team_a_flag= #{teamAFlag,jdbcType=VARCHAR},
+    </if>
+    <if test="teamB != null" >
+      team_b= #{teamB,jdbcType=BIGINT},
+    </if>
+    <if test="teamBName != null" >
+      team_b_name= #{teamBName,jdbcType=VARCHAR},
+    </if>
+    <if test="teamBFlag != null" >
+      team_b_flag= #{teamBFlag,jdbcType=VARCHAR},
+    </if>
+    <if test="course != null" >
+      course= #{course,jdbcType=INTEGER},
+    </if>
+    <if test="win != null" >
+      win= #{win,jdbcType=SMALLINT},
+    </if>
+    <if test="teamAScore != null" >
+      team_a_score= #{teamAScore,jdbcType=SMALLINT},
+    </if>
+    <if test="teamBScore != null" >
+      team_b_score= #{teamBScore,jdbcType=SMALLINT},
+    </if>
+    <if test="type != null" >
+      type= #{type,jdbcType=SMALLINT},
+    </if>
+  </set>
+  WHERE id=#{id,jdbcType=BIGINT}
+</update>
 </mapper>

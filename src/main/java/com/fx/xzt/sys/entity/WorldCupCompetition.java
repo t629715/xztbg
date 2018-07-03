@@ -5,13 +5,13 @@ import java.util.Date;
 public class WorldCupCompetition {
     private Long id;
 
-    private Short teamA;//球队a
+    private Long teamA;//球队a
 
     private String teamAName;//球队a名字
 
     private String teamAFlag;//球队a国旗
 
-    private Short teamB;//球队b
+    private Long teamB;//球队b
 
     private String teamBName;//球队b名字
 
@@ -37,11 +37,11 @@ public class WorldCupCompetition {
         this.id = id;
     }
 
-    public Short getTeamA() {
+    public Long getTeamA() {
         return teamA;
     }
 
-    public void setTeamA(Short teamA) {
+    public void setTeamA(Long teamA) {
         this.teamA = teamA;
     }
 
@@ -61,11 +61,11 @@ public class WorldCupCompetition {
         this.teamAFlag = teamAFlag == null ? null : teamAFlag.trim();
     }
 
-    public Short getTeamB() {
+    public Long getTeamB() {
         return teamB;
     }
 
-    public void setTeamB(Short teamB) {
+    public void setTeamB(Long teamB) {
         this.teamB = teamB;
     }
 
@@ -85,7 +85,7 @@ public class WorldCupCompetition {
         this.teamBFlag = teamBFlag == null ? null : teamBFlag.trim();
     }
 
-    public Date getStartTime() {
+    public Date getStasrtTime() {
         return startTime;
     }
 
