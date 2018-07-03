@@ -4,6 +4,7 @@ import com.fx.xzt.sys.entity.WorldCupRecord;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface WorldCupRecordMapper extends BaseMapper<WorldCupRecord>{
@@ -22,4 +23,21 @@ public interface WorldCupRecordMapper extends BaseMapper<WorldCupRecord>{
      * @return 修改条数
      */
     int updateSettlement(@Param("competitionId") Long competitionId,@Param("userId") Long userId);
+
+    /**
+     * @CreateBy：tianliya
+     * @CreateTime：2018/7/3 14:31
+     * @Description：竞猜结果统计
+     * @return
+     */
+    List<Map<String, Object>>  selectGuessResult();
+
+    /**
+     * @CreateBy：tianliya
+     * @CreateTime：2018/7/3 15:16
+     * @Description：获取
+     * @param competitionId
+     * @return
+     */
+    List<WorldCupRecord> selectSettlement(Long competitionId);
 }

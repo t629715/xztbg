@@ -18,6 +18,16 @@
     id, user_id, competition_id, guessing_time, guessing_winner, guessing_a_score, guessing_b_score, 
     is_guessing, Settlement, Settlement_time, type
   </sql>
+
+  <!--<select id="selectGuessResult" resultType="java.util.Map">
+
+  </select>-->
+  <select id="selectSettlement" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    SELECT
+    <include refid="Base_Column_List" />
+    from world_cup_record
+    where competition_id = #{competitionId,jdbcType=BIGINT} and Settlement = 0
+  </select>
   <!--<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />

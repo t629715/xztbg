@@ -21,7 +21,7 @@ public class WorldCupCompetition {
 
     private Integer course;//1:1/4赛,2:半决赛3:季军赛4:决赛
 
-    private Short win;//胜利的球队
+    private Long win;//胜利的球队
 
     private Short teamAScore;//球队a进球数
 
@@ -101,11 +101,11 @@ public class WorldCupCompetition {
         this.course = course;
     }
 
-    public Short getWin() {
+    public Long getWin() {
         return win;
     }
 
-    public void setWin(Short win) {
+    public void setWin(Long win) {
         this.win = win;
     }
 

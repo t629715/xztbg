@@ -2,7 +2,9 @@ package com.fx.xzt.sys.service.impl;
 import com.fx.xzt.exception.GlobalException;
 import com.fx.xzt.sys.entity.Users;
 import com.fx.xzt.sys.entity.WorldCupCompetition;
+import com.fx.xzt.sys.entity.WorldCupRecord;
 import com.fx.xzt.sys.mapper.WorldCupCompetitionMapper;
+import com.fx.xzt.sys.mapper.WorldCupRecordMapper;
 import com.fx.xzt.sys.service.WorldCupCompetitionService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.Constant;
@@ -25,6 +27,8 @@ import javax.annotation.Resource;
 public class WorldCupCompetitionServiceImpl implements WorldCupCompetitionService {
     @Resource
     WorldCupCompetitionMapper worldCupCompetitionMapper;
+    @Resource
+    WorldCupRecordMapper worldCupRecordMapper;
 
     private final Logger logger = LoggerFactory.getLogger(WorldCupCompetitionServiceImpl.class);
     /**
@@ -103,6 +107,12 @@ public class WorldCupCompetitionServiceImpl implements WorldCupCompetitionServic
                             }
                             else {
                                 map2.put("teamBScore", "");
+                            }
+                            List<WorldCupRecord> worldCupRecords = worldCupRecordMapper.selectSettlement(worldCupCompetition2.getId());
+                            if (worldCupRecords.size() != 0){
+                                map2.put("settlement",false);
+                            }else {
+                                map2.put("settlement",true);
                             }
                             map2.put("type", worldCupCompetition2.getType());
                             maps.add(map2);

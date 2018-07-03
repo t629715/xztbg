@@ -11,7 +11,7 @@
     <result column="team_b_flag" property="teamBFlag" jdbcType="VARCHAR" />
     <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
     <result column="course" property="course" jdbcType="INTEGER" />
-    <result column="win" property="win" jdbcType="SMALLINT" />
+    <result column="win" property="win" jdbcType="BIGINT" />
     <result column="team_a_score" property="teamAScore" jdbcType="SMALLINT" />
     <result column="team_b_score" property="teamBScore" jdbcType="SMALLINT" />
     <result column="type" property="type" jdbcType="SMALLINT" />
