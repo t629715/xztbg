@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Repository
@@ -31,4 +32,8 @@ public interface WorldCupRecordMapper extends BaseMapper<WorldCupRecord>{
      * @return
      */
     List<WorldCupRecord> countGuess();
+
+    List<WorldCupRecord> selectSettlement(Long competitionId);
+
+    List<Map<String, Object>> selectGuessResult();
 }
