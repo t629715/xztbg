@@ -13,7 +13,7 @@ public interface WorldCupCompetitionMapper extends BaseMapper<WorldCupCompetitio
 
     WorldCupCompetition selectOne(Long id);
 
-    List<WorldCupCompetition> selectCompetions();
+    List<WorldCupCompetition> selectCompetitions();
 
     int updateOne(WorldCupCompetition record);
 }

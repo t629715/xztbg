@@ -522,6 +522,7 @@ public class ConstantUtil {
         HJJYB("黄金交易（买）","48"),
         XTCS("系统参数","52"),
         XTCD("系统菜单","53"),
+        SCKZ("世界杯赛程控制","55"),
         HDKZ("活动查询","54");
 
 

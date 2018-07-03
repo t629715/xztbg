@@ -10,73 +10,12 @@
   <sql id="Base_Column_List" >
     id, team_name, team_img, base
   </sql>
-  <!--<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <!--获取所有的参赛对信息-tianliya-->
+  <select id="selectTeams" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from world_cup_teams
-    where id = #{id,jdbcType=BIGINT}
+    order by team_name
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from world_cup_teams
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="com.fx.xzt.sys.entity.WorldCupTeams" >
-    insert into world_cup_teams (id, team_name, team_img, 
-      base)
-    values (#{id,jdbcType=BIGINT}, #{teamName,jdbcType=VARCHAR}, #{teamImg,jdbcType=VARCHAR}, 
-      #{base,jdbcType=INTEGER})
-  </insert>
-  <insert id="insertSelective" parameterType="com.fx.xzt.sys.entity.WorldCupTeams" >
-    insert into world_cup_teams
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="teamName != null" >
-        team_name,
-      </if>
-      <if test="teamImg != null" >
-        team_img,
-      </if>
-      <if test="base != null" >
-        base,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="teamName != null" >
-        #{teamName,jdbcType=VARCHAR},
-      </if>
-      <if test="teamImg != null" >
-        #{teamImg,jdbcType=VARCHAR},
-      </if>
-      <if test="base != null" >
-        #{base,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.fx.xzt.sys.entity.WorldCupTeams" >
-    update world_cup_teams
-    <set >
-      <if test="teamName != null" >
-        team_name = #{teamName,jdbcType=VARCHAR},
-      </if>
-      <if test="teamImg != null" >
-        team_img = #{teamImg,jdbcType=VARCHAR},
-      </if>
-      <if test="base != null" >
-        base = #{base,jdbcType=INTEGER},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.fx.xzt.sys.entity.WorldCupTeams" >
-    update world_cup_teams
-    set team_name = #{teamName,jdbcType=VARCHAR},
-      team_img = #{teamImg,jdbcType=VARCHAR},
-      base = #{base,jdbcType=INTEGER}
-    where id = #{id,jdbcType=BIGINT}
-  </update>-->
+
 </mapper>

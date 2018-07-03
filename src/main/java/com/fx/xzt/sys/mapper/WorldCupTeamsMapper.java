@@ -3,15 +3,14 @@ package com.fx.xzt.sys.mapper;
 
 import com.fx.xzt.sys.entity.WorldCupTeams;
 
+import java.util.List;
+
 public interface WorldCupTeamsMapper extends BaseMapper<WorldCupTeams>{
-    int deleteOne(Long id);
-
-    int insertOne(WorldCupTeams record);
-
-
-    WorldCupTeams selectOne(Long id);
-
-    int updateOneSelective(WorldCupTeams record);
-
-    int updateOne(WorldCupTeams record);
+    /**
+     * @CreateBy：tianliya
+     * @CreateTime：2018/7/3 10:12
+     * @Description：获取所有的参赛队信息
+     * @return
+     */
+    List<WorldCupTeams> selectTeams();
 }
