@@ -60,4 +60,10 @@
   </set>
   WHERE id=#{id,jdbcType=BIGINT}
 </update>
+
+    <select id="selectCompetitions" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from world_cup_competition
+    </select>
 </mapper>
