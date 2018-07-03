@@ -523,6 +523,7 @@ public class ConstantUtil {
         XTCS("系统参数","52"),
         XTCD("系统菜单","53"),
         SCKZ("世界杯赛程控制","55"),
+        CSDCX("参赛队查询","56"),
         HDKZ("活动查询","54");
 
 

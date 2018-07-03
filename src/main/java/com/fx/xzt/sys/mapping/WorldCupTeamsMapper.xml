@@ -15,7 +15,7 @@
     select 
     <include refid="Base_Column_List" />
     from world_cup_teams
-    order by team_name
+    order by CONVERT(team_name USING gbk)
   </select>
 
 </mapper>
