@@ -88,6 +88,7 @@ public class WorldCupCompetitionServiceImpl implements WorldCupCompetitionServic
                         final String time = startTime2.substring(10, startTime2.length() - 3);
                         if (s.equals(date)) {
                             final Map map2 = new HashMap();
+                            map2.put("competitionId",worldCupCompetition2.getId());
                             map2.put("teamA", worldCupCompetition2.getTeamA());
                             map2.put("teamAName", worldCupCompetition2.getTeamAName());
                             map2.put("teamAFlag", worldCupCompetition2.getTeamAFlag());
@@ -160,6 +161,54 @@ public class WorldCupCompetitionServiceImpl implements WorldCupCompetitionServic
             commonResponse.setMsg("获取竞猜统计异常");
             e.printStackTrace();
             throw new GlobalException("获取竞猜统计","获取竞猜统计异常");
+        }
+        return commonResponse;
+    }
+
+    /**
+     * @CreateBy：tianliya
+     * @CreateTime：2018/7/4 10:06
+     * @Description：修改赛程的比分
+     * @param users
+     * @param worldCupCompetition
+     * @return
+     */
+    @Override
+    public CommonResponse inputScore(Users users, WorldCupCompetition worldCupCompetition) {
+        CommonResponse commonResponse = new CommonResponse();
+        if (users == null) {
+            commonResponse.setCode(1004);
+            commonResponse.setMsg("登录已过期");
+            return commonResponse;
+        }
+        try{
+            int i = worldCupCompetitionMapper.updateOne(worldCupCompetition);
+
+            if (i>0){
+                if (worldCupCompetition.getId().toString() != "2118070008"){
+                    worldCupRecordMapper.updateUserGuessing0(worldCupCompetition.getId());
+                    worldCupRecordMapper.updateUserGuessing1(worldCupCompetition.getId());
+                    worldCupRecordMapper.updateUserGuesse2(worldCupCompetition.getId());
+                }else {
+                    worldCupRecordMapper.updateUserGuessing0(worldCupCompetition.getId());
+                    worldCupRecordMapper.updateUserGuessing1(worldCupCompetition.getId());
+                    worldCupRecordMapper.updateUserGuesse2(worldCupCompetition.getId());
+                    worldCupRecordMapper.updateUserGuesse3(worldCupCompetition.getId());
+                    worldCupRecordMapper.updateUserGuesse4(worldCupCompetition.getId());
+                }
+
+                commonResponse.setMsg("操作成功");
+                commonResponse.setCode(Constant.RESCODE_SUCCESS_MSG);
+            }else {
+                commonResponse.setMsg("操作失败");
+                commonResponse.setCode(Constant.RESCODE_EXCEPTION);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.error("输入赛程比分异常");
+            commonResponse.setCode(Constant.RESCODE_EXCEPTION);
+            commonResponse.setMsg("网络异常");
+            throw new GlobalException("赛程控制","修改赛程比分异常");
         }
         return commonResponse;
     }

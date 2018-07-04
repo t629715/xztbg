@@ -197,6 +197,58 @@ public class WorldCupCompetitionController {
         AuditLog.info(log.toString());
         return cr;
     }
+
+
+    /**
+     * @CreateBy：tianliya
+     * @CreateTime：2018/7/3 15:38
+     * @Description：输入赛程比分
+     * @param request
+     * @return
+     * @throws ParseException
+     */
+    @RequestMapping(value="/inputScore")
+    @ResponseBody
+    public Object inputScore(HttpServletRequest request,WorldCupCompetition worldCupCompetition) throws ParseException {
+        CommonResponse cr = new CommonResponse();
+        //操作日志
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("输入赛程比分");
+        log.setContent("操作成功");
+        log.setModuleName(ConstantUtil.logRecordModule.SCKZ.getName());
+        log.setType(ConstantUtil.logRecordType.XG.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
+        try {
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
+            if (users != null) {
+                String isView = "0";
+                if (role != null && role.get("roleIsView") != null) {
+                    isView = role.get("roleIsView").toString();
+                }
+                cr = worldCupCompetitionService.inputScore(users,worldCupCompetition);
+                log.setUserId(users.getId());
+                log.setContent("操作成功");
+            } else {
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("操作失败！");
+            }
+            log.setUserId(users.getId());
+        } catch (Exception e) {
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("操作失败！");
+            throw e;
+            // e.printStackTrace();
+        }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
+        return cr;
+    }
 	
 
 }

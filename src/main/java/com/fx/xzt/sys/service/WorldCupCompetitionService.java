@@ -28,4 +28,14 @@ public interface WorldCupCompetitionService {
      * @return
      */
     public CommonResponse selectGuessResult(Users users);
+
+    /**
+     * @CreateBy：tianliya
+     * @CreateTime：2018/7/4 10:05
+     * @Description：输入比赛的比分
+     * @param users
+     * @param worldCupCompetition
+     * @return
+     */
+    CommonResponse inputScore(Users users,WorldCupCompetition worldCupCompetition);
 }

@@ -33,7 +33,66 @@ public interface WorldCupRecordMapper extends BaseMapper<WorldCupRecord>{
      */
     List<WorldCupRecord> countGuess();
 
+    /**
+     * @CreateBy：tianliya
+     * @CreateTime：2018/7/4 9:00
+     * @Description：查询某一场比赛是否已结算
+     * @param competitionId
+     * @return
+     */
     List<WorldCupRecord> selectSettlement(Long competitionId);
 
+    /**
+     * @CreateBy：tianliya
+     * @CreateTime：2018/7/4 8:59
+     * @Description：获取竞猜的统计结果：竞猜人数、猜胜人数、猜负人数、发放卡券数
+     * @return
+     */
     List<Map<String, Object>> selectGuessResult();
+
+    /**
+     * @CreateBy：tianliya
+     * @CreateTime：2018/7/4 9:04
+     * @Description：修改用户的竞猜状态为猜胜
+     * @return
+     */
+    int updateUserGuessing0(Long competitionId);
+
+    /**
+     * @CreateBy：tianliya
+     * @CreateTime：2018/7/4 9:33
+     * @Description：修改用户竞猜状态为负
+     * @param competitionId
+     * @return
+     */
+    int updateUserGuessing1(Long competitionId);
+
+    /**
+     * @CreateBy：tianliya
+     * @CreateTime：2018/7/4 9:33
+     * @Description：修改用户竞猜比分为胜
+     * @param competitionId
+     * @return
+     */
+    int updateUserGuesse2(Long competitionId);
+    /**
+     * @CreateBy：tianliya
+     * @CreateTime：2018/7/4 9:33
+     * @Description：修改竞猜 冠军正确的 (参数 最后一场比赛id)
+     * @param competitionId
+     * @return
+     */
+    int updateUserGuesse3(Long competitionId);
+    /**
+     * @CreateBy：tianliya
+     * @CreateTime：2018/7/4 9:33
+     * @Description：修改竞猜冠军错误的  (参数 最后一场比赛id)
+     * @param competitionId
+     * @return
+     */
+    int updateUserGuesse4(Long competitionId);
+
+
+
+
 }

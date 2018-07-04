@@ -19,15 +19,15 @@
     id, user_id, competition_id, guessing_time, guessing_winner, guessing_a_score, guessing_b_score, 
     is_guessing, Settlement, Settlement_time, type
   </sql>
-  <!-- 统计竞猜各国家队冠军人次 laj -->
-<select id="countGuess" resultMap="BaseResultMap" >
+    <!-- 统计竞猜各国家队冠军人次 laj -->
+    <select id="countGuess" resultMap="BaseResultMap">
  select  wct.team_name, count(wcr.guessing_winner) FROM world_cup_record wcr ,world_cup_teams wct
 WHERE wcr.guessing_winner=wct.id and wcr.type=2 group BY wcr.guessing_winner
 </select>
 
     <select id="selectSettlement" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from world_cup_record where competition_id = #{competitionId,jdbcType=BIGINT} and type = 0
     </select>
     <!--竞猜结果统计-tianliya-->
@@ -43,6 +43,61 @@ from world_cup_competition wcc
 where wcc.team_a_name is not null and wcc.team_b_name is not null
 ORDER BY wcc.start_time
   </select>
+    <!--竞猜胜负 输赢都不正确  (参数比赛id)-->
+    <update id="updateUserGuesse0" parameterType="java.lang.Long">
+        UPDATE world_cup_record as wcr
+        INNER JOIN
+        (select id,win,team_a_score,team_b_score
+        from world_cup_competition where id=#{competitionId,jdbcType=BIGINT}) as wcc
+        on wcc.id=wcr.competition_id and (wcc.team_a_score!=wcr.guessing_a_score or  wcc.team_b_score!=wcr.guessing_b_score )and wcc.win !=wcr.guessing_winner
+        set is_guessing=0
+        where type=1
+    </update>
+    <!--竞猜胜负正确 (参数比赛id)-tianliya-->
+    <update id="updateUserGuesse1" parameterType="java.lang.Long">
+        UPDATE world_cup_record as wcr
+        INNER JOIN
+        (select id,win,team_a_score,team_b_score
+        from world_cup_competition
+        where id=#{competitionId,jdbcType=BIGINT}) as wcc
+        on wcc.id=wcr.competition_id and (wcc.team_a_score!=wcr.guessing_a_score or  wcc.team_b_score!=wcr.guessing_b_score )and wcc.win=wcr.guessing_winner
+        set is_guessing=1 where type=1
+    </update>
 
 
+    <!--修改胜负正确 比分正确 (参数比赛id)-->
+    <update id="updateUserGuesse2" parameterType="java.lang.Long">
+        UPDATE world_cup_record as wcr
+        INNER JOIN
+        (select id,win,team_a_score,team_b_score
+        from world_cup_competition
+        where id=#{competitionId,jdbcType=BIGINT}) as wcc
+        on wcc.id=wcr.competition_id and wcc.team_a_score=wcr.guessing_a_score and wcc.team_b_score=wcr.guessing_b_score and wcc.win=wcr.guessing_winner
+        set is_guessing=2
+        where type=1
+    </update>
+
+
+    <!--修改竞猜 冠军正确的 (参数 最后一场比赛id)-->
+    <update id="updateUserGuesse3" parameterType="java.lang.Long">
+        UPDATE world_cup_record as wcr
+        INNER JOIN
+        (select id,win,team_a_score,team_b_score
+        from world_cup_competition
+        where id=#{competitionId,jdbcType=BIGINT}) as wcc
+        on wcc.win=wcr.guessing_winner
+        set is_guessing=3
+        where type=2
+    </update>
+    <!--修改竞猜冠军错误的  (参数 最后一场比赛id)-->
+    <update id="updateUserGuesse4" parameterType="java.lang.Long">
+        UPDATE world_cup_record as wcr
+        INNER JOIN
+        (select id,win,team_a_score,team_b_score
+        from world_cup_competition
+        where id=#{competitionId,jdbcType=BIGINT}) as wcc
+        on wcc.win!=wcr.guessing_winner
+        set is_guessing=4
+        where type=2
+    </update>
 </mapper>

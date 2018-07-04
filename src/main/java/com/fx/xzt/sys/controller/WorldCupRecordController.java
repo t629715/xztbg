@@ -2,6 +2,8 @@ package com.fx.xzt.sys.controller;
 
 import com.fx.xzt.sys.entity.LogRecord;
 import com.fx.xzt.sys.entity.Users;
+import com.fx.xzt.sys.entity.WorldCupCompetition;
+import com.fx.xzt.sys.service.ActivityService;
 import com.fx.xzt.sys.service.LogRecordService;
 import com.fx.xzt.sys.service.WorldCupRecordService;
 import com.fx.xzt.sys.util.CommonResponse;
@@ -28,6 +30,9 @@ public class WorldCupRecordController {
     LogRecordService logRecordService;
     @Resource
     WorldCupRecordService worldCupRecordService;
+
+    @Resource
+    ActivityService activityService;
 
     /**
      * 竞猜各国家队冠军人次 laj
@@ -75,6 +80,58 @@ public class WorldCupRecordController {
         AuditLog.info(log.toString());
         return cr;
 
+    }
+
+
+    /**
+     * @CreateBy：tianliya
+     * @CreateTime：2018/7/3 15:38
+     * @Description：赛程结算
+     * @param request
+     * @return
+     * @throws ParseException
+     */
+    @RequestMapping(value="/settlement")
+    @ResponseBody
+    public Object settlement(HttpServletRequest request,WorldCupCompetition worldCupCompetition) throws ParseException {
+        CommonResponse cr = new CommonResponse();
+        //操作日志
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("输入赛程比分");
+        log.setContent("操作成功");
+        log.setModuleName(ConstantUtil.logRecordModule.SCKZ.getName());
+        log.setType(ConstantUtil.logRecordType.XG.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
+        try {
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
+            if (users != null) {
+                String isView = "0";
+                if (role != null && role.get("roleIsView") != null) {
+                    isView = role.get("roleIsView").toString();
+                }
+                cr  = (CommonResponse) activityService.worldCupSettlement(worldCupCompetition.getId(),new Short("1"));
+                log.setUserId(users.getId());
+                log.setContent("操作成功");
+            } else {
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("操作失败！");
+            }
+            log.setUserId(users.getId());
+        } catch (Exception e) {
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("操作失败！");
+            throw e;
+            // e.printStackTrace();
+        }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
+        return cr;
     }
 
 

@@ -81,8 +81,18 @@ public class UserGoldAccountServiceImpl extends BaseService<UserGoldAccount> imp
 		UserGoldAccount userGoldAccount = new UserGoldAccount();
 		UserLogin userLogin = userLoginMapper.selectByUserName(userName);
 		try{
+			if (userLogin == null){
+				commonResponse.setMsg("账号不存在，请确认");
+				commonResponse.setCode(Constant.RESCODE_EXCEPTION);
+				return commonResponse;
+			}
 			userGoldAccount.setUserId(userLogin.getUserid());
 			userGoldAccount = userGoldAccountMapper.lockForUpdate(userGoldAccount);
+			if (userGoldAccount == null){
+				commonResponse.setCode(Constant.RESCODE_EXCEPTION);
+				commonResponse.setMsg("账号不存在，请确认");
+				return commonResponse;
+			}
 
 		}catch (Exception e){
 			e.printStackTrace();
@@ -101,7 +111,7 @@ public class UserGoldAccountServiceImpl extends BaseService<UserGoldAccount> imp
 				userInfo = userInfoMapper.selectOneUserInfo(userLogin.getUserid());
 				if (userInfo == null){
 					logger.warn("充值黄金失败：id-{},userInfo信息不存在",userLogin.getUserid());
-					commonResponse.setMsg("充值黄金失败");
+					commonResponse.setMsg("账号不存在，请确认");
 					commonResponse.setCode(Constant.RESCODE_EXCEPTION);
 					return commonResponse;
 				}
