@@ -20,15 +20,15 @@
     is_guessing, Settlement, Settlement_time, type
   </sql>
     <!-- 统计竞猜各国家队冠军人次 laj -->
-    <select id="countGuess" resultMap="BaseResultMap">
- select  wct.team_name, count(wcr.guessing_winner) FROM world_cup_record wcr ,world_cup_teams wct
+    <select id="countGuess" resultType="java.util.Map">
+ select  wct.team_name teamName, count(wcr.guessing_winner) guessNum FROM world_cup_record wcr ,world_cup_teams wct
 WHERE wcr.guessing_winner=wct.id and wcr.type=2 group BY wcr.guessing_winner
 </select>
 
     <select id="selectSettlement" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from world_cup_record where competition_id = #{competitionId,jdbcType=BIGINT} and type = 0
+        from world_cup_record where competition_id = #{competitionId,jdbcType=BIGINT} and type = 1 and Settlement = 1
     </select>
     <!--竞猜结果统计-tianliya-->
     <select id="selectGuessResult" resultType="java.util.Map">
@@ -40,11 +40,11 @@ WHERE wcr.guessing_winner=wct.id and wcr.type=2 group BY wcr.guessing_winner
 (select count(id) from world_cup_record where guessing_a_score = wcc.team_a_score and guessing_b_score = wcc.team_b_score and type=1) voucherNum2,
 DATE_FORMAT(wcc.start_time,'%Y-%m-%d %H:%i') startTime
 from world_cup_competition wcc
-where wcc.team_a_name is not null and wcc.team_b_name is not null
+where wcc.team_a_name is not null and wcc.team_b_name is not null and wcc.type=1
 ORDER BY wcc.start_time
   </select>
     <!--竞猜胜负 输赢都不正确  (参数比赛id)-->
-    <update id="updateUserGuesse0" parameterType="java.lang.Long">
+    <update id="updateUserGuessing0" parameterType="java.lang.Long">
         UPDATE world_cup_record as wcr
         INNER JOIN
         (select id,win,team_a_score,team_b_score
@@ -54,7 +54,7 @@ ORDER BY wcc.start_time
         where type=1
     </update>
     <!--竞猜胜负正确 (参数比赛id)-tianliya-->
-    <update id="updateUserGuesse1" parameterType="java.lang.Long">
+    <update id="updateUserGuessing1" parameterType="java.lang.Long">
         UPDATE world_cup_record as wcr
         INNER JOIN
         (select id,win,team_a_score,team_b_score
@@ -100,4 +100,17 @@ ORDER BY wcc.start_time
         set is_guessing=4
         where type=2
     </update>
+
+    <select id="findByCompetitionIdAndType" resultMap="BaseResultMap">
+        SELECT * FROM world_cup_record wcr WHERE wcr.competition_id=#{competitionId} AND wcr.type=#{type}
+    </select>
+
+    <update id="updateSettlement">
+        UPDATE  world_cup_record wcr SET wcr.Settlement=1,wcr.Settlement_time=now() WHERE wcr.competition_id=#{competitionId} AND wcr.Settlement=0 AND wcr.user_id=#{userId}
+    </update>
+    <!--获取猜世界冠军正确的用户-->
+    <select id="guessWinnerCount" resultType="java.util.Map" parameterType="java.lang.Short">
+select UserName userName, DATE_FORMAT(wcr.guessing_time,'%Y-%m-%d %H:%i:%s') guessingTime, wcr.is_guessing isGuessing from (select *
+from world_cup_record  where is_guessing = #{isGuessing,jdbcType=SMALLINT}) wcr LEFT JOIN User_Login ul on wcr.user_id = ul.UserId
+    </select>
 </mapper>

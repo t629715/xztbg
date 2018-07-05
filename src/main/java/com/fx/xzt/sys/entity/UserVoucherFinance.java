@@ -16,7 +16,7 @@ public class UserVoucherFinance implements Serializable {
 	private Date createTime;         //发放日期
 	private Short useStatus;         //使用状态0：未使用；1：已使用
 	private Date useTime;            //使用时间
-	private Date dataStart;          //有效期开始
+	private Date dateStart;          //有效期开始
 	private Date dateEnd;            //有效期结束
 	private Short addType;           //增值类型1、按比例；2、按面额
 	private Short validateDays;      //加息时间
@@ -93,11 +93,11 @@ public class UserVoucherFinance implements Serializable {
 	}
 	
 	public Date getDataStart() {
-		return dataStart;
+		return dateStart;
 	}
 	
 	public void setDataStart(Date dataStart) {
-		this.dataStart = dataStart;
+		this.dateStart = dataStart;
 	}
 	
 	public Date getDateEnd() {

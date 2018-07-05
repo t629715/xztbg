@@ -42,7 +42,7 @@ public class WorldCupCompetitionServiceImpl implements WorldCupCompetitionServic
 
         int l= worldCupCompetitionMapper.updateOne(record);
        if(l>0){
-            commonResponse.setCode(Constant.RESCODE_SUCCESS);
+            commonResponse.setCode(Constant.RESCODE_SUCCESS_MSG);
 
         }else {
             commonResponse.setCode(Constant.RESCODE_EXCEPTION);
@@ -185,7 +185,7 @@ public class WorldCupCompetitionServiceImpl implements WorldCupCompetitionServic
             int i = worldCupCompetitionMapper.updateOne(worldCupCompetition);
 
             if (i>0){
-                if (worldCupCompetition.getId().toString() != "2118070008"){
+                if (!worldCupCompetition.getId().toString().equals("2118070008")){
                     worldCupRecordMapper.updateUserGuessing0(worldCupCompetition.getId());
                     worldCupRecordMapper.updateUserGuessing1(worldCupCompetition.getId());
                     worldCupRecordMapper.updateUserGuesse2(worldCupCompetition.getId());
