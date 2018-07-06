@@ -32,12 +32,12 @@ WHERE wcr.guessing_winner=wct.id and wcr.type=2 group BY wcr.guessing_winner
     </select>
     <!--竞猜结果统计-tianliya-->
     <select id="selectGuessResult" resultType="java.util.Map">
-    select wcc.team_a_name teamAName, wcc.team_b_name teamBName,
+    select wcc.team_a_name teamAName, wcc.team_b_name teamBName,wcc.type,
  (select count(id)from world_cup_record where competition_id = wcc.id and type=1) guessNum,
 (select count(id)from world_cup_record where guessing_winner = wcc.win and type=1) winNum,
 (select count(id)from world_cup_record where competition_id = wcc.id and type=1)-(select count(id)from world_cup_record where guessing_winner = wcc.win and type=1) lossNum,
-(select count(id) from world_cup_record where guessing_winner = wcc.win and type=1) voucherNum1,
-(select count(id) from world_cup_record where guessing_a_score = wcc.team_a_score and guessing_b_score = wcc.team_b_score and type=1) voucherNum2,
+(select count(id) from world_cup_record where is_guessing = 1 and type=1 and competition_id = wcc.id) voucherNum1,
+(select count(id) from world_cup_record where is_guessing = 2 and type=1 and competition_id = wcc.id)+(select count(id) from world_cup_record where is_guessing = 2 and type=1 and competition_id = wcc.id) voucherNum2,
 DATE_FORMAT(wcc.start_time,'%Y-%m-%d %H:%i') startTime
 from world_cup_competition wcc
 where wcc.team_a_name is not null and wcc.team_b_name is not null and wcc.type=1
@@ -109,8 +109,14 @@ ORDER BY wcc.start_time
         UPDATE  world_cup_record wcr SET wcr.Settlement=1,wcr.Settlement_time=now() WHERE wcr.competition_id=#{competitionId} AND wcr.Settlement=0 AND wcr.user_id=#{userId}
     </update>
     <!--获取猜世界冠军正确的用户-->
-    <select id="guessWinnerCount" resultType="java.util.Map" parameterType="java.lang.Short">
-select UserName userName, DATE_FORMAT(wcr.guessing_time,'%Y-%m-%d %H:%i:%s') guessingTime, wcr.is_guessing isGuessing from (select *
-from world_cup_record  where is_guessing = #{isGuessing,jdbcType=SMALLINT}) wcr LEFT JOIN User_Login ul on wcr.user_id = ul.UserId
+    <select id="guessWinnerCount" resultType="java.util.Map" parameterType="java.util.Map">
+select UserName userName, DATE_FORMAT(wcr.guessing_time,'%Y-%m-%d %H:%i:%s') guessingTime, wcr.is_guessing isGuessing
+from (select *
+from world_cup_record  where is_guessing = #{isGuessing,jdbcType=SMALLINT}) wcr
+LEFT JOIN User_Login ul on wcr.user_id = ul.UserId
+        where 1=1
+        <if test="userName != null and userName != ''">
+            and ul.UserName LIKE "%"#{userName,jdbcType=VARCHAR}"%"
+    </if>
     </select>
 </mapper>

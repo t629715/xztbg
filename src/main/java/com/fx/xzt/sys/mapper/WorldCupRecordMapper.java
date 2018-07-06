@@ -96,10 +96,10 @@ public interface WorldCupRecordMapper extends BaseMapper<WorldCupRecord>{
      * @CreateBy：tianliya
      * @CreateTime：2018/7/5 15:47
      * @Description：获取猜世界冠军的用户统计
-     * @param isGuessing
+     * @param map
      * @return
      */
-    List<Map<String, Object>> guessWinnerCount(Short isGuessing);
+    List<Map<String, Object>> guessWinnerCount(Map map);
 
 
 }

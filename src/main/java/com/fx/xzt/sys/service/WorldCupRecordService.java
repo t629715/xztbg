@@ -19,7 +19,7 @@ public interface WorldCupRecordService {
      * @Description：获取用户猜测世界冠军结果
      * @return
      */
-    public CommonResponse getGuessWinner(Users users,Short isGuessing,Integer pageNum, Integer pageSize);
+    public CommonResponse getGuessWinner(Users users,Short isGuessing,String userName,Integer pageNum, Integer pageSize);
 
     /**
      * @CreateBy：tianliya

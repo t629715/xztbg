@@ -138,7 +138,7 @@ public class WorldCupRecordController {
     }
     @RequestMapping(value="/getWinnerGuess")
     @ResponseBody
-    public Object getWinnerGuess(HttpServletRequest request,Short isGuessing, Integer pageNum, Integer pageSize) throws ParseException {
+    public Object getWinnerGuess(HttpServletRequest request,Short isGuessing, String userName,Integer pageNum, Integer pageSize) throws ParseException {
         CommonResponse cr = new CommonResponse();
         //操作日志
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -158,7 +158,7 @@ public class WorldCupRecordController {
                 if (role != null && role.get("roleIsView") != null) {
                     isView = role.get("roleIsView").toString();
                 }
-                cr  =  worldCupRecordService.getGuessWinner(users,isGuessing,pageNum,pageSize);
+                cr  =  worldCupRecordService.getGuessWinner(users,isGuessing,userName,pageNum,pageSize);
                 log.setUserId(users.getId());
                 log.setContent("操作成功");
             } else {

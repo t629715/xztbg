@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +42,7 @@ public class WorldCupRecordServiceImpl implements WorldCupRecordService {
     }
 
     @Override
-    public CommonResponse getGuessWinner(Users users, Short isGuessing, Integer pageNum, Integer pageSize) {
+    public CommonResponse getGuessWinner(Users users, Short isGuessing, String userName,Integer pageNum, Integer pageSize) {
         CommonResponse commonResponse = new CommonResponse();
         if (users == null) {
             commonResponse.setCode(Constant.RESCODE_NOAUTH);
@@ -49,14 +50,21 @@ public class WorldCupRecordServiceImpl implements WorldCupRecordService {
         }
         try {
             PageHelper.startPage(pageNum, pageSize);
-            List<Map<String, Object>> list = worldCupRecordMapper.guessWinnerCount(isGuessing);
+            Map map = new HashMap();
+            if (isGuessing != null){
+                map.put("isGuessing",isGuessing);
+            }
+            if (userName != null || userName != ""){
+                map.put("userName",userName);
+            }
+            List<Map<String, Object>> list = worldCupRecordMapper.guessWinnerCount(map);
             if (list.size() != 0) {
                 if (isGuessing.toString().equals("3")) {
-                    for (Map map : list) {
+                    for (Map map1 : list) {
                         map.put("state", "猜对");
                     }
                 } else if (isGuessing.toString().equals("4")) {
-                    for (Map map : list) {
+                    for (Map map1 : list) {
                         map.put("state", "猜错");
                     }
                 }
@@ -81,7 +89,9 @@ public class WorldCupRecordServiceImpl implements WorldCupRecordService {
             commonResponse.setMsg("登录过期");
         }
         try {
-            List<Map<String, Object>> list = worldCupRecordMapper.guessWinnerCount(isGuessing);
+            Map map1 = new HashMap();
+            map1.put("isGuessing",isGuessing);
+            List<Map<String, Object>> list = worldCupRecordMapper.guessWinnerCount(map1);
             if (list.size() != 0) {
 
                 for (Map map : list) {
