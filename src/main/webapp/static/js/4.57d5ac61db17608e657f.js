@@ -207,7 +207,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var params = new URLSearchParams();
             _this.settlementState = true;
             params.append("id", this.competitionId);
-            axios.get("worldCupRecordController/settlement", { params }).then(function (res) {
+            axios.post("worldCupRecordController/settlement", { params }).then(function (res) {
                 _this.settlementState = false;
                 _this.getAllCompetions();
                 if (res.data.code == 1001 || res.data.code == 1000) {
@@ -311,7 +311,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
             params.append("teamBName", objB.teamName);
             params.append("teamBFlag", objB.teamImg);
-            axios.get(url, { params }).then(function (res) {
+            axios.post(url, params).then(function (res) {
                 if (res.data.code == 1001) {
                     _this.getAllCompetions();
                 }
@@ -454,15 +454,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       })]), _vm._v(" "), _c('div', {
         staticClass: "team-name"
-      }, [_vm._v("\n                        " + _vm._s(team.teamAName) + "\n                    ")]), _vm._v(" "), _c('div', {
-        directives: [{
-          name: "show",
-          rawName: "v-show",
-          value: (team.teamAName === '' || team.teamBName === null ? false : true),
-          expression: "team.teamAName === '' || team.teamBName === null ? false : true"
-        }],
-        staticClass: "mask"
-      })]), _vm._v(" "), _c('div', {
+      }, [_vm._v("\n                        " + _vm._s(team.teamAName) + "\n                    ")])]), _vm._v(" "), _c('div', {
         staticClass: "score fl"
       }, [_c('div', {
         staticClass: "score-cut"
@@ -521,15 +513,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       })]), _vm._v(" "), _c('div', {
         staticClass: "team-name"
-      }, [_vm._v("\n                        " + _vm._s(team.teamBName) + "\n                    ")]), _vm._v(" "), _c('div', {
-        directives: [{
-          name: "show",
-          rawName: "v-show",
-          value: (team.teamBName === '' || team.teamBName === null ? false : true),
-          expression: "team.teamBName === '' || team.teamBName === null ? false : true"
-        }],
-        staticClass: "mask"
-      })]), _vm._v(" "), _c('div', {
+      }, [_vm._v("\n                        " + _vm._s(team.teamBName) + "\n                    ")])]), _vm._v(" "), _c('div', {
         directives: [{
           name: "show",
           rawName: "v-show",

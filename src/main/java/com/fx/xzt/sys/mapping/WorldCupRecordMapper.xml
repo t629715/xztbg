@@ -30,6 +30,7 @@ WHERE wcr.guessing_winner=wct.id and wcr.type=2 group BY wcr.guessing_winner
         <include refid="Base_Column_List"/>
         from world_cup_record where competition_id = #{competitionId,jdbcType=BIGINT} and type = 1 and Settlement = 1
     </select>
+    
     <!--竞猜结果统计-tianliya-->
     <select id="selectGuessResult" resultType="java.util.Map">
     select wcc.team_a_name teamAName, wcc.team_b_name teamBName,wcc.type,
@@ -114,7 +115,9 @@ select UserName userName, DATE_FORMAT(wcr.guessing_time,'%Y-%m-%d %H:%i:%s') gue
 from (select *
 from world_cup_record  where is_guessing = #{isGuessing,jdbcType=SMALLINT}) wcr
 LEFT JOIN User_Login ul on wcr.user_id = ul.UserId
-        where 1=1
+        INNER JOIN finance_regulargold_order fro on ul.UserId = fro.user_id
+
+        where 1=1 and fro.buy_time &gt; '2018-07-06 00:00:00' and fro.buy_time &lt; '2018-07-15 23:59:59'
         <if test="userName != null and userName != ''">
             and ul.UserName LIKE "%"#{userName,jdbcType=VARCHAR}"%"
     </if>

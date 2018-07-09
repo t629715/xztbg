@@ -40,6 +40,9 @@ public class WorldCupCompetitionServiceImpl implements WorldCupCompetitionServic
     public CommonResponse updateByPrimaryKeySelective(WorldCupCompetition record) {
         CommonResponse commonResponse = new CommonResponse();
 
+        if (record.getTeamB() != null && record.getTeamA() != null){
+            logger.info("A队的名字：{}---B队的名字：{}",record.getTeamAName(),record.getTeamBName());
+        }
         int l= worldCupCompetitionMapper.updateOne(record);
        if(l>0){
             commonResponse.setCode(Constant.RESCODE_SUCCESS_MSG);

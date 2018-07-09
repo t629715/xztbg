@@ -19,8 +19,11 @@ import com.fx.xzt.util.IdUtil;
 import com.fx.xzt.util.POIUtils;
 import com.github.pagehelper.PageInfo;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -44,6 +47,8 @@ public class WorldCupCompetitionController {
 
 	@Resource
     LogRecordService logRecordService;
+
+	private final Logger logger = LoggerFactory.getLogger(WorldCupCompetitionController.class);
 	/**
 	 * 
 	* @Title: getAllCompetitons
@@ -67,6 +72,7 @@ public class WorldCupCompetitionController {
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
+
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
@@ -103,7 +109,7 @@ public class WorldCupCompetitionController {
      * @return
      * @throws ParseException
      */
-    @RequestMapping(value="/modifyCompetiton")
+    @RequestMapping(value="/modifyCompetiton",method= RequestMethod.POST )
     @ResponseBody
     public Object modifyCompetiton(HttpServletRequest request, WorldCupCompetition worldCupCompetition) throws ParseException {
         CommonResponse cr = new CommonResponse();
@@ -117,6 +123,9 @@ public class WorldCupCompetitionController {
         log.setIp(IPUtil.getHost(request));
         log.setCreateTime(sdf.parse(sdf.format(new Date())));
         try {
+            if (worldCupCompetition.getTeamB() != null && worldCupCompetition.getTeamA() != null){
+                logger.info("A队的名字：{}---B队的名字：{}",worldCupCompetition.getTeamAName(),worldCupCompetition.getTeamBName());
+            }
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");

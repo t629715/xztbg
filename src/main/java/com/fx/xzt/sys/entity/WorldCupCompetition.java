@@ -132,4 +132,23 @@ public class WorldCupCompetition {
     public void setType(Short type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "WorldCupCompetition{" +
+                "id=" + id +
+                ", teamA=" + teamA +
+                ", teamAName='" + teamAName + '\'' +
+                ", teamAFlag='" + teamAFlag + '\'' +
+                ", teamB=" + teamB +
+                ", teamBName='" + teamBName + '\'' +
+                ", teamBFlag='" + teamBFlag + '\'' +
+                ", startTime=" + startTime +
+                ", course=" + course +
+                ", win=" + win +
+                ", teamAScore=" + teamAScore +
+                ", teamBScore=" + teamBScore +
+                ", type=" + type +
+                '}';
+    }
 }
