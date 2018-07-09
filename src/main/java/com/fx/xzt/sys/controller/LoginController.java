@@ -74,7 +74,7 @@ public class LoginController {
 		MyAuthenticationToken token = new MyAuthenticationToken(userName, password, true, null);
 		Subject subject = SecurityUtils.getSubject();
 		try {
-			/*if (!StringUtil.isNotEmpty(validateCode)){
+			if (!StringUtil.isNotEmpty(validateCode)){
 				map.put("msg","请输入验证码");
 				return map;
 			}
@@ -89,7 +89,7 @@ public class LoginController {
 			if (!validateCode.equals(redisService.get(sessionId).toString())){
 				map.put("msg","验证码错误");
 				return map;
-			}*/
+			}
 			redisService.delete(sessionId);
 			subject.login(token);//会到自定义的Realm中进行验证返回
 			if(subject.isAuthenticated()){

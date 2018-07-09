@@ -207,7 +207,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var params = new URLSearchParams();
             _this.settlementState = true;
             params.append("id", this.competitionId);
-            axios.post("worldCupRecordController/settlement", { params }).then(function (res) {
+            axios.post("worldCupRecordController/settlement", params).then(function (res) {
                 _this.settlementState = false;
                 _this.getAllCompetions();
                 if (res.data.code == 1001 || res.data.code == 1000) {
