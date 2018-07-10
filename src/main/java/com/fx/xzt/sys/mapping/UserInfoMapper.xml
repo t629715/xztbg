@@ -699,10 +699,29 @@
 	        <if test="idcard != null and idcard !=''">
 	        	IDCard = #{idcard,jdbcType=VARCHAR},
 	        </if>
-	        	broker_id = #{brokerId,jdbcType=BIGINT},
-	        	agent_id = #{agentId,jdbcType=BIGINT},
+	        <if test="brokerId != null">
+				broker_id = #{brokerId,jdbcType=BIGINT},
+			</if>
+			<if test="agentId != null">
+				agent_id = #{agentId,jdbcType=BIGINT},
+			</if>
+
     	</set>
 		where UserID = #{userId,jdbcType=BIGINT}
 	</update>
 	<!--修改客户的经济人 tianliya-->
+
+	<!--修改用户实名信息-->
+	<update id="modifyRealNameInfo" parameterType="java.util.Map">
+		update User_Info
+		<set>
+			<if test="realName != null and realName !=''">
+				RealName = #{realName,jdbcType=VARCHAR},
+			</if>
+			<if test="idcard != null and idcard !=''">
+				IDCard = #{idcard,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where UserID = #{userId,jdbcType=BIGINT}
+	</update>
 </mapper>

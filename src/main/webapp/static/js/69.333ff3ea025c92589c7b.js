@@ -410,16 +410,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         getBrokerOptions1() {
             let _this = this;
-            _this.newformEdit.brokerId = "";
-            var params = new URLSearchParams();
-            if ("" != _this.newformEdit.agentId) {
-                params.append('pid', _this.newformEdit.agentId);
+            if (_this.newformEdit.agentId != undefined) {
+                _this.newformEdit.brokerId = "";
+                var params = new URLSearchParams();
+                if ("" != _this.newformEdit.agentId) {
+                    params.append('pid', _this.newformEdit.agentId);
+                }
+                axios.post(_this.brokerUrl, params).then(function (response) {
+                    _this.brokerList = response.data.data;
+                }).catch(function (error) {
+                    console.log(error);
+                });
             }
-            axios.post(_this.brokerUrl, params).then(function (response) {
-                _this.brokerList = response.data.data;
-            }).catch(function (error) {
-                console.log(error);
-            });
         },
         //查询方法
         onSubmit(form) {

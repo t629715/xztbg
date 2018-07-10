@@ -80,7 +80,16 @@ public interface UserInfoMapper extends BaseMapper<UserInfo>{
 	 */
 	int updateUserInfoBrokerId(Map<String,Object> map);
 	int alertAgentAndBroker(Map<String,Object> map);
-	
+
+	/**
+	 * @CreateBy：tianliya
+	 * @CreateTime：2018/7/10 16:19
+	 * @Description：修改用户实名认证信息
+	 * @param map
+	 * @return
+	 */
+	int modifyRealNameInfo(Map<String,Object> map);
+
 	/**
 	 * 
 	* @Title: getByUserAnalysis 

@@ -355,7 +355,15 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 			map.put("brokerId", brokerId);
 			map.put("agentId", agentId);
 			try{
-				flag = userInfoMapper.alertAgentAndBroker(map);
+				if (realName == null && idcard == null){
+					flag = userInfoMapper.alertAgentAndBroker(map);
+				}else {
+					flag = userInfoMapper.modifyRealNameInfo(map);
+					if (flag > 0){
+						return flag;
+					}
+				}
+
 			}catch (Exception e){
 				logger.error("修改用户的UserInfo表信息异常-{}，参数-realName:{},idcard：{}，userId：{}，",e.getStackTrace().toString(),realName,idcard,userId);
 				e.printStackTrace();
