@@ -189,6 +189,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     //model 初始数据
@@ -200,7 +228,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 realName: "",
                 idcard: "",
                 agentId: "",
-                brokerId: ""
+                brokerId: "",
+                realAuthState: ""
             },
             brokerList: "",
             form: {
@@ -243,7 +272,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             formLabelWidth: '120px',
             userId: "",
             countList: "",
-            dialogFormVisibleEdit: false
+            dialogFormVisibleEdit: false,
+            dialogForModifyRealNameInfo: false
         };
     },
     created() {
@@ -275,6 +305,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         clos(formName) {
             this.dialogFormVisibleEdit = false;
+            this.dialogForModifyRealNameInfo = false;
             this.$refs[formName].resetFields();
         },
         /*变更客户的代理商、经纪人*/
@@ -284,7 +315,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 realName: row.RealName,
                 idcard: row.idcard,
                 agentId: row.agentId + "",
-                brokerId: row.brokerId == null ? "" : row.agentId + ""
+                brokerId: row.brokerId == null ? "" : row.brokerId + "",
+                realAuthState: row.realNameAuthStatus
             };
             var params = new URLSearchParams();
             params.append("pid", row.agentId);
@@ -294,31 +326,71 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.dialogFormVisibleEdit = true;
             this.userId = row.userId;
         },
+        // 修改实名信息
+        modifyRealNameAuth(index, row) {
+            this.newformEdit = {
+                realName: row.RealName,
+                idcard: row.idcard
+            };
+            this.dialogForModifyRealNameInfo = true;
+            this.userId = row.userId;
+        },
         confirmChangeBroker(formName) {
             let _this = this;
             var params = new URLSearchParams();
-            params.append("realName", _this.newformEdit.realName);
-            params.append("idcard", _this.newformEdit.idcard);
             params.append("agentId", _this.newformEdit.agentId);
             params.append("brokerId", _this.newformEdit.brokerId);
             params.append("userId", _this.userId);
-
             this.$refs[formName].validate(valid => {
                 if (valid) {
                     axios.post(this.alertUrl, params).then(function (response) {
                         if (response.data.data == 1) {
                             _this.$message({
-                                message: "变更成功",
+                                message: "操作成功",
                                 type: 'success'
                             });
                             _this.loadData(_this.pagesize, _this.currentPage);
                             _this.dialogFormVisibleEdit = false;
+                            _this.dialogForModifyRealNameInfo = false;
                         } else {
                             _this.$message({
-                                message: "变更失败",
+                                message: "操作失败",
                                 type: 'error'
                             });
                             _this.dialogFormVisibleEdit = false;
+                            _this.dialogForModifyRealNameInfo = false;
+                        }
+                    });
+                }
+            });
+        },
+
+        // 修改实名认证提交
+
+        modifyRealNameInfoConfirm(formName) {
+            let _this = this;
+            var params = new URLSearchParams();
+            params.append("realName", _this.newformEdit.realName);
+            params.append("idcard", _this.newformEdit.idcard);
+            params.append("userId", _this.userId);
+            this.$refs[formName].validate(valid => {
+                if (true) {
+                    axios.post(this.alertUrl, params).then(function (response) {
+                        if (response.data.data == 1) {
+                            _this.$message({
+                                message: "操作成功",
+                                type: 'success'
+                            });
+                            _this.loadData(_this.pagesize, _this.currentPage);
+                            _this.dialogFormVisibleEdit = false;
+                            _this.dialogForModifyRealNameInfo = false;
+                        } else {
+                            _this.$message({
+                                message: "操作失败",
+                                type: 'error'
+                            });
+                            _this.dialogFormVisibleEdit = false;
+                            _this.dialogForModifyRealNameInfo = false;
                         }
                     });
                 }
@@ -830,12 +902,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "label": "操作",
       "fixed": "right",
-      "width": "150"
+      "width": "180"
     },
     scopedSlots: _vm._u([{
       key: "default",
       fn: function(scope) {
-        return [(scope.row.realNameAuthStatus == '1') ? [_c('el-button', {
+        return [_c('el-button', {
           attrs: {
             "size": "small",
             "type": "primary"
@@ -845,7 +917,28 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
               _vm.changeBroker(scope.index, scope.row)
             }
           }
-        }, [_vm._v("变更")])] : _vm._e()]
+        }, [_vm._v("变更\n                        ")]), _vm._v(" "), (scope.row.realNameAuthStatus == '1') ? _c('el-button', {
+          attrs: {
+            "size": "small",
+            "type": "success"
+          },
+          on: {
+            "click": function($event) {
+              _vm.modifyRealNameAuth(scope.index, scope.row)
+            }
+          }
+        }, [_vm._v("实名调整\n                        ")]) : _vm._e(), _vm._v(" "), (scope.row.realNameAuthStatus != '1') ? _c('el-button', {
+          attrs: {
+            "disabled": scope.row.realNameAuthStatus != '1',
+            "size": "small",
+            "type": "success"
+          },
+          on: {
+            "click": function($event) {
+              _vm.modifyRealNameAuth(scope.index, scope.row)
+            }
+          }
+        }, [_vm._v("尚未实名\n                        ")]) : _vm._e()]
       }
     }])
   })], 1)], 1), _vm._v(" "), _c('el-dialog', {
@@ -867,48 +960,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "rules": _vm.rules
     }
   }, [_c('el-form-item', {
-    attrs: {
-      "label": "真实姓名：",
-      "label-width": _vm.formLabelWidth,
-      "prop": "realName"
-    }
-  }, [_c('el-input', {
-    staticStyle: {
-      "width": "215px"
-    },
-    attrs: {
-      "size": "small",
-      "maxlength": 25
-    },
-    model: {
-      value: (_vm.newformEdit.realName),
-      callback: function($$v) {
-        _vm.$set(_vm.newformEdit, "realName", $$v)
-      },
-      expression: "newformEdit.realName"
-    }
-  })], 1), _vm._v(" "), _c('el-form-item', {
-    attrs: {
-      "label": "身份证号：",
-      "label-width": _vm.formLabelWidth,
-      "prop": "idcard"
-    }
-  }, [_c('el-input', {
-    staticStyle: {
-      "width": "215px"
-    },
-    attrs: {
-      "size": "small",
-      "maxlength": 19
-    },
-    model: {
-      value: (_vm.newformEdit.idcard),
-      callback: function($$v) {
-        _vm.$set(_vm.newformEdit, "idcard", $$v)
-      },
-      expression: "newformEdit.idcard"
-    }
-  })], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
       "label": "代理商：",
       "label-width": _vm.formLabelWidth,
@@ -987,6 +1038,91 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": function($event) {
         _vm.confirmChangeBroker('newformEdit')
+      }
+    }
+  }, [_vm._v("确 定\n                ")])], 1)], 1), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "修改实名信息",
+      "visible": _vm.dialogForModifyRealNameInfo,
+      "width": "30%",
+      "center": ""
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogForModifyRealNameInfo = $event
+      }
+    }
+  }, [_c('el-form', {
+    ref: "newformEdit",
+    attrs: {
+      "model": _vm.newformEdit,
+      "rules": _vm.rules
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "label": "真实姓名：",
+      "label-width": _vm.formLabelWidth,
+      "prop": "realName"
+    }
+  }, [_c('el-input', {
+    staticStyle: {
+      "width": "215px"
+    },
+    attrs: {
+      "size": "small",
+      "maxlength": 25
+    },
+    model: {
+      value: (_vm.newformEdit.realName),
+      callback: function($$v) {
+        _vm.$set(_vm.newformEdit, "realName", $$v)
+      },
+      expression: "newformEdit.realName"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "身份证号：",
+      "label-width": _vm.formLabelWidth,
+      "prop": "idcard"
+    }
+  }, [_c('el-input', {
+    staticStyle: {
+      "width": "215px"
+    },
+    attrs: {
+      "size": "small",
+      "maxlength": 19
+    },
+    model: {
+      value: (_vm.newformEdit.idcard),
+      callback: function($$v) {
+        _vm.$set(_vm.newformEdit, "idcard", $$v)
+      },
+      expression: "newformEdit.idcard"
+    }
+  })], 1)], 1), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "size": "small"
+    },
+    on: {
+      "click": function($event) {
+        _vm.clos('newformEdit')
+      }
+    }
+  }, [_vm._v("取 消")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "size": "small",
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.modifyRealNameInfoConfirm('newformEdit')
       }
     }
   }, [_vm._v("确 定\n                ")])], 1)], 1), _vm._v(" "), _c('br'), _c('br'), _vm._v(" "), _c('div', {

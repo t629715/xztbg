@@ -10,11 +10,18 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fx.xzt.exception.GlobalException;
+import com.fx.xzt.sys.entity.UserAccount;
+import com.fx.xzt.sys.entity.UserGoldAccount;
 import com.fx.xzt.sys.entity.UserInfo;
 import com.fx.xzt.sys.entity.UserLogin;
+import com.fx.xzt.sys.mapper.UserAccountMapper;
+import com.fx.xzt.sys.mapper.UserGoldAccountMapper;
 import com.fx.xzt.sys.mapper.UserInfoMapper;
 import com.fx.xzt.sys.mapper.UserLoginMapper;
 import com.fx.xzt.sys.model.UserInfoModel;
@@ -31,6 +38,14 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 	UserInfoMapper userInfoMapper;
 	@Resource
 	UserLoginMapper userLoginMapper;
+
+	@Resource
+	UserGoldAccountMapper userGoldAccountMapper;
+
+	@Resource
+	UserAccountMapper userAccountMapper;
+
+	private final Logger logger = LoggerFactory.getLogger(UserInfoServiceImpl.class);
 	
 	public PageInfo<UserInfoModel> getfindAll(String userName, String realName, String applyTimeStart, String applyTimeEnd, Integer pageNum,
 			Integer pageSize) {
@@ -339,13 +354,40 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 			map.put("idcard", idcard);
 			map.put("brokerId", brokerId);
 			map.put("agentId", agentId);
-			flag = userInfoMapper.alertAgentAndBroker(map);
+			try{
+				flag = userInfoMapper.alertAgentAndBroker(map);
+			}catch (Exception e){
+				logger.error("修改用户的UserInfo表信息异常-{}，参数-realName:{},idcard：{}，userId：{}，",e.getStackTrace().toString(),realName,idcard,userId);
+				e.printStackTrace();
+				throw new GlobalException("修改用户的UserInfo信息","修改用户的UserInfo信息异常");
+			}
+
 			if (flag > 0 && agentId != null) {
 				UserLogin userLogin = new UserLogin();
 				userLogin.setAgentId(agentId);
 				userLogin.setBrokerId(brokerId);
 				userLogin.setUserid(userId);
-				userLoginMapper.updateByIdSelective(userLogin);
+				try {
+					flag = userLoginMapper.updateByIdSelective(userLogin);
+				}catch (Exception e){
+					logger.error("修改用户的UserLogin表信息异常-{}，参数-agentId:{},brokerId：{}，userId：{}",e.getStackTrace().toString(),agentId,brokerId,userId);
+					e.printStackTrace();
+					throw new GlobalException("修改用户的UserLogin信息","修改用户的UserLogin信息异常");
+				}
+
+				if (flag > 0){
+					UserGoldAccount userGoldAccount = new UserGoldAccount();
+					userGoldAccount.setUserId(userId);
+					userGoldAccount.setAgentId(agentId);
+					userGoldAccount.setBrokerId(brokerId);
+					try{
+						flag = userGoldAccountMapper.updateOneBuyUserId(userGoldAccount);
+					}catch (Exception e){
+						logger.error("修改用户的UserGoldAccount表信息异常-{}，参数-agentId:{},brokerId：{}，userId：{}",e.getStackTrace().toString(),agentId,brokerId,userId);
+						e.printStackTrace();
+						throw new GlobalException("修改用户的UserGoldAccount信息","修改用户的UserGoldAccount信息异常");
+					}
+				}
 			}
 		}
 		

@@ -21,4 +21,13 @@ public interface UserGoldAccountMapper extends BaseMapper<UserGoldAccount>{
      */
     int updateOne(UserGoldAccount record);
 
+    /**
+     * @CreateBy：tianliya
+     * @CreateTime：2018/7/10 12:25
+     * @Description：根据用户的id修改用户的黄金账户信息
+     * @param record
+     * @return
+     */
+    int updateOneBuyUserId(UserGoldAccount record);
+
 }
