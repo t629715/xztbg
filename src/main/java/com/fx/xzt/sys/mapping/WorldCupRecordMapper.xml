@@ -35,8 +35,8 @@ WHERE wcr.guessing_winner=wct.id and wcr.type=2 group BY wcr.guessing_winner
     <select id="selectGuessResult" resultType="java.util.Map">
     select wcc.team_a_name teamAName, wcc.team_b_name teamBName,wcc.type,
  (select count(id)from world_cup_record where competition_id = wcc.id and type=1) guessNum,
-(select count(id)from world_cup_record where guessing_winner = wcc.win and type=1) winNum,
-(select count(id)from world_cup_record where competition_id = wcc.id and type=1)-(select count(id)from world_cup_record where guessing_winner = wcc.win and type=1) lossNum,
+(select count(id)from world_cup_record where competition_id = wcc.id and guessing_winner = wcc.win and type=1) winNum,
+(select count(id)from world_cup_record where competition_id = wcc.id and type=1)-(select count(id)from world_cup_record where competition_id = wcc.id and guessing_winner = wcc.win and type=1) lossNum,
 (select count(id) from world_cup_record where is_guessing = 1 and type=1 and competition_id = wcc.id) voucherNum1,
 (select count(id) from world_cup_record where is_guessing = 2 and type=1 and competition_id = wcc.id)+(select count(id) from world_cup_record where is_guessing = 2 and type=1 and competition_id = wcc.id) voucherNum2,
 DATE_FORMAT(wcc.start_time,'%Y-%m-%d %H:%i') startTime
