@@ -85,7 +85,10 @@ public class LoginController {
 				}
 			}
 			validateCode = String.valueOf(strs);
-
+			if (redisService.get(sessionId) == null){
+				map.put("msg","验证码错误");
+				return map;
+			}
 			if (!validateCode.equals(redisService.get(sessionId).toString())){
 				map.put("msg","验证码错误");
 				return map;

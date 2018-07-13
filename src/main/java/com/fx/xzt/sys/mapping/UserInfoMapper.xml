@@ -699,9 +699,7 @@
 	        <if test="idcard != null and idcard !=''">
 	        	IDCard = #{idcard,jdbcType=VARCHAR},
 	        </if>
-	        <if test="brokerId != null">
 				broker_id = #{brokerId,jdbcType=BIGINT},
-			</if>
 			<if test="agentId != null">
 				agent_id = #{agentId,jdbcType=BIGINT},
 			</if>

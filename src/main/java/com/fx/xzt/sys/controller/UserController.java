@@ -423,6 +423,12 @@ public class UserController {
 		try {
 			HttpSession session = request.getSession();
 			Users users = (Users) session.getAttribute("currentUser");
+			if (users == null){
+				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+				cr.setData("{}");
+				cr.setMsg("操作失败！");
+				return cr;
+			}
 			Long pid1 = null;
 			if (StringUtil.isNotEmpty(pid)){
 				pid1 = Long.valueOf(pid);
