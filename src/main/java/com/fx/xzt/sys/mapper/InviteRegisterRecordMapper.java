@@ -12,6 +12,6 @@ public interface InviteRegisterRecordMapper extends BaseMapper<InviteRegisterRec
      * @param map
      * @return
      */
-    List<Map<String, Object>> selectAll (Map<String,Object> map);
+    List<Map<String, Object>> selectAllRecords (Map<String,Object> map);
 
 }

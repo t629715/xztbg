@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fx.xzt.sys.mapper.InviteRegisterRecordMapper">
 
-    <select id="selectAll" resultType="java.util.Map" parameterType="java.util.Map">
+    <select id="selectAllRecords" resultType="java.util.Map" parameterType="java.util.Map">
 <!--邀请注册记录查询  liaijiao-->
  SELECT irr.id id,irr.share_userid shareUserid,
 

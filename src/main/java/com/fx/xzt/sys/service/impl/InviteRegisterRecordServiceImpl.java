@@ -42,7 +42,7 @@ public class InviteRegisterRecordServiceImpl implements InviteRegisterRecordServ
             map.put("acceptPrize",acceptPrize);
             map.put("isView",isView);
             PageHelper.startPage(pageNum,pageSize);
-            List<Map<String, Object>> list=inviteRegisterRecordMapper.selectAll(map);
+            List<Map<String, Object>> list=inviteRegisterRecordMapper.selectAllRecords(map);
             if (list != null && list.size() > 0) {
                 for (Map<String, Object> map1 : list) {
                     map1.put("acceptPrize", ConstantUtil.acceptPrize.toMap().get(map1.get("acceptPrize").toString()));

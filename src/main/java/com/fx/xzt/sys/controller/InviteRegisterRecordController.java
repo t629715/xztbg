@@ -12,6 +12,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +29,8 @@ public class InviteRegisterRecordController {
     LogRecordService logRecordService;
     @Resource
     InviteRegisterRecordService inviteRegisterRecordService;
+    @RequestMapping("/getSelectAll")
+    @ResponseBody
     public Object getSelectAll(HttpServletRequest request,String shareUserName, String newUserName, String startTime,
                                String endTime, String acceptPrize, @RequestParam Integer pageNum, @RequestParam Integer pageSize)throws ParseException {
         CommonResponse cr = new CommonResponse();
