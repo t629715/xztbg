@@ -19,12 +19,12 @@
             INSERT(ul2.UserName, 4, 4, '****') newUserName,
         </if>
         irr.accept_prize acceptPrize,irr.create_time createTime,irr.update_time updateTime,
-        irr.remark remark,irr.agent_id agentId,irr.broker_id brokerId
+        irr.remark remark,ua.id agentId,ua.user_name agentName,ub.id brokerId,ub.user_name brokerName
         FROM invite_register_record AS irr
         LEFT JOIN User_Login ul ON irr.share_userid=ul.UserID
         LEFT JOIN User_Login ul2 ON irr.new_userid=ul2.UserID
-        LEFT JOIN users ua ON irr.agent_id = ua.id
-        LEFT JOIN users ub ON irr.broker_id = ub.id
+        LEFT JOIN users ua ON ul2.agent_id = ua.id
+        LEFT JOIN users ub ON ul2.broker_id = ub.id
        WHERE 1=1
         <if test="userName != null and userName != '' ">
             and ul.UserName = #{userName,jdbcType=VARCHAR}
