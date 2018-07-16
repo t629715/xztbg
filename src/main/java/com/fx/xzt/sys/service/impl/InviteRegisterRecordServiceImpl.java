@@ -52,6 +52,32 @@ public class InviteRegisterRecordServiceImpl implements InviteRegisterRecordServ
             return pagehelper;
 
         }catch (Exception e){
+            e.printStackTrace();
+            throw new GlobalException("邀请注册记录查询", "邀请注册记录查询出现异常");
+        }
+
+    }
+
+
+    @Override
+    public List<Map<String, Object>> exportAllRecords(String shareUserName, String newUserName, String startTime,
+                                                      String endTime,String isView, String acceptPrize, Integer pageNum, Integer pageSize) {
+        try{
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("shareUserName",shareUserName);
+            map.put("newUserName",newUserName);
+            map.put("startTime",startTime);
+            map.put("endTime",endTime);
+            map.put("acceptPrize",acceptPrize);
+            map.put("isView",isView);
+            List<Map<String, Object>> list=inviteRegisterRecordMapper.selectAllRecords(map);
+            if (list != null && list.size() > 0) {
+                for (Map<String, Object> map1 : list) {
+                    map1.put("acceptPrize", ConstantUtil.acceptPrize.toMap().get(map1.get("acceptPrize").toString()));
+                }
+            }
+            return list;
+        }catch (Exception e){
             throw new GlobalException("邀请注册记录查询", "邀请注册记录查询出现异常");
         }
 

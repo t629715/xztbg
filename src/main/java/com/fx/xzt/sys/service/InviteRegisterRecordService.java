@@ -2,6 +2,7 @@ package com.fx.xzt.sys.service;
 
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
 import java.util.Map;
 
 public interface InviteRegisterRecordService {
@@ -20,4 +21,7 @@ public interface InviteRegisterRecordService {
      */
     PageInfo<Map<String, Object>> getSelectAll( String shareUserName,String newUserName,String startTime,String endTime,
                                                 String acceptPrize,String isView, Integer pageNum, Integer pageSize);
+
+    List<Map<String, Object>> exportAllRecords(String shareUserName, String newUserName, String startTime, String endTime,
+                                           String acceptPrize, String isView, Integer pageNum, Integer pageSize);
 }

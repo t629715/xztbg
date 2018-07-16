@@ -26,7 +26,7 @@
         LEFT JOIN User_Login ul2 ON ul.UserID=irr.new_userid
         LEFT JOIN users ua ON irr.agent_id = ua.id
         LEFT JOIN users ub ON irr.broker_id = ub.id
-       WHERE
+       WHERE 1=1
         <if test="shareUserName != null and shareUserName != '' ">
             and ul.UserName = #{shareUserName,jdbcType=VARCHAR}
         </if>
