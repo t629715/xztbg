@@ -1,6 +1,6 @@
 /*
  * @ClassName InfoBanner
- * @Description 
+ * @Description
  * @version 1.0
  * @Date 2017-08-25 13:45:24
  */
@@ -11,18 +11,19 @@ import java.util.Date;
 
 /**
  * Banner 图
-* @Title: InfoBanner.java 
-* @Package com.fx.xzt.sys.entity
-* @author SYan  
-* @date 2017年8月25日 下午1:46:36 
-* @version V1.0
+ *
+ * @author SYan
+ * @version V1.0
+ * @Title: InfoBanner.java
+ * @Package com.fx.xzt.sys.entity
+ * @date 2017年8月25日 下午1:46:36
  */
 public class InfoBanner implements Serializable {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	/**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    /**
      * @Fields serialNo 序号
      */
     private Long serialNo;
@@ -70,6 +71,18 @@ public class InfoBanner implements Serializable {
      * @Fields operator 操作人
      */
     private String operator;
+    /**
+     * 代理商的id
+     */
+    private Long agentId;
+    /**
+     * 经纪人的id
+     */
+    private Long brokerId;
+    /**
+     * 是否登录可见  0：登录不登录都可见，1：登录可见
+     */
+    private Short isLogin;
 
     public Long getSerialNo() {
         return serialNo;
@@ -165,5 +178,29 @@ public class InfoBanner implements Serializable {
 
     public void setOperator(String operator) {
         this.operator = operator == null ? null : operator.trim();
+    }
+
+    public Long getAgentId() {
+        return agentId;
+    }
+
+    public void setAgentId(Long agentId) {
+        this.agentId = agentId;
+    }
+
+    public Long getBrokerId() {
+        return brokerId;
+    }
+
+    public void setBrokerId(Long brokerId) {
+        this.brokerId = brokerId;
+    }
+
+    public Short getIsLogin() {
+        return isLogin;
+    }
+
+    public void setIsLogin(Short isLogin) {
+        this.isLogin = isLogin;
     }
 }

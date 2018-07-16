@@ -64,4 +64,13 @@ public interface InfoBannerMapper extends BaseMapper<InfoBanner>{
 	 * @return
 	 */
 	InfoBanner selectBySortNo(Integer SortNo);
+
+	/**
+	 * @CreateBy：tianliya
+	 * @CreateTime：2018/7/13 16:00
+	 * @Description：修改图片排序
+	 * @param infoBanner
+	 * @return
+	 */
+	Integer updateSortNo(InfoBanner infoBanner);
 }
