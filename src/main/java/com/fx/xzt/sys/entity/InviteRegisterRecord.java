@@ -1,19 +1,20 @@
 package com.fx.xzt.sys.entity;
 
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class InviteRegisterRecord  {
-
+public class InviteRegisterRecord  implements Serializable {
+  private static final long serialVersionUID = -6971448494947194765L;
   private Long id;
-  private  Long shareUserid;
-  private Long newUserid;
-  private Short acceptPrize;
-  private Date createTime;
-  private Date updateTime;
-  private  String remark;
-  private Long agentId;
-  private Long brokerId;
+  private  Long shareUserid;//分享的用户id
+  private Long newUserid;//新注册用户id
+  private Short acceptPrize;//领奖的标识，0未领奖，1领奖
+  private Date createTime;//创建时间
+  private Date updateTime;//修改时间
+  private  String remark;//备注
+  private Long agentId;//代理商
+  private Long brokerId;//经纪人
 
     public Long getId() {
         return id;

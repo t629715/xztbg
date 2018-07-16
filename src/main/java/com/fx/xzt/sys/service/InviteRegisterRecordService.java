@@ -9,8 +9,7 @@ public interface InviteRegisterRecordService {
 
     /**
      * 邀请注册记录
-     * @param shareUserName 
-     * @param newUserName
+     * @param userName
      * @param startTime
      * @param endTime
      * @param acceptPrize
@@ -19,9 +18,20 @@ public interface InviteRegisterRecordService {
      * @param pageSize
      * @return
      */
-    PageInfo<Map<String, Object>> getSelectAll( String shareUserName,String newUserName,String startTime,String endTime,
-                                                String acceptPrize,String isView, Integer pageNum, Integer pageSize);
+    PageInfo<Map<String, Object>> getSelectAll( String userName,String startTime,String endTime,
+                                                String acceptPrize,String agentName ,String brokerName, String isView, Integer pageNum, Integer pageSize);
 
-    List<Map<String, Object>> exportAllRecords(String shareUserName, String newUserName, String startTime, String endTime,
-                                           String acceptPrize, String isView, Integer pageNum, Integer pageSize);
+    /**
+     * 导出
+     * @param userName
+     * @param startTime
+     * @param endTime
+     * @param acceptPrize
+     * @param isView
+     * @param agentName
+     * @param brokerName
+     * @return
+     */
+    List<Map<String, Object>> exportAllRecords(String userName, String startTime, String endTime,
+                                           String acceptPrize,String isView, String agentName ,String brokerName);
 }

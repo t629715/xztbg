@@ -11,7 +11,6 @@ import com.fx.xzt.sys.util.log.AuditLog;
 import com.fx.xzt.util.POIUtils;
 import com.github.pagehelper.PageInfo;
 
-import org.apache.http.HttpResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,10 +33,25 @@ public class InviteRegisterRecordController {
     LogRecordService logRecordService;
     @Resource
     InviteRegisterRecordService inviteRegisterRecordService;
+
+    /**
+     * 邀请注册记录查询
+     * @param request
+     * @param userName
+     * @param startTime
+     * @param endTime
+     * @param acceptPrize
+     * @param agentName
+     * @param brokerName
+     * @param pageNum
+     * @param pageSize
+     * @return
+     * @throws ParseException
+     */
     @RequestMapping("/getSelectAll")
     @ResponseBody
-    public Object getSelectAll(HttpServletRequest request,String shareUserName, String newUserName, String startTime,
-                               String endTime, String acceptPrize, @RequestParam Integer pageNum, @RequestParam Integer pageSize)throws ParseException {
+    public Object getSelectAll(HttpServletRequest request,String userName, String startTime,
+                               String endTime, String acceptPrize,String agentName ,String brokerName, @RequestParam Integer pageNum, @RequestParam Integer pageSize)throws ParseException {
         CommonResponse cr = new CommonResponse();
 
         //操作日志
@@ -58,7 +72,7 @@ public class InviteRegisterRecordController {
                 if (role != null && role.get("roleIsView") != null) {
                     isView = role.get("roleIsView").toString();
                 }
-                PageInfo<Map<String, Object>> pageInfo = inviteRegisterRecordService.getSelectAll(shareUserName, newUserName, startTime, endTime, isView, acceptPrize, pageNum, pageSize);
+                PageInfo<Map<String, Object>> pageInfo = inviteRegisterRecordService.getSelectAll(userName, startTime, endTime,agentName ,brokerName, isView, acceptPrize, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
@@ -82,10 +96,22 @@ public class InviteRegisterRecordController {
         return cr;
     }
 
+    /**
+     * 导出
+     * @param request
+     * @param userName
+     * @param startTime
+     * @param response
+     * @param endTime
+     * @param acceptPrize
+     * @param agentName
+     * @param brokerName
+     * @throws Exception
+     */
     @RequestMapping(value="/excelAll")
     @ResponseBody
-    public void excelAll(HttpServletRequest request,String shareUserName, String newUserName, String startTime,HttpServletResponse response,
-                         String endTime, String acceptPrize, @RequestParam Integer pageNum, @RequestParam Integer pageSize) throws Exception{
+    public void excelAll(HttpServletRequest request,String userName, String startTime,HttpServletResponse response,
+                         String endTime, String acceptPrize,String agentName ,String brokerName) throws Exception{
         //操作日志
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         LogRecord log = new LogRecord();
@@ -107,7 +133,7 @@ public class InviteRegisterRecordController {
                 if (role != null && role.get("roleIsView") != null) {
                     isView = role.get("roleIsView").toString();
                 }
-                List<Map<String, Object>> list = inviteRegisterRecordService.exportAllRecords(shareUserName, newUserName, startTime, endTime, isView, acceptPrize, pageNum, pageSize);
+                List<Map<String, Object>> list = inviteRegisterRecordService.exportAllRecords(userName, startTime, endTime, isView, acceptPrize,agentName ,brokerName);
                 if (list != null && list.size() > 0) {
                     for (Map<String, Object> map : list) {
                         map.put("acceptPrize", ConstantUtil.acceptPrize.toMap().get(map.get("acceptPrize").toString()));
