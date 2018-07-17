@@ -33,18 +33,18 @@ public class RegistCountController {
 
         CommonResponse cr = new CommonResponse();
         try {
-//            HttpSession httpSession = request.getSession();
-//            Users users = (Users) httpSession.getAttribute("currentUser");
-//           if(users!=null){
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+           if(users!=null){
                PageInfo<Map<String, Object>> mapPageInfo = userChannelSourceService.coutRegistFrom(pageNum, pageSize);
                cr.setCode(Constant.RESCODE_SUCCESS);
                cr.setMsg("查询成功!");
                cr.setData(mapPageInfo);
-//           }
-//            logger.debug("没有登录");
-//            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
-//            cr.setData("{}");
-//            cr.setMsg("没有登录！");
+           }
+            logger.debug("没有登录");
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+            cr.setData("{}");
+            cr.setMsg("没有登录！");
         } catch (Exception e) {
             cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
             cr.setData("{}");
