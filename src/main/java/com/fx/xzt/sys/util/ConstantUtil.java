@@ -526,6 +526,7 @@ public class ConstantUtil {
         SCKZ("世界杯赛程控制","55"),
         CSDCX("参赛队查询","56"),
         RGHJCZ("人工黄金充值","57"),
+        GJJGCX("冠军结果查询","58"),
         HDKZ("活动查询","54");
 
 

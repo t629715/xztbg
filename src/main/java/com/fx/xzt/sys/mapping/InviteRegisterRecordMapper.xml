@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fx.xzt.sys.mapper.InviteRegisterRecordMapper">
+    <!--邀请注册记录查询  liaijiao-->
+    <select id="selectAllRecords" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT irr.id id,irr.share_userid shareUserid,
+
+        <if test='isView == "1"'>
+            ul.UserName shareUserName,
+        </if>
+        <if test='isView != "1"'>
+            INSERT(ul.UserName, 4, 4, '****') shareUserName,
+        </if>
+        irr.new_userid newUserid,
+        <if test='isView == "1"'>
+            ul2.UserName newUserName,
+        </if>
+        <if test='isView != "1"'>
+            INSERT(ul2.UserName, 4, 4, '****') newUserName,
+        </if>
+        irr.accept_prize acceptPrize,irr.create_time createTime,irr.update_time updateTime,
+        irr.remark remark,ua.id agentId,ua.user_name agentName,ub.id brokerId,ub.user_name brokerName
+        FROM invite_register_record AS irr
+        LEFT JOIN User_Login ul ON irr.share_userid=ul.UserID
+        LEFT JOIN User_Login ul2 ON irr.new_userid=ul2.UserID
+        LEFT JOIN users ua ON ul2.agent_id = ua.id
+        LEFT JOIN users ub ON ul2.broker_id = ub.id
+       WHERE 1=1
+        <if test="userName != null and userName != '' ">
+            and ul.UserName = #{userName,jdbcType=VARCHAR}
+        </if>
+       <!-- <if test="newUserName != null and newUserName != '' ">
+            and ul2.UserName = #{newUserName,jdbcType=VARCHAR}
+        </if>-->
+        <if test="startTime !=null and startTime !='' ">
+            and irr.create_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="endTime !=null and endTime != '' ">
+            and irr.create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="acceptPrize != null and acceptPrize != '' ">
+            and irr.accept_prize = #{acceptPrize,jdbcType=INTEGER}
+        </if>
+        <if test="agentName != null and agentName !='' ">
+            and ua.id = #{agentName,jdbcType=BIGINT}
+        </if>
+        <if test="brokerName != null and brokerName !='' ">
+            and ub.id = #{brokerName,jdbcType=BIGINT}
+        </if>
+       order BY irr.create_time DESC
+
+    </select>
+
+</mapper>

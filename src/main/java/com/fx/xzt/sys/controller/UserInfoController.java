@@ -831,8 +831,12 @@ public class UserInfoController {
 		//操作日志
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		LogRecord log = new LogRecord();
-		log.setTitle("变更经济人");
-		log.setContent("变更失败");
+		if (realName != null && idcard != null){
+			log.setTitle("修改实名认证信息");
+		}else {
+			log.setTitle("变更归属");
+		}
+		log.setContent("操作失败");
 		log.setModuleName(ConstantUtil.logRecordModule.ZHXX.getName());
 		log.setType(ConstantUtil.logRecordType.XG.getIndex());
 		log.setIp(IPUtil.getHost(request));
@@ -845,13 +849,13 @@ public class UserInfoController {
 				if (msg>0){
 					response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 					response.setData(msg);
-					response.setMsg("变更成功");
+					response.setMsg("操作成功");
 					log.setUserId(users.getId());
-					log.setContent("变更成功");
+					log.setContent("操作成功");
 				}else{
 					response.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 					response.setData(msg);
-					response.setMsg("变更失败");
+					response.setMsg("操作失败");
 				}
 			}
 		}catch (Exception e){

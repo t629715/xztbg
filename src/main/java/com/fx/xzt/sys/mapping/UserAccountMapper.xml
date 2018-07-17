@@ -10,11 +10,7 @@
 	<!--充值修改账户余额-tianliya-->
 	<update id="updateForRecharge" parameterType="com.fx.xzt.sys.entity.UserAccount">
 		update user_account
-		<set>
-			<if test="rmb != null and rmb !=''">
-				rmb = #{rmb,jdbcType=REAL},
-			</if>
-		</set>
+		set		rmb = #{rmb,jdbcType=REAL}
 		where id = #{id,jdbcType=BIGINT}
 	</update>
 	<!--黄金赎回成功更改账户余额开始-htt-->

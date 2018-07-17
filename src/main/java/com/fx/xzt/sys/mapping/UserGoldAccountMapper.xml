@@ -58,5 +58,38 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-
+  <!--根据用户id修改用户的黄金账户信息-->
+  <update id="updateOneBuyUserId" parameterType="com.fx.xzt.sys.entity.UserGoldAccount" >
+    update user_gold_account
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="gold != null" >
+        gold = #{gold,jdbcType=DOUBLE},
+      </if>
+      <if test="frozenGold != null" >
+        frozen_gold = #{frozenGold,jdbcType=DOUBLE},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="agentId != null" >
+        agent_id = #{agentId,jdbcType=BIGINT},
+      </if>
+      <if test="brokerId != null" >
+        broker_id = #{brokerId,jdbcType=BIGINT},
+      </if>
+      <if test="totalIncome != null" >
+        total_income = #{totalIncome,jdbcType=DECIMAL},
+      </if>
+      <if test="financeGold != null" >
+        finance_gold = #{financeGold,jdbcType=DOUBLE},
+      </if>
+      <if test="averagePrice != null" >
+        average_price = #{averagePrice,jdbcType=BIGINT},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
 </mapper>

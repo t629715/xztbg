@@ -31,7 +31,7 @@ public interface WorldCupRecordMapper extends BaseMapper<WorldCupRecord>{
      *
      * @return
      */
-    List<WorldCupRecord> countGuess();
+    List<Map<String, Object>> countGuess();
 
     /**
      * @CreateBy：tianliya
@@ -92,7 +92,14 @@ public interface WorldCupRecordMapper extends BaseMapper<WorldCupRecord>{
      */
     int updateUserGuesse4(Long competitionId);
 
-
+    /**
+     * @CreateBy：tianliya
+     * @CreateTime：2018/7/5 15:47
+     * @Description：获取猜世界冠军的用户统计
+     * @param map
+     * @return
+     */
+    List<Map<String, Object>> guessWinnerCount(Map map);
 
 
 }

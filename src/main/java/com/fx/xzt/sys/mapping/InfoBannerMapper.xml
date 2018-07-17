@@ -15,10 +15,13 @@
         <result column="CreateTime" property="createTime" jdbcType="TIMESTAMP" />
         <result column="ModifyTime" property="modifyTime" jdbcType="TIMESTAMP" />
         <result column="Operator" property="operator" jdbcType="VARCHAR" />
+        <result column="agent_id" property="agentId" jdbcType="BIGINT" />
+        <result column="broken_id" property="brokerId" jdbcType="BIGINT" />
+
     </resultMap>
     <sql id="Base_Column_List" >
         SerialNo, Page, PicturePath, AppID, SkipPath, SkipType, Description, SortNo , Valid,
-        CreateTime, ModifyTime, Operator
+        CreateTime, ModifyTime, Operator, broken_id, agent_id
     </sql>
     <select id="getByPageAll" resultMap="BaseResultMap" parameterType="map" >
         select 
@@ -38,14 +41,19 @@
     <!--获取用于广告的图片-start-tianliya-->
     <select id="selectAdPic" resultType="java.util.Map" parameterType="java.lang.Short" >
 
-        select SortNo,SerialNo,Page,PicturePath,SkipPath,CreateTime,SkipType,AppID,Description
+        select SortNo,SerialNo,Page,PicturePath,SkipPath,CreateTime,SkipType,AppID,Description, agent_id agentId, broken_id brokerId,
+        (select user_name from users where id = agent_id) agentName,
+        (select user_name from users where id = broken_id) brokerName,
+        is_login isLogin
         from Info_Banner
         WHERE Page = #{page,jdbcType=SMALLINT} AND valid = 1
         order by SortNo DESC
     </select>
     <!--获取用于广告的图片-end-tianliya-->
 
-
+    <update id="updateSortNo" parameterType="com.fx.xzt.sys.entity.InfoBanner">
+        update Info_Banner set SortNo = #{sortNo,jdbcType=INTEGER} where SerialNo = #{serialNo,jdbcType=BIGINT}
+    </update>
 	<update id="edit" parameterType="com.fx.xzt.sys.entity.InfoBanner" >
         update Info_Banner
         <set >
@@ -81,6 +89,15 @@
             </if>
             <if test="operator != null" >
                 Operator = #{operator,jdbcType=VARCHAR},
+            </if>
+            <if test="agentId != null" >
+                agent_id = #{agentId,jdbcType=BIGINT},
+            </if>
+            <if test="brokerId != null" >
+                broken_id = #{brokerId,jdbcType=BIGINT},
+            </if>
+            <if test="isLogin != null" >
+                is_login = #{isLogin,jdbcType=SMALLINT},
             </if>
         </set>
         where SortNo = #{sortNo,jdbcType=BIGINT}
@@ -121,6 +138,15 @@
             <if test="operator != null" >
                 Operator,
             </if>
+            <if test="agentId != null" >
+                agent_id,
+            </if>
+            <if test="brokerId != null" >
+                broken_id,
+            </if>
+            <if test="isLogin != null" >
+                is_login,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="page != null" >
@@ -156,6 +182,15 @@
             <if test="operator != null" >
                 #{operator,jdbcType=VARCHAR},
             </if>
+            <if test="agentId != null" >
+                #{agentId,jdbcType=BIGINT},
+            </if>
+            <if test="brokerId != null" >
+                #{brokerId,jdbcType=BIGINT},
+            </if>
+            <if test="isLogin != null" >
+                #{isLogin,jdbcType=SMALLINT},
+            </if>
         </trim>
         ;update Info_Banner
         set SortNo = @@IDENTITY
@@ -186,171 +221,4 @@
         order by SortNo
     </select>
     <!--根据排序号查询数据 tianliya-->
-
-   <!--  <sql id="Example_Where_Clause" >
-        <where >
-            <foreach collection="oredCriteria" item="criteria" separator="or" >
-                <if test="criteria.valid" >
-                    <trim prefix="(" suffix=")" prefixOverrides="and" >
-                        <foreach collection="criteria.criteria" item="criterion" >
-                            <choose >
-                                <when test="criterion.noValue" >
-                                    and ${criterion.condition}
-                                </when>
-                                <when test="criterion.singleValue" >
-                                    and ${criterion.condition} #{criterion.value}
-                                </when>
-                                <when test="criterion.betweenValue" >
-                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                                </when>
-                                <when test="criterion.listValue" >
-                                    and ${criterion.condition}
-                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                                        #{listItem}
-                                    </foreach>
-                                </when>
-                            </choose>
-                        </foreach>
-                    </trim>
-                </if>
-            </foreach>
-        </where>
-    </sql>
-
-    <sql id="Update_By_Example_Where_Clause" >
-        <where >
-            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-                <if test="criteria.valid" >
-                    <trim prefix="(" suffix=")" prefixOverrides="and" >
-                        <foreach collection="criteria.criteria" item="criterion" >
-                            <choose >
-                                <when test="criterion.noValue" >
-                                    and ${criterion.condition}
-                                </when>
-                                <when test="criterion.singleValue" >
-                                    and ${criterion.condition} #{criterion.value}
-                                </when>
-                                <when test="criterion.betweenValue" >
-                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                                </when>
-                                <when test="criterion.listValue" >
-                                    and ${criterion.condition}
-                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                                        #{listItem}
-                                    </foreach>
-                                </when>
-                            </choose>
-                        </foreach>
-                    </trim>
-                </if>
-            </foreach>
-        </where>
-    </sql>
-
-    <sql id="Base_Column_List" >
-        SerialNo, Page, PicturePath, AppID, SkipPath, SkipType, Description, SortNo, Valid, 
-        CreateTime, ModifyTime, Operator
-    </sql>
-
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fx.xzt.sys.entity.InfoBannerExample" >
-        select
-        <if test="distinct" >
-            distinct
-        </if>
-        'false' as QUERYID,
-        <include refid="Base_Column_List" />
-        from Info_Banner
-        <if test="_parameter != null" >
-            <include refid="Example_Where_Clause" />
-        </if>
-        <if test="orderByClause != null" >
-            order by ${orderByClause}
-        </if>
-    </select>
-
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select 
-        <include refid="Base_Column_List" />
-        from Info_Banner
-        where SerialNo = #{serialNo,jdbcType=BIGINT}
-    </select>
-
-    <delete id="deleteByExample" parameterType="com.fx.xzt.sys.entity.InfoBannerExample" >
-        delete from Info_Banner
-        <if test="_parameter != null" >
-            <include refid="Example_Where_Clause" />
-        </if>
-    </delete>
-
-    <select id="countByExample" parameterType="com.fx.xzt.sys.entity.InfoBannerExample" resultType="java.lang.Integer" >
-        select count(*) from Info_Banner
-        <if test="_parameter != null" >
-            <include refid="Example_Where_Clause" />
-        </if>
-    </select>
-
-    <update id="updateByExampleSelective" parameterType="map" >
-        update Info_Banner
-        <set >
-            <if test="record.serialNo != null" >
-                SerialNo = #{record.serialNo,jdbcType=BIGINT},
-            </if>
-            <if test="record.page != null" >
-                Page = #{record.page,jdbcType=SMALLINT},
-            </if>
-            <if test="record.picturePath != null" >
-                PicturePath = #{record.picturePath,jdbcType=VARCHAR},
-            </if>
-            <if test="record.appID != null" >
-                AppID = #{record.appID,jdbcType=VARCHAR},
-            </if>
-            <if test="record.skipPath != null" >
-                SkipPath = #{record.skipPath,jdbcType=VARCHAR},
-            </if>
-            <if test="record.skipType != null" >
-                SkipType = #{record.skipType,jdbcType=SMALLINT},
-            </if>
-            <if test="record.description != null" >
-                Description = #{record.description,jdbcType=VARCHAR},
-            </if>
-            <if test="record.sortNo != null" >
-                SortNo = #{record.sortNo,jdbcType=INTEGER},
-            </if>
-            <if test="record.valid != null" >
-                Valid = #{record.valid,jdbcType=SMALLINT},
-            </if>
-            <if test="record.createTime != null" >
-                CreateTime = #{record.createTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="record.modifyTime != null" >
-                ModifyTime = #{record.modifyTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="record.operator != null" >
-                Operator = #{record.operator,jdbcType=VARCHAR},
-            </if>
-        </set>
-        <if test="_parameter != null" >
-            <include refid="Update_By_Example_Where_Clause" />
-        </if>
-    </update>
-
-    <update id="updateByExample" parameterType="map" >
-        update Info_Banner
-        set SerialNo = #{record.serialNo,jdbcType=BIGINT},
-            Page = #{record.page,jdbcType=SMALLINT},
-            PicturePath = #{record.picturePath,jdbcType=VARCHAR},
-            AppID = #{record.appID,jdbcType=VARCHAR},
-            SkipPath = #{record.skipPath,jdbcType=VARCHAR},
-            SkipType = #{record.skipType,jdbcType=SMALLINT},
-            Description = #{record.description,jdbcType=VARCHAR},
-            SortNo = #{record.sortNo,jdbcType=INTEGER},
-            Valid = #{record.valid,jdbcType=SMALLINT},
-            CreateTime = #{record.createTime,jdbcType=TIMESTAMP},
-            ModifyTime = #{record.modifyTime,jdbcType=TIMESTAMP},
-            Operator = #{record.operator,jdbcType=VARCHAR}
-        <if test="_parameter != null" >
-            <include refid="Update_By_Example_Where_Clause" />
-        </if>
-    </update>
- -->
 </mapper>

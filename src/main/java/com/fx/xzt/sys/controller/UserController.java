@@ -340,11 +340,12 @@ public class UserController {
         try {
 			HttpSession httpSession = request.getSession();
 			Users users = (Users) httpSession.getAttribute("currentUser");
-			if (users.getPid() == null){
-
-			}else if (users.getPid() == 1){
-
+			if (users == null){
+				cr.setCode(Constant.RESCODE_NOAUTH);
+				cr.setMsg("请登录");
+				return cr;
 			}
+
         	List<Map<String, Object>> list = userService.selectByAgentMessage(users.getPid());
         	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
             cr.setData(list);
@@ -422,6 +423,12 @@ public class UserController {
 		try {
 			HttpSession session = request.getSession();
 			Users users = (Users) session.getAttribute("currentUser");
+			if (users == null){
+				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+				cr.setData("{}");
+				cr.setMsg("操作失败！");
+				return cr;
+			}
 			Long pid1 = null;
 			if (StringUtil.isNotEmpty(pid)){
 				pid1 = Long.valueOf(pid);
