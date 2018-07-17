@@ -1,4 +1,8 @@
-package com.fx.xzt.sys.service.impl;
+package com.fx.xzt.sys.service;
+
+import com.github.pagehelper.PageInfo;
+
+import java.util.Map;
 
 /**
  * @author WuJiaNan
@@ -6,4 +10,10 @@ package com.fx.xzt.sys.service.impl;
  * @Description
  */
 public interface UserChannelSourceService {
+
+    PageInfo<Map<String, Object>>  coutRegistFrom(Integer pageNum, Integer pageSize);
+
+
+
+
 }

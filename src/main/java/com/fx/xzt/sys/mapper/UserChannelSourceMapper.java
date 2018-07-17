@@ -1,6 +1,10 @@
-package com.fx.xztgw.user.mapper;
+package com.fx.xzt.sys.mapper;
 
-import com.fx.xztgw.user.entity.UserChannelSource;
+import com.fx.xzt.sys.entity.UserChannelSource;
+
+import java.util.List;
+import java.util.Map;
+
 
 /**
  * @author WuJiaNan
@@ -8,4 +12,8 @@ import com.fx.xztgw.user.entity.UserChannelSource;
  * @Description
  */
 public interface UserChannelSourceMapper extends BaseMapper<UserChannelSource>{
+
+    List<Map<String,Object>> coutRegistFrom ();
+
+
 }

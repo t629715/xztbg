@@ -1,4 +1,4 @@
-package com.fx.xztgw.user.entity;
+package com.fx.xzt.sys.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
