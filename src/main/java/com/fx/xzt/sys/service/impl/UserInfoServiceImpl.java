@@ -356,7 +356,46 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 			map.put("agentId", agentId);
 			try{
 				if (realName == null && idcard == null){
-					flag = userInfoMapper.alertAgentAndBroker(map);
+					try{
+						flag = userInfoMapper.alertAgentAndBroker(map);
+					}catch (Exception e){
+						e.printStackTrace();
+						logger.error("变更用户归属-user_info-用户id：{}  -代理商id：{}  -经纪人id：{}，错误信息：{}",userId,agentId,brokerId,e.getMessage().toString());
+						throw new GlobalException("变更用户归属","变更用户归属异常");
+					}
+					try{
+						UserLogin userLogin = new UserLogin();
+						userLogin.setUserid(userId);
+						userLogin.setBrokerId(brokerId);
+						userLogin.setAgentId(agentId);
+						flag = userLoginMapper.updateByIdSelective(userLogin);
+					}catch (Exception e){
+						e.printStackTrace();
+						logger.error("变更用户归属-User_Login-用户id：{}  -代理商id：{}  -经纪人id：{}，错误信息：{}",userId,agentId,brokerId,e.getMessage().toString());
+						throw new GlobalException("变更用户归属","变更用户归属异常");
+					}
+					try{
+						UserGoldAccount userGoldAccount = new UserGoldAccount();
+						userGoldAccount.setBrokerId(brokerId);
+						userGoldAccount.setAgentId(agentId);
+						userGoldAccount.setUserId(userId);
+						flag = userGoldAccountMapper.updateOne(userGoldAccount);
+					}catch (Exception e){
+						e.printStackTrace();
+						logger.error("变更用户归属-user_gold_account-用户id：{}  -代理商id：{}  -经纪人id：{}，错误信息：{}",userId,agentId,brokerId,e.getMessage().toString());
+						throw new GlobalException("变更用户归属","变更用户归属异常");
+					}
+					try{
+						UserAccount userAccount = new UserAccount();
+						userAccount.setId(userId);
+						userAccount.setAgentId(agentId);
+						userAccount.setBrokerId(brokerId);
+						flag = userAccountMapper.updateUserAccount(userAccount);
+					}catch (Exception e){
+						e.printStackTrace();
+						logger.error("变更用户归属-user_account-用户id：{}  -代理商id：{}  -经纪人id：{}，错误信息：{}",userId,agentId,brokerId,e.getMessage().toString());
+						throw new GlobalException("变更用户归属","变更用户归属异常");
+					}
 				}else {
 					flag = userInfoMapper.modifyRealNameInfo(map);
 					if (flag > 0){

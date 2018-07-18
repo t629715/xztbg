@@ -19,6 +19,8 @@ public class UserAccount implements Serializable {
     private Long finance;
     private Long frozenRmb;
     private Long totalIncome;
+    private Long agentId;
+    private Long brokerId;
     
 	public Long getId() {
 		return id;
@@ -67,6 +69,20 @@ public class UserAccount implements Serializable {
 	public void setTotalIncome(Long totalIncome) {
 		this.totalIncome = totalIncome;
 	}
-	
-    
+
+	public Long getAgentId() {
+		return agentId;
+	}
+
+	public void setAgentId(Long agentId) {
+		this.agentId = agentId;
+	}
+
+	public Long getBrokerId() {
+		return brokerId;
+	}
+
+	public void setBrokerId(Long brokerId) {
+		this.brokerId = brokerId;
+	}
 }
