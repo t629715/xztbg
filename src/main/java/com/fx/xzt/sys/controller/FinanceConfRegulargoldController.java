@@ -47,7 +47,7 @@ public class FinanceConfRegulargoldController {
     /**
      * @CreateBy：tianliya
      * @CreateTime：2018/4/17 13:55
-     * @Description：获取所有的稳赚金信息
+     * @Description：获取所有的金生金信息
      * @param request
      * @param pageNum
      * @param pageSize

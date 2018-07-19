@@ -221,7 +221,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         /*转换产品类型*/
         convertType(value) {
             if (value.productType == 1) {
-                return "稳赚金";
+                return "金生金";
             } else {
                 return "特价金";
             }
@@ -330,7 +330,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "container-fluid"
-  }, [_c('h2', [_vm._v("稳赚金设定")]), _vm._v(" "), _c('div', {
+  }, [_c('h2', [_vm._v("金生金设定")]), _vm._v(" "), _c('div', {
     staticClass: "tableBox"
   }, [_c('el-table', {
     staticStyle: {
@@ -667,7 +667,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "href": "javascript:;"
     }
-  }, [_vm._v("稳赚金设定")])]), _vm._v(" "), _c('h1')])
+  }, [_vm._v("金生金设定")])]), _vm._v(" "), _c('h1')])
 }]}
 
 /***/ }),

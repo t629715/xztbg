@@ -585,7 +585,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('div', {
     staticClass: "grid-content bg-purple3"
-  }, [_c('p', [_vm._v("稳赚金总计（克）")]), _vm._v(" "), _c('p', [_vm._v("  " + _vm._s(_vm.countList.financeGoldSum))])])])], 1), _vm._v(" "), _c('div', {
+  }, [_c('p', [_vm._v("金生金总计（克）")]), _vm._v(" "), _c('p', [_vm._v("  " + _vm._s(_vm.countList.financeGoldSum))])])])], 1), _vm._v(" "), _c('div', {
     staticClass: "tableBox"
   }, [_c('el-table', {
     attrs: {
@@ -632,7 +632,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
       "prop": "financeGold",
-      "label": "稳赚金"
+      "label": "金生金"
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {

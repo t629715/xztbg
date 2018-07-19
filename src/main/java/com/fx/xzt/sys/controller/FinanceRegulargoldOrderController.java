@@ -49,7 +49,7 @@ public class FinanceRegulargoldOrderController {
 
 
     /**
-     * 稳赚金交易查询
+     * 金生金交易查询
      *
      * @param userName     用户名
      * @param orderNo      订单号
@@ -69,7 +69,7 @@ public class FinanceRegulargoldOrderController {
         CommonResponse cr = new CommonResponse();
         //操作日志
         LogRecord log = new LogRecord();
-        log.setTitle("稳赚金交易查询");
+        log.setTitle("金生金交易查询");
         log.setContent("查询失败");
         log.setModuleName(ConstantUtil.logRecordModule.DQJJY.getName());
         log.setType(ConstantUtil.logRecordType.CX.getIndex());
@@ -110,7 +110,7 @@ public class FinanceRegulargoldOrderController {
         return cr;
     }
     /**
-     * 稳赚金买入统计
+     * 金生金买入统计
      *
      * @param userName     用户名
      * @param orderNo      订单号
@@ -130,7 +130,7 @@ public class FinanceRegulargoldOrderController {
         CommonResponse cr = new CommonResponse();
         //操作日志
         LogRecord log = new LogRecord();
-        log.setTitle("稳赚金买入统计");
+        log.setTitle("金生金买入统计");
         log.setContent("统计失败");
         log.setModuleName(ConstantUtil.logRecordModule.DQJJY.getName());
         log.setType(ConstantUtil.logRecordType.CX.getIndex());
@@ -182,7 +182,7 @@ public class FinanceRegulargoldOrderController {
      * @param agentName    代理商用户名
      * @param brokerName   经纪人用户名
      * @param status       订单状态 1：持有中；2：已赎回
-     * @param type 1交易管理-稳赚金交易 2：出入金管理-稳赚金交易计算  3：合作伙伴-交易结算-稳赚金交易结算
+     * @param type 1交易管理-金生金交易 2：出入金管理-金生金交易计算  3：合作伙伴-交易结算-金生金交易结算
      */
     @RequestMapping(value = "/exportFinanceOrder")
     @ResponseBody
@@ -191,7 +191,7 @@ public class FinanceRegulargoldOrderController {
         //操作日志
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         LogRecord log = new LogRecord();
-        log.setTitle("稳赚金交易导出");
+        log.setTitle("金生金交易导出");
         log.setContent("导出失败");
         log.setModuleName(ConstantUtil.logRecordModule.LCJY.getName());
         log.setType(ConstantUtil.logRecordType.DC.getIndex());
@@ -221,11 +221,11 @@ public class FinanceRegulargoldOrderController {
                 POIUtils poi = new POIUtils();
                 //理财产品交易导出
                 // if (type != null && type > 0 && type == ConstantUtil.FINANCE_TYPE_LCCP ) {
-                tieleName = "稳赚金交易";
-                excelName = "稳赚金交易";
+                tieleName = "金生金交易";
+                excelName = "金生金交易";
                 //判断是否为代理商账户
                 if (users.getPid() != null && users.getPid() == 1) {
-                    //type=1交易管理-稳赚金交易 2：出入金管理-稳赚金交易计算  3：合作伙伴-交易结算-稳赚金交易结算
+                    //type=1交易管理-金生金交易 2：出入金管理-金生金交易计算  3：合作伙伴-交易结算-金生金交易结算
                     if (type == 1 || type ==3){
                         String[] heads = {"用户账号", "注册时间", "代理商", "经纪人", "产品编号", "产品名称", "周期", "收益率", "买入来源","买入价", "买入克重", "买入金额",
                                 "买入时间", "赎回时间", "状态", "收益", "交易分成","到期总克重"};
@@ -242,8 +242,8 @@ public class FinanceRegulargoldOrderController {
 
                 } else if (users.getPid() == null || users.getPid() == 0) {
                     if (status != null && status == 2) {
-                        tieleName = "稳赚金交易";
-                        excelName = "稳赚金交易";
+                        tieleName = "金生金交易";
+                        excelName = "金生金交易";
                     }
                     if (type == 1 || type ==3){
                         String[] heads = {"用户账号", "注册时间", "代理商", "经纪人",  "产品编号", "产品名称", "周期", "收益率","买入来源", "买入价", "买入克重", "买入金额",

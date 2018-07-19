@@ -53,12 +53,12 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
                int perCount = 0;
                Double perAmount = 0d;
                m.put("date",DateUtils.formatDateByMidLine1((Date)m.get("date")));
-//               稳赚金kezhong
+//               金生金kezhong
                if (m.get("buyAmount") != null){
                    perAmount = perAmount+Double.parseDouble((m.get("buyAmount")==null?0:m.get("buyAmount")).toString());
 
                }
-//               稳赚金克重
+//               金生金克重
                if (m.get("gram") != null){
                    m.put("gram",df1.format(Double.parseDouble((m.get("gram")==null?0:m.get("gram")).toString())));
                }
@@ -94,7 +94,7 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
                if (m.get("goldRightUserAmount")!= null){
                    perCount = perCount+Integer.parseInt((m.get("goldRightUserAmount")==null?0:m.get("goldRightUserAmount")).toString());
                }
-//               稳赚金用户
+//               金生金用户
                if (m.get("buyUserAmount")!= null){
                    perCount = perCount+Integer.parseInt((m.get("buyUserAmount")==null?0:m.get("buyUserAmount")).toString());
                }
@@ -164,9 +164,9 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
             map1.put("goldRightAmount",df.format(Double.parseDouble((map1.get("goldRightAmount")==null?0:map1.get("goldRightAmount")).toString())));
 //            金权交易-用户数
             map1.put("goldRightUserAmount",map1.get("goldRightUserAmount")==null?0:map1.get("goldRightUserAmount"));
-//            稳赚金-克重
+//            金生金-克重
             map1.put("gram",df1.format(Double.parseDouble((map1.get("gram")==null?0:map1.get("gram")).toString())));
-//            稳赚金-用户数
+//            金生金-用户数
             map1.put("financeUserAmount",map1.get("financeUserAmount")==null?0:map1.get("financeUserAmount"));
 
             map1.put("amountTotal",df.format(amountTotal));
@@ -218,12 +218,12 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
                 int perCount = 0;
                 Double perAmount = 0d;
                 m.put("date",DateUtils.formatDateByMidLine1((Date)m.get("date")));
-                //               稳赚金kezhong
+                //               金生金kezhong
                 if (m.get("buyAmount") != null){
                     perAmount = perAmount+Double.parseDouble((m.get("buyAmount")==null?0:m.get("buyAmount")).toString());
 
                 }
-//               稳赚金克重
+//               金生金克重
                 if (m.get("gram") != null){
                     m.put("gram",df1.format(Double.parseDouble((m.get("gram")==null?0:m.get("gram")).toString())));
                 }
@@ -259,7 +259,7 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
                 if (m.get("goldRightUserAmount")!= null){
                     perCount = perCount+Integer.parseInt((m.get("goldRightUserAmount")==null?0:m.get("goldRightUserAmount")).toString());
                 }
-//               稳赚金用户
+//               金生金用户
                 if (m.get("buyUserAmount")!= null){
                     perCount = perCount+Integer.parseInt((m.get("buyUserAmount")==null?0:m.get("buyUserAmount")).toString());
                 }

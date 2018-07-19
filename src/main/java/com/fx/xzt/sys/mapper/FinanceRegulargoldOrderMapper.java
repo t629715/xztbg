@@ -37,7 +37,7 @@ public interface FinanceRegulargoldOrderMapper extends BaseMapper<FinanceRegular
     /**
      * @CreateBy：tianliya
      * @CreateTime：2018/6/11 11:26
-     * @Description：获取未赎回的稳赚金的总克重
+     * @Description：获取未赎回的金生金的总克重
      * @return
      */
     Float countGramOnTime();

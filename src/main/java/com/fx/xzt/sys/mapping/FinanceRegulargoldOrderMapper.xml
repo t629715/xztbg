@@ -112,7 +112,7 @@
         o.order_id orderId, o.product_id productId, o.product_no productNo,
         o.product_name productName,
 
-        IF(o.product_type = 1,'稳赚金','特价金') productType,
+        IF(o.product_type = 1,'金生金','特价金') productType,
         concat(convert(o.product_year_incom_percent*100,DECIMAL(6,2)),'%')
         productYearIncomPercent,
         o.product_cycle productCycle, o.product_min_gram productMinGram,
@@ -180,7 +180,7 @@
         order by buyTime desc
     </select>
 
-    <!--稳赚金买入统计-tianliya-->
+    <!--金生金买入统计-tianliya-->
     <select id="selectTotalCount" resultType="java.lang.Integer" parameterType="java.util.Map">
         select sum(buy_amount) totalAmount
         from finance_regulargold_order o
@@ -227,7 +227,7 @@
             </if>
         </where>
     </select>
-    <!--获取处于有效期的稳赚金-tianliya-->
+    <!--获取处于有效期的金生金-tianliya-->
     <select id="countGramOnTime" resultType="java.lang.Float">
         select round(sum(gram),3) from finance_regulargold_order where status = 1
     </select>

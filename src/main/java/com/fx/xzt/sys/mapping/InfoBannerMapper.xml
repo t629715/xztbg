@@ -35,7 +35,7 @@
            		and SerialNo = #{serialNo,jdbcType=BIGINT}
             </if>
         </where>
-        order by SortNo DESC
+        order by SortNo ASC
     </select>
 
     <!--获取用于广告的图片-start-tianliya-->
@@ -47,7 +47,7 @@
         is_login isLogin
         from Info_Banner
         WHERE Page = #{page,jdbcType=SMALLINT} AND valid = 1
-        order by SortNo DESC
+        order by SortNo ASC
     </select>
     <!--获取用于广告的图片-end-tianliya-->
 
@@ -207,7 +207,7 @@
         CreateTime createTime, ModifyTime modifyTime, Operator operator
         from Info_Banner
         where SerialNo = #{serialNo,jdbcType=BIGINT}
-        order by SortNO
+        order by SortNO ASC
     </select>
 
     <!--根据排序号查询数据 tianliya-->
@@ -218,7 +218,7 @@
         CreateTime createTime, ModifyTime modifyTime, Operator operator
         from Info_Banner
         where SortNo = #{SortNo,jdbcType=INTEGER}
-        order by SortNo
+        order by SortNo ASC
     </select>
     <!--根据排序号查询数据 tianliya-->
 </mapper>

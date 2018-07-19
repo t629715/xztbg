@@ -202,7 +202,7 @@ public class SaveGoldRecordServiceImpl extends BaseService<SaveGoldRecord> imple
 			commonResponse.setData(map);
 		}catch (Exception e){
 			e.printStackTrace();
-			throw new GlobalException("对冲套利-稳赚金与存金宝","对冲套利-稳赚金与存金宝异常");
+			throw new GlobalException("对冲套利-金生金与存金宝","对冲套利-金生金与存金宝异常");
 		}
 		return  commonResponse;
 	}

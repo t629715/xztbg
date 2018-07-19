@@ -256,7 +256,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
-      "label": "未到期稳赚金(克)",
+      "label": "未到期金生金(克)",
       "prop": "steadyGoldAmount",
       "width": ""
     }

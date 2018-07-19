@@ -43,10 +43,10 @@ public class ActivityPrizeRuleServiceImpl extends BaseService<ActivityPrizeRule>
         int updateNum=worldCupRecordMapper.updateSettlement(competitionId,userId);
         if(updateNum==1){//修改状态成功，发放卡券
             if(isGuessing==1){//1竞猜胜负正确
-                this.extract(userId,"world_cup_68mg_coupon");//发放68mg稳赚金加赠券
+                this.extract(userId,"world_cup_68mg_coupon");//发放68mg金生金加赠券
             }else if(isGuessing==2){//2:竞猜胜负比分都正确
                 this.extract(userId,"world_cup_18yuan_voucher");//发放18元存金宝代金券
-                this.extract(userId,"world_cup_68mg_coupon");//发放68mg稳赚金加赠券
+                this.extract(userId,"world_cup_68mg_coupon");//发放68mg金生金加赠券
             }
         }
     }

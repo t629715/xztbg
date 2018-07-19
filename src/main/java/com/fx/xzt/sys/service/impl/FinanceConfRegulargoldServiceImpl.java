@@ -122,7 +122,7 @@ public class FinanceConfRegulargoldServiceImpl implements FinanceConfRegulargold
     @Override
     public CommonResponse getByConditions(Integer pageNum, Integer pageSize) throws GlobalException {
         CommonResponse commonResponse = new CommonResponse();
-        logger.info("查询稳赚金产品-业务层入口");
+        logger.info("查询金生金产品-业务层入口");
         try {
             PageHelper.startPage(pageNum, pageSize);
             List<FinanceRegulargoldProduct> financeConfRegulargoldList = financeRegulargoldProductMapper.getByAll();

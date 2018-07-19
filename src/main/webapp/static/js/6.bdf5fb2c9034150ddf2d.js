@@ -744,7 +744,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('div', {
     staticClass: "grid-content bg-color3"
-  }, [_c('p', [_vm._v("稳赚金用户：" + _vm._s(_vm._f("convert")(_vm.countList.financeUserAmount)))]), _vm._v(" "), _c('p', [_vm._v("稳赚金克重：" + _vm._s(_vm._f("divide")(_vm.countList.gram)) + " ")])])]), _vm._v(" "), _c('el-col', {
+  }, [_c('p', [_vm._v("金生金用户：" + _vm._s(_vm._f("convert")(_vm.countList.financeUserAmount)))]), _vm._v(" "), _c('p', [_vm._v("金生金克重：" + _vm._s(_vm._f("divide")(_vm.countList.gram)) + " ")])])]), _vm._v(" "), _c('el-col', {
     attrs: {
       "span": 4
     }
@@ -793,13 +793,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
       "prop": "buyUserAmount",
-      "label": "稳赚金用户",
+      "label": "金生金用户",
       "width": "150"
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
       "prop": "gram",
-      "label": "稳赚金克重",
+      "label": "金生金克重",
       "width": "150"
     }
   }), _vm._v(" "), _c('el-table-column', {
