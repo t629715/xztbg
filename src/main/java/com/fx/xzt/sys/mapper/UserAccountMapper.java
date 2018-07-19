@@ -59,4 +59,13 @@ public interface UserAccountMapper extends BaseMapper<UserAccount> {
 	 */
 	Integer updateForRecharge(UserAccount userAccount);
 
+	/**
+	 * @CreateBy：tianliya
+	 * @CreateTime：2018/7/17 10:59
+	 * @Description：修改用户的账户信息
+	 * @param userAccount
+	 * @return
+	 */
+	Integer updateUserAccount(UserAccount userAccount);
+
 }

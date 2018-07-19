@@ -36,5 +36,13 @@
     	where user_id = #{user_id,jdbcType=BIGINT}
   	</update>
 	<!--提现拒绝更改账户余额结束-htt-->
-	
+
+	<!--修改用户的账户信息-tianliya-->
+	<update id="updateUserAccount" parameterType="com.fx.xzt.sys.entity.UserAccount">
+		UPDATE user_account SET
+		<if test="agentId != null and agentId != ''">
+			agent_id = #{agentId,jdbcType=BIGINT},
+		</if>
+		broker_id = #{brokerId,jdbcType=BIGINT}
+	</update>
 </mapper>
