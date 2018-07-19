@@ -50,7 +50,8 @@
         </if>
         i.agent_id agentId, u.user_name agentName, 
         i.broker_id brokerId, u1.user_name brokerName ,
-        l.Status ,i.RegisterTime, i.RegisterFrom, i.RegisterIp, i.attribution,
+        l.Status ,i.RegisterTime, i.RegisterFrom,ucs.source,
+        ucs.media, i.RegisterIp, i.attribution,
         m.lastlogintime, m.lastloginfrom, m.lastfromip, i.attribution_province attributionProvince 
         FROM User_Login l LEFT JOIN User_Info i ON l.UserID = i.UserID
         LEFT JOIN users u ON i.agent_id = u.id
@@ -58,6 +59,7 @@
         LEFT JOIN (SELECT userid useridm,MAX(loginTime) lastlogintime,loginFrom lastloginfrom,
         fromIp lastfromip FROM User_LoginInfo GROUP BY  useridm) m
         ON l.UserID = m.useridm
+        LEFT JOIN user_channel_source ucs on ucs.userid =l.UserID
         <where>
         	<!-- and l.Status = 1 -->
             <if test="userName != null and userName != '' ">
