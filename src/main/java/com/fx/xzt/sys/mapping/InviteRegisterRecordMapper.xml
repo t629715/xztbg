@@ -51,4 +51,47 @@
 
     </select>
 
+    <!--获取已领奖的最新的交易时间-->
+    <select id="getLastTime" parameterType="java.util.Map" resultType="java.lang.String">
+        select buy_time lastTime
+        from inviter_reward_record
+        where userId = #{userId,jdbcType=BIGINT} and type = #{buyType,jdbcType=SMALLINT}
+        order by buy_time desc
+        limit 1;
+    </select>
+
+    <!--查询未领取的克重-->
+    <select id="getUnreceivedGram" parameterType="java.util.Map" resultType="java.util.Map">
+        select sum(hand_number) unreceivedGram
+        from deal_order
+        where user_id = #{userId,jdbcType=BIGINT}
+        <if test="lastTime != null and lastTime != ''">
+            and create_time > #{lastTime,jdbcType=TIMESTAMP}
+        </if>
+    </select>
+
+    <select id="getUnreceivedGramForGold" parameterType="java.util.Map" resultType="java.util.Map">
+        select sum(gram) unreceivedGram
+        from finance_regulargold_order
+        where user_id = #{userId,jdbcType=BIGINT}
+        <if test="lastTime != null and lastTime != ''">
+            and buy_time > #{lastTime,jdbcType=TIMESTAMP}
+        </if>
+
+    </select>
+    <!--已领取的黄金克重-->
+    <select id="getReceivedGram" parameterType="java.lang.Long" resultType="java.util.Map">
+     select sum(reward_gram) gram from inviter_reward_record where type=2 and userId = #{userId,jdbcType=BIGINT};
+
+    </select>
+
+    <!--已领取的人民币-->
+    <select id="getReceivedMoney" parameterType="java.lang.Long" resultType="java.util.Map">
+        select sum(reward_money) money from inviter_reward_record where type=1 and userId = #{userId,jdbcType=BIGINT};
+    </select>
+
+    <!--获取点差-->
+    <select id="selectPointCont" resultType="java.util.Map">
+        select point_count pointCont from gold_right_deal_conf
+    </select>
 </mapper>

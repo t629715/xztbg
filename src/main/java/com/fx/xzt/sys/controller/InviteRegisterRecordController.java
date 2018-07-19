@@ -145,8 +145,8 @@ public class InviteRegisterRecordController {
                     }
                     POIUtils poi = new POIUtils();
                     //判断是否为代理商账户
-                    String[] heads = {"分享用户账号", "代理商", "经纪人", "新用户账号", "奖项领取", "分享时间", "备注"};
-                    String[] colums = {"shareUserName", "agentName", "brokerName", "newUserName", "acceptPrize", "createTime", "remark"};
+                    String[] heads = {"分享用户账号", "代理商", "经纪人", "新用户账号", "已领取人民币（元）","未领取人民币（元）","已领取黄金克重（克）","未领取黄金克重（克）", "分享时间", "备注"};
+                    String[] colums = {"shareUserName", "agentName", "brokerName", "newUserName", "money", "unreceivedMoney","gram","unreceivedGram","createTime", "remark"};
                     poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                     log.setUserId(users.getId());
                     log.setContent("导出成功，共：" + list.size() + "条数据");
