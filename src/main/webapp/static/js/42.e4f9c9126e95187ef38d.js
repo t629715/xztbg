@@ -464,13 +464,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 console.log(error);
             });
         },
-        getBrokerList() {
+        getBrokerListForAdd() {
             let _this = this;
+            _this.newform.brokerId = "";
+
             if (_this.newform.agentId != undefined) {
-                _this.newform.brokerId = "";
+                var params = new URLSearchParams();
+                if ("" != _this.newform.agentId) {
+                    params.append('pid', _this.newform.agentId);
+                }
+                axios.post(_this.brokerUrl, params).then(function (response) {
+                    _this.brokerList = response.data.data;
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }
+        },
+        getBrokerListForEdit() {
+            let _this = this;
+            _this.newformEdit.brokerId = "";
+
+            if (_this.newformEdit.agentId != undefined) {
                 var params = new URLSearchParams();
                 if ("" != _this.newformEdit.agentId) {
-                    params.append('pid', _this.newform.agentId);
+                    params.append('pid', _this.newformEdit.agentId);
                 }
                 axios.post(_this.brokerUrl, params).then(function (response) {
                     _this.brokerList = response.data.data;
@@ -484,14 +501,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         ifShowBtnUp(row) {
 
-            if (Number.parseInt(this.maxSortNo) === Number.parseInt(row.SortNo)) {
+            if (Number.parseInt(this.maxSortNo) === Number.parseInt(row.SerialNo)) {
                 return true;
             } else {
                 return false;
             }
         },
         ifShowBtnDown(row) {
-            if (Number.parseInt(this.minSortNo) === Number.parseInt(row.SortNo)) {
+            if (Number.parseInt(this.minSortNo) === Number.parseInt(row.SerialNo)) {
                 return true;
             } else {
                 return false;
@@ -511,15 +528,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             let _this = this;
             axios.post(this.url1, params).then(function (response) {
                 _this.tableData1 = response.data.data;
-                if (_this.tableData1[0].SortNo != undefined) {
-                    _this.maxSortNo = _this.tableData1[0].SortNo;
-                    _this.minSortNo = _this.tableData1[0].SortNo;
+                if (_this.tableData1[0].SerialNo != -1) {
+                    _this.maxSortNo = _this.tableData1[0].SerialNo;
+                    _this.minSortNo = _this.tableData1[0].SerialNo;
                 }
 
                 for (var i = 0; _this.tableData1.length; i++) {
-                    if (_this.tableData1[i].SortNo != undefined) {
-                        if (_this.minSortNo > _this.tableData1[i].SortNo) {
-                            _this.minSortNo = _this.tableData1[i].SortNo;
+                    if (_this.tableData1[i].SerialNo != -1) {
+                        if (_this.minSortNo > _this.tableData1[i].SerialNo) {
+                            _this.minSortNo = _this.tableData1[i].SerialNo;
                         }
                     }
                 }
@@ -708,8 +725,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         goUp(index, row) {
             let _this = this;
             var params = new URLSearchParams();
-            params.append('upSortNo', this.tableData1[index - 1].SortNo);
-            params.append('downSortNo', row.SortNo);
+            params.append('upSortNo', this.tableData1[index - 1].SerialNo);
+            params.append('downSortNo', row.SerialNo);
             axios.post(this.upOrDown, params).then(function (response) {
                 if (response.data.data) {
                     _this.$message({
@@ -734,8 +751,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         goDown(index, row) {
             let _this = this;
             var params = new URLSearchParams();
-            params.append('upSortNo', row.SortNo);
-            params.append('downSortNo', this.tableData1[index + 1].SortNo);
+            params.append('upSortNo', row.SerialNo);
+            params.append('downSortNo', this.tableData1[index + 1].SerialNo);
             axios.post(this.upOrDown, params).then(function (response) {
                 if (response.data.data) {
                     _this.$message({
@@ -765,7 +782,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 description: row.Description,
                 appID: row.AppID,
                 imagePath: row.PicturePath,
-                agentId: row.agentId + "",
+                agentId: row.agentId == null ? "" : row.agentId + "",
                 brokerId: row.brokerName,
                 isLogin: row.isLogin
             };
@@ -784,7 +801,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 description: row.Description,
                 appID: row.AppID,
                 imagePath: row.PicturePath,
-                agentId: row.agentId + "",
+                agentId: row.agentId == null ? "" : row.agentId + "",
                 brokerId: row.brokerName,
                 isLogin: row.isLogin
                 //存储 理财产品id
@@ -1115,7 +1132,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     on: {
       "change": function($event) {
-        _vm.getBrokerList()
+        _vm.getBrokerListForAdd()
       }
     },
     model: {
@@ -1317,7 +1334,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     on: {
       "change": function($event) {
-        _vm.getBrokerList()
+        _vm.getBrokerListForEdit()
       }
     },
     model: {
@@ -1662,7 +1679,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     on: {
       "change": function($event) {
-        _vm.getBrokerList()
+        _vm.getBrokerListAdd()
       }
     },
     model: {
@@ -1831,7 +1848,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     on: {
       "change": function($event) {
-        _vm.getBrokerList()
+        _vm.getBrokerListForEdit()
       }
     },
     model: {

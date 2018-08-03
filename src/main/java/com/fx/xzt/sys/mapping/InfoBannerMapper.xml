@@ -17,6 +17,7 @@
         <result column="Operator" property="operator" jdbcType="VARCHAR" />
         <result column="agent_id" property="agentId" jdbcType="BIGINT" />
         <result column="broken_id" property="brokerId" jdbcType="BIGINT" />
+        <result column="is_login" property="isLogin" jdbcType="BIGINT" />
 
     </resultMap>
     <sql id="Base_Column_List" >
@@ -35,7 +36,7 @@
            		and SerialNo = #{serialNo,jdbcType=BIGINT}
             </if>
         </where>
-        order by SortNo ASC
+        order by SerialNo DESC
     </select>
 
     <!--获取用于广告的图片-start-tianliya-->
@@ -47,12 +48,12 @@
         is_login isLogin
         from Info_Banner
         WHERE Page = #{page,jdbcType=SMALLINT} AND valid = 1
-        order by SortNo ASC
+        order by SerialNo DESC
     </select>
     <!--获取用于广告的图片-end-tianliya-->
 
     <update id="updateSortNo" parameterType="com.fx.xzt.sys.entity.InfoBanner">
-        update Info_Banner set SortNo = #{sortNo,jdbcType=INTEGER} where SerialNo = #{serialNo,jdbcType=BIGINT}
+        update Info_Banner set SerialNo = #{serialNo,jdbcType=INTEGER} where SortNo = #{sortNo,jdbcType=BIGINT}
     </update>
 	<update id="edit" parameterType="com.fx.xzt.sys.entity.InfoBanner" >
         update Info_Banner
@@ -90,12 +91,8 @@
             <if test="operator != null" >
                 Operator = #{operator,jdbcType=VARCHAR},
             </if>
-            <if test="agentId != null" >
                 agent_id = #{agentId,jdbcType=BIGINT},
-            </if>
-            <if test="brokerId != null" >
                 broken_id = #{brokerId,jdbcType=BIGINT},
-            </if>
             <if test="isLogin != null" >
                 is_login = #{isLogin,jdbcType=SMALLINT},
             </if>
@@ -105,6 +102,9 @@
     <insert id="add" parameterType="com.fx.xzt.sys.entity.InfoBanner" useGeneratedKeys="true" keyProperty="SerialNo">
         insert into Info_Banner
         <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="serialNo != null and serialNo != ''">
+                SerialNo,
+            </if>
             <if test="page != null" >
                 Page,
             </if>
@@ -149,6 +149,9 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="serialNo != null and serialNo != ''">
+                #{serialNo,jdbcType=SMALLINT},
+            </if>
             <if test="page != null" >
                 #{page,jdbcType=SMALLINT},
             </if>
@@ -204,7 +207,7 @@
         select 
         SerialNo serialNo, Page page, PicturePath picturePath, AppID appID, SkipPath skipPath,
         SkipType skipType, Description description, SortNo sortNo, Valid valid,
-        CreateTime createTime, ModifyTime modifyTime, Operator operator
+        CreateTime createTime, ModifyTime modifyTime, Operator operator, is_login isLogin, broken_id brokerId, agent_id agentId
         from Info_Banner
         where SerialNo = #{serialNo,jdbcType=BIGINT}
         order by SortNO ASC
@@ -215,10 +218,10 @@
         select
         SerialNo serialNo, Page page, PicturePath picturePath, AppID appID, SkipPath skipPath,
         SkipType skipType, Description description, SortNo sortNo, Valid valid,
-        CreateTime createTime, ModifyTime modifyTime, Operator operator
+        CreateTime createTime, ModifyTime modifyTime, Operator operator, is_login isLogin, broken_id brokerId, agent_id agentId
         from Info_Banner
-        where SortNo = #{SortNo,jdbcType=INTEGER}
-        order by SortNo ASC
+        where SerialNo = #{SortNo,jdbcType=INTEGER}
+        order by SerialNo DESC
     </select>
     <!--根据排序号查询数据 tianliya-->
 </mapper>

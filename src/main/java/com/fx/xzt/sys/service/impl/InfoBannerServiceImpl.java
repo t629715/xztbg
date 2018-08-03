@@ -76,16 +76,17 @@ public class InfoBannerServiceImpl extends BaseService<InfoBanner> implements In
 		InfoBanner upib = infoBannerMapper.selectBySortNo(uPSortNo);
 		InfoBanner downib = infoBannerMapper.selectBySortNo(downSortNo);
 		int msg = 0;
-		int upSort = upib.getSortNo();
-		int downSort = downib.getSortNo();
-		 upib.setSortNo(downSort);
-		downib.setSortNo(upSort);
-		msg = infoBannerMapper.updateSortNo(upib);
-		msg = infoBannerMapper.updateSortNo(downib);
+		Long upSort = upib.getSerialNo();
+		Long downSort = downib.getSerialNo();
+		upib.setSerialNo(downSort);
+		downib.setSerialNo(upSort);
+		infoBannerMapper.deleteBySeriaNo(upib.getSerialNo());
+		infoBannerMapper.deleteBySeriaNo(downib.getSerialNo());
+		msg = infoBannerMapper.add(upib);
+		msg = infoBannerMapper.add(downib);
 //		msg = edit(upib);
 		if(msg == 0)
 			throw new NullPointerException("更新失败"); 	
-		msg = edit(downib);
 		if(msg == 0)
 			throw new NullPointerException("更新失败"); 
 		return msg;
