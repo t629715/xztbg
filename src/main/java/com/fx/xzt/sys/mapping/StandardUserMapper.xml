@@ -4,7 +4,7 @@
 	<!--标准户统计查询开始-htt -->
 
 	<select id="selectByStandardUser" resultType="java.util.Map" parameterType="java.util.Map">
-		select * from (select *, (CASE WHEN my.jrjCount>= 10000
+		select * from (select *, (CASE WHEN my.jrjCount>= 1000000
 		 AND my.cjyNum >= 50 THEN 1 else 0 end) bzh from
 		(
 		select sj2.* ,
