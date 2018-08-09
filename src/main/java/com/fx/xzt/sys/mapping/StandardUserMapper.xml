@@ -19,7 +19,7 @@
 		    (SELECT DATE_ADD(min(RechargeTime),INTERVAL 29 DAY) FROM User_Recharge where UserId =  sj.UserID)
 		) cjyNum,
 
-		(SELECT sum(WithdrawAmt)from User_WithdrawCash where UserId= sj.UserID and WithdrawTime BETWEEN
+		(SELECT sum(WithdrawAmt)from User_WithdrawCash where UserId= sj.UserID and Status = 1 and WithdrawTime BETWEEN
 	    	(SELECT min(RechargeTime)FROM User_Recharge where UserId =  sj.UserID ) and
 		    (SELECT DATE_ADD(min(RechargeTime),INTERVAL 29 DAY) FROM User_Recharge where UserId =  sj.UserID)
 		)ccjCount
@@ -34,7 +34,7 @@
 		l.agent_id agentId, l.broker_id brokerId, i.RealName, i.RegisterTime,
 		ua.user_name AS agentName, ub.user_name AS brokerName,
 		(SELECT  SUM(RMBAmt) rj FROM User_Recharge
-		WHERE UserID = l.userID and STATUS=1
+		WHERE UserID = l.userID and Status=1
 		<if test="startTime !=null and startTime !='' ">
 			and RechargeTime &gt;=#{startTime,jdbcType=TIMESTAMP}
 		</if>
@@ -43,7 +43,7 @@
 		</if>
 		) rjCount,
 		(SELECT SUM(WithdrawAmt) cj FROM User_WithdrawCash
-		WHERE UserID = l.userID
+		WHERE UserID = l.userID and Status = 1
 		<if test="startTime !=null and startTime !='' ">
 			and WithdrawTime &gt;=#{startTime,jdbcType=TIMESTAMP}
 		</if>
