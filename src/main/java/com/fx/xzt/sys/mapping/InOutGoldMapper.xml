@@ -53,10 +53,10 @@
 		AND STATUS=1
 			<!-- and STATUS = 1  -->
 			<if test="startTime !=null and startTime !='' ">
-              and DATE_FORMAT(RechargeTime,'%Y-%c-%d') &gt;=#{startTime,jdbcType=TIMESTAMP}
+              and RechargeTime &gt;=#{startTime,jdbcType=TIMESTAMP}
             </if>
             <if test="endTime !=null and endTime != '' ">
-              and DATE_FORMAT(RechargeTime,'%Y-%c-%d') &lt;=#{endTime,jdbcType=TIMESTAMP}
+              and RechargeTime &lt;=#{endTime,jdbcType=TIMESTAMP}
            </if>
            <if test="channel != null and channel !='' ">
 				and RechargeChannel = #{channel,jdbcType=VARCHAR}
@@ -85,10 +85,10 @@
 							r. STATUS = 1
 						AND r.agent_id = u.id
 						<if test="startTime !=null and startTime !='' ">
-							 and DATE_FORMAT(RechargeTime,'%Y-%m-%d') &gt;=#{startTime,jdbcType=TIMESTAMP}
+							 and RechargeTime &gt;=#{startTime,jdbcType=TIMESTAMP}
 						</if>
 						<if test="endTime !=null and endTime != '' ">
-			              and DATE_FORMAT(RechargeTime,'%Y-%m-%d') &lt;=#{endTime,jdbcType=TIMESTAMP}
+			              and RechargeTime &lt;=#{endTime,jdbcType=TIMESTAMP}
 			           </if>
 					) rjSum,
 					(
@@ -100,10 +100,10 @@
 							c. STATUS = 1
 						AND c.agent_id = u.id
 						<if test="startTime !=null and startTime !='' ">
-							 and DATE_FORMAT(WithdrawTime,'%Y-%m-%d') &gt;=#{startTime,jdbcType=TIMESTAMP}
+							 and WithdrawTime &gt;=#{startTime,jdbcType=TIMESTAMP}
 						</if>
 						<if test="endTime !=null and endTime != '' ">
-			              and DATE_FORMAT(WithdrawTime,'%Y-%m-%d') &lt;=#{endTime,jdbcType=TIMESTAMP}
+			              and WithdrawTime &lt;=#{endTime,jdbcType=TIMESTAMP}
 			           </if>
 					) cjSum
 					FROM
@@ -138,10 +138,10 @@
 							r. STATUS = 1
 						AND r.agent_id = u.id
 						<if test="startTime !=null and startTime !='' ">
-							 and DATE_FORMAT(RechargeTime,'%Y-%m-%d') &gt;=#{startTime,jdbcType=TIMESTAMP}
+							 and RechargeTime &gt;=#{startTime,jdbcType=TIMESTAMP}
 						</if>
 						<if test="endTime !=null and endTime != '' ">
-			              and DATE_FORMAT(RechargeTime,'%Y-%m-%d') &lt;=#{endTime,jdbcType=TIMESTAMP}
+			              and RechargeTime &lt;=#{endTime,jdbcType=TIMESTAMP}
 			           </if>
 					) rjSum,
 					(
