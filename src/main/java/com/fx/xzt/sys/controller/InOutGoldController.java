@@ -227,7 +227,8 @@ public class InOutGoldController {
             			sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
             		}
             		if (StringUtil.isNotEmpty(endTime)) {
-            			eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+                        Long dateMs = DateUtil.convertStringToDate(endTime, "yyyy-MM-dd").getTime()+24*3600*1000;
+            			eTime = DateUtil.convertDateToString(new Date(dateMs), "yyyy-MM-dd");
             		}
             	}
             	List<Map<String, Object>> list = inOutGoldService.selectByRechargeChannel(type, sTime, eTime, channel);
@@ -309,7 +310,8 @@ public class InOutGoldController {
             			sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
             		}
             		if (StringUtil.isNotEmpty(endTime)) {
-            			eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+                        Long dateMs = DateUtil.convertStringToDate(endTime, "yyyy-MM-dd").getTime()+24*3600*1000;
+                        eTime = DateUtil.convertDateToString(new Date(dateMs), "yyyy-MM-dd");
             		}
             	}
             	List<Map<String, Object>> list = inOutGoldService.selectByAgent(type, sTime, eTime);
@@ -391,7 +393,8 @@ public class InOutGoldController {
             			sTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(startTime, "yyyy-MM-dd"), "yyyy-MM-dd");
             		}
             		if (StringUtil.isNotEmpty(endTime)) {
-            			eTime = DateUtil.convertDateToString(DateUtil.convertStringToDate(endTime, "yyyy-MM-dd"), "yyyy-MM-dd");
+                        Long dateMs = DateUtil.convertStringToDate(endTime, "yyyy-MM-dd").getTime()+24*3600*1000;
+                        eTime = DateUtil.convertDateToString(new Date(dateMs), "yyyy-MM-dd");
             		}
             	}
             	List<Map<String, Object>> list = inOutGoldService.selectByAgentNet(type, sTime, eTime);
