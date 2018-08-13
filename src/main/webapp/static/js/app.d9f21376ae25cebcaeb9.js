@@ -36,7 +36,6 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_6__sta
  // 默认主题
 // import '../static/css/theme-green/index.css';       // 浅绿色主题
 
-// Vue.prototype.api='/api/';
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.api = '';
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_4_element_ui___default.a);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_5_vue_resource__["a" /* default */]);

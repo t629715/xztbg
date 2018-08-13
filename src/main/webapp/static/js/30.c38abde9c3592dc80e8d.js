@@ -279,9 +279,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var ip_addr = document.location.hostname;
             var port = document.location.port;
             this.row = row;
+            var curWwwPath = window.document.location.href;
+            var uri = curWwwPath.split("#");
             this.createcodeform = {
                 //pathAndName:"http://"+ip_addr+":18080/user/createQRCode?userName="+row.userName+"&id="+row.id,
-                pathAndName: "http://" + ip_addr + ":" + port + "/user/createQRCode?userName=" + row.userName + "&id=" + row.id
+                pathAndName: uri[0] + "user/createQRCode?userName=" + row.userName + "&id=" + row.id
                 //pathAndName:"user/createQRCode?text="+row.userName,
             };
             this.dialogFormVisibleCreateCode = true;
