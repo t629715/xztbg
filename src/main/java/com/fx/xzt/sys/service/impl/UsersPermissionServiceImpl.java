@@ -184,7 +184,7 @@ public class UsersPermissionServiceImpl extends BaseService<UsersPermission> imp
             	perMap.put("pid", p.getPid());
             	perMap.put("id", p.getId());
             	//perMap.put("index", StringUtil.isNotEmpty(p.getSref()) ? p.getSref() : p.getId() + "");
-            	perMap.put("index", p.getSref() != null ? p.getSref() : p.getId() + "");
+            	perMap.put("index", (p.getSref() != null && p.getSref() != "") ? p.getSref() : p.getId() + "");
             	perMap.put("sref", p.getSref() != null ? p.getSref() : p.getId() + "");
             	perMap.put("title", StringUtil.convertNullToEmpty(p.getText()));
             	handleMenu(perMap, data);
@@ -211,7 +211,7 @@ public class UsersPermissionServiceImpl extends BaseService<UsersPermission> imp
 				perMap.put("icon", StringUtil.convertNullToEmpty(p.getIcon()));
 				perMap.put("pid", p.getPid());
 				perMap.put("id", p.getId());
-				//perMap.put("index", StringUtil.isNotEmpty(p.getSref()) ? p.getSref() : p.getId() + "");
+				perMap.put("index", StringUtil.isNotEmpty(p.getSref()) ? p.getSref() : p.getId() + "");
 				perMap.put("sref", p.getSref() != null ? p.getSref() :  "");
 				perMap.put("title", StringUtil.convertNullToEmpty(p.getText()));
 				handleMenu(perMap, data);
@@ -299,7 +299,11 @@ public class UsersPermissionServiceImpl extends BaseService<UsersPermission> imp
 			if (StringUtil.isNotEmpty(type)) {
 				permission.setType(Integer.valueOf(type));
 			}
-			permission.setSref(sref);
+			if ("1".equals(type)){
+
+			}else {
+				permission.setSref(sref);
+			}
 			flag = usersPermissionMapper.insertSelective(permission);
 		}
 		return flag;
@@ -325,7 +329,11 @@ public class UsersPermissionServiceImpl extends BaseService<UsersPermission> imp
 			if (StringUtil.isNotEmpty(type)) {
 				permission.setType(Integer.valueOf(type));
 			}
-			permission.setSref(sref);
+			if (pid != "0"){
+
+			}else {
+				permission.setSref(sref);
+			}
 			flag = usersPermissionMapper.updateByIdSelective(permission);
 		}
 		return flag;
@@ -352,7 +360,4 @@ public class UsersPermissionServiceImpl extends BaseService<UsersPermission> imp
 		}
 		return flag;
 	}
-	
-	
-
 }

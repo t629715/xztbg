@@ -139,8 +139,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             localStorage.setItem('ms_username', self.ruleForm.username);
                             self.$router.push('/index');
                         } else if (response.data.msg == 0) {
+                            self.validateCode();
                             self.$message.error('用户名或密码错误');
                         } else {
+                            self.validateCode();
                             self.$message.error(response.data.msg);
                             console.log('error');
                         }

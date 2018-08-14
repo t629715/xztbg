@@ -38,14 +38,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data() {
         return {
-            logoImgSrc: "../../static/img/logo.png"
+            logoImgSrc: "../../../static/img/logo.png"
         };
     },
+
     created() {
         var curWwwPath = window.document.location.href;
-        var uri = curWwwPath.split("#");
-        this.logoImgSrc = uri[0] + "static/img/logo.png";
+        var uri = curWwwPath.split("#")[0];
+        this.logoImgSrc = uri + "static/img/logo.png";
     }
+
 });
 
 /***/ }),

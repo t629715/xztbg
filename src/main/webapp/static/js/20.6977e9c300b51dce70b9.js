@@ -101,8 +101,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             let _this = this;
 
             axios.post(this.url, params).then(function (response) {
-                // _this.currentPage = response.data.data.pageNum
-                // _this.pagesize = response.data.data.pageSize
+                _this.currentPage = response.data.data.pageNum;
+                _this.pagesize = response.data.data.pageSize;
                 _this.pageNum = response.data.data.pages;
                 _this.totalNum = response.data.data.total;
                 _this.tableData = response.data.data.list;

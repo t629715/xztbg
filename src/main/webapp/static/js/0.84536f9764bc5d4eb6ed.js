@@ -57,17 +57,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data() {
         return {
             name: "",
             loginOutUrl: this.api + 'login/logout',
-            imgSrc1: "../../static/img/Admin.png",
-            logoImgSrc: "../../static/img/logo.png"
+            imgSrc1: "../../../static/img/Admin.png",
+            logoImgSrc: "../../../static/img/logo.png"
         };
+    },
+    created() {
+        var curWwwPath = window.document.location.href;
+        var uri = curWwwPath.split("#")[0];
+        this.imgSrc1 = uri + "static/img/Admin.png";
+        this.logoImgSrc = uri + "static/img/logo.png";
     },
     computed: {
         username() {
@@ -75,16 +79,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return username;
         }
     },
-    created() {
-        this.getHostName();
-    },
     methods: {
-        getHostName() {
-            var curWwwPath = window.document.location.href;
-            var uri = curWwwPath.split("#");
-            this.imgSrc1 = uri[0] + "static/img/Admin.png";
-            this.logoImgSrc = uri[0] + "static/img/logo.png";
-        },
         handleCommand() {
             let _this = this;
             axios.post(this.loginOutUrl).then(function (response) {

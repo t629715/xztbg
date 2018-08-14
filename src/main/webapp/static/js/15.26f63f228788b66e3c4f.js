@@ -318,6 +318,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             params.append('text', this.formForModify.text);
             params.append('translate', this.formForModify.text);
             params.append('sref', this.formForModify.sref);
+            params.append('pid', this.formForModify.pid);
             params.append("id", this.id);
             axios.post(this.modifyUrl, params).then(function (response) {
                 if (response.data.code == 1000) {
@@ -372,7 +373,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         editDialog(row) {
             this.formForModify = {
                 text: row.title,
-                sref: row.sref
+                sref: row.sref,
+                pid: row.pid
             };
             this.id = row.id;
             this.dialogForEditParent = true;

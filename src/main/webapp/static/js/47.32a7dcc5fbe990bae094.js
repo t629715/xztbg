@@ -1,19 +1,19 @@
-webpackJsonp([43],{
+webpackJsonp([47],{
 
-/***/ 547:
+/***/ 542:
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(902)
+__webpack_require__(906)
 
 var Component = __webpack_require__(197)(
   /* script */
-  __webpack_require__(632),
+  __webpack_require__(627),
   /* template */
-  __webpack_require__(823),
+  __webpack_require__(827),
   /* scopeId */
-  "data-v-7eb20390",
+  "data-v-9b73e93a",
   /* cssModules */
   null
 )
@@ -23,7 +23,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 632:
+/***/ 627:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -310,14 +310,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         ifShowBtnUp(row) {
 
-            if (Number.parseInt(this.maxSortNo) === Number.parseInt(row.SerialNo)) {
+            if (Number.parseInt(this.maxSortNo) === Number.parseInt(row.SortNo)) {
                 return true;
             } else {
                 return false;
             }
         },
         ifShowBtnDown(row) {
-            if (Number.parseInt(this.minSortNo) === Number.parseInt(row.SerialNo)) {
+            if (Number.parseInt(this.minSortNo) === Number.parseInt(row.SortNo)) {
                 return true;
             } else {
                 return false;
@@ -333,20 +333,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         //刷新表格方法
         loadData() {
             var params = new URLSearchParams();
-            params.append('page', 2);
+            params.append('page', 5);
             let _this = this;
             axios.post(this.url, params).then(function (response) {
                 _this.tableData = response.data.data;
 
-                if (_this.tableData[0].SerialNo != -1) {
-                    _this.maxSortNo = _this.tableData[0].SerialNo;
-                    _this.minSortNo = _this.tableData[0].SerialNo;
+                if (_this.tableData[0].SortNo != undefined) {
+                    _this.maxSortNo = _this.tableData[0].SortNo;
+                    _this.minSortNo = _this.tableData[0].SortNo;
                 }
 
                 for (var i = 0; _this.tableData.length; i++) {
-                    if (_this.tableData[i].SerialNo != -1) {
-                        if (_this.minSortNo > _this.tableData[i].SerialNo) {
-                            _this.minSortNo = _this.tableData[i].SerialNo;
+                    if (_this.tableData[i].SortNo != undefined) {
+                        if (_this.minSortNo > _this.tableData[i].SortNo) {
+                            _this.minSortNo = _this.tableData[i].SortNo;
                         }
                     }
                 }
@@ -395,7 +395,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             params.append('agentId', this.newform.agentId);
             params.append('brokerId', this.newform.brokerId);
             params.append("isLogin", this.newform.isLogin);
-            params.append('page', '2');
+            params.append('page', '5');
             params.append('valid', '1');
             if (this.newform.description != undefined) {
                 params.append('description', this.newform.description);
@@ -507,8 +507,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         goUp(index, row) {
             let _this = this;
             var params = new URLSearchParams();
-            params.append('upSortNo', this.tableData[index - 1].SerialNo);
-            params.append('downSortNo', row.SerialNo);
+            params.append('upSortNo', this.tableData[index - 1].SortNo);
+            params.append('downSortNo', row.SortNo);
             axios.post(this.upOrDown, params).then(function (response) {
                 if (response.data.data) {
                     _this.$message({
@@ -532,8 +532,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         goDown(index, row) {
             let _this = this;
             var params = new URLSearchParams();
-            params.append('upSortNo', row.SerialNo);
-            params.append('downSortNo', this.tableData[index + 1].SerialNo);
+            params.append('upSortNo', row.SortNo);
+            params.append('downSortNo', this.tableData[index + 1].SortNo);
             axios.post(this.upOrDown, params).then(function (response) {
                 if (response.data.data) {
                     _this.$message({
@@ -621,7 +621,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 732:
+/***/ 736:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(136)(false);
@@ -629,14 +629,14 @@ exports = module.exports = __webpack_require__(136)(false);
 
 
 // module
-exports.push([module.i, "img[data-v-7eb20390]{width:100%}", ""]);
+exports.push([module.i, "img[data-v-9b73e93a]{width:100%}", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ 823:
+/***/ 827:
 /***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -1257,22 +1257,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "href": "javascript:;"
     }
-  }, [_vm._v("活动图片管理")])]), _vm._v(" "), _c('h1')])
+  }, [_vm._v("专题图片管理")])]), _vm._v(" "), _c('h1')])
 }]}
 
 /***/ }),
 
-/***/ 902:
+/***/ 906:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(732);
+var content = __webpack_require__(736);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(198)("00748012", content, true);
+var update = __webpack_require__(198)("5ac7e063", content, true);
 
 /***/ })
 
