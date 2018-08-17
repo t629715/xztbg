@@ -167,8 +167,8 @@ public class StandardUserController {
                 List<Map<String, Object>> list = standardUserService.excelByStandardUser(userName, agentName, brokerName, 
                 		startTime, endTime, regStartTime, regEndTime, bzh, isView);
                 POIUtils poi = new POIUtils();
-                String[] heads = {"用户账号", "注册时间", "代理商", "经纪人", "真实姓名", "是否标准户", "入金总额", "出金总额"};
-                String[] colums = {"UserName", "RegisterTime", "agentName", "brokerName", "RealName", "bzh", "rjCount", "cjCount"};
+                String[] heads = {"用户账号", "注册时间", "代理商", "经纪人", "真实姓名", "是否标准户"};
+                String[] colums = {"UserName", "RegisterTime", "agentName", "brokerName", "RealName", "bzh"};
                 poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                 log.setUserId(users.getId());
                 log.setContent("导出成功，共：" + list.size() + "条数据");

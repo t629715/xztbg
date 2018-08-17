@@ -114,7 +114,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   //model 初始数据
@@ -135,8 +134,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       brokerOptions: "",
       sform: {
         userName: '',
-        startTime: '',
-        endTime: '',
+        // startTime: '',
+        // endTime: '',
         agentName: '',
         brokerName: '',
         regStartTime: '',
@@ -408,51 +407,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('el-form-item', {
     attrs: {
-      "label": "统计时间：",
-      "prop": "startTime"
-    }
-  }, [_c('el-col', {
-    attrs: {
-      "span": 10
-    }
-  }, [_c('el-date-picker', {
-    attrs: {
-      "size": "small",
-      "type": "datetime",
-      "placeholder": "选择日期时间",
-      "align": "right"
-    },
-    model: {
-      value: (_vm.sform.startTime),
-      callback: function($$v) {
-        _vm.$set(_vm.sform, "startTime", $$v)
-      },
-      expression: "sform.startTime"
-    }
-  })], 1)], 1), _vm._v(" "), _c('el-form-item', {
-    attrs: {
-      "prop": "endTime"
-    }
-  }, [_c('el-col', {
-    attrs: {
-      "span": 10
-    }
-  }, [_c('el-date-picker', {
-    attrs: {
-      "size": "small",
-      "type": "datetime",
-      "placeholder": "选择日期时间",
-      "align": "right"
-    },
-    model: {
-      value: (_vm.sform.endTime),
-      callback: function($$v) {
-        _vm.$set(_vm.sform, "endTime", $$v)
-      },
-      expression: "sform.endTime"
-    }
-  })], 1)], 1), _vm._v(" "), _c('el-form-item', {
-    attrs: {
       "label": "用户账号：",
       "prop": "userName"
     }
@@ -492,7 +446,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "value": item.value
       }
     })
-  }))], 1), _vm._v(" "), _c('br'), _vm._v("     \n        "), _c('el-form-item', {
+  }))], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
       "label": "代理商：",
       "prop": "agentName"
@@ -674,18 +628,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "prop": "bzh",
       "label": "是否标准户",
       "width": "150"
-    }
-  }), _vm._v(" "), _c('el-table-column', {
-    attrs: {
-      "prop": "rjCount",
-      "label": "入金总额",
-      "width": "100"
-    }
-  }), _vm._v(" "), _c('el-table-column', {
-    attrs: {
-      "prop": "cjCount",
-      "label": "出金总额",
-      "width": "100"
     }
   })], 1), _vm._v(" "), _c('br'), _c('br'), _vm._v(" "), _c('el-pagination', {
     attrs: {

@@ -29,5 +29,7 @@ public interface StandardUserMapper extends BaseMapper<StandardUser> {
 	* @author htt
 	 */
 	List<Map<String, Object>> selectByStandardUser (Map<String,Object> map);
-	
+	List<Map<String, Object>> selectNetGoldRecords (Long userId);
+	List<Map<String, Object>> selectGoldRightGram (Map<String,Object> map);
+
 }

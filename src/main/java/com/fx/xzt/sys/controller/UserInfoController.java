@@ -338,8 +338,8 @@ public class UserInfoController {
         			}
         		}
         		POIUtils poi = new POIUtils();
-        		String[] heads = {"用户账号","代理商","经纪人","注册时间","注册来源","注册IP","归属地省","归属地市","最后一次登录时间","最后一次登录方式","最后一次登录IP","状态"};
-        		String[] colums = {"UserName","agentName","brokerName","RegisterTime","RegisterFrom","RegisterIp","attributionProvince",
+        		String[] heads = {"用户账号","代理商","经纪人","注册时间","注册来源","注册IP","推广来源","推广媒介","归属地省","归属地市","最后一次登录时间","最后一次登录方式","最后一次登录IP","状态"};
+        		String[] colums = {"UserName","agentName","brokerName","RegisterTime","RegisterFrom","RegisterIp","source","media","attributionProvince",
         				"attribution","lastlogintime","lastloginfrom","lastfromip","Status"};
         		poi.doExport(request, response, list, "注册信息", "注册信息", heads, colums);
         		log.setUserId(users.getId());
@@ -592,7 +592,7 @@ public class UserInfoController {
         		List<Map<String, Object>> list = userInfoService.getExcelAccount(userName,agentsName, brokerName,startTime,endTime, isView);
         		POIUtils poi = new POIUtils();
         		String[] heads = {"用户账号","昵称","姓名","注册时间","代理商","经纪人","身份证号","银行卡","支付宝","人民币余额","黄金","金生金","黄金收益","黄金单位成本价"};
-        		String[] colums = {"userName","nickName","RealName","registerTime","agentName","brokerName","idcard","alipayNumber","accountNum","rmb","gold","financeGold","totalIncome","averagePrice"};
+        		String[] colums = {"userName","nickName","RealName","registerTime","agentName","brokerName","idcard","accountNum","alipayNumber","rmb","gold","financeGold","totalIncome","averagePrice"};
         		poi.doExport(request, response, list, "账户信息", "账户信息", heads, colums);
         		log.setUserId(users.getId());
                 log.setContent("导出成功，共：" + list.size() + "条数据");
