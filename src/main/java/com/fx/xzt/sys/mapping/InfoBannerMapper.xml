@@ -220,8 +220,8 @@
         SkipType skipType, Description description, SortNo sortNo, Valid valid,
         CreateTime createTime, ModifyTime modifyTime, Operator operator, is_login isLogin, broken_id brokerId, agent_id agentId
         from Info_Banner
-        where SerialNo = #{SortNo,jdbcType=INTEGER}
-        order by SerialNo DESC
+        where SortNo = #{SortNo,jdbcType=INTEGER}
+        order by SortNo DESC
     </select>
     <!--根据排序号查询数据 tianliya-->
 </mapper>

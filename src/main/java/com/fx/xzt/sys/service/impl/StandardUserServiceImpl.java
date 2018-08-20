@@ -67,7 +67,12 @@ public class StandardUserServiceImpl extends BaseService<StandardUser> implement
 			pages = list.size()%pageNum == 0?list.size()/pageSize:(list.size()/pageSize+1);
 			total = list.size();
 			if (list.size() != 0){
-				list = list.subList((pageNum-1)*pageSize,pageSize*pageNum>total?total:pageSize*pageNum);
+				if ((pageNum-1)*pageSize<total){
+					list = list.subList((pageNum-1)*pageSize,pageSize*pageNum>total?total:pageSize*pageNum);
+				}else {
+					list = new ArrayList<>();
+				}
+
 			}
 
 		}

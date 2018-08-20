@@ -482,16 +482,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         convertIsLogin(value) {
             return value.isLogin === 1 ? '是' : value.isLogin === 0 ? '否' : '';
         },
-        ifShowBtnUp(row) {
-
-            if (Number.parseInt(this.maxSortNo) === Number.parseInt(row.SortNo)) {
+        ifShowBtnUp(index, row) {
+            if (index == 0) {
                 return true;
-            } else {
-                return false;
             }
         },
         ifShowBtnDown(row) {
-            if (Number.parseInt(this.minSortNo) === Number.parseInt(row.SortNo)) {
+            if (Number.parseInt(this.minSortNo) === Number.parseInt(row.SerialNo)) {
                 return true;
             } else {
                 return false;
@@ -511,15 +508,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             let _this = this;
             axios.post(this.url1, params).then(function (response) {
                 _this.tableData1 = response.data.data;
-                if (_this.tableData1[0].SortNo != undefined) {
-                    _this.maxSortNo = _this.tableData1[0].SortNo;
-                    _this.minSortNo = _this.tableData1[0].SortNo;
+                if (_this.tableData1[0].SerialNo != -1) {
+                    _this.maxSortNo = _this.tableData1[0].SerialNo;
+                    _this.minSortNo = _this.tableData1[0].SerialNo;
                 }
 
                 for (var i = 0; _this.tableData1.length; i++) {
-                    if (_this.tableData1[i].SortNo != undefined) {
-                        if (_this.minSortNo > _this.tableData1[i].SortNo) {
-                            _this.minSortNo = _this.tableData1[i].SortNo;
+                    if (_this.tableData1[i].SerialNo != -1) {
+                        if (_this.minSortNo > _this.tableData1[i].SerialNo) {
+                            _this.minSortNo = _this.tableData1[i].SerialNo;
                         }
                     }
                 }
@@ -947,7 +944,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         return [(scope.row.SerialNo != -1) ? [_c('el-button', {
           attrs: {
             "size": "small",
-            "disabled": _vm.ifShowBtnUp(scope.row)
+            "disabled": _vm.ifShowBtnUp(scope.$index, scope.row)
           },
           on: {
             "click": function($event) {
