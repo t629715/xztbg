@@ -114,6 +114,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   //model 初始数据
@@ -155,7 +161,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       dialogFormVisible: false,
       dialogFormVisibleEdit: false,
       formLabelWidth: '120px',
-      userId: ""
+      userId: "",
+      loading2: false
     };
   },
   //页面渲染加载方法
@@ -191,6 +198,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       var params = new URLSearchParams();
       let _this = this;
+      _this.loading2 = true;
       var date1 = '';
       var date2 = '';
       var date3 = '';
@@ -221,6 +229,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       params.append('brokerName', sform.brokerName);
 
       axios.post(this.url, params).then(function (response) {
+        _this.loading2 = false;
         if (response.data.code == 1001) {
           _this.$message({
             message: '查询成功',
@@ -275,7 +284,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       params.append('brokerName', this.sform.brokerName);
 
       let _this = this;
+      _this.loading2 = true;
       axios.post(this.url, params).then(function (response) {
+        _this.loading2 = false;
         if (response.data.code == 1001) {
           var list = response.data.data.list;
           //_this.currentPage = response.data.data.pageNum == 0 ? 1 : response.data.data.pageNum;
@@ -334,9 +345,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       params.append('userName', sform.userName);
       params.append('agentName', sform.agentName);
       params.append('brokerName', sform.brokerName);
-
-      console.info(this.exportUrl + "?" + params);
-      window.location = this.exportUrl + "?" + params;
+      window.open(this.exportUrl + "?" + params);
     },
     //当前页改变是执行
     handleCurrentChange(val) {
@@ -396,7 +405,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "id": "content"
     }
   }, [_vm._m(0), _vm._v(" "), _c('div', {
-    staticClass: "container-fluid"
+    directives: [{
+      name: "loading",
+      rawName: "v-loading",
+      value: (_vm.loading2),
+      expression: "loading2"
+    }],
+    staticClass: "container-fluid",
+    attrs: {
+      "element-loading-text": "拼命加载中",
+      "element-loading-spinner": "el-icon-loading",
+      "element-loading-background": "rgba(0, 0, 0, 0.8)"
+    }
   }, [_c('el-form', {
     ref: "sform",
     attrs: {

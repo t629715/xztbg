@@ -56,14 +56,14 @@ public class StandardUserServiceImpl extends BaseService<StandardUser> implement
         if ("".equals(bzh)){
 			PageHelper.startPage(pageNum,pageSize);
 			list = standardUserMapper.selectGoldRightGram(map);
-			handle(list,bzh);
-			removeRecord(list,bzh);
+
 			PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
+			list = handle(list,bzh);
+			pagehelper.setList(list);
 			return pagehelper;
 		}else {
 			list = standardUserMapper.selectGoldRightGram(map);
-			handle(list,bzh);
-			removeRecord(list,bzh);
+			list = handle(list,bzh);
 			pages = list.size()%pageNum == 0?list.size()/pageSize:(list.size()/pageSize+1);
 			total = list.size();
 			if (list.size() != 0){
@@ -72,9 +72,7 @@ public class StandardUserServiceImpl extends BaseService<StandardUser> implement
 				}else {
 					list = new ArrayList<>();
 				}
-
 			}
-
 		}
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
         pagehelper.setTotal(total);
@@ -99,22 +97,8 @@ public class StandardUserServiceImpl extends BaseService<StandardUser> implement
         map.put("brokerName", brokerName);
         map.put("bzh", bzh);
         map.put("isView", isView);
-		List<Map<String, Object>> list = new ArrayList<>();
-		if ("1".equals(bzh)){
-			list = standardUserMapper.selectGoldRightGram(map);
-			handle(list,bzh);
-			removeRecord(list,bzh);
-		}else if ("0".equals(bzh)){
-			list = standardUserMapper.selectGoldRightGram(map);
-			handle(list,bzh);
-			removeRecord(list,bzh);
-		}else {
-			list = standardUserMapper.selectGoldRightGram(map);
-			handle(list,bzh);
-			removeRecord(list,bzh);
-		}
-        handle(list,bzh);
-		removeRecord(list,bzh);
+		List<Map<String, Object>> list = standardUserMapper.selectGoldRightGram(map);
+        list = handle(list,bzh);
         return list;
 	}
 
@@ -128,8 +112,11 @@ public class StandardUserServiceImpl extends BaseService<StandardUser> implement
 	* @throws 
 	* @author htt
 	 */
-	public void handle(List<Map<String, Object>> list,String bzh) throws ParseException {
+	public List<Map<String,Object>> handle(List<Map<String, Object>> list,String bzh) throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		List<Map<String, Object>> users = new ArrayList<>();
+		List<Map<String, Object>> isBZH = new ArrayList<>();
+		List<Map<String, Object>> notBZH = new ArrayList<>();
 		if (list != null && list.size() > 0) {
             for (Map<String, Object> map : list) {
             	List<Map<String,Object>> records = standardUserMapper.selectNetGoldRecords(new Long(map.get("UserID").toString()));
@@ -138,26 +125,42 @@ public class StandardUserServiceImpl extends BaseService<StandardUser> implement
 					gram = new Float(map.get("cjyNum").toString());
 				}
 				float sum = 0;
-				for (Map<String, Object> record : records){
-					Float amount = new Float(record.get("amount").toString()) ;
-					int state = Integer.parseInt(record.get("state").toString());
-					if (state == 1){
-						sum += amount;
+				if (gram >= 50){
+					for (Map<String, Object> record : records){
+						Float amount = new Float(record.get("amount").toString()) ;
+						int state = Integer.parseInt(record.get("state").toString());
+						if (state == 1){
+							sum += amount;
+						}else {
+							sum -= amount;
+						}
+						if (sum >= 10000){
+							break;
+						}
+					}
+					if ( sum >= 10000){
+						map.put("bzh", "是");
+						isBZH.add(map);
 					}else {
-						sum -= amount;
+						map.put("bzh", "否");
+						notBZH.add(map);
 					}
-					if (sum >= 10000){
-						break;
-					}
-				}
-				if (gram >= 50 && sum >= 10000){
-					map.put("bzh", "是");
 				}else {
 					map.put("bzh", "否");
+					notBZH.add(map);
 				}
 				map.put("rjCount",sum);
+				users.add(map);
             }
+			if ("0".equals(bzh)){
+				list = notBZH;
+			}else if ("1".equals(bzh)){
+				list = isBZH;
+			}else {
+				list = users;
+			}
 		}
+		return list;
 	}
 
 
