@@ -1,19 +1,19 @@
-webpackJsonp([40],{
+webpackJsonp([39],{
 
-/***/ 550:
+/***/ 552:
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(848)
+__webpack_require__(880)
 
 var Component = __webpack_require__(197)(
   /* script */
-  __webpack_require__(635),
+  __webpack_require__(637),
   /* template */
-  __webpack_require__(768),
+  __webpack_require__(801),
   /* scopeId */
-  "data-v-05cb404a",
+  "data-v-5c3823c8",
   /* cssModules */
   null
 )
@@ -23,11 +23,13 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 635:
+/***/ 637:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
 //
 //
 //
@@ -206,30 +208,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             readoneform: {
                 title: '',
                 imagePath: '',
-                contentPath: ''
+                content: ''
             },
             newform: {
                 title: '',
+                content: '',
                 imagePath: '',
-                contentPath: ''
+                contentFrom: '',
+                informationFrom: '',
+                contentFromType: ''
+
             },
             newformEdit: {
                 title: '',
                 imagePath: '',
-                contentPath: '',
-                state: ''
+                content: '',
+                contentFrom: '',
+                informationFrom: '',
+                contentFromType: ''
             },
             rules: {
                 title: [{ required: true, message: '请输入标题', trigger: 'blur' }],
-                contentPath: [{ required: true, message: '请输入内容地址', trigger: 'blur' }],
-                imagePath: [{ required: true, message: '请输入图片地址', trigger: 'blur' }]
+                content: [{ required: true, message: '请输入内容地址', trigger: 'blur' }]
+                /*skipPath:[
+                    {required:true, message:'请输入跳转地址', trigger:'blur'}
+                ]*/
             },
-
-            url: this.api + "goldLesson/getGoldLesson",
-            addUrl: this.api + " goldLesson/releaseGoldLesson",
-            editUrl: this.api + "goldLesson/modifyGoldLesson",
-            deleteUrl: this.api + "goldLesson/deleteGoldLesson",
-            operatorListUrl: this.api + "goldLesson/getOperators",
+            url: this.api + "infoNotice/seelctAll",
+            addUrl: this.api + "infoNotice/add",
+            editUrl: this.api + "infoNotice/edit",
+            deleteUrl: this.api + "infoNotice/delete",
+            operatorListUrl: this.api + "infoNotice/getOperators",
             setInfoPush: this.api + "infoPush/addPushInfo",
             currentPage: 0,
             pageSize: 10,
@@ -243,16 +252,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             formLabelWidth: '120px',
             infoId: "",
             imagepath: "",
-            contentpath: "",
-            states: [{
+            content: "",
+            informationFrom: '',
+            types: [{
                 id: 1,
-                name: "已发布"
+                name: "站内"
             }, {
-                id: -1,
-                name: "已下线"
-            }, {
-                id: 0,
-                name: "已创建"
+                id: 2,
+                name: "站外"
             }]
         };
     },
@@ -261,6 +268,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.loadData(10, 1);
         let _this = this;
         axios.get(this.operatorListUrl).then(function (response) {
+
             _this.operatorList = response.data.data;
         }).catch(function (error) {
             console.log(error);
@@ -275,7 +283,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var datetime1 = '',
                 datetime2 = "",
                 title = "",
-                state = "",
                 operator = "";
             if (form.title == undefined) {
                 title = "";
@@ -288,9 +295,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (form.date2 != '') {
                 datetime2 = Date.parse(form.date2);
             }
-            if (form.state !== '') {
-                state = form.state;
-            }
             if (form.operator != '') {
                 operator = form.operator;
             }
@@ -299,46 +303,47 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             params.append('title', title);
             params.append('startTime', datetime1);
             params.append('endTime', datetime2);
-            params.append('state', state);
             params.append('operator', operator);
             axios.post(this.url, params).then(function (response) {
-                // _this.totalPage = response.data.data.pages;
-                _this.totalNum = response.data.data.total;
-                _this.tableData = response.data.data.list;
+
+                _this.$message({
+                    message: '查询成功',
+                    type: 'success'
+                });
+                _this.totalPage = response.data.pages;
+                _this.totalNum = response.data.total;
+                _this.tableData = response.data.list;
             }).catch(function (error) {});
         },
         //清空表单
         resetForm() {
             this.$refs.form.resetFields();
-            this.loadData(10, 1);
+            this.loadData(this.pageSize, 1);
         },
         resetForm1(formName) {
             this.$refs[formName].resetFields();
             this.dialogFormVisible = false;
         },
-        jdState(value) {
-            if (value.state == 1) return "已发布";
-            if (value.state == 0) return "已创建";
-            if (value.state == -1) return "已下线";
-        },
         deleteDialog(index, row) {
             this.dialogFormVisibleDelete = true;
             this.row = row;
-        },
-        jdSet(row) {
-            if (row.isSetPush == 0) {
-                return false;
-            }return true;
         },
         // 设为首页推送
         pushToFirstPage(index, row) {
             let _this = this;
             var params = new URLSearchParams();
             params.append("title", row.title);
-            params.append("content", row.contentpath);
+            if (row.title.length > 15) {
+                this.$message({
+                    message: '标题长度大于15，不能设为首页推送',
+                    type: 'warning'
+                });
+                return;
+            }
+            params.append("content", row.contentPath);
             axios.post(this.setInfoPush, params).then(function (res) {
                 if (res.data.code == 1001 || res.data.code == 1000) {
-                    _this.loadData(_this.pageSize, _this.currentPage);
+                    _this.loadData(_this.pageSize, _this.pageNum);
                     _this.$message({
                         message: '设置成功',
                         type: 'success'
@@ -357,14 +362,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
             });
         },
+        jdSet(row) {
+            if (row.isSetPush == 0) {
+                return false;
+            }return true;
+        },
+        jdState(value) {
+            if (value.state == 1) return "已发布";
+            if (value.state == 0) return "已创建";
+            if (value.state == -1) return "已下线";
+        },
         //刷新表格方法
         loadData(pageSize, pageNum) {
-            var params = new URLSearchParams();
             let _this = this;
+            var params = new URLSearchParams();
             var datetime1 = '',
                 datetime2 = "",
                 title = "",
-                state = "",
                 operator = "";
             if (_this.form.title == undefined) {
                 title = "";
@@ -377,9 +391,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (_this.form.date2 != '') {
                 datetime2 = Date.parse(_this.form.date2);
             }
-            if (_this.form.state !== '') {
-                state = _this.form.state;
-            }
             if (_this.form.operator != '') {
                 operator = _this.form.operator;
             }
@@ -388,11 +399,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             params.append('title', title);
             params.append('startTime', datetime1);
             params.append('endTime', datetime2);
-            params.append('state', state);
             params.append('operator', operator);
             axios.post(this.url, params).then(function (response) {
-                _this.totalNum = response.data.data.total;
-                _this.tableData = response.data.data.list;
+                _this.totalPage = response.data.pages;
+                _this.totalNum = response.data.total;
+                _this.tableData = response.data.list;
             }).catch(function (error) {});
         },
 
@@ -400,38 +411,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         add() {
             this.newform = {
                 title: '',
-                contentPath: '',
-                imagePath: ''
+                content: ''
+                /*skipPath: '',*/
+                /*skipType: '',*/
             };
             this.dialogFormVisible = true;
         },
         //  确定添加用户
         confirmAdd(formName) {
+            const self = this;
             var params = new URLSearchParams();
             params.append('title', this.newform.title);
-            params.append('contentpath', this.newform.contentPath);
-            params.append('imagepath', this.newform.imagePath);
+            params.append('content', this.newform.content);
+            /*params.append('skipPath', this.newform.skipPath);*/
+            /*params.append('skipType', this.newform.skipType);*/
             let _this = this;
             this.$refs[formName].validate(valid => {
                 if (valid) {
                     this.$refs[formName].resetFields();
                     axios.post(this.addUrl, params).then(function (response) {
-                        if (response.data.data == 1) {
+                        if (response.data.msg == 1) {
                             _this.$message({
                                 message: '添加成功',
                                 type: 'success'
                             });
                             _this.dialogFormVisible = false;
                             _this.loadData(_this.pageSize, 1);
-                        } else if (response.data.data == -1) {
+                        } else if (response.data.msg == 0) {
                             _this.$message({
-                                message: '账户已存在',
+                                message: '添加失败',
                                 type: 'warning'
                             });
                             _this.dialogFormVisible = false;
-                        } else {
-                            _this.$message.error('网络错误');
-                            _this.dialogFormVisible = false;
+                        } else if (response.data.msg == -1) {
+                            self.$router.push('/login');
                         }
                     });
                 } else {
@@ -439,38 +452,42 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             });
         },
+
         //删除
         handleDelete() {
+            const self = this;
             let _this = this;
             var params = new URLSearchParams();
-            params.append('infoId', _this.row.infoId);
+            params.append('serialNo', _this.row.serialNo);
             axios.post(this.deleteUrl, params).then(function (response) {
-                if (response.data.data) {
+                if (response.data.msg == 1) {
                     _this.$message({
                         message: '删除成功',
                         type: 'success'
                     });
                     _this.dialogFormVisibleDelete = false;
-                    _this.loadData(_this.pageSize, _this.pageNum);
-                } else if (!response.data.data) {
+                    _this.loadData(_this.pageSize, _this.currentPage);
+                } else if (response.data.msg == 0) {
                     _this.$message({
                         message: '删除失败',
                         type: 'warning'
                     });
+
                     _this.dialogFormVisibleEdit = false;
-                } else {
+                } else if (response.data.msg == -1) {
                     _this.dialogFormVisibleEdit = false;
-                    _this.$message.error('网络错误');
+                    self.$router.push('/login');
+                    _this.$message.error('请登录');
                 }
             }).catch(function (error) {});
         },
         readOneForm(index, row) {
             this.readoneform = {
                 title: row.title,
-                contentPath: row.contentpath,
-                imagePath: row.imagepath
-                //黄金课堂 id
-            };this.infoId = row.infoId;
+                /*skipType: (row.contentFromType == 1 ? "站内" : "站外"),
+                skipPath: row.skipPath,*/
+                content: row.content
+            };
             this.dialogFormVisibleRead = true;
         },
 
@@ -478,44 +495,47 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         handleEdit(index, row) {
             this.newformEdit = {
                 title: row.title,
-                contentPath: row.contentpath,
-                imagePath: row.imagepath,
-                state: row.state
+                /*skipPath: row.skipPath,*/
+                content: row.content
+                /*skipType: row.skipType*/
+
                 //存储 理财产品id
-            };this.infoId = row.infoId;
+            };this.serialNo = row.seriaNo;
             this.dialogFormVisibleEdit = true;
         },
 
         //  确定编辑方法
         confirmAddEdit() {
+            const self = this;
             var params = new URLSearchParams();
             params.append('title', this.newformEdit.title);
-            params.append('contentPath', this.newformEdit.contentPath);
-            params.append('imagePath', this.newformEdit.imagePath);
-            params.append('state', this.newformEdit.state);
-            params.append('infoId', this.infoId);
+
+            /*params.append('skipPath', this.newformEdit.skipPath);*/
+            params.append('content', this.newformEdit.content);
+            /*params.append('skipType', this.newformEdit.skipType);*/
+            if (this.serialNo != undefined) {
+                params.append('serialNo', this.serialNo);
+            }
             let _this = this;
             axios.post(this.editUrl, params).then(function (response) {
-                if (response.data.data) {
+                if (response.data.msg == 1) {
                     _this.$message({
                         message: '修改成功',
                         type: 'success'
                     });
                     _this.dialogFormVisibleEdit = false;
                     _this.loadData(_this.pageSize, 1);
-                } else if (!response.data.data) {
+                } else if (response.data.msg == 0) {
                     _this.$message({
                         message: '修改失败',
                         type: 'warning'
                     });
                     _this.dialogFormVisibleEdit = false;
-                } else {
+                } else if (response.data.msg == -1) {
                     _this.dialogFormVisibleEdit = false;
-                    _this.$message.error('网络错误');
+                    self.$router.push('/login');
+                    _this.$message.error('请登录');
                 }
-            }).catch(function (error) {
-                _this.dialogFormVisibleEdit = false;
-                _this.$message.error('网络错误');
             });
         },
         //当前页改变是执行
@@ -529,12 +549,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.loadData(val, 1);
         }
     }
-
 });
 
 /***/ }),
 
-/***/ 678:
+/***/ 710:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(136)(false);
@@ -549,7 +568,7 @@ exports.push([module.i, "", ""]);
 
 /***/ }),
 
-/***/ 768:
+/***/ 801:
 /***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -632,31 +651,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })], 1)], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
-      "label": "状态",
-      "prop": "state"
-    }
-  }, [_c('el-select', {
-    attrs: {
-      "size": "small",
-      "placeholder": "请选择"
-    },
-    model: {
-      value: (_vm.form.state),
-      callback: function($$v) {
-        _vm.$set(_vm.form, "state", $$v)
-      },
-      expression: "form.state"
-    }
-  }, _vm._l((_vm.states), function(item) {
-    return _c('el-option', {
-      key: item.id,
-      attrs: {
-        "label": item.name,
-        "value": item.id
-      }
-    })
-  }))], 1), _vm._v(" "), _c('el-form-item', {
-    attrs: {
       "label": "发布人",
       "prop": "operator"
     }
@@ -680,7 +674,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "value": item.operator
       }
     })
-  }))], 1), _vm._v(" "), _c('br'), _vm._v("  \n                "), _c('el-form-item', [_c('el-button', {
+  }))], 1), _vm._v(" "), _c('br'), _vm._v("   \n                "), _c('el-form-item', [_c('el-button', {
     attrs: {
       "size": "small",
       "type": "primary"
@@ -724,38 +718,25 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "type": "index",
       "label": "序号",
-      "width": "100"
+      "width": "120"
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
       "prop": "title",
       "label": "标题",
-      "width": "300"
+      "width": "180"
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
-      "prop": "state",
-      "label": "状态",
-      "formatter": _vm.jdState,
-      "width": "100"
-    }
-  }), _vm._v(" "), _c('el-table-column', {
-    attrs: {
-      "prop": "createtime",
+      "prop": "createTime",
       "label": "创建时间",
-      "width": "180"
-    }
-  }), _vm._v(" "), _c('el-table-column', {
-    attrs: {
-      "prop": "releasetime",
-      "label": "发布时间",
-      "width": "180"
+      "width": "240"
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
       "prop": "operator",
       "label": "发布人",
-      "width": "100"
+      "width": "240"
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
@@ -840,12 +821,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('el-form-item', {
     attrs: {
       "label": "标题",
+      "prop": _vm.readoneform.title,
       "label-width": _vm.formLabelWidth
     }
   }, [_c('el-input', {
     attrs: {
       "size": "small",
-      "readonly": true,
       "auto-complete": "off"
     },
     model: {
@@ -863,33 +844,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('el-input', {
     attrs: {
       "size": "small",
-      "readonly": true,
       "auto-complete": "off"
     },
     model: {
-      value: (_vm.readoneform.contentPath),
+      value: (_vm.readoneform.content),
       callback: function($$v) {
-        _vm.$set(_vm.readoneform, "contentPath", $$v)
+        _vm.$set(_vm.readoneform, "content", $$v)
       },
-      expression: "readoneform.contentPath"
-    }
-  })], 1), _vm._v(" "), _c('el-form-item', {
-    attrs: {
-      "label": "图片地址",
-      "label-width": _vm.formLabelWidth
-    }
-  }, [_c('el-input', {
-    attrs: {
-      "size": "small",
-      "readonly": true,
-      "auto-complete": "off"
-    },
-    model: {
-      value: (_vm.readoneform.imagePath),
-      callback: function($$v) {
-        _vm.$set(_vm.readoneform, "imagePath", $$v)
-      },
-      expression: "readoneform.imagePath"
+      expression: "readoneform.content"
     }
   })], 1)], 1)], 1), _vm._v(" "), _c('el-dialog', {
     attrs: {
@@ -931,7 +893,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "label": "内容地址",
       "label-width": _vm.formLabelWidth,
-      "prop": "contentPath"
+      "prop": "content"
     }
   }, [_c('el-input', {
     attrs: {
@@ -939,29 +901,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "auto-complete": "off"
     },
     model: {
-      value: (_vm.newform.contentPath),
+      value: (_vm.newform.content),
       callback: function($$v) {
-        _vm.$set(_vm.newform, "contentPath", $$v)
+        _vm.$set(_vm.newform, "content", $$v)
       },
-      expression: "newform.contentPath"
-    }
-  })], 1), _vm._v(" "), _c('el-form-item', {
-    attrs: {
-      "label": "图片地址",
-      "label-width": _vm.formLabelWidth,
-      "prop": "imagePath"
-    }
-  }, [_c('el-input', {
-    attrs: {
-      "size": "small",
-      "auto-complete": "off"
-    },
-    model: {
-      value: (_vm.newform.imagePath),
-      callback: function($$v) {
-        _vm.$set(_vm.newform, "imagePath", $$v)
-      },
-      expression: "newform.imagePath"
+      expression: "newform.content"
     }
   })], 1)], 1), _vm._v(" "), _c('div', {
     staticClass: "dialog-footer",
@@ -992,8 +936,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "title": "编辑",
       "visible": _vm.dialogFormVisibleEdit,
-      "center": "",
-      "width": "30%"
+      "width": "30%",
+      "center": ""
     },
     on: {
       "update:visible": function($event) {
@@ -1023,31 +967,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
-      "label": "状态",
-      "label-width": _vm.formLabelWidth
-    }
-  }, [_c('el-select', {
-    attrs: {
-      "size": "small",
-      "placeholder": "请选择"
-    },
-    model: {
-      value: (_vm.newformEdit.state),
-      callback: function($$v) {
-        _vm.$set(_vm.newformEdit, "state", $$v)
-      },
-      expression: "newformEdit.state"
-    }
-  }, _vm._l((_vm.states), function(item) {
-    return _c('el-option', {
-      key: item.id,
-      attrs: {
-        "label": item.name,
-        "value": item.id
-      }
-    })
-  }))], 1), _vm._v(" "), _c('el-form-item', {
-    attrs: {
       "label": "内容地址",
       "label-width": _vm.formLabelWidth
     }
@@ -1057,28 +976,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "auto-complete": "off"
     },
     model: {
-      value: (_vm.newformEdit.contentPath),
+      value: (_vm.newformEdit.content),
       callback: function($$v) {
-        _vm.$set(_vm.newformEdit, "contentPath", $$v)
+        _vm.$set(_vm.newformEdit, "content", $$v)
       },
-      expression: "newformEdit.contentPath"
-    }
-  })], 1), _vm._v(" "), _c('el-form-item', {
-    attrs: {
-      "label": "图片地址",
-      "label-width": _vm.formLabelWidth
-    }
-  }, [_c('el-input', {
-    attrs: {
-      "size": "small",
-      "auto-complete": "off"
-    },
-    model: {
-      value: (_vm.newformEdit.imagePath),
-      callback: function($$v) {
-        _vm.$set(_vm.newformEdit, "imagePath", $$v)
-      },
-      expression: "newformEdit.imagePath"
+      expression: "newformEdit.content"
     }
   })], 1)], 1), _vm._v(" "), _c('div', {
     staticClass: "dialog-footer",
@@ -1106,8 +1008,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("确 定")])], 1)], 1), _vm._v(" "), _c('el-dialog', {
     attrs: {
       "title": "确认删除？",
-      "center": "",
       "width": "30%",
+      "center": "",
       "visible": _vm.dialogFormVisibleDelete
     },
     on: {
@@ -1161,22 +1063,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "href": "javascript:;"
     }
-  }, [_vm._v("黄金课堂")])]), _vm._v(" "), _c('h1')])
+  }, [_vm._v("资讯管理")])]), _vm._v(" "), _c('h1')])
 }]}
 
 /***/ }),
 
-/***/ 848:
+/***/ 880:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(678);
+var content = __webpack_require__(710);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(198)("e817d176", content, true);
+var update = __webpack_require__(198)("3ccef178", content, true);
 
 /***/ })
 

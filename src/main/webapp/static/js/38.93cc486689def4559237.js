@@ -420,6 +420,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             let _this = this;
             var params = new URLSearchParams();
             params.append("title", row.title);
+            if (row.title.length > 15) {
+                this.$message({
+                    message: '标题长度大于15，不能设为首页推送',
+                    type: 'warning'
+                });
+                return;
+            }
             params.append("content", row.contentpath);
             axios.post(this.setInfoPush, params).then(function (res) {
                 if (res.data.code == 1001 || res.data.code == 1000) {
