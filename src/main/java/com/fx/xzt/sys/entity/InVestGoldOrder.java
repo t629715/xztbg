@@ -20,12 +20,12 @@ public class InVestGoldOrder implements Serializable {
 	private Long userAddressId;        //用户收货地址id
 	private String investGoldName;     //投资金条产品名称
 	private Integer investGoldWeight;  //投资金条规格，单位克
-	private Double investGoldService;  //每笔提金服务费，按黄金价值算，ps：0.05表示黄金价值的5%
+	private Double investGoldService;  //每笔提金服务费，按黄金价值算 从配置表里查出费率
 	private Integer logisticsFee;      //物流费，单位分
 	private String logisticsNo;        //物流单号
 	private Integer goldNum;           //金条数量
 	private Integer goldTotalWeight;   //黄金总重量，单位克
-	private Short payType;             //1：现金支付2：存金宝支付
+	private Short payType;             //1：现金支付2：存金宝支付,3:金权交易手动交割 4:自动交割'
 	private Integer goldBasePrice;     //黄金基准价，单位克/分
 	private Long totalMoney;           //订单总价，单位分，存金宝支付时值计算服务费
 	private Long goldMoney;            //黄金总价，单位分，存金宝支付时为0
@@ -42,6 +42,29 @@ public class InVestGoldOrder implements Serializable {
 	private Long brokerId;             //经纪人id
 	private Long agentId;              //代理商id
 	private Long userId;               //用户id
+	/**
+	 * 金权交易交割订单id(pay_type为3时才有值)
+	 */
+	private Long dealOrderId;
+
+	/**
+	 * 加工费，单位分
+	 */
+	private Integer processingService;
+
+	/**
+	 * 发票费，单位分
+	 */
+	private Integer invoiceService;
+
+	/**
+	 * 保管费，单位分
+	 */
+	private Integer custodyService;
+
+
+
+
 
 	public Long getId() {
 		return id;
@@ -258,6 +281,37 @@ public class InVestGoldOrder implements Serializable {
 	public void setPayTime(Date payTime) {
 		this.payTime = payTime;
 	}
-	
 
+
+	public Long getDealOrderId() {
+		return dealOrderId;
+	}
+
+	public void setDealOrderId(Long dealOrderId) {
+		this.dealOrderId = dealOrderId;
+	}
+
+	public Integer getProcessingService() {
+		return processingService;
+	}
+
+	public void setProcessingService(Integer processingService) {
+		this.processingService = processingService;
+	}
+
+	public Integer getInvoiceService() {
+		return invoiceService;
+	}
+
+	public void setInvoiceService(Integer invoiceService) {
+		this.invoiceService = invoiceService;
+	}
+
+	public Integer getCustodyService() {
+		return custodyService;
+	}
+
+	public void setCustodyService(Integer custodyService) {
+		this.custodyService = custodyService;
+	}
 }

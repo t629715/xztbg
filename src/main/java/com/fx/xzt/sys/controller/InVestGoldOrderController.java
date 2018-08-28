@@ -60,8 +60,8 @@ public class InVestGoldOrderController {
 	* @param endTime 结束时间
 	* @param agentName 代理商id
 	* @param brokerName 经纪人id
-	* @param status 状态 0:待支付1:未发货2:已发货3、已完成4:未发货已取消5:未支付已关闭
-	* @param payType 支付方式
+	* @param status 订单状态 0:待支付  10:未发货 30 ：已完成
+	* @param payType 交割状态 3:金权交易手动交割 4:自动交割 5:选择交割
 	* @param pageNum
 	* @param pageSize
 	* @return

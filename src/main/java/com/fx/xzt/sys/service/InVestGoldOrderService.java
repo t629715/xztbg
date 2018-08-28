@@ -25,8 +25,8 @@ public interface InVestGoldOrderService {
 	* @param endTime 结束时间
 	* @param agentName 代理商id
 	* @param brokerName 经纪人id
-	* @param status 状态
-	* @param payType 支付方式
+	* @param status 订单状态 0:待支付  10:未发货 30 ：已完成
+	* @param payType 交割状态 3:金权交易手动交割 4:自动交割 5:选择交割
 	* @param isView
 	* @param pageNum
 	* @param pageSize
@@ -44,12 +44,11 @@ public interface InVestGoldOrderService {
 	* @Title: excelByAll 
 	* @Description: 导出
 	* @param userName 用户名
-	* @param startTime开始时间
 	* @param endTime 结束时间
 	* @param agentName 代理商id
 	* @param brokerName 经纪人id
-	* @param status 状态
-	* @param payType 支付方式
+	* @param status 订单状态 0:待支付  10:未发货 30 ：已完成
+	* @param payType 交割状态 3:金权交易手动交割 4:自动交割 5:选择交割
 	* @param isView
 	* @return    设定文件 
 	* @return List<Map<String,Object>>    返回类型 
@@ -65,12 +64,11 @@ public interface InVestGoldOrderService {
 	* @Title: countByAll 
 	* @Description: 统计
 	* @param userName 用户名
-	* @param startTime开始时间
 	* @param endTime 结束时间
 	* @param agentName 代理商id
 	* @param brokerName 经纪人id
-	* @param status 状态
-	* @param payType 支付方式
+	* @param status 订单状态 0:待支付  10:未发货 30 ：已完成
+	* @param payType 交割状态 3:金权交易手动交割 4:自动交割 5:选择交割
 	* @return    设定文件 
 	* @return Map<String,Object>    返回类型 
 	* @throws 

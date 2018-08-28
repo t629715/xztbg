@@ -1,12 +1,15 @@
 package com.fx.xzt.sys.service.impl;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.fx.xzt.sys.util.ConstantUtil;
 import org.springframework.stereotype.Service;
 
 import com.fx.xzt.sys.entity.DealOrder;
@@ -59,11 +62,12 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         map.put("orderState", orderState);
-        map.put("isUseCard", isUseCard);
-        map.put("upOrDown", upOrDown);
+        /*map.put("isUseCard", isUseCard);
+        map.put("upOrDown", upOrDown);*/
         map.put("isView", isView);
         PageHelper.startPage(pageNum,pageSize);
         List<Map<String, Object>> list = dealOrderMapper.selectByDealOrder(map);
+        handle(list);
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
         return pagehelper;
     }
@@ -94,12 +98,11 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         map.put("orderState", orderState);
-        map.put("isUseCard", isUseCard);
-        map.put("upOrDown", upOrDown);
+       /* map.put("isUseCard", isUseCard);
+        map.put("upOrDown", upOrDown);*/
         map.put("isView", isView);
         List<Map<String, Object>> list = dealOrderMapper.selectByDealOrder(map);
-
-
+        handle(list);
         return list;
     }
 
@@ -238,4 +241,17 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
         map.put("upOrDown", upOrDown);
         return dealOrderMapper.selectByDealOrderCount2(map);
 	}
+
+    public void handle(List<Map<String, Object>> list) {
+        if (list != null && list.size() > 0) {
+            for (Map<String, Object> map : list) {
+                Object statusObj = map.get("orderState");
+                if (statusObj != null && statusObj != "") {
+                    map.put("orderState", ConstantUtil.dealOrderStatus.toMap().get(statusObj.toString()));
+                }
+
+            }
+        }
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.fx.xzt.sys.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 public class GoldRightDealConf implements Serializable{
     private static final long serialVersionUID = 1L;
@@ -29,6 +30,26 @@ public class GoldRightDealConf implements Serializable{
      *点差
      */
     private Double pointCount;
+
+    /**
+     * 买跌点差
+     */
+    private BigDecimal pointCountDown;
+
+    /**
+     * 买涨点差
+     */
+    private BigDecimal pointCountUp;
+
+    /**
+     * 交割最大百分比
+     */
+    private BigDecimal deliveryMax;
+
+    /**
+     * 交割最小百分比
+     */
+    private BigDecimal  deliveryMin;
 
     /**
      *最小小数波动位数
@@ -96,6 +117,17 @@ public class GoldRightDealConf implements Serializable{
      *交易时间(09:00-11:30,13:30-15:00) 表示两个时间段
      */
     private String dealTime;
+
+    /**
+     * 交割确认时间(分)
+     */
+    private Integer deliveryConfirmationTime;
+
+    /**
+     * 最低止盈点
+     */
+    private Float minProfitPercent;
+
 
     public Long getId() {
         return id;
@@ -249,6 +281,52 @@ public class GoldRightDealConf implements Serializable{
         this.minLossPercent = minLossPercent;
     }
 
+    public BigDecimal getPointCountDown() {
+        return pointCountDown;
+    }
+
+    public void setPointCountDown(BigDecimal pointCountDown) {
+        this.pointCountDown = pointCountDown;
+    }
+
+    public BigDecimal getPointCountUp() {
+        return pointCountUp;
+    }
+
+    public void setPointCountUp(BigDecimal pointCountUp) {
+        this.pointCountUp = pointCountUp;
+    }
+
+    public BigDecimal getDeliveryMax() {
+        return deliveryMax;
+    }
+
+    public void setDeliveryMax(BigDecimal deliveryMax) {
+        this.deliveryMax = deliveryMax;
+    }
+
+    public BigDecimal getDeliveryMin() {
+        return deliveryMin;
+    }
+
+    public void setDeliveryMin(BigDecimal deliveryMin) {
+        this.deliveryMin = deliveryMin;
+    }
+
+    public Integer getDeliveryConfirmationTime() {
+        return deliveryConfirmationTime;
+    }
+
+    public void setDeliveryConfirmationTime(Integer deliveryConfirmationTime) {
+        this.deliveryConfirmationTime = deliveryConfirmationTime;
+    }
+    public Float getMinProfitPercent() {
+        return minProfitPercent;
+    }
+
+    public void setMinProfitPercent(Float minProfitPercent) {
+        this.minProfitPercent = minProfitPercent;
+    }
     @Override
     public String toString() {
         return "GoldRightDealConf{" +
@@ -256,7 +334,11 @@ public class GoldRightDealConf implements Serializable{
                 ", name='" + name + '\'' +
                 ", contract=" + contract +
                 ", buyPercent=" + buyPercent +
-                ", pointCount=" + pointCount +
+                ", pointCountDown=" + pointCountDown +
+                ", pointCountUp=" + pointCountUp +
+                ", deliveryMin=" + deliveryMin +
+                ", deliveryMax=" + deliveryMax +
+                ", deliveryConfirmationTime=" + deliveryConfirmationTime +
                 ", volatility=" + volatility +
                 ", minGramPerOrder=" + minGramPerOrder +
                 ", maxGramPerOrder=" + maxGramPerOrder +
@@ -270,7 +352,10 @@ public class GoldRightDealConf implements Serializable{
                 ", blowingUpSet=" + blowingUpSet +
                 ", status=" + status +
                 ", minLossPercent=" + minLossPercent +
+                ", minProfitPercent=" + minProfitPercent +
                 ", dealTime='" + dealTime + '\'' +
                 '}';
     }
+
+
 }

@@ -681,8 +681,12 @@ public class ConstantUtil {
     *
      */
     public static enum payType {
-        SJTQ("实金提取","1"),
-        SJDH("实金兑换","2");
+        /*SJTQ("实金提取","1"),
+        SJDH("实金兑换","2"),*/
+        SDJG("手动交割","3"),
+        ZDJG("自动交割","4"),
+        XZJG("选择交割","5");
+
         private String name;
         private String index;
         private payType(String name,String index){
@@ -711,7 +715,9 @@ public class ConstantUtil {
     *
      */
     public static enum inVestGoldOrderStatus {
-        WZF("未支付","0"),
+
+
+        WZF("待支付","0"),
         WFH("未发货","10"),
         YFH("已发货","20"),
         YWC("已完成","30"),
@@ -735,6 +741,47 @@ public class ConstantUtil {
             return rlt;
         }
     }
+
+
+    /**
+     * @ClassName: dealOrderStatus
+     * @Description: 金权交易订单状态
+     * @author liaijiao
+     * @date 2018-8-28 下午5:00:02
+     */
+    public static enum dealOrderStatus {
+         CCZ("持仓中","0"),
+         YPC("已平仓","1"),
+         DQR("待确认","2");
+
+        private String name;
+        private String index;
+        private dealOrderStatus(String name,String index){
+            this.name = name;
+            this.index = index;
+        }
+        public String toString() {
+            return this.index;
+        }
+        public static Map<String, String> toMap() {
+            dealOrderStatus[] ds = dealOrderStatus.values();
+            Map<String, String> rlt = new Hashtable<String, String>();
+            for (dealOrderStatus d : ds) {
+                rlt.put(d.index, d.name);
+            }
+            return rlt;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
     
     /**
      * 

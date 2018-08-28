@@ -1,6 +1,7 @@
 package com.fx.xzt.sys.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -12,23 +13,103 @@ import java.util.Date;
 public class DealOrder implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    /**
+     * 订单id
+     */
     private Long id;
+
+    /**
+     * 交易订单号
+     */
     private String orderNo;
+
+    /**
+     * 用户id
+     */
     private Long userId;
+
+    /**
+     *产品id
+     */
     private Long productId;
+
+    /**
+     * 0：涨；1：跌
+     */
     private Integer upOrDown;
+
+    /**
+     * 买入价/建仓价
+     */
     private Double openPositionPrice;
+
+    /**
+     * 平仓价
+     */
     private Double closePositionPrice;
+
+    /**
+     * 点数
+     */
     private Double pointCount;
+
+    /**
+     *买涨点差
+     */
+    private BigDecimal pointCountUp;
+
+    /**
+     *买跌点差
+     */
+    private BigDecimal pointCountDown;
+
+    /**
+     * 克数/手数
+     */
     private Integer handNumber;
+
+    /**
+     * 0：交易中；1：平仓（终止交易);2:待定,3:已交割
+     */
     private Integer orderState;
+
+    /**
+     * 止盈点
+     */
     private Double endProfit;
+
+    /**
+     *交割最小点数(黄金单价)
+     */
+    private BigDecimal deliveryMinPoint;
+
+    /**
+     *交割最大点数(黄金单价)
+     */
+    private BigDecimal deliveryMaxPoint;
+
+    /**
+     *进入待定状态时间
+     */
+    private Date intoDeliveryDate;
+
     private Integer endProfitNumber;
     private Double endLoss;
     private Integer endLossNumber;
     private Integer poundage;
+
+    /**
+     *手续费率(0.01代表1%)
+     */
+    private Integer poundageRate;
+
     private Integer ensureAmount;
+
+    /**
+     *买入金额(订单金额+手续费)
+     */
+    private Integer buyAmount;
+
     private Integer profitLoss;
     private Integer profitLossNumber;
     private Integer display;
@@ -282,5 +363,61 @@ public class DealOrder implements Serializable {
 
     public void setBuyAfterRmb(Double buyAfterRmb) {
         this.buyAfterRmb = buyAfterRmb;
+    }
+
+    public BigDecimal getPointCountUp() {
+        return pointCountUp;
+    }
+
+    public void setPointCountUp(BigDecimal pointCountUp) {
+        this.pointCountUp = pointCountUp;
+    }
+
+    public BigDecimal getPointCountDown() {
+        return pointCountDown;
+    }
+
+    public void setPointCountDown(BigDecimal pointCountDown) {
+        this.pointCountDown = pointCountDown;
+    }
+
+    public BigDecimal getDeliveryMinPoint() {
+        return deliveryMinPoint;
+    }
+
+    public void setDeliveryMinPoint(BigDecimal deliveryMinPoint) {
+        this.deliveryMinPoint = deliveryMinPoint;
+    }
+
+    public BigDecimal getDeliveryMaxPoint() {
+        return deliveryMaxPoint;
+    }
+
+    public void setDeliveryMaxPoint(BigDecimal deliveryMaxPoint) {
+        this.deliveryMaxPoint = deliveryMaxPoint;
+    }
+
+    public Date getIntoDeliveryDate() {
+        return intoDeliveryDate;
+    }
+
+    public void setIntoDeliveryDate(Date intoDeliveryDate) {
+        this.intoDeliveryDate = intoDeliveryDate;
+    }
+
+    public Integer getPoundageRate() {
+        return poundageRate;
+    }
+
+    public void setPoundageRate(Integer poundageRate) {
+        this.poundageRate = poundageRate;
+    }
+
+    public Integer getBuyAmount() {
+        return buyAmount;
+    }
+
+    public void setBuyAmount(Integer buyAmount) {
+        this.buyAmount = buyAmount;
     }
 }

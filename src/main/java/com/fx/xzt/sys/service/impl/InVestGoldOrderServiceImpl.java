@@ -107,6 +107,31 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 					Double goldBasePrice = Double.valueOf(goldBasePriceObj.toString());
 					map.put("goldBasePrice", goldBasePrice/100);
 				}
+				Object invoiceServiceObj = map.get("invoiceService");
+				if (invoiceServiceObj != null && invoiceServiceObj != "") {
+					Double invoiceService = Double.valueOf(invoiceServiceObj.toString());
+					map.put("invoiceService",invoiceService/100);
+				}
+				Object processingServiceObj = map.get("processingService");
+				if (processingServiceObj != null && processingServiceObj != "") {
+					Double processingService = Double.valueOf(processingServiceObj.toString());
+					map.put("processingService",processingService/100);
+				}
+				Object totalMoneyObj = map.get("totalMoney");
+				if (totalMoneyObj != null && totalMoneyObj != "") {
+					Double totalMoney = Double.valueOf(totalMoneyObj.toString());
+					map.put("totalMoney",totalMoney/100);
+				}
+				Object discountAmountObj = map.get("discountAmount");
+				if (discountAmountObj != null && discountAmountObj != "") {
+					Double discountAmount = Double.valueOf(discountAmountObj.toString());
+					map.put("discountAmount",discountAmount/100);
+				}
+				Object actualPaymentObj = map.get("actualPayment");
+				if (actualPaymentObj != null && actualPaymentObj != "") {
+					Double actualPayment = Double.valueOf(actualPaymentObj.toString());
+					map.put("actualPayment",actualPayment/100);
+				}
 				Object goldMoneyObj = map.get("goldMoney");
 				if (goldMoneyObj != null && goldMoneyObj != "") {
 					Double goldMoney = Double.valueOf(goldMoneyObj.toString());
@@ -157,10 +182,26 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 				Double serviceMoney = Double.valueOf(serviceMoneyObj.toString());
 				map1.put("serviceMoneySum", serviceMoney/100);
 			}
+
         	Object logisticsFeeObj = map1.get("logisticsFeeSum");
 			if (logisticsFeeObj != null && logisticsFeeObj != "") {
 				Double logisticsFee = Double.valueOf(logisticsFeeObj.toString());
 				map1.put("logisticsFeeSum", logisticsFee/100);
+			}
+			Object totalMoneySumObj = map1.get("totalMoneySum");
+			if (totalMoneySumObj != null && totalMoneySumObj != "") {
+				Double totalMoneySum = Double.valueOf(totalMoneySumObj.toString());
+				map1.put("logisticsFeeSum", totalMoneySum/100);
+			}
+			Object processingServiceSumObj = map1.get("processingServiceSum");
+			if (processingServiceSumObj != null && processingServiceSumObj != "") {
+				Double processingServiceSum = Double.valueOf(processingServiceSumObj.toString());
+				map1.put("processingServiceSum", processingServiceSum/100);
+			}
+			Object invoiceServiceSumObj = map1.get("invoiceServiceSum");
+			if (invoiceServiceSumObj != null && invoiceServiceSumObj != "") {
+				Double invoiceServiceSum = Double.valueOf(invoiceServiceSumObj.toString());
+				map1.put("invoiceServiceSum", invoiceServiceSum/100);
 			}
         }
         return map1;

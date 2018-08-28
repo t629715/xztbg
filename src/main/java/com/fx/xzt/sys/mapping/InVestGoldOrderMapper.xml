@@ -4,26 +4,33 @@
 
     <!--金条投资订单开始-htt-->
     <select id="selectByAll" resultType="java.util.Map" parameterType="java.util.Map">
-    select 
-    	<if test='isView == "1"'>
+ select io.*,(ifnull(io.totalMoney,0)-ifnull(io.discountAmount,0)) actualPayment from (
+		select
+		<if test='isView == "1"'>
 			u.UserName userName,
 	    </if>
 	    <if test='isView != "1"'>
 			INSERT(u.UserName, 4, 4, '****') userName,
 	    </if>
-		cast(o.id as CHAR) id, cast(o.user_id as CHAR) userId, o.invest_gold_id investGoldId, o.invest_gold_name investGoldName, o.invest_gold_weight investGoldWeight, 
-		o.invest_gold_service investGoldService, o.logistics_fee logisticsFee, o.logistics_no logisticsNo, o.gold_num goldNum,
-		o.gold_total_weight goldTotalWeight, o.pay_type payType, o.gold_base_price goldBasePrice, 
-		o.total_money totalMoney, o.gold_money goldMoney, o.service_money serviceMoney, o.img_url imgUrl, 
+		cast(o.id as CHAR) id, cast(o.user_id as CHAR) userId, o.invest_gold_id investGoldId, o.invest_gold_name
+		investGoldName, o.invest_gold_weight investGoldWeight,
+		o.invest_gold_service investGoldService, o.logistics_fee logisticsFee, o.logistics_no logisticsNo, o.gold_num
+		goldNum,
+		o.gold_total_weight goldTotalWeight, o.pay_type payType, o.gold_base_price goldBasePrice, o.processing_service processingService,
+		o.invoice_service invoiceService,o.total_money totalMoney,
+		(select (gold_money*0.05+gold_total_weight*5) from invest_gold_order where id= o.id  and pay_type=3 ) discountAmount,
+		( select update_time from invest_gold_order  where id= o.id and status BETWEEN 30 and 50) endTime,
+		 o.gold_money goldMoney, o.service_money serviceMoney, o.img_url imgUrl,
 		o.status, o.create_time createTime, o.send_time sendTime, o.update_time updateTime, o.pay_time payTime,
-		o.agent_id AS agentId, ua.user_name AS agentName, o.broker_id AS brokerId, ub.user_name AS brokerName, 
+		o.agent_id AS agentId, ua.user_name AS agentName, o.broker_id AS brokerId, ub.user_name AS brokerName,
 		a.contact_name contactName, a.contact_phone contactPhone, a.delivery_address deliveryAddress
-	from invest_gold_order o
-	LEFT JOIN User_Login u ON o.user_id = u.UserID
-	LEFT JOIN user_address a on o.user_address_id = a.id
-    LEFT JOIN users ua ON o.agent_id = ua.id 
-    LEFT JOIN users ub ON o.broker_id = ub.id
-    <where>
+		from invest_gold_order o
+		LEFT JOIN User_Login u ON o.user_id = u.UserID
+		LEFT JOIN user_address a on o.user_address_id = a.id
+		LEFT JOIN users ua ON o.agent_id = ua.id
+		LEFT JOIN users ub ON o.broker_id = ub.id
+
+		<where>
     	and o.status != 0
     	<if test="userName != null and userName != '' ">
 	    	and u.UserName = #{userName,jdbcType=VARCHAR}
@@ -48,14 +55,16 @@
 	    </if>
     </where>
     
-    order by o.create_time DESC
+    order by o.create_time DESC) io
     </select>
     <!--金条投资订单结束-htt-->
-    
+	<!-- 优惠金额 -->
+
     <!--金条投资订单统计开始-htt-->
     <select id="countByAll" resultType="java.util.Map" parameterType="java.util.Map">
     select 
-    	sum(o.logistics_fee) logisticsFeeSum, sum(o.service_money) serviceMoneySum, sum(o.gold_total_weight) goldNumSum
+    	sum(o.logistics_fee) logisticsFeeSum, sum(o.service_money) serviceMoneySum, sum(o.gold_total_weight) goldNumSum,
+		sum(o.total_money) totalMoneySum,sum(o.processing_service) processingServiceSum,sum(o.invoice_service) invoiceServiceSum
 	from invest_gold_order o
 	LEFT JOIN User_Login u ON o.user_id = u.UserID
     LEFT JOIN users ua ON o.agent_id = ua.id 

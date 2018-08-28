@@ -10,14 +10,21 @@
         <result column="open_position_price" jdbcType="DOUBLE" property="openPositionPrice"/>
         <result column="close_position_price" jdbcType="DOUBLE" property="closePositionPrice"/>
         <result column="point_count" jdbcType="DOUBLE" property="pointCount"/>
+        <result column="point_count_up" jdbcType="DECIMAL" property="pointCountUp"/>
+        <result column="point_count_down" jdbcType="DECIMAL" property="pointCountDown"/>
         <result column="hand_number" jdbcType="INTEGER" property="handNumber"/>
         <result column="order_state" jdbcType="INTEGER" property="orderState"/>
         <result column="end_profit" jdbcType="DOUBLE" property="endProfit"/>
+        <result column="delivery_max_point" jdbcType="DECIMAL" property="deliveryMaxPoint"/>
+        <result column="delivery_min_point" jdbcType="DECIMAL" property="deliveryMinPoint"/>
+        <result column="into_delivery_date" jdbcType="TIMESTAMP" property="intoDeliveryDate"/>
         <result column="end_profit_number" jdbcType="INTEGER" property="endProfitNumber"/>
         <result column="end_loss" jdbcType="DOUBLE" property="endLoss"/>
         <result column="end_loss_number" jdbcType="INTEGER" property="endLossNumber"/>
         <result column="poundage" jdbcType="INTEGER" property="poundage"/>
+        <result column="poundage_rate" jdbcType="DECIMAL" property="poundageRate"/>
         <result column="ensure_amount" jdbcType="INTEGER" property="ensureAmount"/>
+        <result column="buy_amount" jdbcType="INTEGER" property="buyAmount"/>
         <result column="profit_loss" jdbcType="INTEGER" property="profitLoss"/>
         <result column="profit_loss_number" jdbcType="INTEGER" property="profitLossNumber"/>
         <result column="display" jdbcType="INTEGER" property="display"/>
@@ -48,7 +55,7 @@
       o.up_or_down upOrDown, o.hand_number handNumber,
       o.ensure_amount ensureAmount, o.point_count pointCount,o.open_position_price openPositionPrice, 
       o.close_position_price closePositionPrice,
-      o.create_time  createTime, o.end_time endTime, o.profit_loss_number profitLossNumber, o.order_state orderState,
+      o.create_time  createTime, o.end_time endTime, o.profit_loss_number profitLossNumber,o.poundage poundage, o.order_state orderState,
       o.buy_pre_rmb buyPreRmb, o.buy_after_rmb buyAfterRmb,o.voucher_value voucherValue, o.voucher_deductible voucherDeductible,
       o.cost,s.share_amount shareAmount  
       FROM deal_order o
@@ -103,7 +110,7 @@
     <!--金权交易金额统计开始-htt-->
     <select id="selectByDealOrderCount" resultType="java.util.Map" parameterType="java.util.Map">
         SELECT SUM(ensure_amount) enSureAmountSum, SUM(profit_loss_number) profitLossNumberCount,
-        SUM(s.share_amount) shareAmountSum, SUM(o.cost) costSum
+        SUM(s.share_amount) shareAmountSum, SUM(o.cost) costSum,SUM(o.poundage) poundageSum
         FROM deal_order o
         LEFT JOIN User_Login u ON o.user_id = u.UserID
         LEFT JOIN User_Info i ON u.UserID = i.UserID
