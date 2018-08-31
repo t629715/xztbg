@@ -143,6 +143,11 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 					Double serviceMoney = Double.valueOf(serviceMoneyObj.toString());
 					map.put("serviceMoney", serviceMoney/100);
 				}
+				Object investGoldServiceObj = map.get("investGoldService");
+				if (investGoldServiceObj != null && investGoldServiceObj != "") {
+					Double investGoldService = Double.valueOf(investGoldServiceObj.toString());
+					map.put("investGoldService", investGoldService/100);
+				}
 				Object logisticsFeeObj = map.get("logisticsFee");
 				if (logisticsFeeObj != null && logisticsFeeObj != "") {
 					Double logisticsFee = Double.valueOf(logisticsFeeObj.toString());
@@ -177,21 +182,21 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
         map.put("payType", payType);
         Map<String, Object> map1 = mapper.countByAll(map);
         if (map1 != null && map1.size() > 0) {
-        	Object serviceMoneyObj = map1.get("serviceMoneySum");
-			if (serviceMoneyObj != null && serviceMoneyObj != "") {
-				Double serviceMoney = Double.valueOf(serviceMoneyObj.toString());
-				map1.put("serviceMoneySum", serviceMoney/100);
+        	Object investGoldServiceSumObj = map1.get("investGoldServiceSum");
+			if (investGoldServiceSumObj != null && investGoldServiceSumObj != "") {
+				Double investGoldServiceSum = Double.valueOf(investGoldServiceSumObj.toString());
+				map1.put("investGoldServiceSum", investGoldServiceSum/100);
 			}
 
         	Object logisticsFeeObj = map1.get("logisticsFeeSum");
 			if (logisticsFeeObj != null && logisticsFeeObj != "") {
-				Double logisticsFee = Double.valueOf(logisticsFeeObj.toString());
-				map1.put("logisticsFeeSum", logisticsFee/100);
+				Double logisticsFeeSum = Double.valueOf(logisticsFeeObj.toString());
+				map1.put("logisticsFeeSum", logisticsFeeSum/100);
 			}
 			Object totalMoneySumObj = map1.get("totalMoneySum");
 			if (totalMoneySumObj != null && totalMoneySumObj != "") {
 				Double totalMoneySum = Double.valueOf(totalMoneySumObj.toString());
-				map1.put("logisticsFeeSum", totalMoneySum/100);
+				map1.put("totalMoneySum", totalMoneySum/100);
 			}
 			Object processingServiceSumObj = map1.get("processingServiceSum");
 			if (processingServiceSumObj != null && processingServiceSumObj != "") {

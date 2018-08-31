@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,33 +46,48 @@ public class GoldRightDealConfServiceImpl extends BaseService<GoldRightDealConf>
 
 
     /**
-     * 根据id修改金权规则
-     * @param id
-     * @param name
-     * @param contract
-     * @param buyPercent
-     * @param pointCount
-     * @param volatility
-     * @param minGramPerOrder
-     * @param maxGramPerOrder
-     * @param maxPositionCount
+     *
+     * @param id 产品id
+     * @param name 产品名字
+     * @param contract 产品合约
+     * @param buyPercent 买入金额
+     * @param pointCount 点差
+     * @param pointCountDown 买跌点差
+     * @param pointCountUp 买涨点差
+     * @param deliveryMax 交割最大百分比
+     * @param deliveryMin 交割最小百分比
+     * @param minProfitPercent 最低止盈点
+     * @param volatility 最下小数波动
+     * @param stopLossSet 最大止损设置
+     * @param minLossPercent 最小持仓克数
+     * @param volatilityProfitLoss 最小波动盈亏
+     * @param minGramPerOrder 最小持仓克数
+     * @param maxGramPerOrder 最大持仓克数
+     * @param maxPositionCount 最大建仓次数
      * @param maxBuyCountPerDay
-     * @param stopProfitSet
+     * @param stopProfitSet 止盈设置
      * @param blowingUpSet
+     * @param status
      * @return
      */
     @Transactional
     public Boolean updateByPrimaryKey(Long id, String name, Integer contract,
-                                      Float buyPercent, Double pointCount, Double volatility,
-                                      Double stopLossSet,Float minLossPercent, Double volatilityProfitLoss,
+                                      Float buyPercent, Double pointCount, BigDecimal pointCountDown, BigDecimal pointCountUp, BigDecimal deliveryMax,
+                                      BigDecimal  deliveryMin, Float minProfitPercent,
+                                      Double volatility, Double stopLossSet, Float minLossPercent, Double volatilityProfitLoss,
                                       Integer minGramPerOrder, Integer maxGramPerOrder, Integer maxPositionCount,
-                                      Integer maxBuyCountPerDay, Double stopProfitSet, Integer blowingUpSet,Integer status) {
+                                      Integer maxBuyCountPerDay, Double stopProfitSet, Integer blowingUpSet, Integer status) {
         Map map = new HashMap();
         map.put("id",id);//产品id
         map.put("name",name);//产品名字
         map.put("contract",contract);//产品合约
         map.put("buyPercent",buyPercent);//买入金额
         map.put("pointCount",pointCount);//点差
+        map.put("pointCountDown",pointCountDown);//买跌点差
+        map.put("pointCountUp",pointCountUp);//买涨点差
+        map.put("deliveryMax",deliveryMax);//交割最大百分比
+        map.put("deliveryMin",deliveryMin);//交割最小百分比
+        map.put("minProfitPercent",minProfitPercent);//最低止盈点
         map.put("volatility",volatility);//最下小数波动
         map.put("minGramPerOrder",minGramPerOrder);//最小持仓克数
         map.put("maxGramPerOrder",maxGramPerOrder);//最大持仓克数

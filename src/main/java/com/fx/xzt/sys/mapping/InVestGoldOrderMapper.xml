@@ -4,7 +4,7 @@
 
     <!--金条投资订单开始-htt-->
     <select id="selectByAll" resultType="java.util.Map" parameterType="java.util.Map">
- select io.*,(ifnull(io.totalMoney,0)-ifnull(io.discountAmount,0)) actualPayment from (
+
 		select
 		<if test='isView == "1"'>
 			u.UserName userName,
@@ -20,6 +20,7 @@
 		o.invoice_service invoiceService,o.total_money totalMoney,
 		(select (gold_money*0.05+gold_total_weight*5) from invest_gold_order where id= o.id  and pay_type=3 ) discountAmount,
 		( select update_time from invest_gold_order  where id= o.id and status BETWEEN 30 and 50) endTime,
+		(select service_money from invest_gold_order where id= o.id and pay_type BETWEEN 3 and 5) actualPayment,
 		 o.gold_money goldMoney, o.service_money serviceMoney, o.img_url imgUrl,
 		o.status, o.create_time createTime, o.send_time sendTime, o.update_time updateTime, o.pay_time payTime,
 		o.agent_id AS agentId, ua.user_name AS agentName, o.broker_id AS brokerId, ub.user_name AS brokerName,
@@ -55,7 +56,7 @@
 	    </if>
     </where>
     
-    order by o.create_time DESC) io
+    order by o.create_time DESC
     </select>
     <!--金条投资订单结束-htt-->
 	<!-- 优惠金额 -->
@@ -63,7 +64,7 @@
     <!--金条投资订单统计开始-htt-->
     <select id="countByAll" resultType="java.util.Map" parameterType="java.util.Map">
     select 
-    	sum(o.logistics_fee) logisticsFeeSum, sum(o.service_money) serviceMoneySum, sum(o.gold_total_weight) goldNumSum,
+    	sum(o.logistics_fee) logisticsFeeSum, sum(o.service_money) serviceMoneySum,sum(o.invest_gold_service) investGoldServiceSum, sum(o.gold_total_weight) goldNumSum,
 		sum(o.total_money) totalMoneySum,sum(o.processing_service) processingServiceSum,sum(o.invoice_service) invoiceServiceSum
 	from invest_gold_order o
 	LEFT JOIN User_Login u ON o.user_id = u.UserID

@@ -684,7 +684,7 @@ public class ConstantUtil {
         /*SJTQ("实金提取","1"),
         SJDH("实金兑换","2"),*/
         SDJG("手动交割","3"),
-        ZDJG("自动交割","4"),
+        QZJG("强制交割","4"),
         XZJG("选择交割","5");
 
         private String name;
@@ -721,8 +721,10 @@ public class ConstantUtil {
         WFH("未发货","10"),
         YFH("已发货","20"),
         YWC("已完成","30"),
-        YQX("已取消","40"),
-        YGB("已关闭","50");
+        /*YQX("已取消","40"),
+        YGB("已关闭","50"),*/
+        YZF("已作废","100");
+
         private String name;
         private String index;
         private inVestGoldOrderStatus(String name,String index){

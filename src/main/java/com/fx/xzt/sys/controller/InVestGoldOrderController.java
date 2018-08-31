@@ -178,16 +178,16 @@ public class InVestGoldOrderController {
                     POIUtils poi = new POIUtils();
                     //判断是否为代理商账户
                     if (users.getPid() != null && users.getPid() == 1) {
-                    	String[] heads = {"用户账号", "经纪人", "提取类型", "数量", "克重", "买入价", "买入金额", "手续费",
-                                "物流费", "联系人", "联系电话", "收货地址","申请提取时间", "发货时间", "状态", "物流单号"};
-                        String[] colums = {"userName", "brokerName", "payType", "goldNum", "goldTotalWeight", "goldBasePrice", "goldMoney", "serviceMoney",
-                                "logisticsFee", "contactName","contactPhone","deliveryAddress",  "createTime", "sendTime", "status", "logisticsNo"};
+                    	String[] heads = {"用户账号", "经纪人", "克重", "买入价", "合约金额", "手续费","加工费",
+                                "物流费","发票","订单金额","优惠金额","实际支付", "联系人", "联系电话", "收货地址","支付时间", "发货时间","完成时间","订单状态", "交割状态", "物流单号"};
+                        String[] colums = {"userName", "brokerName",  "goldTotalWeight", "goldBasePrice", "goldMoney", "investGoldService","processingService",
+                                "logisticsFee","invoiceService","totalMoney","discountAmount","actualPayment", "contactName","contactPhone","deliveryAddress", "payTime", "sendTime","endTime","status", "payType", "logisticsNo"};
                         poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                     } else if (users.getPid() == null || users.getPid() == 0) {
-                        String[] heads = {"用户账号", "代理商", "经纪人", "提取类型", "数量", "克重", "买入价", "买入金额", "手续费",
-                                "物流费", "联系人", "联系电话", "收货地址","申请提取时间", "发货时间", "状态", "物流单号"};
-                        String[] colums = {"userName", "agentName", "brokerName", "payType", "goldNum", "goldTotalWeight", "goldBasePrice", "goldMoney", "serviceMoney",
-                                "logisticsFee", "contactName","contactPhone","deliveryAddress",  "createTime", "sendTime", "status", "logisticsNo"};
+                        String[] heads = {"用户账号", "代理商", "经纪人",  "克重", "买入价", "合约金额", "手续费","加工费",
+                                "物流费","发票","订单金额","优惠金额","实际支付", "联系人", "联系电话", "收货地址","支付时间", "发货时间","完成时间","订单状态", "交割状态", "物流单号"};
+                        String[] colums = {"userName", "agentName", "brokerName", "goldTotalWeight", "goldBasePrice", "goldMoney", "investGoldService","processingService",
+                                "logisticsFee","invoiceService","totalMoney","discountAmount","actualPayment", "contactName","contactPhone","deliveryAddress", "payTime", "sendTime","endTime","status", "payType", "logisticsNo"};
                         poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                     }
                     log.setUserId(users.getId());

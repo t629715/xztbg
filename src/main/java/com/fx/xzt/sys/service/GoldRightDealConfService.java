@@ -5,6 +5,7 @@ package com.fx.xzt.sys.service;
 import com.fx.xzt.sys.entity.GoldRightDealConf;
 import com.github.pagehelper.PageInfo;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 public interface GoldRightDealConfService extends IService<GoldRightDealConf> {
@@ -33,10 +34,10 @@ public interface GoldRightDealConfService extends IService<GoldRightDealConf> {
      * @return
      */
     Boolean updateByPrimaryKey(Long id, String name, Integer contract,
-                               Float buyPercent, Double pointCount, Double volatility,
-                               Double stopLossSet,Float minLossPercent, Double volatilityProfitLoss,
+                               Float buyPercent, Double pointCount, BigDecimal pointCountDown,BigDecimal pointCountUp,BigDecimal deliveryMax,BigDecimal  deliveryMin,Float minProfitPercent,
+                               Double volatility, Double stopLossSet, Float minLossPercent, Double volatilityProfitLoss,
                                Integer minGramPerOrder, Integer maxGramPerOrder, Integer maxPositionCount,
-                                Integer maxBuyCountPerDay, Double stopProfitSet, Integer blowingUpSet, Integer status);
+                               Integer maxBuyCountPerDay, Double stopProfitSet, Integer blowingUpSet, Integer status);
 
     /**
      * 根据id后去金权交易信息

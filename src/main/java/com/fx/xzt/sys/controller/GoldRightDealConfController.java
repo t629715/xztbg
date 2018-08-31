@@ -1,5 +1,6 @@
 package com.fx.xzt.sys.controller;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -110,27 +111,37 @@ public class GoldRightDealConfController {
     /**
      * 修改 金权规则信息
      * @param request
-     * @param id
-     * @param name
-     * @param contract
-     * @param buyPercent
-     * @param pointCount
-     * @param volatility
-     * @param minGramPerOrder
-     * @param maxGramPerOrder
-     * @param maxPositionCount
+     * @param id 产品id
+     * @param name 产品名字
+     * @param contract 产品合约
+     * @param buyPercent 买入金额
+     * @param pointCount 点差
+     * @param pointCountDown 买跌点差
+     * @param pointCountUp 买涨点差
+     * @param deliveryMax 交割最大百分比
+     * @param deliveryMin 交割最小百分比
+     * @param minProfitPercent 最低止盈点
+     * @param volatility 最下小数波动
+     * @param stopLossSet 最大止损设置
+     * @param minLossPercent 最小持仓克数
+     * @param volatilityProfitLoss 最小波动盈亏
+     * @param minGramPerOrder 最小持仓克数
+     * @param maxGramPerOrder 最大持仓克数
+     * @param maxPositionCount 最大建仓次数
      * @param maxBuyCountPerDay
-     * @param stopProfitSet
+     * @param stopProfitSet 止盈设置
      * @param blowingUpSet
+     * @param status
      * @return
+     * @throws ParseException
      */
     @RequestMapping(value = "/modifyGoldRightDealConf",method=RequestMethod.POST)
     @ResponseBody
     public Object modifyGoldRightDealConf(HttpServletRequest request, String id, String name, Integer contract,
-                                    Float  buyPercent, Double pointCount, Double volatility,
-                                          Double stopLossSet,Float minLossPercent, Double volatilityProfitLoss,
-                                    Integer minGramPerOrder, Integer maxGramPerOrder, Integer maxPositionCount,
-                                    Integer maxBuyCountPerDay, Double stopProfitSet, Integer blowingUpSet,Integer status) throws ParseException {
+                                          Float  buyPercent, Double pointCount, BigDecimal pointCountDown, BigDecimal pointCountUp, BigDecimal deliveryMax, BigDecimal  deliveryMin, Float minProfitPercent, Double volatility,
+                                          Double stopLossSet, Float minLossPercent, Double volatilityProfitLoss,
+                                          Integer minGramPerOrder, Integer maxGramPerOrder, Integer maxPositionCount,
+                                          Integer maxBuyCountPerDay, Double stopProfitSet, Integer blowingUpSet, Integer status) throws ParseException {
         logger.debug("获取修改进群规则信息接口");
         CommonResponse response = new CommonResponse();
         //操作日志
@@ -148,7 +159,7 @@ public class GoldRightDealConfController {
             if (users != null) {
                 Long ids = new Long(id);
                 Boolean b = goldRightDealConfService.updateByPrimaryKey(ids, name, contract,
-                         buyPercent, pointCount, volatility,
+                         buyPercent, pointCount,pointCountDown,pointCountUp,deliveryMax, deliveryMin, minProfitPercent,volatility,
                         stopLossSet, minLossPercent, volatilityProfitLoss,
                          minGramPerOrder, maxGramPerOrder, maxPositionCount,
                          maxBuyCountPerDay, stopProfitSet, blowingUpSet, status);
