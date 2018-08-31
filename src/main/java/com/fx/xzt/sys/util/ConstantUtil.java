@@ -774,7 +774,29 @@ public class ConstantUtil {
             return rlt;
         }
     }
+    public static enum types {
 
+        ZDJG("自动交割","0"),
+        SDJG("手动交割","1");
+
+        private String name;
+        private String index;
+        private types(String name,String index){
+            this.name = name;
+            this.index = index;
+        }
+        public String toString() {
+            return this.index;
+        }
+        public static Map<String, String> toMap() {
+            types[] ds = types.values();
+            Map<String, String> rlt = new Hashtable<String, String>();
+            for (types d : ds) {
+                rlt.put(d.index, d.name);
+            }
+            return rlt;
+        }
+    }
 
 
 

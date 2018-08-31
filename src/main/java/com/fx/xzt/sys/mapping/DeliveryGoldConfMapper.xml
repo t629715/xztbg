@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fx.xzt.sys.mapper.DeliveryGoldConfMapper" >
+    <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.DeliveryGoldConf" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="handling_fee" property="handlingFee" jdbcType="DECIMAL" />
+        <result column="processing_fee" property="processingFee" jdbcType="INTEGER" />
+        <result column="invoice_fee" property="invoiceFee" jdbcType="DECIMAL" />
+        <result column="logistics_fee" property="logisticsFee" jdbcType="BIGINT" />
+        <result column="custody_fee" property="custodyFee" jdbcType="BIGINT" />
+        <result column="custody_start_date" property="custodyStartDate" jdbcType="INTEGER" />
+        <result column="type" property="type" jdbcType="INTEGER" />
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    </resultMap>
+     <!--获取金权交易交割黄金规格信息  liaijiao-->
+    <select id="selectAll" resultType="java.util.Map">
+          select id,handling_fee handlingFee,processing_fee processingFee,invoice_fee invoiceFee , logistics_fee logisticsFee,custody_fee custodyFee,
+          custody_start_date custodyStartDate,type,gmt_create gmtCreate,gmt_modified gmtModified from  delivery_gold_conf order by id
+
+    </select>
+<!--根据id修改金权交易交割黄金规格信息   liaijiao-->
+    <update id="modifyDeliveryGoldConf" parameterType="java.util.Map">
+           update delivery_gold_conf
+           <set>
+               <if test="handlingFee != null" >
+                   handling_fee = #{handlingFee,jdbcType=DECIMAL},
+               </if>
+               <if test="processingFee != null" >
+                   processing_fee = #{processingFee,jdbcType=INTEGER},
+               </if>
+               <if test="invoiceFee != null" >
+                   invoice_fee = #{invoiceFee,jdbcType=DECIMAL},
+               </if>
+               <if test="logisticsFee != null" >
+                   logistics_fee = #{logisticsFee,jdbcType=BIGINT},
+               </if>
+               <if test="custodyFee != null" >
+                   custody_fee = #{custodyFee,jdbcType=BIGINT},
+               </if>
+               <if test="custodyStartDate != null" >
+                   custody_start_date = #{custodyStartDate,jdbcType=INTEGER},
+               </if>
+               <if test="type != null" >
+                   type = #{type,jdbcType=INTEGER},
+               </if>
+               <if test="gmtCreate != null" >
+                   gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+               </if>
+               <if test="gmtModified != null" >
+                   gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+               </if>
+
+           </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+<!--根据ID获取金权交易交割黄金规格信息    liaijiao-->
+    <select id="selectById" parameterType="int" resultMap="BaseResultMap" >
+       select id,handling_fee handlingFee,processing_fee processingFee,invoice_fee invoiceFee ,
+                   logistics_fee logisticsFee,custody_fee custodyFee, custody_start_date custodyStartDate,
+                   type,gmt_create gmtCreate,gmt_modified gmtModified from  delivery_gold_conf where id= #{id,jdbcType=INTEGER}
+
+    </select>
+</mapper>
