@@ -19,10 +19,10 @@
 		o.gold_total_weight goldTotalWeight, o.pay_type payType, o.gold_base_price goldBasePrice, o.processing_service processingService,
 		o.invoice_service invoiceService,o.total_money totalMoney,
 		(select (gold_money*0.05+gold_total_weight*5) from invest_gold_order where id= o.id  and pay_type=3 ) discountAmount,
-		( select update_time from invest_gold_order  where id= o.id and status BETWEEN 30 and 50) endTime,
+		DATE_FORMAT((select update_time from invest_gold_order  where id= o.id and status BETWEEN 30 and 50),'%Y-%m-%d %h:%i:%s') endTime,
 		(select service_money from invest_gold_order where id= o.id and pay_type BETWEEN 3 and 5) actualPayment,
 		 o.gold_money goldMoney, o.service_money serviceMoney, o.img_url imgUrl,
-		o.status, o.create_time createTime, o.send_time sendTime, o.update_time updateTime, o.pay_time payTime,
+		o.status, o.create_time createTime, o.send_time sendTime, o.update_time updateTime, DATE_FORMAT(o.pay_time,'%Y-%m-%d %h:%i:%s') payTime,
 		o.agent_id AS agentId, ua.user_name AS agentName, o.broker_id AS brokerId, ub.user_name AS brokerName,
 		a.contact_name contactName, a.contact_phone contactPhone, a.delivery_address deliveryAddress
 		from invest_gold_order o

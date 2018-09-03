@@ -230,10 +230,7 @@ public class DealOrderController {
                         	Double cost = Double.valueOf(costObj.toString());
                         	map.put("cost", cost/100);
                         }
-                        if (poundageObj != null && poundageObj != "") {
-                            Double poundage = Double.valueOf(poundageObj.toString());
-                            map.put("poundage", poundage/100);
-                        }
+
                     }
                     POIUtils poi = new POIUtils();
                     //判断是否为代理商账户

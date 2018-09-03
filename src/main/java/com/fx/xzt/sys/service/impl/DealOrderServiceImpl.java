@@ -249,7 +249,11 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
                 if (statusObj != null && statusObj != "") {
                     map.put("orderState", ConstantUtil.dealOrderStatus.toMap().get(statusObj.toString()));
                 }
-
+                Object poundageObj = map.get("poundage");
+                if (poundageObj != null && poundageObj != "") {
+                    Double poundage = Double.valueOf(poundageObj.toString());
+                    map.put("poundage",poundage/100);
+                }
             }
         }
     }
