@@ -36,7 +36,7 @@
     SELECT id,contract,buy_percent buyPercent,point_count pointCount,point_count_down pointCountDown,point_count_up pointCountUp,delivery_max deliveryMax,delivery_min deliveryMin,
             volatility,min_gram_per_order minGramPerOrder,max_gram_per_order maxPerOrder,
             stop_loss_set stopLossSet,volatility_profit_loss volatilityProfitLoss,min_loss_percent minLossPercent,
-            stop_profit_set stopProfitSet,blowing_up_set blowingUpSet,max_position_count maxPositionCount,max_buy_count_per_day maxBuyCountPerDay,name,status,min_profit_percent minProfitPercent
+            stop_profit_set stopProfitSet,blowing_up_set blowingUpSet,max_position_count maxPositionCount,max_buy_count_per_day maxBuyCountPerDay,name,status,min_profit_percent minProfitPercent,poundage poundage
     FROM gold_right_deal_conf
     ORDER BY id
 

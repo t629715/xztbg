@@ -141,7 +141,7 @@ public class GoldRightDealConfController {
                                           Float  buyPercent, Double pointCount, BigDecimal pointCountDown, BigDecimal pointCountUp, BigDecimal deliveryMax, BigDecimal  deliveryMin, Float minProfitPercent, Double volatility,
                                           Double stopLossSet, Float minLossPercent, Double volatilityProfitLoss,
                                           Integer minGramPerOrder, Integer maxGramPerOrder, Integer maxPositionCount,
-                                          Integer maxBuyCountPerDay, Double stopProfitSet, Integer blowingUpSet, Integer status) throws ParseException {
+                                          Integer maxBuyCountPerDay, Double stopProfitSet, Integer blowingUpSet, Integer status,Float poundage) throws ParseException {
         logger.debug("获取修改进群规则信息接口");
         CommonResponse response = new CommonResponse();
         //操作日志
@@ -162,7 +162,7 @@ public class GoldRightDealConfController {
                          buyPercent, pointCount,pointCountDown,pointCountUp,deliveryMax, deliveryMin, minProfitPercent,volatility,
                         stopLossSet, minLossPercent, volatilityProfitLoss,
                          minGramPerOrder, maxGramPerOrder, maxPositionCount,
-                         maxBuyCountPerDay, stopProfitSet, blowingUpSet, status);
+                         maxBuyCountPerDay, stopProfitSet, blowingUpSet, status, poundage);
                 if (b){
                     GoldRightDealConf goldRightDealConf = goldRightDealConfService.getGoldRight(new Long(id));
                     String key = "fx_xzt_gold_right_deal_cofing_"+goldRightDealConf.getId();

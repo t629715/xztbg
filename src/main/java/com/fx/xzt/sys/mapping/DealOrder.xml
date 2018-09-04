@@ -94,6 +94,9 @@
           <if test="orderState != null">
               and o.order_state = #{orderState,jdbcType=INTEGER}
           </if>
+          <if test="orderState == null">
+              and o.order_state not in(2,3)
+          </if>
           <if test="isUseCard != null and isUseCard == 0 ">
               and o.voucher_id IS null
           </if>
@@ -146,6 +149,9 @@
           <if test="orderState != null">
               and o.order_state = #{orderState,jdbcType=INTEGER}
           </if>
+            <if test="orderState == null">
+                and o.order_state = 1
+            </if>
           <if test="isUseCard != null and isUseCard == 0 ">
               and o.voucher_id IS null
           </if>

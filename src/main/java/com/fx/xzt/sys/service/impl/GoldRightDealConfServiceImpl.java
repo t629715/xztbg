@@ -76,7 +76,7 @@ public class GoldRightDealConfServiceImpl extends BaseService<GoldRightDealConf>
                                       BigDecimal  deliveryMin, Float minProfitPercent,
                                       Double volatility, Double stopLossSet, Float minLossPercent, Double volatilityProfitLoss,
                                       Integer minGramPerOrder, Integer maxGramPerOrder, Integer maxPositionCount,
-                                      Integer maxBuyCountPerDay, Double stopProfitSet, Integer blowingUpSet, Integer status) {
+                                      Integer maxBuyCountPerDay, Double stopProfitSet, Integer blowingUpSet, Integer status, Float poundage) {
         Map map = new HashMap();
         map.put("id",id);//产品id
         map.put("name",name);//产品名字
@@ -99,6 +99,7 @@ public class GoldRightDealConfServiceImpl extends BaseService<GoldRightDealConf>
         map.put("minLossPercent",minLossPercent);//最小止损设置
         map.put("volatilityProfitLoss",volatilityProfitLoss);//最小波动盈亏
         map.put("status",status);
+        map.put("poundage",poundage);
         int i = goldRightDealConfMapper.modifyGoldRightCong(map);
         if (i != 0){
             return true;

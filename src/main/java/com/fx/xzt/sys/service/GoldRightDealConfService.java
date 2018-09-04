@@ -37,7 +37,7 @@ public interface GoldRightDealConfService extends IService<GoldRightDealConf> {
                                Float buyPercent, Double pointCount, BigDecimal pointCountDown,BigDecimal pointCountUp,BigDecimal deliveryMax,BigDecimal  deliveryMin,Float minProfitPercent,
                                Double volatility, Double stopLossSet, Float minLossPercent, Double volatilityProfitLoss,
                                Integer minGramPerOrder, Integer maxGramPerOrder, Integer maxPositionCount,
-                               Integer maxBuyCountPerDay, Double stopProfitSet, Integer blowingUpSet, Integer status);
+                               Integer maxBuyCountPerDay, Double stopProfitSet, Integer blowingUpSet, Integer status ,Float poundage);
 
     /**
      * 根据id后去金权交易信息
