@@ -681,8 +681,8 @@ public class ConstantUtil {
     *
      */
     public static enum payType {
-        /*SJTQ("实金提取","1"),
-        SJDH("实金兑换","2"),*/
+        SJTQ("实金提取","1"),
+        SJDH("实金兑换","2"),
         SDJG("手动交割","3"),
         QZJG("强制交割","4"),
         XZJG("选择交割","5");
