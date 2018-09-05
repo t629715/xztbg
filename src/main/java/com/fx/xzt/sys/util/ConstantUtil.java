@@ -705,7 +705,8 @@ public class ConstantUtil {
             return rlt;
         }
     }
-    
+
+
     /**
      * 
     * @ClassName: inVestGoldOrderStatus 
@@ -721,8 +722,8 @@ public class ConstantUtil {
         WFH("未发货","10"),
         YFH("已发货","20"),
         YWC("已完成","30"),
-        /*YQX("已取消","40"),
-        YGB("已关闭","50"),*/
+        YQX("已取消","40"),
+        YGB("已关闭","50"),
         YZF("已作废","100");
 
         private String name;

@@ -60,7 +60,27 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
         return pagehelper;
 	}
-
+	/**
+	 * 金权交割查询
+	 * @throws ParseException
+	 */
+	public PageInfo<Map<String, Object>> selectByAllDelivery(String userName, String startTime, String endTime, String agentName,
+															 String brokerName, Integer status, Integer payType, String isView, Integer pageNum, Integer pageSize) throws ParseException {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userName", userName);
+		map.put("startTime", startTime);
+		map.put("endTime", endTime);
+		map.put("agentName", agentName);
+		map.put("brokerName", brokerName);
+		map.put("status", status);
+		map.put("payType", payType);
+		map.put("isView", isView);
+		PageHelper.startPage(pageNum,pageSize);
+		List<Map<String, Object>> list = mapper.selectByAllDelivery(map);
+		handle(list);
+		PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
+		return pagehelper;
+	}
 	/**
 	 * 导出
 	 * @throws ParseException 
@@ -80,7 +100,25 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
         handle(list);
         return list;
 	}
-	
+	/**
+	 * 导出
+	 * @throws ParseException
+	 */
+	public List<Map<String, Object>> excelByAllDelivery(String userName, String startTime, String endTime, String agentName,
+												String brokerName, Integer status, Integer payType, String isView) throws ParseException {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userName", userName);
+		map.put("startTime", startTime);
+		map.put("endTime", endTime);
+		map.put("agentName", agentName);
+		map.put("brokerName", brokerName);
+		map.put("status", status);
+		map.put("payType", payType);
+		map.put("isView", isView);
+		List<Map<String, Object>> list = mapper.selectByAllDelivery(map);
+		handle(list);
+		return list;
+	}
 	/**
 	 * 
 	* @Title: handle 
@@ -95,9 +133,10 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 		if (list != null && list.size() > 0) {
 			for (Map<String, Object> map : list) {
 				Object payTypeObj = map.get("payType");
-				if (payTypeObj != null && payTypeObj != "") {
+				if (payTypeObj != null && payTypeObj != "" ) {
 					map.put("payType", ConstantUtil.payType.toMap().get(payTypeObj.toString()));
 				}
+
 				Object statusObj = map.get("status");
 				if (statusObj != null && statusObj != "") {
 					map.put("status", ConstantUtil.inVestGoldOrderStatus.toMap().get(statusObj.toString()));
@@ -167,7 +206,7 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 	}
 
 	/**
-	 * 统计
+	 * 金条订单统计
 	 */
 	public Map<String, Object> countByAll(String userName, String startTime,
 			String endTime, String agentName, String brokerName,
@@ -182,13 +221,43 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
         map.put("payType", payType);
         Map<String, Object> map1 = mapper.countByAll(map);
         if (map1 != null && map1.size() > 0) {
-        	Object investGoldServiceSumObj = map1.get("investGoldServiceSum");
+
+        	Object logisticsFeeObj = map1.get("logisticsFeeSum");
+			if (logisticsFeeObj != null && logisticsFeeObj != "") {
+				Double logisticsFeeSum = Double.valueOf(logisticsFeeObj.toString());
+				map1.put("logisticsFeeSum", logisticsFeeSum/100);
+			}
+			Object serviceMoneySumObj = map1.get("serviceMoneySum");
+			if (serviceMoneySumObj != null && serviceMoneySumObj != "") {
+				Double serviceMoneySum = Double.valueOf(serviceMoneySumObj.toString());
+				map1.put("serviceMoneySum", serviceMoneySum/100);
+			}
+        }
+        return map1;
+	}
+	/**
+	 * 交割订单统计
+	 */
+	public Map<String, Object> countByAllDelivery(String userName, String startTime,
+												  String endTime, String agentName, String brokerName,
+												  Integer status, Integer payType) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userName", userName);
+		map.put("startTime", startTime);
+		map.put("endTime", endTime);
+		map.put("agentName", agentName);
+		map.put("brokerName", brokerName);
+		map.put("status", status);
+		map.put("payType", payType);
+		Map<String, Object> map1 = mapper.countByAll(map);
+		if (map1 != null && map1.size() > 0) {
+			Object investGoldServiceSumObj = map1.get("investGoldServiceSum");
 			if (investGoldServiceSumObj != null && investGoldServiceSumObj != "") {
 				Double investGoldServiceSum = Double.valueOf(investGoldServiceSumObj.toString());
 				map1.put("investGoldServiceSum", investGoldServiceSum/100);
 			}
 
-        	Object logisticsFeeObj = map1.get("logisticsFeeSum");
+			Object logisticsFeeObj = map1.get("logisticsFeeSum");
 			if (logisticsFeeObj != null && logisticsFeeObj != "") {
 				Double logisticsFeeSum = Double.valueOf(logisticsFeeObj.toString());
 				map1.put("logisticsFeeSum", logisticsFeeSum/100);
@@ -208,10 +277,10 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 				Double invoiceServiceSum = Double.valueOf(invoiceServiceSumObj.toString());
 				map1.put("invoiceServiceSum", invoiceServiceSum/100);
 			}
-        }
-        return map1;
-	}
 
+		}
+		return map1;
+	}
 	/**
 	 * 新增物流单号
 	 * @throws ParseException 

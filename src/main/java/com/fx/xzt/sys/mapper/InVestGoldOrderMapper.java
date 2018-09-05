@@ -28,6 +28,17 @@ public interface InVestGoldOrderMapper extends BaseMapper<InVestGoldOrder> {
 	* @throws 
 	* @author htt
 	 */
+	List<Map<String, Object>> selectByAllDelivery (Map<String,Object> map);
+	/**
+	 *
+	 * @Title: selectByAll
+	 * @Description: 查询
+	 * @param map
+	 * @return    设定文件
+	 * @return List<Map<String,Object>>    返回类型
+	 * @throws
+	 * @author htt
+	 */
 	List<Map<String, Object>> selectByAll (Map<String,Object> map);
 	
 	/**
