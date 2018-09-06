@@ -249,7 +249,7 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 		map.put("brokerName", brokerName);
 		map.put("status", status);
 		map.put("payType", payType);
-		Map<String, Object> map1 = mapper.countByAll(map);
+		Map<String, Object> map1 = mapper.countByAllDelivery(map);
 		if (map1 != null && map1.size() > 0) {
 			Object investGoldServiceSumObj = map1.get("investGoldServiceSum");
 			if (investGoldServiceSumObj != null && investGoldServiceSumObj != "") {

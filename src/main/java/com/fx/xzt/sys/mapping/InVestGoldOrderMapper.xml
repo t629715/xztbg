@@ -29,7 +29,7 @@
 		LEFT JOIN users ub ON o.broker_id = ub.id
 
 		<where>
-    	and o.status != 0 and  o.pay_type between 1 and 2
+    	 o.status != 0 and  o.pay_type between 1 and 2
     	<if test="userName != null and userName != '' ">
 	    	and u.UserName = #{userName,jdbcType=VARCHAR}
 	    </if>
@@ -72,14 +72,15 @@
 		o.invest_gold_service investGoldService, o.logistics_fee logisticsFee, o.logistics_no logisticsNo, o.gold_num
 		goldNum,
 		o.gold_total_weight goldTotalWeight, o.pay_type payType, o.gold_base_price goldBasePrice, o.processing_service processingService,
-		o.invoice_service invoiceService,o.total_money totalMoney,
+		(select invoice_service from invest_gold_order where id= o.id and invoice = 1) invoiceService,
+		o.total_money totalMoney,
 		(select (gold_money*0.05+gold_total_weight*5) from invest_gold_order where id= o.id  and pay_type=3 ) discountAmount,
 		DATE_FORMAT((select update_time from invest_gold_order  where id= o.id and status BETWEEN 30 and 50),'%Y-%m-%d %H:%i:%s') endTime,
 		(select service_money from invest_gold_order where id= o.id and pay_type BETWEEN 3 and 5) actualPayment,
 		o.gold_money goldMoney, o.service_money serviceMoney, o.img_url imgUrl,
 		o.status, o.create_time createTime, o.send_time sendTime, o.update_time updateTime, DATE_FORMAT(o.pay_time,'%Y-%m-%d %H:%i:%s') payTime,
 		o.agent_id AS agentId, ua.user_name AS agentName, o.broker_id AS brokerId, ub.user_name AS brokerName,
-		a.contact_name contactName, a.contact_phone contactPhone, a.delivery_address deliveryAddress
+		o.deliver_name contactName, o.deliver_phone contactPhone, o.user_address deliveryAddress
 		from invest_gold_order o
 		LEFT JOIN User_Login u ON o.user_id = u.UserID
 		LEFT JOIN user_address a on o.user_address_id = a.id
@@ -87,7 +88,7 @@
 		LEFT JOIN users ub ON o.broker_id = ub.id
 
 		<where>
-			and o.status != 0 and  o.pay_type between 3 and 5
+			 o.status in (10,20,30,100) and  o.pay_type between 3 and 5
 			<if test="userName != null and userName != '' ">
 				and u.UserName = #{userName,jdbcType=VARCHAR}
 			</if>
@@ -98,7 +99,7 @@
 				and o.create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="status != null">
-				and o.  = #{status,jdbcType=INTEGER}
+				and o.status  = #{status,jdbcType=INTEGER}
 			</if>
 			<if test="payType != null">
 				and o.pay_type = #{payType,jdbcType=INTEGER}
@@ -116,20 +117,16 @@
 
 
 
-
-
-
     <!--金条投资订单统计开始-htt-->
     <select id="countByAll" resultType="java.util.Map" parameterType="java.util.Map">
     select 
-    	sum(o.logistics_fee) logisticsFeeSum, sum(o.service_money) serviceMoneySum,sum(o.invest_gold_service) investGoldServiceSum, sum(o.gold_total_weight) goldNumSum,
-		sum(o.total_money) totalMoneySum,sum(o.invoice_service) invoiceServiceSum
+    	sum(o.logistics_fee) logisticsFeeSum, sum(o.service_money) serviceMoneySum,sum(o.invest_gold_service) investGoldServiceSum, sum(o.gold_total_weight) goldNumSum
 	from invest_gold_order o
 	LEFT JOIN User_Login u ON o.user_id = u.UserID
     LEFT JOIN users ua ON o.agent_id = ua.id 
     LEFT JOIN users ub ON o.broker_id = ub.id
     <where>
-    	and o.status != 0 and o.pay_type between 1 and 2
+    	 o.status in (10,20,30) and o.pay_type between 1 and 2
     	<if test="userName != null and userName != '' ">
 	    	and u.UserName = #{userName,jdbcType=VARCHAR}
 	    </if>
@@ -158,13 +155,17 @@
 	<select id="countByAllDelivery" resultType="java.util.Map" parameterType="java.util.Map">
 		select
 		sum(o.logistics_fee) logisticsFeeSum, sum(o.service_money) serviceMoneySum,sum(o.invest_gold_service) investGoldServiceSum,
-		sum(o.total_money) totalMoneySum,sum(o.processing_service) processingServiceSum,sum(o.invoice_service) invoiceServiceSum
+		sum(o.total_money) totalMoneySum,sum(o.processing_service) processingServiceSum,
+		(select sum(invoice_service) from invest_gold_order
+		where user_id = o.user_id	AND invoice = 1
+		) invoiceServiceSum,
+		sum( gold_total_weight)  goldNumSum
 		from invest_gold_order o
 		LEFT JOIN User_Login u ON o.user_id = u.UserID
 		LEFT JOIN users ua ON o.agent_id = ua.id
 		LEFT JOIN users ub ON o.broker_id = ub.id
 		<where>
-			and o.status != 0 and o.pay_type between 3 and 5
+			o.status in (10,20,30,100) and o.pay_type between 3 and 5
 			<if test="userName != null and userName != '' ">
 				and u.UserName = #{userName,jdbcType=VARCHAR}
 			</if>

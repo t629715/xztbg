@@ -52,6 +52,17 @@ public interface InVestGoldOrderMapper extends BaseMapper<InVestGoldOrder> {
 	* @author htt
 	 */
 	Map<String, Object> countByAll (Map<String,Object> map);
+	/**
+	 *
+	 * @Title: excelByAll
+	 * @Description: 交割查询统计
+	 * @param map
+	 * @return    设定文件
+	 * @return List<Map<String,Object>>    返回类型
+	 * @throws
+	 * @author htt
+	 */
+	Map<String, Object> countByAllDelivery (Map<String,Object> map);
 
 	/**
 	 * 
