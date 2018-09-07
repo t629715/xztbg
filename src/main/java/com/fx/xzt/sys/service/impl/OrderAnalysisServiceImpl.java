@@ -81,6 +81,9 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
 //               金生金kezhong
                if (m.get("buyAmount") != null){
                    perAmount = perAmount+Double.parseDouble((m.get("buyAmount")==null?0:m.get("buyAmount")).toString());
+                   if (Double.parseDouble((m.get("buyAmount")==null?0:m.get("buyAmount")).toString()) == 0){
+                       m.put("buyAmount","");
+                   }
 
                }
 //               金生金克重
@@ -91,6 +94,9 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
 //               黄金买入金额
                if (m.get("buyRmbAmount")!= null){
                    perAmount = perAmount+Double.parseDouble((m.get("buyRmbAmount")==null?0:m.get("buyRmbAmount")).toString());
+                   if (Double.parseDouble((m.get("buyRmbAmount")==null?0:m.get("buyRmbAmount")).toString()) == 0){
+                       m.put("buyRmbAmount","");
+                   }
 //
 
                }
@@ -101,6 +107,9 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
 //               黄金卖出金额
                if (m.get("saleRmbAmount")!= null){
                    perAmount = perAmount+Double.parseDouble((m.get("saleRmbAmount")==null?0:m.get("saleRmbAmount")).toString());
+                   if (Double.parseDouble((m.get("saleRmbAmount")==null?0:m.get("saleRmbAmount")).toString()) == 0){
+                       m.put("saleRmbAmount","");
+                   }
 
                }
 
@@ -111,25 +120,39 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
 //               黄金用户
                if (m.get("goldUserAmount") != null){
                    perCount = perCount+Integer.parseInt((m.get("goldUserAmount")==null?0:m.get("goldUserAmount")).toString());
+                   if (Integer.parseInt((m.get("goldUserAmount")==null?0:m.get("goldUserAmount")).toString()) == 0){
+                       m.put("goldUserAmount","");
+                   }
 
                }
                //               金权交易用户
                if (m.get("goldRightUserAmount")!= null){
                    perCount = perCount+Integer.parseInt((m.get("goldRightUserAmount")==null?0:m.get("goldRightUserAmount")).toString());
+                   if (Integer.parseInt((m.get("goldRightUserAmount")==null?0:m.get("goldRightUserAmount")).toString()) == 0){
+                       m.put("goldRightUserAmount","");
+                   }
                }
 //               金权交易金额
                if (m.get("goldRightAmount")!= null){
                    perAmount = perAmount+Double.parseDouble((m.get("goldRightAmount")==null?0:m.get("goldRightAmount")).toString());
                    m.put("goldRightAmount",df.format(Double.parseDouble((m.get("goldRightAmount")==null?0:m.get("goldRightAmount")).toString())));
+                   if (Double.parseDouble((m.get("goldRightAmount")==null?0:m.get("goldRightAmount")).toString()) == 0){
+                       m.put("goldRightAmount","");
+                   }
                }
                //金权交割用户
                if (m.get("goldDeliveryUserAmount")!= null){
                    perCount = perCount+Integer.parseInt((m.get("goldDeliveryUserAmount")==null?0:m.get("goldDeliveryUserAmount")).toString());
+                   if (Integer.parseInt((m.get("goldDeliveryUserAmount")==null?0:m.get("goldDeliveryUserAmount")).toString()) == 0){
+                       m.put("goldDeliveryUserAmount","");
+                   }
                }
                // 交割金额
                if (m.get("goldDeliveryAmount")!= null){
                    perAmount = perAmount+Double.parseDouble((m.get("goldDeliveryAmount")==null?0:m.get("goldDeliveryAmount")).toString());
-
+                   if (Double.parseDouble((m.get("goldDeliveryAmount")==null?0:m.get("goldDeliveryAmount")).toString()) == 0){
+                       m.put("goldDeliveryAmount","");
+                   }
                }
 
 
@@ -274,28 +297,25 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
                 int perCount = 0;
                 Double perAmount = 0d;
                 m.put("date",DateUtils.formatDateByMidLine1((Date)m.get("date")));
-                //               金生金kezhong
+//               金生金kezhong
                 if (m.get("buyAmount") != null){
                     perAmount = perAmount+Double.parseDouble((m.get("buyAmount")==null?0:m.get("buyAmount")).toString());
+                    if (Double.parseDouble((m.get("buyAmount")==null?0:m.get("buyAmount")).toString()) == 0){
+                        m.put("buyAmount","");
+                    }
 
                 }
 //               金生金克重
                 if (m.get("gram") != null){
                     m.put("gram",df1.format(Double.parseDouble((m.get("gram")==null?0:m.get("gram")).toString())));
                 }
-//               金权交易金额
-                if (m.get("goldRightAmount")!= null){
-                    perAmount = perAmount+Double.parseDouble((m.get("goldRightAmount")==null?0:m.get("goldRightAmount")).toString());
-                    m.put("goldRightAmount",df.format(Double.parseDouble((m.get("goldRightAmount")==null?0:m.get("goldRightAmount")).toString())));
-                }
- //               金权交割金额
-                if (m.get("goldDeliveryAmount")!= null){
-                    perAmount = perAmount+Double.parseDouble((m.get("goldDeliveryAmount")==null?0:m.get("goldDeliveryAmount")).toString());
-                    m.put("goldDeliveryAmount",df.format(Double.parseDouble((m.get("goldDeliveryAmount")==null?0:m.get("goldDeliveryAmount")).toString())));
-                }
+
 //               黄金买入金额
                 if (m.get("buyRmbAmount")!= null){
                     perAmount = perAmount+Double.parseDouble((m.get("buyRmbAmount")==null?0:m.get("buyRmbAmount")).toString());
+                    if (Double.parseDouble((m.get("buyRmbAmount")==null?0:m.get("buyRmbAmount")).toString()) == 0){
+                        m.put("buyRmbAmount","");
+                    }
 //
 
                 }
@@ -306,8 +326,12 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
 //               黄金卖出金额
                 if (m.get("saleRmbAmount")!= null){
                     perAmount = perAmount+Double.parseDouble((m.get("saleRmbAmount")==null?0:m.get("saleRmbAmount")).toString());
+                    if (Double.parseDouble((m.get("saleRmbAmount")==null?0:m.get("saleRmbAmount")).toString()) == 0){
+                        m.put("saleRmbAmount","");
+                    }
 
                 }
+
                 //                   黄金卖出克重
                 if (m.get("saleGoldAmount")!= null ){
                     m.put("saleGoldAmount",df1.format(Double.parseDouble((m.get("saleGoldAmount")==null?0:m.get("saleGoldAmount")).toString())));
@@ -315,15 +339,43 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
 //               黄金用户
                 if (m.get("goldUserAmount") != null){
                     perCount = perCount+Integer.parseInt((m.get("goldUserAmount")==null?0:m.get("goldUserAmount")).toString());
+                    if (Integer.parseInt((m.get("goldUserAmount")==null?0:m.get("goldUserAmount")).toString()) == 0){
+                        m.put("goldUserAmount","");
+                    }
+
                 }
-//               金权交易用户
+                //               金权交易用户
                 if (m.get("goldRightUserAmount")!= null){
                     perCount = perCount+Integer.parseInt((m.get("goldRightUserAmount")==null?0:m.get("goldRightUserAmount")).toString());
+                    if (Integer.parseInt((m.get("goldRightUserAmount")==null?0:m.get("goldRightUserAmount")).toString()) == 0){
+                        m.put("goldRightUserAmount","");
+                    }
                 }
- //               金权交割用户
+//               金权交易金额
+                if (m.get("goldRightAmount")!= null){
+                    perAmount = perAmount+Double.parseDouble((m.get("goldRightAmount")==null?0:m.get("goldRightAmount")).toString());
+                    m.put("goldRightAmount",df.format(Double.parseDouble((m.get("goldRightAmount")==null?0:m.get("goldRightAmount")).toString())));
+                    if (Double.parseDouble((m.get("goldRightAmount")==null?0:m.get("goldRightAmount")).toString()) == 0){
+                        m.put("goldRightAmount","");
+                    }
+                }
+                //金权交割用户
                 if (m.get("goldDeliveryUserAmount")!= null){
                     perCount = perCount+Integer.parseInt((m.get("goldDeliveryUserAmount")==null?0:m.get("goldDeliveryUserAmount")).toString());
+                    if (Integer.parseInt((m.get("goldDeliveryUserAmount")==null?0:m.get("goldDeliveryUserAmount")).toString()) == 0){
+                        m.put("goldDeliveryUserAmount","");
+                    }
                 }
+                // 交割金额
+                if (m.get("goldDeliveryAmount")!= null){
+                    perAmount = perAmount+Double.parseDouble((m.get("goldDeliveryAmount")==null?0:m.get("goldDeliveryAmount")).toString());
+                    if (Double.parseDouble((m.get("goldDeliveryAmount")==null?0:m.get("goldDeliveryAmount")).toString()) == 0){
+                        m.put("goldDeliveryAmount","");
+                    }
+                }
+
+
+
 //               金生金用户
                 if (m.get("buyUserAmount")!= null){
                     perCount = perCount+Integer.parseInt((m.get("buyUserAmount")==null?0:m.get("buyUserAmount")).toString());

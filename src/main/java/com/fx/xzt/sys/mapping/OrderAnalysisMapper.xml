@@ -162,13 +162,19 @@
   <!--导出交易分析-tainliya-start-->
   <select id="exportAnalysis" resultType="java.util.Map" parameterType="java.util.Map">
 
-      select * from (
-      select a.date,a.buyGoldUserAmount+a.saleGoldUserAmount goldUserAmount,
-      TRUNCATE(a.buyGoldAmount,3) buyGoldAmount, TRUNCATE(a.buyRmbAmount/100,2) buyRmbAmount,
-      TRUNCATE(a.saleGoldAmount,3) saleGoldAmount,TRUNCATE(a.saleRmbAmount/100,2) saleRmbAmount,
-      a.goldRightUserAmount,TRUNCATE(a.goldRightAmount/100,2) goldRightAmount,
-      a.goldDeliveryUserAmount,TRUNCATE(a.goldDeliveryAmount/100,2) goldDeliveryAmount,
-      a.financeUserAmount buyUserAmount, TRUNCATE(a.gram,3) gram,TRUNCATE(a.buyAmount/100,2) buyAmount
+      select b.* from (
+      select a.date,
+      ifnull(a.buyGoldUserAmount,0)+ifnull(a.saleGoldUserAmount,0) goldUserAmount,
+      TRUNCATE(a.buyGoldAmount,3) buyGoldAmount,
+      TRUNCATE(a.buyRmbAmount/100,2) buyRmbAmount,
+      TRUNCATE(a.saleGoldAmount,3) saleGoldAmount,
+      TRUNCATE(a.saleRmbAmount/100,2) saleRmbAmount,
+      a.goldRightUserAmount,
+      TRUNCATE(a.goldRightAmount/100,2) goldRightAmount,
+      a.goldDeliveryUserAmount,
+      TRUNCATE(a.goldDeliveryAmount/100,2) goldDeliveryAmount,
+      a.financeUserAmount buyUserAmount,
+      TRUNCATE(a.gram,3) gram,TRUNCATE(a.buyAmount/100,2) buyAmount
       from
       (SELECT *
       FROM until_date t
@@ -215,12 +221,13 @@
       GROUP BY DATE_FORMAT(rgo.create_time,'%m-%d-%Y')) t2
       on t.date = t2.saleTime
       left join
-      (SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldRightTime, if(dor.order_state=3,0,COUNT(distinct dor.user_id)) AS goldRightUserAmount, if(dor.order_state=3,0,SUM(dor.ensure_amount)) AS goldRightAmount
+      (SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldRightTime, if(dor.order_state=3,0,COUNT(distinct dor.user_id)) AS goldRightUserAmount,if(dor.order_state=3,0,SUM(dor.ensure_amount))  AS goldRightAmount
       FROM deal_order dor
       <where>
           <if test='orderState == null or orderState == "".toString()'>
               dor.order_state in (0,1,2)
           </if>
+
           <if test="startTime != null and startTime != ''">
               AND dor.create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
           </if>
@@ -251,9 +258,9 @@
       FROM deal_order dor
       <where>
           <if test='orderState == null or orderState == "".toString()'>
-              dor.order_state = 3
+              dor.order_state=3
           </if>
-          dor.order_state = 3
+
           <if test="startTime != null and startTime != ''">
               AND dor.create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
           </if>
@@ -275,6 +282,7 @@
           <if test='orderState != null and orderState != "".toString()'>
               AND dor.order_state = #{orderState,jdbcType=INTEGER}
           </if>
+
 
       </where>
       GROUP BY DATE_FORMAT(dor.create_time,'%m-%d-%Y')) t5
@@ -301,7 +309,7 @@
       on t.date = t4.buyTime1
       ) a ) b
       where
-      b.goldUserAmount is not null or b.goldRightUserAmount is not null or b.goldDeliveryUserAmount is not null or b.buyUserAmount is not null
+      b.goldUserAmount !=0 or b.goldRightUserAmount  is not null or b.goldDeliveryUserAmount is not null or b.buyUserAmount is not null
       order by b.date desc
   </select>
   <!--交易分析-tianliya-end-->
