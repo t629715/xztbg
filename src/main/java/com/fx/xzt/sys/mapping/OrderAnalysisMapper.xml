@@ -6,12 +6,18 @@
 
 
       select b.* from (
-      select a.date,ifnull(a.buyGoldUserAmount,0)+ifnull(a.saleGoldUserAmount,0) goldUserAmount,
-      TRUNCATE(a.buyGoldAmount,3) buyGoldAmount, TRUNCATE(a.buyRmbAmount/100,2) buyRmbAmount,
-      TRUNCATE(a.saleGoldAmount,3) saleGoldAmount,TRUNCATE(a.saleRmbAmount/100,2) saleRmbAmount,
-      a.goldRightUserAmount,TRUNCATE(a.goldRightAmount/100,2) goldRightAmount,
-      a.goldDeliveryUserAmount,TRUNCATE(a.goldDeliveryAmount/100,2) goldDeliveryAmount,
-      a.financeUserAmount buyUserAmount, TRUNCATE(a.gram,3) gram,TRUNCATE(a.buyAmount/100,2) buyAmount
+      select a.date,
+          ifnull(a.buyGoldUserAmount,0)+ifnull(a.saleGoldUserAmount,0) goldUserAmount,
+          TRUNCATE(a.buyGoldAmount,3) buyGoldAmount,
+          TRUNCATE(a.buyRmbAmount/100,2) buyRmbAmount,
+          TRUNCATE(a.saleGoldAmount,3) saleGoldAmount,
+          TRUNCATE(a.saleRmbAmount/100,2) saleRmbAmount,
+      a.goldRightUserAmount,
+      TRUNCATE(a.goldRightAmount/100,2) goldRightAmount,
+      a.goldDeliveryUserAmount,
+      TRUNCATE(a.goldDeliveryAmount/100,2) goldDeliveryAmount,
+      a.financeUserAmount buyUserAmount,
+      TRUNCATE(a.gram,3) gram,TRUNCATE(a.buyAmount/100,2) buyAmount
       from
       (SELECT *
       FROM until_date t
@@ -58,10 +64,13 @@
       GROUP BY DATE_FORMAT(rgo.create_time,'%m-%d-%Y')) t2
       on t.date = t2.saleTime
       left join
-      (SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldRightTime, COUNT(distinct dor.user_id) AS goldRightUserAmount, SUM(dor.ensure_amount) AS goldRightAmount
+      (SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldRightTime, if(dor.order_state=3,0,COUNT(distinct dor.user_id)) AS goldRightUserAmount,if(dor.order_state=3,0,SUM(dor.ensure_amount))  AS goldRightAmount
       FROM deal_order dor
       <where>
-          dor.order_state in (0,1,2)
+          <if test='orderState == null or orderState == "".toString()'>
+              dor.order_state in (0,1,2)
+          </if>
+
           <if test="startTime != null and startTime != ''">
               AND dor.create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
           </if>
@@ -80,7 +89,7 @@
           <if test="upOrDown != null and upOrDown != ''">
               AND dor.up_or_down = #{upOrDown,jdbcType=INTEGER}
           </if>
-          <if test="orderState != null and orderState != ''.toString()">
+          <if test='orderState != null and orderState != "".toString()'>
               AND dor.order_state = #{orderState,jdbcType=INTEGER}
           </if>
 
@@ -88,25 +97,13 @@
       GROUP BY DATE_FORMAT(dor.create_time,'%m-%d-%Y')) t3
       on t.date = t3.goldRightTime
       left join
-      (SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldDeliveryTime, COUNT(distinct dor.user_id) AS goldDeliveryUserAmount, SUM(dor.ensure_amount) AS goldDeliveryAmount
+      (SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldDeliveryTime, if(dor.order_state=3,COUNT(distinct dor.user_id),0) AS goldDeliveryUserAmount,if(dor.order_state=3,SUM(dor.ensure_amount),0)  AS goldDeliveryAmount
       FROM deal_order dor
       <where>
-          dor.order_state=3
-          <!--<choose>
-              <when test="orderState != null and orderState != ''.toString() ">
-                  <choose>
-                      <when test="orderState=3">
-                          orderState=3
-                      </when>
-                      <otherwise>
-                          1!=1
-                      </otherwise>
-                  </choose>
-              </when>
-              <otherwise>
-                  dor.order_state=3
-              </otherwise>
-          </choose>-->
+          <if test='orderState == null or orderState == "".toString()'>
+              dor.order_state=3
+          </if>
+
           <if test="startTime != null and startTime != ''">
               AND dor.create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
           </if>
@@ -125,7 +122,7 @@
           <if test="upOrDown != null and upOrDown != ''">
               AND dor.up_or_down = #{upOrDown,jdbcType=INTEGER}
           </if>
-          <if test="orderState != null and orderState != ''.toString()">
+          <if test='orderState != null and orderState != "".toString()'>
               AND dor.order_state = #{orderState,jdbcType=INTEGER}
           </if>
 
@@ -218,10 +215,12 @@
       GROUP BY DATE_FORMAT(rgo.create_time,'%m-%d-%Y')) t2
       on t.date = t2.saleTime
       left join
-      (SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldRightTime, COUNT(distinct dor.user_id) AS goldRightUserAmount, SUM(dor.ensure_amount) AS goldRightAmount
+      (SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldRightTime, if(dor.order_state=3,0,COUNT(distinct dor.user_id)) AS goldRightUserAmount, if(dor.order_state=3,0,SUM(dor.ensure_amount)) AS goldRightAmount
       FROM deal_order dor
       <where>
-          dor.order_state in (0,1,2)
+          <if test='orderState == null or orderState == "".toString()'>
+              dor.order_state in (0,1,2)
+          </if>
           <if test="startTime != null and startTime != ''">
               AND dor.create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
           </if>
@@ -240,7 +239,7 @@
           <if test="upOrDown != null and upOrDown != ''">
               AND dor.up_or_down = #{upOrDown,jdbcType=INTEGER}
           </if>
-          <if test="orderState != null and orderState != ''.toString()">
+          <if test='orderState != null and orderState != "".toString()'>
               AND dor.order_state = #{orderState,jdbcType=INTEGER}
           </if>
 
@@ -248,9 +247,12 @@
       GROUP BY DATE_FORMAT(dor.create_time,'%m-%d-%Y')) t3
       on t.date = t3.goldRightTime
       left join
-      (SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldDeliveryTime, COUNT(distinct dor.user_id) AS goldDeliveryUserAmount, SUM(dor.ensure_amount) AS goldDeliveryAmount
+      (SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldDeliveryTime, if(dor.order_state=3,COUNT(distinct dor.user_id),0) AS goldDeliveryUserAmount,if(dor.order_state=3,SUM(dor.ensure_amount),0)  AS goldDeliveryAmount
       FROM deal_order dor
       <where>
+          <if test='orderState == null or orderState == "".toString()'>
+              dor.order_state = 3
+          </if>
           dor.order_state = 3
           <if test="startTime != null and startTime != ''">
               AND dor.create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
@@ -270,7 +272,7 @@
           <if test="upOrDown != null and upOrDown != ''">
               AND dor.up_or_down = #{upOrDown,jdbcType=INTEGER}
           </if>
-          <if test="orderState != null and orderState != ''.toString()">
+          <if test='orderState != null and orderState != "".toString()'>
               AND dor.order_state = #{orderState,jdbcType=INTEGER}
           </if>
 
@@ -356,10 +358,13 @@
     GROUP BY DATE_FORMAT(rgo.create_time,'%m-%d-%Y')) t2
     on t.date = t2.saleTime
     left join
-    (SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldRightTime, COUNT(distinct dor.user_id) AS goldRightUserAmount, SUM(dor.ensure_amount) AS goldRightAmount
+    (SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldRightTime, if(dor.order_state=3,0,COUNT(distinct dor.user_id)) AS goldRightUserAmount, if(dor.order_state=3,0,SUM(dor.ensure_amount)) AS goldRightAmount
     FROM deal_order dor
     <where>
-        dor.order_state in (0,1,2)
+        <if test='orderState == null or orderState == "".toString()'>
+            dor.order_state in (0,1,2)
+        </if>
+
       <if test="agentId != null and agentId != '' and agentId == 2">
         AND dor.agent_id = #{agentId,jdbcType=BIGINT}
       </if>
@@ -372,7 +377,7 @@
       <if test="upOrDown != null">
         AND dor.up_or_down = #{upOrDown,jdbcType=INTEGER}
       </if>
-      <if test="orderState != null and orderState != ''.toString()">
+      <if test='orderState != null and orderState != "".toString()'>
         AND dor.order_state = #{orderState,jdbcType=INTEGER}
       </if>
       <if test="startTime != null and startTime != ''">
@@ -385,10 +390,13 @@
     GROUP BY DATE_FORMAT(dor.create_time,'%m-%d-%Y')) t3
     on t.date = t3.goldRightTime
     left join
-      (SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldDeliveryTime, COUNT(distinct dor.user_id) AS goldDeliveryUserAmount, SUM(dor.ensure_amount) AS goldDeliveryAmount
+      (SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldDeliveryTime, if(dor.order_state=3,COUNT(distinct dor.user_id),0) AS goldDeliveryUserAmount,if(dor.order_state=3, SUM(dor.ensure_amount),0) AS goldDeliveryAmount
       FROM deal_order dor
       <where>
-          dor.order_state = 3
+          <if test='orderState == null or orderState == "".toString()'>
+              dor.order_state = 3
+          </if>
+
           <if test="agentId != null and agentId != '' and agentId == 2">
               AND dor.agent_id = #{agentId,jdbcType=BIGINT}
           </if>
@@ -401,7 +409,7 @@
           <if test="upOrDown != null">
               AND dor.up_or_down = #{upOrDown,jdbcType=INTEGER}
           </if>
-          <if test="orderState != null and orderState != ''.toString()">
+          <if test='orderState != null and orderState != "".toString()'>
               AND dor.order_state = #{orderState,jdbcType=INTEGER}
           </if>
           <if test="startTime != null and startTime != ''">
@@ -439,7 +447,7 @@
   <select id="getTotal" resultType="java.lang.Integer" parameterType="java.util.Map">
 
       select count(b.date) from (
-      select a.date,a.buyGoldUserAmount+a.saleGoldUserAmount goldUserAmount,
+      select a.date,ifnull(a.buyGoldUserAmount,0)+ifnull(a.saleGoldUserAmount,0) goldUserAmount,
       TRUNCATE(a.buyGoldAmount,3) buyGoldAmount, TRUNCATE(a.buyRmbAmount/100,2) buyRmbAmount,
       TRUNCATE(a.saleGoldAmount,3) saleGoldAmount,TRUNCATE(a.saleRmbAmount/100,2) saleRmbAmount,
       a.goldRightUserAmount,TRUNCATE(a.goldRightAmount/100,2) goldRightAmount,
@@ -513,7 +521,7 @@
           <if test="upOrDown != null and upOrDown != ''">
               AND dor.up_or_down = #{upOrDown,jdbcType=INTEGER}
           </if>
-          <if test="orderState != null and orderState != ''.toString()">
+          <if test='orderState != null and orderState != "".toString()'>
               AND dor.order_state = #{orderState,jdbcType=INTEGER}
           </if>
 
@@ -524,7 +532,22 @@
       (SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldDeliveryTime, COUNT(distinct dor.user_id) AS goldDeliveryUserAmount, SUM(dor.ensure_amount) AS goldDeliveryAmount
       FROM deal_order dor
       <where>
-          dor.order_state = 3
+          dor.order_state=3
+          <!--<choose>
+              <when test="orderState != null and orderState != ''.toString() ">
+                  <choose>
+                      <when test="orderState=3">
+                          orderState=3
+                      </when>
+                      <otherwise>
+                          1!=1
+                      </otherwise>
+                  </choose>
+              </when>
+              <otherwise>
+                  dor.order_state=3
+              </otherwise>
+          </choose>-->
           <if test="startTime != null and startTime != ''">
               AND dor.create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
           </if>
@@ -543,9 +566,10 @@
           <if test="upOrDown != null and upOrDown != ''">
               AND dor.up_or_down = #{upOrDown,jdbcType=INTEGER}
           </if>
-          <if test="orderState != null and orderState != ''.toString()">
+          <if test='orderState != null and orderState != "".toString()'>
               AND dor.order_state = #{orderState,jdbcType=INTEGER}
           </if>
+
 
       </where>
       GROUP BY DATE_FORMAT(dor.create_time,'%m-%d-%Y')) t5
@@ -572,7 +596,7 @@
       on t.date = t4.buyTime1
       ) a ) b
       where
-      b.goldUserAmount is not null or b.goldRightUserAmount is not null or b.buyUserAmount is not null
+      b.goldUserAmount !=0 or b.goldRightUserAmount  is not null or b.goldDeliveryUserAmount is not null or b.buyUserAmount is not null
 
   </select>
   <!--交易分析的总条数 tianliya-->

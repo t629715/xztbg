@@ -33,7 +33,12 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
         //df.setRoundingMode(RoundingMode.FLOOR);
         Map map = new HashMap();
         map.put("upOrDown",upOrDown);
-        map.put("orderState",orderState);
+        if (orderState != null){
+            map.put("orderState",orderState.toString());
+        }else {
+            map.put("orderState",orderState);
+        }
+
         map.put("profitLoss",profitLoss);
         if (startTime != null && startTime != ""){
             startTime = DateUtils.formatDateByMidLine(DateUtil.convertTimeMillisToDate(Long.valueOf(startTime)));
@@ -48,9 +53,10 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
         map.put("agentId",agentId);
         List<Map<String, Object>> list = new ArrayList();
         try{
+            list  = analysisOrderMapper.getAnalysis(map);
             /*System.out.println(orderState  + "112345");
             if(orderState == null){
-                list  = analysisOrderMapper.getAnalysis(map);
+
             }else if("3".equals(orderState)){
                 List<Map<String,Object>> tempList = new ArrayList<>();
                 for (Map<String,Object> map1:list){
@@ -107,66 +113,24 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
                    perCount = perCount+Integer.parseInt((m.get("goldUserAmount")==null?0:m.get("goldUserAmount")).toString());
 
                }
-                if (orderState == null){
-                    //               金权交易用户
-                    if (m.get("goldRightUserAmount")!= null){
-                        perCount = perCount+Integer.parseInt((m.get("goldRightUserAmount")==null?0:m.get("goldRightUserAmount")).toString());
-                    }
+               //               金权交易用户
+               if (m.get("goldRightUserAmount")!= null){
+                   perCount = perCount+Integer.parseInt((m.get("goldRightUserAmount")==null?0:m.get("goldRightUserAmount")).toString());
+               }
 //               金权交易金额
-                    if (m.get("goldRightAmount")!= null){
-                        perAmount = perAmount+Double.parseDouble((m.get("goldRightAmount")==null?0:m.get("goldRightAmount")).toString());
-                        m.put("goldRightAmount",df.format(Double.parseDouble((m.get("goldRightAmount")==null?0:m.get("goldRightAmount")).toString())));
-                    }
-                    //金权交割用户
-                    if (m.get("goldDeliveryUserAmount")!= null){
-                        perCount = perCount+Integer.parseInt((m.get("goldDeliveryUserAmount")==null?0:m.get("goldDeliveryUserAmount")).toString());
-                    }
-                    // 交割金额
-                    if (m.get("goldDeliveryAmount")!= null){
-                        perAmount = perAmount+Double.parseDouble((m.get("goldDeliveryAmount")==null?0:m.get("goldDeliveryAmount")).toString());
+               if (m.get("goldRightAmount")!= null){
+                   perAmount = perAmount+Double.parseDouble((m.get("goldRightAmount")==null?0:m.get("goldRightAmount")).toString());
+                   m.put("goldRightAmount",df.format(Double.parseDouble((m.get("goldRightAmount")==null?0:m.get("goldRightAmount")).toString())));
+               }
+               //金权交割用户
+               if (m.get("goldDeliveryUserAmount")!= null){
+                   perCount = perCount+Integer.parseInt((m.get("goldDeliveryUserAmount")==null?0:m.get("goldDeliveryUserAmount")).toString());
+               }
+               // 交割金额
+               if (m.get("goldDeliveryAmount")!= null){
+                   perAmount = perAmount+Double.parseDouble((m.get("goldDeliveryAmount")==null?0:m.get("goldDeliveryAmount")).toString());
 
-                    }
-                }else if ("3".equals(orderState)){
-
-                    if (m.get("goldRightUserAmount")!= null){
-                        perCount = perCount+0;
-                        m.put("goldRightUserAmount",0);
-                    }
-                    if (m.get("goldRightAmount")!= null){
-                        perAmount = perAmount+0;
-                        m.put("goldRightAmount",0);
-                    }
-                    //金权交割用户
-                    if (m.get("goldDeliveryUserAmount")!= null){
-                        perCount = perCount+Integer.parseInt((m.get("goldDeliveryUserAmount")==null?0:m.get("goldDeliveryUserAmount")).toString());
-                    }
-                    // 交割金额
-                    if (m.get("goldDeliveryAmount")!= null){
-                        perAmount = perAmount+Double.parseDouble((m.get("goldDeliveryAmount")==null?0:m.get("goldDeliveryAmount")).toString());
-
-                    }
-                }else {
-                    //               金权交易用户
-                    if (m.get("goldRightUserAmount")!= null){
-                        perCount = perCount+Integer.parseInt((m.get("goldRightUserAmount")==null?0:m.get("goldRightUserAmount")).toString());
-                    }
-//               金权交易金额
-                    if (m.get("goldRightAmount")!= null){
-                        perAmount = perAmount+Double.parseDouble((m.get("goldRightAmount")==null?0:m.get("goldRightAmount")).toString());
-                        m.put("goldRightAmount",df.format(Double.parseDouble((m.get("goldRightAmount")==null?0:m.get("goldRightAmount")).toString())));
-                    }
-                    //金权交割用户
-                    if (m.get("goldDeliveryUserAmount")!= null){
-                        perCount = perCount+0;
-                        m.put("goldDeliveryUserAmount",0);
-                    }
-                    // 交割金额
-                    if (m.get("goldDeliveryAmount")!= null){
-                        perAmount = perAmount+0;
-                        m.put("goldDeliveryAmount",0);
-
-                    }
-                }
+               }
 
 
 
@@ -208,7 +172,11 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
         map.put("startTime",startTime);
         map.put("endTime",endTime);
         map.put("upOrDown",upOrDown);
-        map.put("orderState",orderState);
+        if (orderState != null){
+            map.put("orderState",orderState.toString());
+        }else {
+            map.put("orderState",orderState);
+        }
         map.put("profitLoss",profitLoss);
         map.put("agentId",agentId);
         map.put("start",(pageNum-1)*pageSize);
@@ -284,7 +252,11 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
         //df.setRoundingMode(RoundingMode.FLOOR);
         Map map = new HashMap();
         map.put("upOrDown",upOrDown);
-        map.put("orderState",orderState);
+        if (orderState != null){
+            map.put("orderState",orderState.toString());
+        }else {
+            map.put("orderState",orderState);
+        }
         map.put("profitLoss",profitLoss);
         if (startTime != null && startTime != ""){
             startTime = DateUtils.formatDateByMidLine(DateUtil.convertTimeMillisToDate(Long.valueOf(startTime)));
@@ -365,7 +337,6 @@ public class OrderAnalysisServiceImpl implements OrderAnalysisService {
         }catch(Exception e){
             e.printStackTrace();
         }
-
         return list;
     }
 }

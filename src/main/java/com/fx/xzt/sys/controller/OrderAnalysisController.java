@@ -134,7 +134,6 @@ public class OrderAnalysisController {
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null){
                 if (startTime == "" && endTime == ""){
-
                     long current=System.currentTimeMillis();//当前时间毫秒数
                     long zero=current/(1000*3600*24)*(1000*3600*24)- TimeZone.getDefault().getRawOffset();
                     Long mills = new Timestamp(zero).getTime()+24*3600*1000;
@@ -145,7 +144,7 @@ public class OrderAnalysisController {
                     }else if (time == 2){
                         Date start = DateUtil.modify(new Timestamp(zero),0,0,-1,0,0,0);
                         startTime = start.getTime()+"";
-                        endTime = mills+"";
+                        endTime = new Timestamp(zero).getTime()+"";
 
                     }else if (time == 3){
                         Date start = DateUtil.modify(new Timestamp(zero),0,0,-7,0,0,0);
@@ -156,9 +155,7 @@ public class OrderAnalysisController {
                         Date start = DateUtil.modify(new Timestamp(zero),0,0,-30,0,0,0);
                         startTime = start.getTime()+"";
                         endTime = mills+"";
-
                     }
-
                 }
                 Map map = orderAnalysisService.orderAnalysisCount(startTime,
                         endTime,  upOrDown,
@@ -235,8 +232,8 @@ public class OrderAnalysisController {
                 POIUtils poi = new POIUtils();
                 String[] heads = {"时间", "交易用户","交易金额","金生金用户",  "金生金克重",  "金权交易用户", "金权交易金额","金权交割用户","金权交割金额",
                         "黄金用户","黄金买入克重","黄金买入金额","黄金卖出克重","黄金卖出金额"};
-                String[] colums = {"date", "perCount","perAmount","buyUserAmount", "gram",  "goldRightUserAmount","goldDeliveryUserAmount","goldDeliveryAmount",
-                        "goldRightAmount","goldUserAmount","buyGoldAmount","buyRmbAmount","saleGoldAmount","saleRmbAmount"};
+                String[] colums = {"date", "perCount","perAmount","buyUserAmount", "gram",  "goldRightUserAmount","goldRightAmount","goldDeliveryUserAmount","goldDeliveryAmount"
+                        ,"goldUserAmount","buyGoldAmount","buyRmbAmount","saleGoldAmount","saleRmbAmount"};
                 poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                 log.setUserId(users.getId());
                 log.setContent("导出成功");
