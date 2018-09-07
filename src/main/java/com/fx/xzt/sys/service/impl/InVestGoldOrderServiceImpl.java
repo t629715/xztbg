@@ -9,6 +9,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.fx.xzt.sys.util.DateUtil;
+import com.fx.xzt.sys.util.DateUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,6 +59,7 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
         PageHelper.startPage(pageNum,pageSize);
         List<Map<String, Object>> list = mapper.selectByAll(map);
         handle(list);
+
         PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
         return pagehelper;
 	}
@@ -101,7 +104,7 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
         return list;
 	}
 	/**
-	 * 导出
+	 * 交割导出
 	 * @throws ParseException
 	 */
 	public List<Map<String, Object>> excelByAllDelivery(String userName, String startTime, String endTime, String agentName,
@@ -140,6 +143,18 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 				Object statusObj = map.get("status");
 				if (statusObj != null && statusObj != "") {
 					map.put("status", ConstantUtil.inVestGoldOrderStatus.toMap().get(statusObj.toString()));
+					Object actualPaymentObj = map.get("actualPayment");
+					if (actualPaymentObj != null && actualPaymentObj != "") {
+
+						if (statusObj.equals(100)) {
+
+						  Integer actualPayment=0;
+							map.put("actualPayment", actualPayment);
+						} else {
+							Double actualPayment = Double.valueOf(actualPaymentObj.toString());
+							map.put("actualPayment", actualPayment/100);
+						}
+					}
 				}
 				Object goldBasePriceObj = map.get("goldBasePrice");
 				if (goldBasePriceObj != null && goldBasePriceObj != "") {
@@ -165,11 +180,6 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 				if (discountAmountObj != null && discountAmountObj != "") {
 					Double discountAmount = Double.valueOf(discountAmountObj.toString());
 					map.put("discountAmount",discountAmount/100);
-				}
-				Object actualPaymentObj = map.get("actualPayment");
-				if (actualPaymentObj != null && actualPaymentObj != "") {
-					Double actualPayment = Double.valueOf(actualPaymentObj.toString());
-					map.put("actualPayment",actualPayment/100);
 				}
 				Object goldMoneyObj = map.get("goldMoney");
 				if (goldMoneyObj != null && goldMoneyObj != "") {
@@ -232,6 +242,7 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 				Double serviceMoneySum = Double.valueOf(serviceMoneySumObj.toString());
 				map1.put("serviceMoneySum", serviceMoneySum/100);
 			}
+
         }
         return map1;
 	}
@@ -262,10 +273,10 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 				Double logisticsFeeSum = Double.valueOf(logisticsFeeObj.toString());
 				map1.put("logisticsFeeSum", logisticsFeeSum/100);
 			}
-			Object totalMoneySumObj = map1.get("totalMoneySum");
-			if (totalMoneySumObj != null && totalMoneySumObj != "") {
-				Double totalMoneySum = Double.valueOf(totalMoneySumObj.toString());
-				map1.put("totalMoneySum", totalMoneySum/100);
+			Object goldMoneySumObj = map1.get("goldMoneySum");
+			if (goldMoneySumObj != null && goldMoneySumObj != "") {
+				Double goldMoneySum = Double.valueOf(goldMoneySumObj.toString());
+				map1.put("goldMoneySum", goldMoneySum/100);
 			}
 			Object processingServiceSumObj = map1.get("processingServiceSum");
 			if (processingServiceSumObj != null && processingServiceSumObj != "") {
@@ -322,6 +333,7 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 		if (StringUtil.isNotEmpty(logisticsNo) && id != null) {
 			order.setId(id);
 			order.setLogisticsNo(logisticsNo);
+			order.setUpdateTimeStr(DateUtils.formatDateByMidLine(new Date()));
 			flag = mapper.updateById(order);
 			if (flag > 0) {
 				InvestGoldOrderItem item = new InvestGoldOrderItem();
@@ -349,6 +361,7 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 		if (StringUtil.isNotEmpty(status) && id != null) {
 			order.setId(id);
 			order.setStatus(Short.valueOf(status));
+			order.setUpdateTimeStr(DateUtils.formatDateByMidLine(new Date()));
 			flag = mapper.updateById(order);
 			if (flag > 0) {
 				InvestGoldOrderItem item = new InvestGoldOrderItem();
@@ -363,7 +376,33 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 		}
 		return flag;
 	}
-	
+/*	*//**
+	 * 交割修改订单状态
+	 * @throws ParseException
+	 *//*
+	@Transactional
+	public int updateStatusByIdDelivery(String status, Long id, Long operatorId, String operatorName) throws ParseException {
+		int flag = 0;
+		InVestGoldOrder order = new InVestGoldOrder();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		if (StringUtil.isNotEmpty(status) && id != null) {
+			order.setId(id);
+			order.setStatus(Short.valueOf(status));
+			order.setUpdateTime(sdf.parse(sdf.format(new Date())));
+			flag = mapper.updateById(order);
+			if (flag > 0) {
+				InvestGoldOrderItem item = new InvestGoldOrderItem();
+				item.setId(IdUtil.generateyymmddhhMMssSSSAnd4Random());
+				item.setOrderStatus(Short.valueOf(status));
+				item.setOrderId(id);
+				item.setOperatorId(operatorId);
+				item.setOperatorName(operatorName);
+				item.setCreateTime(sdf.parse(sdf.format(new Date())));
+				itemMapper.add(item);
+			}
+		}
+		return flag;
+	}*/
 
 
 }

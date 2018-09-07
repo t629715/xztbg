@@ -55,6 +55,7 @@ public class OrderAnalysisController {
                                             String endTime,  String agentName,Integer upOrDown,
                                         Integer orderState, Integer profitLoss,Long agentId,
                                             Integer pageNum, Integer pageSize) throws ParseException {
+        System.out.println("=========================================================================upOrDown="+upOrDown+" orderState="+orderState+" profitLoss="+profitLoss+" endTime="+endTime+" startTime="+startTime);
         CommonResponse response = new CommonResponse();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //操作日志
@@ -232,9 +233,9 @@ public class OrderAnalysisController {
                         agentName,upOrDown,orderState,profitLoss,agentId
                 );
                 POIUtils poi = new POIUtils();
-                String[] heads = {"时间", "交易用户","交易金额","金生金用户",  "金生金克重",  "金权交易用户", "金权交易金额",
+                String[] heads = {"时间", "交易用户","交易金额","金生金用户",  "金生金克重",  "金权交易用户", "金权交易金额","金权交割用户","金权交割金额",
                         "黄金用户","黄金买入克重","黄金买入金额","黄金卖出克重","黄金卖出金额"};
-                String[] colums = {"date", "perCount","perAmount","buyUserAmount", "gram",  "goldRightUserAmount",
+                String[] colums = {"date", "perCount","perAmount","buyUserAmount", "gram",  "goldRightUserAmount","goldDeliveryUserAmount","goldDeliveryAmount",
                         "goldRightAmount","goldUserAmount","buyGoldAmount","buyRmbAmount","saleGoldAmount","saleRmbAmount"};
                 poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                 log.setUserId(users.getId());

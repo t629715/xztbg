@@ -5,8 +5,8 @@
   <select id="getAnalysis" resultType="java.util.Map" parameterType="java.util.Map">
 
 
-      select * from (
-      select a.date,a.buyGoldUserAmount+a.saleGoldUserAmount goldUserAmount,
+      select b.* from (
+      select a.date,ifnull(a.buyGoldUserAmount,0)+ifnull(a.saleGoldUserAmount,0) goldUserAmount,
       TRUNCATE(a.buyGoldAmount,3) buyGoldAmount, TRUNCATE(a.buyRmbAmount/100,2) buyRmbAmount,
       TRUNCATE(a.saleGoldAmount,3) saleGoldAmount,TRUNCATE(a.saleRmbAmount/100,2) saleRmbAmount,
       a.goldRightUserAmount,TRUNCATE(a.goldRightAmount/100,2) goldRightAmount,
@@ -80,7 +80,7 @@
           <if test="upOrDown != null and upOrDown != ''">
               AND dor.up_or_down = #{upOrDown,jdbcType=INTEGER}
           </if>
-          <if test="orderState != null and upOrDown != ''">
+          <if test="orderState != null and orderState != ''.toString()">
               AND dor.order_state = #{orderState,jdbcType=INTEGER}
           </if>
 
@@ -91,7 +91,22 @@
       (SELECT DATE_FORMAT(dor.create_time,'%y-%m-%d') AS goldDeliveryTime, COUNT(distinct dor.user_id) AS goldDeliveryUserAmount, SUM(dor.ensure_amount) AS goldDeliveryAmount
       FROM deal_order dor
       <where>
-          dor.order_state = 3
+          dor.order_state=3
+          <!--<choose>
+              <when test="orderState != null and orderState != ''.toString() ">
+                  <choose>
+                      <when test="orderState=3">
+                          orderState=3
+                      </when>
+                      <otherwise>
+                          1!=1
+                      </otherwise>
+                  </choose>
+              </when>
+              <otherwise>
+                  dor.order_state=3
+              </otherwise>
+          </choose>-->
           <if test="startTime != null and startTime != ''">
               AND dor.create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
           </if>
@@ -110,9 +125,10 @@
           <if test="upOrDown != null and upOrDown != ''">
               AND dor.up_or_down = #{upOrDown,jdbcType=INTEGER}
           </if>
-          <if test="orderState != null and orderState != ''">
+          <if test="orderState != null and orderState != ''.toString()">
               AND dor.order_state = #{orderState,jdbcType=INTEGER}
           </if>
+
 
       </where>
       GROUP BY DATE_FORMAT(dor.create_time,'%m-%d-%Y')) t5
@@ -139,7 +155,7 @@
       on t.date = t4.buyTime1
       ) a ) b
       where
-      b.goldUserAmount is not null or b.goldRightUserAmount is not null or b.buyUserAmount is not null
+      b.goldUserAmount !=0 or b.goldRightUserAmount  is not null or b.goldDeliveryUserAmount is not null or b.buyUserAmount is not null
       order by b.date desc
     limit #{start}, #{size}
   </select>
@@ -224,7 +240,7 @@
           <if test="upOrDown != null and upOrDown != ''">
               AND dor.up_or_down = #{upOrDown,jdbcType=INTEGER}
           </if>
-          <if test="orderState != null and upOrDown != ''">
+          <if test="orderState != null and orderState != ''.toString()">
               AND dor.order_state = #{orderState,jdbcType=INTEGER}
           </if>
 
@@ -254,7 +270,7 @@
           <if test="upOrDown != null and upOrDown != ''">
               AND dor.up_or_down = #{upOrDown,jdbcType=INTEGER}
           </if>
-          <if test="orderState != null and orderState != ''">
+          <if test="orderState != null and orderState != ''.toString()">
               AND dor.order_state = #{orderState,jdbcType=INTEGER}
           </if>
 
@@ -283,7 +299,7 @@
       on t.date = t4.buyTime1
       ) a ) b
       where
-      b.goldUserAmount is not null or b.goldRightUserAmount is not null or b.buyUserAmount is not null
+      b.goldUserAmount is not null or b.goldRightUserAmount is not null or b.goldDeliveryUserAmount is not null or b.buyUserAmount is not null
       order by b.date desc
   </select>
   <!--交易分析-tianliya-end-->
@@ -356,7 +372,7 @@
       <if test="upOrDown != null">
         AND dor.up_or_down = #{upOrDown,jdbcType=INTEGER}
       </if>
-      <if test="orderState != null and upOrDown != ''">
+      <if test="orderState != null and orderState != ''.toString()">
         AND dor.order_state = #{orderState,jdbcType=INTEGER}
       </if>
       <if test="startTime != null and startTime != ''">
@@ -385,7 +401,7 @@
           <if test="upOrDown != null">
               AND dor.up_or_down = #{upOrDown,jdbcType=INTEGER}
           </if>
-          <if test="orderState != null and orderState != ''">
+          <if test="orderState != null and orderState != ''.toString()">
               AND dor.order_state = #{orderState,jdbcType=INTEGER}
           </if>
           <if test="startTime != null and startTime != ''">
@@ -497,7 +513,7 @@
           <if test="upOrDown != null and upOrDown != ''">
               AND dor.up_or_down = #{upOrDown,jdbcType=INTEGER}
           </if>
-          <if test="orderState != null and orderState != ''">
+          <if test="orderState != null and orderState != ''.toString()">
               AND dor.order_state = #{orderState,jdbcType=INTEGER}
           </if>
 
@@ -527,7 +543,7 @@
           <if test="upOrDown != null and upOrDown != ''">
               AND dor.up_or_down = #{upOrDown,jdbcType=INTEGER}
           </if>
-          <if test="orderState != null and orderState != ''">
+          <if test="orderState != null and orderState != ''.toString()">
               AND dor.order_state = #{orderState,jdbcType=INTEGER}
           </if>
 

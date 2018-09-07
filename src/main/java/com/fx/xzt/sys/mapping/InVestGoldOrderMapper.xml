@@ -74,9 +74,9 @@
 		o.gold_total_weight goldTotalWeight, o.pay_type payType, o.gold_base_price goldBasePrice, o.processing_service processingService,
 		(select invoice_service from invest_gold_order where id= o.id and invoice = 1) invoiceService,
 		o.total_money totalMoney,
-		(select (gold_money*0.05+gold_total_weight*5) from invest_gold_order where id= o.id  and pay_type=3 ) discountAmount,
+		(select (gold_money*0.05+gold_total_weight*5) from invest_gold_order where id = o.id  and pay_type = 3 ) discountAmount,
 		DATE_FORMAT((select update_time from invest_gold_order  where id= o.id and status BETWEEN 30 and 50),'%Y-%m-%d %H:%i:%s') endTime,
-		(select service_money from invest_gold_order where id= o.id and pay_type BETWEEN 3 and 5) actualPayment,
+		(select service_money from invest_gold_order where id = o.id and pay_type BETWEEN 3 and 5 ) actualPayment,
 		o.gold_money goldMoney, o.service_money serviceMoney, o.img_url imgUrl,
 		o.status, o.create_time createTime, o.send_time sendTime, o.update_time updateTime, DATE_FORMAT(o.pay_time,'%Y-%m-%d %H:%i:%s') payTime,
 		o.agent_id AS agentId, ua.user_name AS agentName, o.broker_id AS brokerId, ub.user_name AS brokerName,
@@ -155,7 +155,7 @@
 	<select id="countByAllDelivery" resultType="java.util.Map" parameterType="java.util.Map">
 		select
 		sum(o.logistics_fee) logisticsFeeSum, sum(o.service_money) serviceMoneySum,sum(o.invest_gold_service) investGoldServiceSum,
-		sum(o.total_money) totalMoneySum,sum(o.processing_service) processingServiceSum,
+		sum(o.gold_money) goldMoneySum,sum(o.processing_service) processingServiceSum,
 		(select sum(invoice_service) from invest_gold_order
 		where user_id = o.user_id	AND invoice = 1
 		) invoiceServiceSum,
@@ -203,12 +203,12 @@
 	        <if test="logisticsNo != null and logisticsNo !=''">
 	        	logistics_no = #{logisticsNo,jdbcType=VARCHAR},
 	        </if>
-	        <if test="updateTime != null and updateTime !=''">
-	        	update_time = #{updateTime,jdbcType=TIMESTAMP},
+	        <if test="updateTimeStr != null and updateTimeStr !=''">
+	        	update_time =#{updateTimeStr,jdbcType=TIMESTAMP},
 	        </if>
     	</set>
     	where id = #{id,jdbcType=BIGINT}
   </update>
 	<!-- 金条投资订单修改结束-htt -->
-    
+
 </mapper>

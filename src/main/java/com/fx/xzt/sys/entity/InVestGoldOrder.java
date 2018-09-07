@@ -42,6 +42,7 @@ public class InVestGoldOrder implements Serializable {
 	private Long brokerId;             //经纪人id
 	private Long agentId;              //代理商id
 	private Long userId;               //用户id
+	private String updateTimeStr;
 	/**
 	 * 金权交易交割订单id(pay_type为3时才有值)
 	 */
@@ -313,5 +314,13 @@ public class InVestGoldOrder implements Serializable {
 
 	public void setCustodyService(Integer custodyService) {
 		this.custodyService = custodyService;
+	}
+
+	public String getUpdateTimeStr() {
+		return updateTimeStr;
+	}
+
+	public void setUpdateTimeStr(String updateTimeStr) {
+		this.updateTimeStr = updateTimeStr;
 	}
 }
