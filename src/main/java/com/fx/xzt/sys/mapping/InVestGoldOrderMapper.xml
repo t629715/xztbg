@@ -88,7 +88,7 @@
 		LEFT JOIN users ub ON o.broker_id = ub.id
 
 		<where>
-			 o.status in (10,20,30,100) and  o.pay_type between 3 and 5
+			 o.status in (0,10,20,30,100) and  o.pay_type between 3 and 5
 			<if test="userName != null and userName != '' ">
 				and u.UserName = #{userName,jdbcType=VARCHAR}
 			</if>
@@ -165,7 +165,7 @@
 		LEFT JOIN users ua ON o.agent_id = ua.id
 		LEFT JOIN users ub ON o.broker_id = ub.id
 		<where>
-			o.status in (10,20,30,100) and o.pay_type between 3 and 5
+			o.status in (0,10,20,30,100) and o.pay_type between 3 and 5
 			<if test="userName != null and userName != '' ">
 				and u.UserName = #{userName,jdbcType=VARCHAR}
 			</if>
