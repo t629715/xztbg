@@ -21,7 +21,7 @@
 		 o.gold_money goldMoney, o.service_money serviceMoney, o.img_url imgUrl,
 		o.status, o.create_time createTime, o.send_time sendTime, o.update_time updateTime, DATE_FORMAT(o.pay_time,'%Y-%m-%d %H:%i:%s') payTime,
 		o.agent_id AS agentId, ua.user_name AS agentName, o.broker_id AS brokerId, ub.user_name AS brokerName,
-		a.contact_name contactName, a.contact_phone contactPhone, a.delivery_address deliveryAddress
+		o.deliver_name contactName, o.deliver_phone contactPhone, o.user_address deliveryAddress
 		from invest_gold_order o
 		LEFT JOIN User_Login u ON o.user_id = u.UserID
 		LEFT JOIN user_address a on o.user_address_id = a.id
