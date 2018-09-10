@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="false" debug="true">
+
+	<property name="LOG_HOME" value="/data/xztbg/log"/>
+	
+	<!--  <property name="DEBUG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS}@%ip@%-5level@%instance@%C@%M@%t@%L@%title@%msg%n"/>
+	<property name="AUDIT_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS}@%ip@%-5level@%instance@%replace(%msg){'::','@'}%n"/>-->
+	
+	<!-- <property name="DEBUG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+	<property name="AUDIT_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - @%replace(%msg){'::','@'}%n"/> -->
+	
+	<property name="DEBUG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS}@%-5level@%C@%M@%t@%L@%msg%n"/>
+	<property name="AUDIT_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS}@%-5level@%replace(%msg){'::','@'}%n"/>
+	
+
+	<!--<conversionRule conversionWord="ip" converterClass="com.fx.jyg.util.log.converter.IPConverter" />
+	<conversionRule conversionWord="title" converterClass="com.fx.jyg.util.log.converter.TitleConverter" />
+	<conversionRule conversionWord="instance" converterClass="com.fx.jyg.util.log.converter.InstanceConverter" />-->
+	
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>
+				<pattern>${DEBUG_PATTERN}</pattern>
+			</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="DEBUG_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${LOG_HOME}/debug.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+   		    <fileNamePattern>${LOG_HOME}/debug_%d{yyyy-MM-dd}.log</fileNamePattern>
+ 			<maxHistory>7</maxHistory>	
+		</rollingPolicy>
+		<encoder>
+			<pattern>${DEBUG_PATTERN}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="AUDIT_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${LOG_HOME}/audit.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+   		    <fileNamePattern>${LOG_HOME}/audit_%d{yyyy-MM-dd}.log</fileNamePattern>
+ 			<maxHistory>30</maxHistory>	
+		</rollingPolicy>
+		<encoder>
+			<pattern>${AUDIT_PATTERN}</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="ASYNC_DEBUG_LOG" class="ch.qos.logback.classic.AsyncAppender">
+		<discardingThreshold>0</discardingThreshold>
+		<queueSize>512</queueSize>
+		<appender-ref ref="DEBUG_LOG" />
+	</appender>
+	
+	<appender name="AUDIT_DEBUG_LOG" class="ch.qos.logback.classic.AsyncAppender">
+		<discardingThreshold>0</discardingThreshold>
+		<queueSize>512</queueSize>
+		<appender-ref ref="AUDIT_LOG" />
+	</appender>
+
+	<logger name="com.fx.xzt.sys.util.log.AuditLog" level="INFO" additivity="false">
+		<appender-ref ref="AUDIT_LOG" />
+	</logger>
+	
+	<root level="DEBUG">
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="DEBUG_LOG" />
+	</root>
+
+</configuration>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="rabbitPropertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="order" value="2"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="locations">
+            <list>
+                <value>classpath:rabbitmq.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="messageConverter" class="org.springframework.amqp.support.converter.Jackson2JsonMessageConverter" />
+    <!--<bean id="messageConverter" class="org.springframework.amqp.support.converter.SimpleMessageConverter"/>-->
+    <!-- 连接配置 -->
+    <rabbit:connection-factory id="rabbitmqConnectionFactory" addresses="${rabbitmq.address}"
+                               username="${rabbitmq.username}" password="${rabbitmq.password}"
+                               virtual-host="${rabbitmq.vhost}" channel-cache-size="${rabbitmq.channel.cache.size}"/>
+
+    <!--通过指定下面的admin信息，当前producer中的exchange和queue会在rabbitmq服务器上自动生成-->
+    <rabbit:admin id="rabbitAdmin" connection-factory="rabbitmqConnectionFactory"/>
+
+    <rabbit:topic-exchange id="topicExchange" name="${rabbitmq.gold.topic.exchange.name}" durable="false" auto-delete="false">
+
+    </rabbit:topic-exchange>
+
+
+    <bean id="rabbitTemplate" class="org.springframework.amqp.rabbit.core.RabbitTemplate">
+        <property name="connectionFactory" ref="rabbitmqConnectionFactory"/>
+        <property name="messageConverter" ref="messageConverter" />
+    </bean>
+
+</beans>

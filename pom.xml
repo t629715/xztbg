@@ -331,6 +331,13 @@
         </properties>
     </profile>
 	  <profile>
+		  <!-- 生产环境 -->
+		  <id>nearpeo</id>
+		  <properties>
+			  <profiles.active>nearpeo</profiles.active>
+		  </properties>
+	  </profile>
+	  <profile>
         <!-- 生产环境 -->
         <id>test</id>
         <properties>
@@ -349,6 +356,7 @@
                     <exclude>pro/*</exclude>
                     <exclude>dev/*</exclude>
                     <exclude>test/*</exclude>
+                    <exclude>nearpro/*</exclude>
                 </excludes>
             </resource>
             <resource>
