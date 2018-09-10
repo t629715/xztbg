@@ -330,6 +330,13 @@
             <profiles.active>pro</profiles.active>
         </properties>
     </profile>
+	  <profile>
+        <!-- 生产环境 -->
+        <id>test</id>
+        <properties>
+            <profiles.active>test</profiles.active>
+        </properties>
+    </profile>
 </profiles>
 
 <build>
@@ -341,6 +348,7 @@
                 <excludes>
                     <exclude>pro/*</exclude>
                     <exclude>dev/*</exclude>
+                    <exclude>test/*</exclude>
                 </excludes>
             </resource>
             <resource>
