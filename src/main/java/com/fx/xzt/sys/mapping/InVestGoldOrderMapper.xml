@@ -157,7 +157,26 @@
 		sum(o.logistics_fee) logisticsFeeSum, sum(o.service_money) serviceMoneySum,sum(o.invest_gold_service) investGoldServiceSum,
 		sum(o.gold_money) goldMoneySum,sum(o.processing_service) processingServiceSum,
 		(select sum(invoice_service) from invest_gold_order
-		where user_id = o.user_id	AND invoice = 1
+		<where>
+			invoice = 1
+			<if test="userName != null and userName != '' or status != null or payType != null">
+				and user_id = o.user_id
+			</if>
+			<if test="startTime !=null and startTime !='' ">
+				and o.create_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime !=null and endTime != '' ">
+				and o.create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+			</if>
+
+			<if test="agentName != null and agentName !='' ">
+				and user_id = o.user_id
+			</if>
+			<if test="brokerName != null and brokerName !='' ">
+				and user_id = o.user_id
+			</if>
+		</where>
+
 		) invoiceServiceSum,
 		sum( gold_total_weight)  goldNumSum
 		from invest_gold_order o
