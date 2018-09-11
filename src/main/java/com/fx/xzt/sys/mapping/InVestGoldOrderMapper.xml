@@ -78,7 +78,9 @@
 		DATE_FORMAT((select update_time from invest_gold_order  where id= o.id and status BETWEEN 30 and 50),'%Y-%m-%d %H:%i:%s') endTime,
 		(select service_money from invest_gold_order where id = o.id and pay_type BETWEEN 3 and 5 ) actualPayment,
 		o.gold_money goldMoney, o.service_money serviceMoney, o.img_url imgUrl,
-		o.status, o.create_time createTime, o.send_time sendTime, o.update_time updateTime, DATE_FORMAT(o.pay_time,'%Y-%m-%d %H:%i:%s') payTime,
+		o.status, o.create_time createTime, o.send_time sendTime, o.update_time updateTime,
+		DATE_FORMAT((select pay_time from invest_gold_order  where id= o.id and status in(0,10,20,30)),'%Y-%m-%d %H:%i:%s') payTime,
+		DATE_FORMAT((select pay_time from invest_gold_order  where id= o.id and status = 100),'%Y-%m-%d %H:%i:%s') invalidTime,
 		o.agent_id AS agentId, ua.user_name AS agentName, o.broker_id AS brokerId, ub.user_name AS brokerName,
 		o.deliver_name contactName, o.deliver_phone contactPhone, o.user_address deliveryAddress
 		from invest_gold_order o
@@ -159,16 +161,21 @@
 		(select sum(invoice_service) from invest_gold_order
 		<where>
 			invoice = 1
-			<if test="userName != null and userName != '' or status != null or payType != null">
+			<if test="userName != null and userName != ''">
 				and user_id = o.user_id
 			</if>
 			<if test="startTime !=null and startTime !='' ">
-				and o.create_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+				and create_time &gt;=#{startTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="endTime !=null and endTime != '' ">
-				and o.create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+				and create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
 			</if>
-
+			<if test="status != null">
+				and status = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="payType != null">
+				and pay_type = #{payType,jdbcType=INTEGER}
+			</if>
 			<if test="agentName != null and agentName !='' ">
 				and user_id = o.user_id
 			</if>
