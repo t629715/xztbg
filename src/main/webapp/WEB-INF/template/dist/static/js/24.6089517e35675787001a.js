@@ -201,6 +201,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data() {
@@ -273,24 +289,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         handleEdit(index, row) {
             this.newformEdit = {
                 contract: row.contract,
-                buyPercent: row.buyPercent,
+                buyPercent: (row.buyPercent * 100).toFixed(0),
 
                 pointCount: row.pointCount,
-                poundage: row.poundage,
+                poundage: (row.poundage * 100).toFixed(0),
                 pointCountUp: row.pointCountUp,
                 pointCountDown: row.pointCountDown,
                 deliveryMin: row.deliveryMin,
                 deliveryMax: row.deliveryMax,
-                minProfitPercent: row.minProfitPercent * 100,
+                minProfitPercent: (row.minProfitPercent * 100).toFixed(0),
 
                 maxBuyCountPerDay: row.maxBuyCountPerDay,
                 maxPositionCount: row.maxPositionCount,
                 minGramPerOrder: row.minGramPerOrder,
                 name: row.name,
-                stopProfitSet: row.stopProfitSet * 100,
+                stopProfitSet: (row.stopProfitSet * 100).toFixed(0),
                 volatility: row.volatility,
-                stopLossSet: row.stopLossSet * 100,
-                minLossPercent: row.minLossPercent * 100,
+                stopLossSet: (row.stopLossSet * 100).toFixed(0),
+                minLossPercent: (row.minLossPercent * 100).toFixed(0),
 
                 volatilityProfitLoss: row.volatilityProfitLoss
             };
@@ -303,23 +319,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var params = new URLSearchParams();
             params.append("name", this.newformEdit.name);
             params.append("contract", this.newformEdit.contract);
-            params.append("buyPercent", this.newformEdit.buyPercent);
-            params.append("poundage", this.newformEdit.poundage);
+            params.append("buyPercent", (this.newformEdit.buyPercent / 100).toFixed(2));
+            params.append("poundage", (this.newformEdit.poundage / 100).toFixed(2));
             params.append("pointCount", this.newformEdit.pointCount);
 
             params.append("pointCountUp", this.newformEdit.pointCountUp);
             params.append("pointCountDown", this.newformEdit.pointCountDown);
             params.append("deliveryMin", this.newformEdit.deliveryMin);
             params.append("deliveryMax", this.newformEdit.deliveryMax);
-            params.append("minProfitPercent", this.newformEdit.minProfitPercent / 100);
 
             params.append("maxBuyCountPerDay", this.newformEdit.maxBuyCountPerDay);
             params.append("maxPositionCount", this.newformEdit.maxPositionCount);
             params.append("minGramPerOrder", this.newformEdit.minGramPerOrder);
-            params.append("stopProfitSet", this.newformEdit.stopProfitSet / 100);
+
             params.append("volatility", this.newformEdit.volatility);
-            params.append("stopLossSet", this.newformEdit.stopLossSet / 100);
-            params.append("minLossPercent", this.newformEdit.minLossPercent / 100);
+            params.append("stopLossSet", (this.newformEdit.stopLossSet / 100).toFixed(2));
+            params.append("stopProfitSet", (this.newformEdit.stopLossSet / 100).toFixed(2));
+            params.append("minLossPercent", (this.newformEdit.minLossPercent / 100).toFixed(2));
+            params.append("minProfitPercent", (this.newformEdit.minLossPercent / 100).toFixed(2));
 
             params.append("volatilityProfitLoss", this.newformEdit.volatilityProfitLoss);
             params.append("id", this.id);
@@ -418,19 +435,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
 
         convertstopLossSet(value) {
-            return value.stopLossSet * 100 + "%";
+            return (value.stopLossSet * 100).toFixed(0) + "%";
+        },
+        convertBuyPercent(value) {
+            return (value.buyPercent * 100).toFixed(0) + "%";
+        },
+        convertPoundage(value) {
+            return (value.poundage * 100).toFixed(0) + "%";
         },
         convertminLossPercent(value) {
-            return value.minLossPercent * 100 + "%";
+            return (value.minLossPercent * 100).toFixed(0) + "%";
         },
         convertstopProfitSet(value) {
-            return value.stopProfitSet * 100 + "%";
+            return (value.stopProfitSet * 100).toFixed(0) + "%";
         },
         convertvolatilityProfitLoss(value) {
-            return value.volatilityProfitLoss * 100 + "%";
+            return (value.volatilityProfitLoss * 100).toFixed(0) + "%";
         },
         minProfitPercent(value) {
-            return value.minProfitPercent * 100 + "%";
+            return (value.minProfitPercent * 100).toFixed(0) + "%";
         },
 
         trading() {
@@ -459,10 +482,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         convertblowingUpSet(value) {
-            return value.blowingUpSet * 100 + "%";
+            return (value.blowingUpSet * 100).toFixed(0) + "%";
         },
         convertstopProfitSet(value) {
-            return value.stopProfitSet * 100 + "%";
+            return (value.stopProfitSet * 100).toFixed(0) + "%";
         }
     }
 });
@@ -521,12 +544,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "label": "买入金额",
       "prop": "buyPercent",
+      "formatter": _vm.convertBuyPercent,
       "width": "100"
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
       "label": "手续费",
       "prop": "poundage",
+      "formatter": _vm.convertPoundage,
       "width": "100"
     }
   }), _vm._v(" "), _c('el-table-column', {
@@ -751,6 +776,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "label": "手续费",
       "label-width": _vm.formLabelWidth
     }
+  }, [_c('el-col', {
+    attrs: {
+      "span": 16
+    }
   }, [_c('el-input', {
     attrs: {
       "size": "small",
@@ -763,7 +792,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       expression: "newformEdit.poundage"
     }
-  })], 1), _vm._v(" "), _c('el-form-item', {
+  })], 1), _vm._v("\n                        %\n                ")], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
       "label": "点差",
       "label-width": _vm.formLabelWidth
@@ -785,6 +814,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "label": "买入金额",
       "label-width": _vm.formLabelWidth
     }
+  }, [_c('el-col', {
+    attrs: {
+      "span": 16
+    }
   }, [_c('el-input', {
     attrs: {
       "size": "small",
@@ -797,7 +830,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       expression: "newformEdit.buyPercent"
     }
-  })], 1), _vm._v(" "), _c('el-form-item', {
+  })], 1), _vm._v("\n                        %\n                ")], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
       "label": "买涨点差",
       "label-width": _vm.formLabelWidth
@@ -918,7 +951,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
-      "label": "最大止损设置",
+      "label": "最大止损/止盈设置",
       "label-width": _vm.formLabelWidth
     }
   }, [_c('el-col', {
@@ -939,49 +972,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })], 1), _vm._v("\n                        %\n                ")], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
-      "label": "最大止盈设置",
-      "label-width": _vm.formLabelWidth
-    }
-  }, [_c('el-col', {
-    attrs: {
-      "span": 16
-    }
-  }, [_c('el-input', {
-    attrs: {
-      "size": "small",
-      "auto-complete": "off"
-    },
-    model: {
-      value: (_vm.newformEdit.stopProfitSet),
-      callback: function($$v) {
-        _vm.$set(_vm.newformEdit, "stopProfitSet", $$v)
-      },
-      expression: "newformEdit.stopProfitSet"
-    }
-  })], 1), _vm._v("\n                        %\n                ")], 1), _vm._v(" "), _c('el-form-item', {
-    attrs: {
-      "label": "最小止盈设置",
-      "label-width": _vm.formLabelWidth
-    }
-  }, [_c('el-col', {
-    attrs: {
-      "span": 16
-    }
-  }, [_c('el-input', {
-    attrs: {
-      "size": "small",
-      "auto-complete": "off"
-    },
-    model: {
-      value: (_vm.newformEdit.minProfitPercent),
-      callback: function($$v) {
-        _vm.$set(_vm.newformEdit, "minProfitPercent", $$v)
-      },
-      expression: "newformEdit.minProfitPercent"
-    }
-  })], 1), _vm._v("\n                        %\n                ")], 1), _vm._v(" "), _c('el-form-item', {
-    attrs: {
-      "label": "最小止损设置",
+      "label": "最小止损/止盈设置",
       "label-width": _vm.formLabelWidth
     }
   }, [_c('el-col', {

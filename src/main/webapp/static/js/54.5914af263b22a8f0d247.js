@@ -336,7 +336,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     //查询
     chooseTime(value) {
       let _this = this;
-      if (value === "" || value === 0) {
+      if (value === "") {
         _this.disabledEdit = true;
       } else {
         _this.disabledEdit = false;
@@ -1026,8 +1026,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
-      "prop": "invalidTime",
-      "label": "作废时间",
+      "prop": "createTime",
+      "label": "创建时间",
       "width": "180"
     }
   }), _vm._v(" "), _c('el-table-column', {
@@ -1039,7 +1039,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
       "prop": "endTime",
-      "label": "完成时间",
+      "label": "完成时间/作废时间",
       "width": "180"
     }
   }), _vm._v(" "), _c('el-table-column', {
