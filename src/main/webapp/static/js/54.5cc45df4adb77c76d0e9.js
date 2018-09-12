@@ -210,6 +210,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   //model 初始数据
@@ -294,6 +296,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       pageNum: 1,
       totalNum: 0,
       tableData: [],
+      disabledEdit: true,
       dialogFormVisible: false,
       dialogFormVisibleAdd: false,
       dialogFormVisibleEdit: false,
@@ -331,6 +334,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   //定义方法
   methods: {
     //查询
+    chooseTime(value) {
+      let _this = this;
+      if (value === "" || value === 0) {
+        _this.disabledEdit = true;
+      } else {
+        _this.disabledEdit = false;
+      }
+    },
     onSubmit(sform) {
 
       var params = new URLSearchParams();
@@ -384,6 +395,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         console.log(error);
       });
     },
+
     //刷新表格方法
     loadData(pageSize, pageNum) {
       var params = new URLSearchParams();
@@ -667,31 +679,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
-      "label": "订单状态：",
-      "prop": "status"
-    }
-  }, [_c('el-select', {
-    attrs: {
-      "size": "small",
-      "placeholder": "请选择"
-    },
-    model: {
-      value: (_vm.sform.status),
-      callback: function($$v) {
-        _vm.$set(_vm.sform, "status", $$v)
-      },
-      expression: "sform.status"
-    }
-  }, _vm._l((_vm.stateOptions), function(item) {
-    return _c('el-option', {
-      key: item.value,
-      attrs: {
-        "label": item.label,
-        "value": item.value
-      }
-    })
-  }))], 1), _vm._v(" "), _c('el-form-item', {
-    attrs: {
       "label": "交割状态：",
       "prop": "payType"
     }
@@ -717,7 +704,35 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     })
   }))], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
-      "label": "申请时间：",
+      "label": "订单状态：",
+      "prop": "status"
+    }
+  }, [_c('el-select', {
+    attrs: {
+      "size": "small",
+      "placeholder": "请选择"
+    },
+    on: {
+      "change": _vm.chooseTime
+    },
+    model: {
+      value: (_vm.sform.status),
+      callback: function($$v) {
+        _vm.$set(_vm.sform, "status", $$v)
+      },
+      expression: "sform.status"
+    }
+  }, _vm._l((_vm.stateOptions), function(item) {
+    return _c('el-option', {
+      key: item.value,
+      attrs: {
+        "label": item.label,
+        "value": item.value
+      }
+    })
+  }))], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "时间：",
       "prop": "startTime"
     }
   }, [_c('el-col', {
@@ -729,7 +744,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "size": "small",
       "type": "datetime",
       "placeholder": "选择日期时间",
-      "align": "right"
+      "align": "right",
+      "disabled": _vm.disabledEdit
     },
     model: {
       value: (_vm.sform.startTime),
@@ -751,7 +767,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "size": "small",
       "type": "datetime",
       "placeholder": "选择日期时间",
-      "align": "right"
+      "align": "right",
+      "disabled": _vm.disabledEdit
     },
     model: {
       value: (_vm.sform.endTime),
@@ -1005,6 +1022,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "prop": "payTime",
       "label": "支付时间",
+      "width": "180"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "prop": "invalidTime",
+      "label": "作废时间",
       "width": "180"
     }
   }), _vm._v(" "), _c('el-table-column', {

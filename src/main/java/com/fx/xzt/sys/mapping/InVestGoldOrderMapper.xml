@@ -94,11 +94,29 @@
 			<if test="userName != null and userName != '' ">
 				and u.UserName = #{userName,jdbcType=VARCHAR}
 			</if>
-			<if test="startTime !=null and startTime !='' ">
-				and o.create_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+			<if test="startTime !=null and startTime !='' and  status == 10">
+				and o.pay_time &gt;=#{startTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="endTime !=null and endTime != '' ">
-				and o.create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+			<if test="endTime !=null and endTime != '' and  status == 10 ">
+				and o.pay_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="startTime !=null and startTime !='' and  status == 20">
+				and o.send_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime !=null and endTime != '' and  status == 20 ">
+				and o.send_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="startTime !=null and startTime !='' and  status == 30">
+				and o.update_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime !=null and endTime != '' and  status == 30 ">
+				and o.update_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="startTime !=null and startTime !='' and  status == 100">
+				and o.pay_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime !=null and endTime != '' and  status == 100 ">
+				and o.pay_time &lt;=#{endTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="status != null">
 				and o.status  = #{status,jdbcType=INTEGER}
