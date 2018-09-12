@@ -143,18 +143,12 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 				Object statusObj = map.get("status");
 				if (statusObj != null && statusObj != "") {
 					map.put("status", ConstantUtil.inVestGoldOrderStatus.toMap().get(statusObj.toString()));
-					Object actualPaymentObj = map.get("actualPayment");
-					if (actualPaymentObj != null && actualPaymentObj != "") {
 
-						if (statusObj.equals(100)) {
-
-						  Integer actualPayment=0;
-							map.put("actualPayment", actualPayment);
-						} else {
-							Double actualPayment = Double.valueOf(actualPaymentObj.toString());
-							map.put("actualPayment", actualPayment/100);
-						}
-					}
+				}
+				Object actualPaymentObj = map.get("actualPayment");
+				if (actualPaymentObj != null && actualPaymentObj != "") {
+						Double actualPayment = Double.valueOf(actualPaymentObj.toString());
+						map.put("actualPayment", actualPayment/100);
 				}
 				Object goldBasePriceObj = map.get("goldBasePrice");
 				if (goldBasePriceObj != null && goldBasePriceObj != "") {

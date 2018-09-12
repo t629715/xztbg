@@ -997,7 +997,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
       "prop": "actualPayment",
-      "label": "实际支付",
+      "label": "实际/所需支付",
       "width": "180"
     }
   }), _vm._v(" "), _c('el-table-column', {
@@ -1039,7 +1039,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
       "prop": "endTime",
-      "label": "完成时间/作废时间",
+      "label": "完成/作废时间",
       "width": "180"
     }
   }), _vm._v(" "), _c('el-table-column', {
