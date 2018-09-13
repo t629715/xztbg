@@ -79,7 +79,6 @@
 		o.gold_money goldMoney, o.service_money serviceMoney, o.img_url imgUrl,
 		o.status, o.create_time createTime, o.send_time sendTime, o.update_time updateTime,
 		DATE_FORMAT((select pay_time from invest_gold_order  where id= o.id and status in(0,10,20,30 )),'%Y-%m-%d %H:%i:%s') payTime,
-
 		o.agent_id AS agentId, ua.user_name AS agentName, o.broker_id AS brokerId, ub.user_name AS brokerName,
 		o.deliver_name contactName, o.deliver_phone contactPhone, o.user_address deliveryAddress
 		from invest_gold_order o
@@ -187,11 +186,35 @@
 			<if test="userName != null and userName != ''">
 				and user_id = o.user_id
 			</if>
-			<if test="startTime !=null and startTime !='' ">
+			<if test="startTime !=null and startTime !='' and  status == 0">
 				and create_time &gt;=#{startTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="endTime !=null and endTime != '' ">
+			<if test="endTime !=null and endTime != '' and  status == 0 ">
 				and create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="startTime !=null and startTime !='' and  status == 10">
+				and pay_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime !=null and endTime != '' and  status == 10 ">
+				and pay_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="startTime !=null and startTime !='' and  status == 20">
+				and send_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime !=null and endTime != '' and  status == 20 ">
+				and o.send_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="startTime !=null and startTime !='' and  status == 30">
+				and update_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime !=null and endTime != '' and  status == 30 ">
+				and update_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="startTime !=null and startTime !='' and  status == 100">
+				and update_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime !=null and endTime != '' and  status == 100 ">
+				and update_time &lt;=#{endTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="status != null">
 				and status = #{status,jdbcType=INTEGER}
@@ -200,13 +223,12 @@
 				and pay_type = #{payType,jdbcType=INTEGER}
 			</if>
 			<if test="agentName != null and agentName !='' ">
-				and user_id = o.user_id
+				and ua.id = #{agentName,jdbcType=BIGINT}
 			</if>
 			<if test="brokerName != null and brokerName !='' ">
-				and user_id = o.user_id
+				and ub.id = #{brokerName,jdbcType=BIGINT}
 			</if>
 		</where>
-
 		) invoiceServiceSum,
 		sum( gold_total_weight)  goldNumSum
 		from invest_gold_order o
@@ -218,11 +240,35 @@
 			<if test="userName != null and userName != '' ">
 				and u.UserName = #{userName,jdbcType=VARCHAR}
 			</if>
-			<if test="startTime !=null and startTime !='' ">
+			<if test="startTime !=null and startTime !='' and  status == 0">
 				and o.create_time &gt;=#{startTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="endTime !=null and endTime != '' ">
+			<if test="endTime !=null and endTime != '' and  status == 0 ">
 				and o.create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="startTime !=null and startTime !='' and  status == 10">
+				and o.pay_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime !=null and endTime != '' and  status == 10 ">
+				and o.pay_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="startTime !=null and startTime !='' and  status == 20">
+				and o.send_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime !=null and endTime != '' and  status == 20 ">
+				and o.send_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="startTime !=null and startTime !='' and  status == 30">
+				and o.update_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime !=null and endTime != '' and  status == 30 ">
+				and o.update_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="startTime !=null and startTime !='' and  status == 100">
+				and o.update_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime !=null and endTime != '' and  status == 100 ">
+				and o.update_time &lt;=#{endTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="status != null">
 				and o.status = #{status,jdbcType=INTEGER}
