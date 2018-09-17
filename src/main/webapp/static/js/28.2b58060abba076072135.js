@@ -306,22 +306,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (error) {});
         },
         changeBroker(index, row) {
-
             let _this = this;
             var params = new URLSearchParams();
             params.append('pid', row.agentId);
             axios.post(_this.brokerUrl1, params).then(function (response) {
                 _this.brokeList = response.data.data;
-                _this.newformEdit = {
-                    brokerId: row.brokerId + ""
-                };
+                if (row.brokerId != null) {
+                    _this.newformEdit = {
+                        brokerId: row.brokerId + ""
+                    };
+                }
             }).catch(function (error) {
                 console.log(error);
             });
-
-            console.log(typeof row.userId);
             this.userId = row.userId;
-            console.log(this.userId);
             this.dialogFormVisibleEdit = true;
         },
         confirmChangeBroker() {
@@ -336,7 +334,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         message: "变更成功",
                         type: 'success'
                     });
-                    _this.loadData(_this.pageSize, _this.currentPage);
+                    _this.onSubmit();
                     _this.dialogFormVisibleEdit = false;
                 } else {
                     _this.$message({
@@ -350,6 +348,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         //清空表单
         resetForm() {
             this.$refs.form.resetFields();
+            this.currentPage = 1;
             this.loadData(10, 1);
             this.countNum();
         },
@@ -430,7 +429,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         //当前页改变是执行
         handleCurrentChange(val) {
-            this.pageNum = val;
+            this.currentPage = val;
             // this.onSubmit(this.form)
             this.loadData(this.pageSize, val);
         },
