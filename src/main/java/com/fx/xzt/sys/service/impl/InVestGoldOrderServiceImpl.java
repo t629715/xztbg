@@ -186,6 +186,11 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 					Double serviceMoney = Double.valueOf(serviceMoneyObj.toString());
 					map.put("serviceMoney", serviceMoney/100);
 				}
+				Object poundageObj = map.get("poundage");
+				if (poundageObj != null && poundageObj != "") {
+					Double poundage = Double.valueOf(poundageObj.toString());
+					map.put("poundage", poundage/100);
+				}
 				Object investGoldServiceObj = map.get("investGoldService");
 				if (investGoldServiceObj != null && investGoldServiceObj != "") {
 					Double investGoldService = Double.valueOf(investGoldServiceObj.toString());
@@ -282,7 +287,16 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 				Double invoiceServiceSum = Double.valueOf(invoiceServiceSumObj.toString());
 				map1.put("invoiceServiceSum", invoiceServiceSum/100);
 			}
-
+			Object poundageSumObj = map1.get("poundageSum");
+			if (poundageSumObj != null && poundageSumObj != "") {
+				Double poundageSum = Double.valueOf(poundageSumObj.toString());
+				map1.put("poundageSum", poundageSum/100);
+			}
+			Object totalPoundageObj = map1.get("totalPoundage");
+			if (totalPoundageObj != null && totalPoundageObj != "") {
+				Double totalPoundage = Double.valueOf(totalPoundageObj.toString());
+				map1.put("totalPoundage", totalPoundage/100);
+			}
 		}
 		return map1;
 	}

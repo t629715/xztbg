@@ -80,8 +80,9 @@
 		o.status, o.create_time createTime, o.send_time sendTime, o.update_time updateTime,
 		DATE_FORMAT((select pay_time from invest_gold_order  where id= o.id and status in(0,10,20,30 )),'%Y-%m-%d %H:%i:%s') payTime,
 		o.agent_id AS agentId, ua.user_name AS agentName, o.broker_id AS brokerId, ub.user_name AS brokerName,
-		o.deliver_name contactName, o.deliver_phone contactPhone, o.user_address deliveryAddress
+		o.deliver_name contactName, o.deliver_phone contactPhone, o.user_address deliveryAddress, d.poundage poundage
 		from invest_gold_order o
+		LEFT JOIN deal_order d on o.deal_order_id=d.id
 		LEFT JOIN User_Login u ON o.user_id = u.UserID
 		LEFT JOIN user_address a on o.user_address_id = a.id
 		LEFT JOIN users ua ON o.agent_id = ua.id
@@ -179,7 +180,7 @@
 	<select id="countByAllDelivery" resultType="java.util.Map" parameterType="java.util.Map">
 		select
 		sum(o.logistics_fee) logisticsFeeSum, sum(o.service_money) serviceMoneySum,sum(o.invest_gold_service) investGoldServiceSum,
-		sum(o.gold_money) goldMoneySum,sum(o.processing_service) processingServiceSum,
+		sum(o.gold_money) goldMoneySum,sum(o.processing_service) processingServiceSum,sum(d.poundage) poundageSum,ifnull(sum(o.invest_gold_service),0)+ifnull(sum(d.poundage),0) totalPoundage,
 		(select sum(invoice_service) from invest_gold_order
 		<where>
 			invoice = 1
@@ -232,6 +233,7 @@
 		) invoiceServiceSum,
 		sum( gold_total_weight)  goldNumSum
 		from invest_gold_order o
+		LEFT JOIN deal_order d on o.deal_order_id=d.id
 		LEFT JOIN User_Login u ON o.user_id = u.UserID
 		LEFT JOIN users ua ON o.agent_id = ua.id
 		LEFT JOIN users ub ON o.broker_id = ub.id
