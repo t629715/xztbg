@@ -19,7 +19,7 @@ import com.fx.xzt.sys.service.UsersService;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.fx.xzt.sys.util.Constant;
 import com.fx.xzt.util.IdUtil;
-import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
