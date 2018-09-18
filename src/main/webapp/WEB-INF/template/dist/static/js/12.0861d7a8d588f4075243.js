@@ -257,7 +257,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         //document.getElementById ("ykId").innerText = _this.amountHandle1(response.data.data.profitLossNumberCount);
         /*document.getElementById ("ykId").innerText = Number(_this.amountHandle1(response.data.data.profitLossNumberCount) - _this.amountHandle1(response.data.data.enSureAmountSumYpc)).toFixed(2);*/
         //document.getElementById ("ykId").innerText = Number(_this.amountHandle1(response.data.data.profitLossNumberCount) - _this.amountHandle1(response.data.data.enSureAmountSum)).toFixed(2);
-        document.getElementById("jycbId").innerText = _this.amountHandle1(response.data.data.costSum);
+        //document.getElementById ("jycbId").innerText = _this.amountHandle1(response.data.data.costSum);
         document.getElementById("poundageId").innerText = _this.amountHandle1(response.data.data.poundageSum);
       }
     }).catch(function (error) {
@@ -334,7 +334,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             document.getElementById("ykId").innerText = Number(_this.amountHandle1(response.data.data.profitLossNumberCount) - _this.amountHandle1(response.data.data.enSureAmountSumYpc)).toFixed(2);
           }
           //document.getElementById ("ykId").innerText = Number(_this.amountHandle1(response.data.data.profitLossNumberCount) - _this.amountHandle1(response.data.data.enSureAmountSum)).toFixed(2);
-          document.getElementById("jycbId").innerText = _this.amountHandle1(response.data.data.costSum);
+          //document.getElementById ("jycbId").innerText = _this.amountHandle1(response.data.data.costSum);
           document.getElementById("poundageId").innerText = _this.amountHandle1(response.data.data.poundageSum);
         }
       }).catch(function (error) {
@@ -449,7 +449,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           /*document.getElementById ("ykId").innerText = Number(_this.amountHandle1(response.data.data.profitLossNumberCount) - _this.amountHandle1(response.data.data.enSureAmountSumYpc)).toFixed(2);*/
           document.getElementById("ykId").innerText = "------";
           //document.getElementById ("ykId").innerText = Number(_this.amountHandle1(response.data.data.profitLossNumberCount) - _this.amountHandle1(response.data.data.enSureAmountSum)).toFixed(2);
-          document.getElementById("jycbId").innerText = _this.amountHandle1(response.data.data.costSum);
+          //   document.getElementById ("jycbId").innerText = _this.amountHandle1(response.data.data.costSum);
           document.getElementById("poundageId").innerText = _this.amountHandle1(response.data.data.poundageSum);
         }
       }).catch(function (error) {
@@ -818,16 +818,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('p', [_vm._v("盈亏总计（元）")]), _vm._v(" "), _c('p', {
     attrs: {
       "id": "ykId"
-    }
-  })])]), _vm._v(" "), _c('el-col', {
-    attrs: {
-      "span": 5
-    }
-  }, [_c('div', {
-    staticClass: "grid-content bg-color3"
-  }, [_c('p', [_vm._v("交易成本总计（元）")]), _vm._v(" "), _c('p', {
-    attrs: {
-      "id": "jycbId"
     }
   })])]), _vm._v(" "), _c('el-col', {
     attrs: {

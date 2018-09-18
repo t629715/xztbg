@@ -212,6 +212,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   //model 初始数据
@@ -256,6 +270,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         logisticsFeeSum: "0",
 
         investGoldServiceSum: "0",
+        poundageSum: "0",
+        totalPoundage: "0",
         goldNumSum: "0",
         goldMoneySum: "0",
         processingServiceSum: "0",
@@ -891,7 +907,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('div', {
     staticClass: "grid-content bg-color3"
-  }, [_c('p', [_vm._v("手续费（元）")]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.orderTotal.investGoldServiceSum))])])]), _vm._v(" "), _c('el-col', {
+  }, [_c('p', [_vm._v("交割手续费（元）")]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.orderTotal.investGoldServiceSum))])])]), _vm._v(" "), _c('el-col', {
+    attrs: {
+      "span": 5
+    }
+  }, [_c('div', {
+    staticClass: "grid-content bg-color3"
+  }, [_c('p', [_vm._v("交易手续费（元）")]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.orderTotal.poundageSum))])])]), _vm._v(" "), _c('el-col', {
+    attrs: {
+      "span": 5
+    }
+  }, [_c('div', {
+    staticClass: "grid-content bg-color3"
+  }, [_c('p', [_vm._v("手续费总计（元）")]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.orderTotal.totalPoundage))])])]), _vm._v(" "), _c('el-col', {
     attrs: {
       "span": 5
     }
@@ -966,7 +994,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
       "prop": "investGoldService",
-      "label": "手续费",
+      "label": "交割手续费",
+      "width": "180"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "prop": "poundage",
+      "label": "交易手续费",
       "width": "180"
     }
   }), _vm._v(" "), _c('el-table-column', {
