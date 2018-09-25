@@ -64,15 +64,22 @@ public class DeliveryGoldConfServiceImpl extends BaseService<DeliveryGoldConf> i
      * @return
      */
     @Transactional
-    public Boolean updateByPrimaryKey(Integer id, BigDecimal handlingFee, Long processingFee, BigDecimal invoiceFee,
-                                      Long logisticsFee, Long custodyFee, Integer custodyStartDate, Integer type) {
+    public Boolean updateByPrimaryKey(Integer id, BigDecimal handlingFee, String  processingFee, BigDecimal invoiceFee,
+                                      String logisticsFee, String custodyFee, Integer custodyStartDate, Integer type) {
         Map map = new HashMap();
+
         map.put("id",id);
         map.put("handlingFee",handlingFee);
-        map.put("processingFee",processingFee*100);
+        Float bd=new Float(processingFee);
+        Long processingFees = Float.valueOf(bd*100).longValue();
+        map.put("processingFees",processingFees);
         map.put("invoiceFee",invoiceFee);
-        map.put("logisticsFee",logisticsFee*100);
-        map.put("custodyFee",custodyFee*100);
+        Float bd2=new Float(logisticsFee);
+        Long logisticsFees = Float.valueOf(bd2*100).longValue();
+        map.put("logisticsFee",logisticsFees);
+        Float bd3=new Float(custodyFee);
+        Long custodyFees = Float.valueOf(bd3*100).longValue();
+        map.put("custodyFee",custodyFees);
         map.put("custodyStartDate",custodyStartDate);
         map.put("type",type);
         Date gmtModified=new Date();

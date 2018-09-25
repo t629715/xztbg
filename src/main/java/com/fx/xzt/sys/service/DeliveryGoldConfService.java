@@ -33,8 +33,8 @@ public interface DeliveryGoldConfService extends IService<DeliveryGoldConf> {
      * @param type 交割状态
      * @return
      */
-    Boolean updateByPrimaryKey(Integer id, BigDecimal handlingFee, Long processingFee, BigDecimal invoiceFee, Long logisticsFee,
-                               Long custodyFee, Integer custodyStartDate, Integer type);
+    Boolean updateByPrimaryKey(Integer id, BigDecimal handlingFee, String  processingFee, BigDecimal invoiceFee, String logisticsFee,
+                               String custodyFee, Integer custodyStartDate, Integer type);
 
     /**
      * 根据id查询金权交易交割黄金规格信息

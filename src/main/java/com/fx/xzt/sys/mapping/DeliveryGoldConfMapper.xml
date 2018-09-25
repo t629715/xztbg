@@ -4,7 +4,7 @@
     <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.DeliveryGoldConf" >
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="handling_fee" property="handlingFee" jdbcType="DECIMAL" />
-        <result column="processing_fee" property="processingFee" jdbcType="INTEGER" />
+        <result column="processing_fee" property="processingFee" jdbcType="BIGINT" />
         <result column="invoice_fee" property="invoiceFee" jdbcType="DECIMAL" />
         <result column="logistics_fee" property="logisticsFee" jdbcType="BIGINT" />
         <result column="custody_fee" property="custodyFee" jdbcType="BIGINT" />
@@ -26,17 +26,17 @@
                <if test="handlingFee != null" >
                    handling_fee = #{handlingFee,jdbcType=DECIMAL},
                </if>
-               <if test="processingFee != null" >
-                   processing_fee = #{processingFee,jdbcType=INTEGER},
+               <if test="processingFees != null" >
+                   processing_fee = #{processingFees,jdbcType=BIGINT},
                </if>
                <if test="invoiceFee != null" >
                    invoice_fee = #{invoiceFee,jdbcType=DECIMAL},
                </if>
-               <if test="logisticsFee != null" >
-                   logistics_fee = #{logisticsFee,jdbcType=BIGINT},
+               <if test="logisticsFees != null" >
+                   logistics_fee = #{logisticsFees,jdbcType=BIGINT},
                </if>
-               <if test="custodyFee != null" >
-                   custody_fee = #{custodyFee,jdbcType=BIGINT},
+               <if test="custodyFees != null" >
+                   custody_fee = #{custodyFees,jdbcType=BIGINT},
                </if>
                <if test="custodyStartDate != null" >
                    custody_start_date = #{custodyStartDate,jdbcType=INTEGER},

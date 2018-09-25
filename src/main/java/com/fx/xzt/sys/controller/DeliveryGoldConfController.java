@@ -108,8 +108,8 @@ public class DeliveryGoldConfController {
      */
     @RequestMapping(value = "/modifyDeliveryGoldConf",method=RequestMethod.POST)
     @ResponseBody
-    public Object modifyDeliveryGoldConf(HttpServletRequest request, String id,BigDecimal handlingFee,Long processingFee,BigDecimal invoiceFee,Long logisticsFee,
-                                          Long custodyFee,Integer custodyStartDate,Integer type) throws ParseException {
+    public Object modifyDeliveryGoldConf(HttpServletRequest request, String id,BigDecimal handlingFee,String  processingFee,BigDecimal invoiceFee,String logisticsFee,
+                                         String custodyFee,Integer custodyStartDate,Integer type) throws ParseException {
         logger.debug("获取修改金权交易交割黄金规格信息接口");
         CommonResponse response = new CommonResponse();
         //操作日志
