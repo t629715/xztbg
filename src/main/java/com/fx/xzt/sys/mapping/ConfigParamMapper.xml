@@ -17,11 +17,11 @@
  	<select id="selectByAll" resultType="java.util.Map" parameterType="java.lang.String">
         select ParamName paramName, ParamValue paramValue, ValueType valueType, Description description, CacheRegion cacheRegion
         from Config_Param
-        <where>
+        where ParamName != 'maxDrawGold' and ParamName != 'prevClosePx'
             <if test="paramName != null and paramName !='' ">
                 and paramName like CONCAT('%',#{paramName,jdbcType=VARCHAR},'%')
             </if>
-        </where>
+
         order by ParamName
     </select>
     <!--查询结束-htt-->

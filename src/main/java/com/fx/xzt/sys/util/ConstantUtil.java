@@ -527,8 +527,8 @@ public class ConstantUtil {
         CSDCX("参赛队查询","56"),
         RGHJCZ("人工黄金充值","57"),
         GJJGCX("冠军结果查询","58"),
-        HDKZ("活动查询","54");
-
+        HDKZ("活动查询","54"),
+        JTTZ("金条投资","59");
 
         private String name;
         private String index;
