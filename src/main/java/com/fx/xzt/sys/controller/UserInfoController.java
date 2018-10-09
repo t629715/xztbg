@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.fx.xzt.util.MD5Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -561,7 +562,67 @@ public class UserInfoController {
         AuditLog.info(log.toString());
 		return cr;
 	}
+	/**
+	 *  liaijiao
+	 * 重置密码
+	 * @param userId
+	 * @return
+	 * @throws ParseException
+	 */
+	@RequestMapping(value="/resetPasswordById")
+	@ResponseBody
+	public Object resetPasswordById(HttpServletRequest request,@RequestParam  String userId) throws ParseException{
+		CommonResponse cr = new CommonResponse();
+		cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+		cr.setMsg("操作失败！");
 
+		//操作日志
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		LogRecord log = new LogRecord();
+		log.setTitle("重置密码");
+		log.setContent("重置密码失败");
+		log.setModuleName(ConstantUtil.logRecordModule.ZHXX.getName());
+		log.setType(ConstantUtil.logRecordType.MMCZ.getIndex());
+		log.setIp(IPUtil.getHost(request));
+		log.setCreateTime(sdf.parse(sdf.format(new Date())));
+
+		try {
+			HttpSession httpSession = request.getSession();
+			Users users = (Users) httpSession.getAttribute("currentUser");
+			if (users != null) {
+				if ( StringUtil.isNotEmpty(userId)) {
+					UserLogin u = new UserLogin();
+					u.setUserid(Long.parseLong(userId));
+					u.setPassword("my1234");
+					u.setPassword(MD5Utils.encrypt(u.getPassword()));
+					int flag = userLoginService.updateByIdSelective(u);
+					if (flag > 0) {
+						cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+						cr.setData(flag);
+						cr.setMsg("操作成功！");
+						log.setUserId(users.getId());
+						log.setContent("重置密码成功；信息：ID:" + userId );
+					}else {
+						cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+						cr.setData(flag);
+						cr.setMsg("操作失败！");
+						log.setUserId(users.getId());
+						log.setContent("重置密码失败；信息：ID:" + userId );
+					}
+				}
+			} else {
+				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+				cr.setData("{}");
+				cr.setMsg("操作失败！");
+			}
+
+		} catch (Exception e) {
+			throw e;
+		}
+		logRecordService.add(log);
+		AuditLog.info(log.toString());
+		return cr;
+	}
 	/**
 	 * 导出excel--账户信息
 	 * @throws ParseException 

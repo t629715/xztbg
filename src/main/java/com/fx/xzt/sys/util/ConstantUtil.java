@@ -528,7 +528,8 @@ public class ConstantUtil {
         RGHJCZ("人工黄金充值","57"),
         GJJGCX("冠军结果查询","58"),
         HDKZ("活动查询","54"),
-        JTTZ("金条投资","59");
+        JTTZ("金条投资","60"),
+        JTTZCPGZ("金条投资产品规则","59");
 
         private String name;
         private String index;
@@ -793,6 +794,30 @@ public class ConstantUtil {
             types[] ds = types.values();
             Map<String, String> rlt = new Hashtable<String, String>();
             for (types d : ds) {
+                rlt.put(d.index, d.name);
+            }
+            return rlt;
+        }
+    }
+
+    public static enum statuss {
+
+        YX("有效","1"),
+        WX("无效","2");
+
+        private String name;
+        private String index;
+        private statuss(String name,String index){
+            this.name = name;
+            this.index = index;
+        }
+        public String toString() {
+            return this.index;
+        }
+        public static Map<String, String> toMap() {
+            statuss[] st = statuss.values();
+            Map<String, String> rlt = new Hashtable<String, String>();
+            for (statuss d : st) {
                 rlt.put(d.index, d.name);
             }
             return rlt;
