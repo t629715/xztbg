@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fx.xzt.sys.mapper.InvestGoldConfMapper" >
+  <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.InvestGoldConf" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="gold_weight" property="goldWeight" jdbcType="INTEGER" />
+    <result column="withdraw_service" property="withdrawService" jdbcType="DOUBLE" />
+    <result column="min_buy_count" property="minBuyCount" jdbcType="INTEGER" />
+    <result column="max_buy_count" property="maxBuyCount" jdbcType="INTEGER" />
+    <result column="logistics_fee" property="logisticsFee" jdbcType="INTEGER" />
+    <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="SMALLINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+    <select id="selectById" parameterType="Long" resultMap="BaseResultMap"  >
+    select 
+     id, name, gold_weight goldWeight, withdraw_service withdrawService, min_buy_count minBuyCount, max_buy_count maxBuyCount,
+     logistics_fee logisticsFee,  img_url imgUrl, status , create_time createTime, update_time updateTime
+    from invest_gold_conf
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAllInvestGoldConf" resultType="java.util.Map" parameterType="java.lang.Long" >
+    select id, name, gold_weight goldWeight, withdraw_service withdrawService, min_buy_count minBuyCount, max_buy_count maxBuyCount,
+     logistics_fee logisticsFee,  img_url imgUrl, status , create_time createTime, update_time updateTime
+    from invest_gold_conf order by id
+
+  </select>
+  <update id="updateById" parameterType="java.util.Map" >
+    update invest_gold_conf
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="goldWeight != null" >
+        gold_weight = #{goldWeight,jdbcType=INTEGER},
+      </if>
+      <if test="withdrawService != null" >
+        withdraw_service = #{withdrawService,jdbcType=DOUBLE},
+      </if>
+      <if test="minBuyCount != null" >
+        min_buy_count = #{minBuyCount,jdbcType=INTEGER},
+      </if>
+      <if test="maxBuyCount != null" >
+        max_buy_count = #{maxBuyCount,jdbcType=INTEGER},
+      </if>
+      <if test="logisticsFee != null" >
+        logistics_fee = #{logisticsFee,jdbcType=INTEGER},
+      </if>
+      <if test="imgUrl != null" >
+        img_url = #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>
