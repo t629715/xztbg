@@ -67,7 +67,7 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 	 * 金权交割查询
 	 * @throws ParseException
 	 */
-	public PageInfo<Map<String, Object>> selectByAllDelivery(String userName, String startTime, String endTime, String agentName,
+	public PageInfo<Map<String, Object>> selectByAllDelivery(String userName,Long investGoldId, String startTime, String endTime, String agentName,
 															 String brokerName, Integer status, Integer payType, String isView, Integer pageNum, Integer pageSize) throws ParseException {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("userName", userName);
@@ -78,6 +78,7 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 		map.put("status", status);
 		map.put("payType", payType);
 		map.put("isView", isView);
+		map.put("investGoldId",investGoldId);
 		PageHelper.startPage(pageNum,pageSize);
 		List<Map<String, Object>> list = mapper.selectByAllDelivery(map);
 		handle(list);

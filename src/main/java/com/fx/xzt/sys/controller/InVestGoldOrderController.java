@@ -222,7 +222,7 @@ public class InVestGoldOrderController {
      */
     @RequestMapping(value="/selectByAllDelivery")
     @ResponseBody
-    public Object selectByAllDelivery(HttpServletRequest request, String userName, String startTime, String endTime,
+    public Object selectByAllDelivery(HttpServletRequest request, String userName,Long investGoldId, String startTime, String endTime,
                               String agentName, String brokerName, Integer status, Integer payType,
                               @RequestParam Integer pageNum, @RequestParam Integer pageSize) throws ParseException {
 
@@ -251,7 +251,7 @@ public class InVestGoldOrderController {
                 if (users.getPid() != null &&  users.getPid() == 1) {
                     agentNameStr = users.getId().toString();
                 }
-                PageInfo<Map<String, Object>> pageInfo = inVestGoldOrderService.selectByAllDelivery(userName, startTime, endTime,
+                PageInfo<Map<String, Object>> pageInfo = inVestGoldOrderService.selectByAllDelivery(userName, investGoldId,startTime, endTime,
                         agentNameStr, brokerName, status, payType, isView, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);

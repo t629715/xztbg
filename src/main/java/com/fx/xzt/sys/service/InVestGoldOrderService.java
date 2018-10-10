@@ -58,7 +58,7 @@ public interface InVestGoldOrderService {
 	 * @throws
 	 * @author htt
 	 */
-	PageInfo<Map<String, Object>> selectByAllDelivery(String userName, String startTime, String endTime, String agentName,
+	PageInfo<Map<String, Object>> selectByAllDelivery(String userName,Long investGoldId, String startTime, String endTime, String agentName,
 											  String brokerName, Integer status, Integer payType, String isView, Integer pageNum, Integer pageSize) throws ParseException;
 	
 	/**

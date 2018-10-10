@@ -135,6 +135,9 @@
 			<if test="brokerName != null and brokerName !='' ">
 				and ub.id = #{brokerName,jdbcType=BIGINT}
 			</if>
+			<if test="investGoldId != null and investGoldId !='' ">
+				and o.id = #{investGoldId}
+			</if>
 		</where>
 
 		order by o.create_time DESC
