@@ -132,6 +132,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data() {
@@ -241,7 +242,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
 
         handleEditPrice(num, row) {
-            this.newformEditPrice.price = row.paramValue;
+            this.newformEditPrice.price = row.revision;
             this.dialogFormVisibleEditGoldPrice = true;
             this.newformEditPrice.setPrice = '';
         },
@@ -577,8 +578,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
-      "prop": "paramValue",
-      "label": "金条投资当前报价(元)",
+      "prop": "prevClosePx",
+      "label": "昨收价(元)",
+      "width": "200"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "prop": "revision",
+      "label": "当前调整值(元)",
       "width": "200"
     }
   }), _vm._v(" "), _c('el-table-column', {
@@ -620,7 +627,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('el-form-item', {
     attrs: {
-      "label": "当前报价:",
+      "label": "当前调整值:",
       "label-width": _vm.formLabelWidth
     }
   }, [_c('el-input', {
@@ -638,7 +645,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
-      "label": "更改报价:",
+      "label": "新调整值:",
       "label-width": _vm.formLabelWidth
     }
   }, [_c('el-input', {
