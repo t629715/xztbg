@@ -258,21 +258,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         type: 'success'
                     });
                     _this.dialogFormVisibleEditGoldPrice = false;
-                    _this.loadData();
+                    _this.loadDataPrice();
                 }
                 if (code == 1002) {
                     _this.$message.error('操作失败!');
                     _this.dialogFormVisibleEditGoldPrice = false;
-                    _this.loadData();
+                    _this.loadDataPrice();
                 }if (code == 1003) {
                     _this.$message.error('输入价格格式错误!');
                     //   _this.dialogFormVisibleEditGold = false;
-                    // _this.loadData();
+                    // _this.loadDataPrice();
                 }
                 if (code == 9999) {
                     _this.dialogFormVisibleEditGoldPrice = false;
                     _this.$message.error('网络错误');
-                    _this.loadData();
+                    _this.loadDataPrice();
                 }
             }).catch(function (error) {
                 self.$router.push('/login');
