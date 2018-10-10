@@ -45,7 +45,7 @@ proguard/
 *.log
   
 # Others  
-.idea/  
+*.idea/
 *.iml
 .settings/
 .project

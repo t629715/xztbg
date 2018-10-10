@@ -319,9 +319,9 @@
         <properties>
             <profiles.active>dev</profiles.active>
         </properties>
-        <activation>
-            <activeByDefault>true</activeByDefault>
-        </activation>
+        <!--<activation>-->
+            <!--<activeByDefault>true</activeByDefault>-->
+        <!--</activation>-->
     </profile>
     <profile>
         <!-- 生产环境 -->
