@@ -80,7 +80,7 @@
 		o.status, o.create_time createTime, o.send_time sendTime, o.update_time updateTime,
 		DATE_FORMAT((select pay_time from invest_gold_order  where id= o.id and status in(0,10,20,30 )),'%Y-%m-%d %H:%i:%s') payTime,
 		o.agent_id AS agentId, ua.user_name AS agentName, o.broker_id AS brokerId, ub.user_name AS brokerName,
-		o.deliver_name contactName, o.deliver_phone contactPhone, o.user_address deliveryAddress, d.poundage poundage
+		o.deliver_name contactName, o.deliver_phone contactPhone, o.user_address deliveryAddress, d.poundage poundage,d.order_no orderNo
 		from invest_gold_order o
 		LEFT JOIN deal_order d on o.deal_order_id=d.id
 		LEFT JOIN User_Login u ON o.user_id = u.UserID
