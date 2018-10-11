@@ -241,6 +241,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     //model 初始数据
@@ -328,7 +332,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             pageNum: 1,
             totalNum: 0,
             tableData: [],
-            disabledEdit: true,
+            //disabledEdit: true,
             dialogFormVisible: false,
             dialogFormVisibleAdd: false,
             dialogFormVisibleEdit: false,
@@ -368,11 +372,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         //查询
         chooseTime(value) {
             let _this = this;
-            if (value === "") {
-                _this.disabledEdit = true;
-            } else {
-                _this.disabledEdit = false;
-            }
+            /* if (value === "") {
+                 _this.disabledEdit = true;
+              } else {
+                 _this.disabledEdit = false;
+             }*/
         },
         onSubmit(sform) {
 
@@ -786,7 +790,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     })
   }))], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
-      "label": "时间：",
+      "label": "创建时间：",
       "prop": "startTime"
     }
   }, [_c('el-col', {
@@ -798,8 +802,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "size": "small",
       "type": "datetime",
       "placeholder": "选择日期时间",
-      "align": "right",
-      "disabled": _vm.disabledEdit
+      "align": "right"
     },
     model: {
       value: (_vm.sform.startTime),
@@ -821,8 +824,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "size": "small",
       "type": "datetime",
       "placeholder": "选择日期时间",
-      "align": "right",
-      "disabled": _vm.disabledEdit
+      "align": "right"
     },
     model: {
       value: (_vm.sform.endTime),

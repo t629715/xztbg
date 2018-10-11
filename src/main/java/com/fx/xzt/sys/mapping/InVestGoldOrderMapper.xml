@@ -93,13 +93,13 @@
 			<if test="userName != null and userName != '' ">
 				and u.UserName = #{userName,jdbcType=VARCHAR}
 			</if>
-			<if test="startTime !=null and startTime !='' and  status == 0">
+			<if test="startTime !=null and startTime !='' ">
 				and o.create_time &gt;=#{startTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="endTime !=null and endTime != '' and  status == 0 ">
+			<if test="endTime !=null and endTime != ''">
 				and o.create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="startTime !=null and startTime !='' and  status == 10">
+			<!--<if test="startTime !=null and startTime !='' and  status == 10">
 				and o.pay_time &gt;=#{startTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="endTime !=null and endTime != '' and  status == 10 ">
@@ -122,7 +122,7 @@
 			</if>
 			<if test="endTime !=null and endTime != '' and  status == 100 ">
 				and o.update_time &lt;=#{endTime,jdbcType=TIMESTAMP}
-			</if>
+			</if>-->
 			<if test="status != null">
 				and o.status  = #{status,jdbcType=INTEGER}
 			</if>
@@ -142,7 +142,7 @@
 
 		order by o.create_time DESC
 	</select>
-
+	<!--金权交割结束  -->
 
 
     <!--金条投资订单统计开始-htt-->
@@ -179,7 +179,7 @@
     </where>
     </select>
     <!--金条投资订单统计结束-htt-->
-	<!--金权交割订单统计开始-htt-->
+	<!--金权交割订单统计开始-liaijiao-->
 	<select id="countByAllDelivery" resultType="java.util.Map" parameterType="java.util.Map">
 		select
 		sum(o.logistics_fee) logisticsFeeSum, sum(o.service_money) serviceMoneySum,sum(o.invest_gold_service) investGoldServiceSum,
@@ -190,13 +190,13 @@
 			<if test="userName != null and userName != ''">
 				and user_id = o.user_id
 			</if>
-			<if test="startTime !=null and startTime !='' and  status == 0">
+			<if test="startTime !=null and startTime !=''">
 				and create_time &gt;=#{startTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="endTime !=null and endTime != '' and  status == 0 ">
+			<if test="endTime !=null and endTime != '' ">
 				and create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="startTime !=null and startTime !='' and  status == 10">
+			<!--<if test="startTime !=null and startTime !='' and  status == 10">
 				and pay_time &gt;=#{startTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="endTime !=null and endTime != '' and  status == 10 ">
@@ -219,7 +219,7 @@
 			</if>
 			<if test="endTime !=null and endTime != '' and  status == 100 ">
 				and update_time &lt;=#{endTime,jdbcType=TIMESTAMP}
-			</if>
+			</if>-->
 			<if test="status != null">
 				and status = #{status,jdbcType=INTEGER}
 			</if>
@@ -245,13 +245,13 @@
 			<if test="userName != null and userName != '' ">
 				and u.UserName = #{userName,jdbcType=VARCHAR}
 			</if>
-			<if test="startTime !=null and startTime !='' and  status == 0">
+			<if test="startTime !=null and startTime !='' ">
 				and o.create_time &gt;=#{startTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="endTime !=null and endTime != '' and  status == 0 ">
+			<if test="endTime !=null and endTime != '' ">
 				and o.create_time &lt;=#{endTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="startTime !=null and startTime !='' and  status == 10">
+			<!--<if test="startTime !=null and startTime !='' and  status == 10">
 				and o.pay_time &gt;=#{startTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="endTime !=null and endTime != '' and  status == 10 ">
@@ -274,7 +274,7 @@
 			</if>
 			<if test="endTime !=null and endTime != '' and  status == 100 ">
 				and o.update_time &lt;=#{endTime,jdbcType=TIMESTAMP}
-			</if>
+			</if>-->
 			<if test="status != null">
 				and o.status = #{status,jdbcType=INTEGER}
 			</if>
@@ -289,7 +289,7 @@
 			</if>
 		</where>
 	</select>
-	<!--金条投资订单统计结束-htt-->
+	<!--金权交割订单统计开始-liaijiao-->
     <!-- 金条投资订单修改开始-htt -->
 	<update id="updateById" parameterType="com.fx.xzt.sys.entity.InVestGoldOrder">
     	update invest_gold_order
