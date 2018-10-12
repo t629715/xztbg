@@ -398,6 +398,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             params.append('endTime', date2);
             params.append('userName', sform.userName);
             params.append('status', sform.status);
+
             params.append('agentName', sform.agentName);
             params.append('brokerName', sform.brokerName);
             params.append('payType', sform.payType);
@@ -790,7 +791,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     })
   }))], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
-      "label": "创建时间：",
+      "label": "交割时间：",
       "prop": "startTime"
     }
   }, [_c('el-col', {
@@ -1101,7 +1102,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
       "prop": "createTime",
-      "label": "创建时间",
+      "label": "交割时间",
       "width": "180"
     }
   }), _vm._v(" "), _c('el-table-column', {
