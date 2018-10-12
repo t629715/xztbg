@@ -131,7 +131,7 @@ public interface InVestGoldOrderService {
 	 * @throws
 	 * @author htt
 	 */
-	Map<String, Object> countByAllDelivery(String userName, String startTime,
+	Map<String, Object> countByAllDelivery(String userName,Long investGoldId, String startTime,
 								   String endTime, String agentName, String brokerName, Integer status, Integer payType);
 	/**
 	 * 

@@ -129,6 +129,7 @@
 			<if test="payType != null">
 				and o.pay_type = #{payType,jdbcType=INTEGER}
 			</if>
+
 			<if test="agentName != null and agentName !='' ">
 				and ua.id = #{agentName,jdbcType=BIGINT}
 			</if>
@@ -136,7 +137,7 @@
 				and ub.id = #{brokerName,jdbcType=BIGINT}
 			</if>
 			<if test="investGoldId != null and investGoldId !='' ">
-				and o.id = #{investGoldId}
+				and o.id = #{investGoldId,jdbcType=BIGINT}
 			</if>
 		</where>
 
@@ -232,6 +233,9 @@
 			<if test="brokerName != null and brokerName !='' ">
 				and broker_id = o.broker_id
 			</if>
+			<if test="investGoldId != null and investGoldId !='' ">
+				and id = #{investGoldId,jdbcType=BIGINT}
+			</if>
 		</where>
 		) invoiceServiceSum,
 		sum( gold_total_weight)  goldNumSum
@@ -286,6 +290,9 @@
 			</if>
 			<if test="brokerName != null and brokerName !='' ">
 				and ub.id = #{brokerName,jdbcType=BIGINT}
+			</if>
+			<if test="investGoldId != null and investGoldId !='' ">
+				and o.id = #{investGoldId,jdbcType=BIGINT}
 			</if>
 		</where>
 	</select>

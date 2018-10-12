@@ -448,7 +448,7 @@ public class InVestGoldOrderController {
      */
     @RequestMapping(value="/countByAllDelivery")
     @ResponseBody
-    public Object countByAllDelivery(HttpServletRequest request, String userName, String startTime, String endTime,
+    public Object countByAllDelivery(HttpServletRequest request, String userName,Long investGoldId, String startTime, String endTime,
                              String agentName, String brokerName, Integer status, Integer payType) throws ParseException {
 
         CommonResponse cr = new CommonResponse();
@@ -476,7 +476,7 @@ public class InVestGoldOrderController {
                 if (users.getPid() != null &&  users.getPid() == 1) {
                     agentNameStr = users.getId().toString();
                 }
-                Map<String, Object> map = inVestGoldOrderService.countByAllDelivery(userName, startTime, endTime, agentNameStr, brokerName, status, payType);
+                Map<String, Object> map = inVestGoldOrderService.countByAllDelivery(userName, investGoldId,startTime, endTime, agentNameStr, brokerName, status, payType);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(map);
                 cr.setMsg("操作成功！");

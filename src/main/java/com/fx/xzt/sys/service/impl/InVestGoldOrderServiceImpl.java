@@ -249,7 +249,7 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 	/**
 	 * 交割订单统计
 	 */
-	public Map<String, Object> countByAllDelivery(String userName, String startTime,
+	public Map<String, Object> countByAllDelivery(String userName,Long investGoldId, String startTime,
 												  String endTime, String agentName, String brokerName,
 												  Integer status, Integer payType) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -260,6 +260,7 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 		map.put("brokerName", brokerName);
 		map.put("status", status);
 		map.put("payType", payType);
+		map.put("investGoldId", investGoldId);
 		Map<String, Object> map1 = mapper.countByAllDelivery(map);
 		if (map1 != null && map1.size() > 0) {
 			Object investGoldServiceSumObj = map1.get("investGoldServiceSum");
