@@ -78,7 +78,7 @@ public interface InVestGoldOrderService {
 	* @throws 
 	* @author htt
 	 */
-	List<Map<String, Object>> excelByAllDelivery(String userName, String startTime, String endTime, String agentName,
+	List<Map<String, Object>> excelByAllDelivery(String userName,Long investGoldId, String startTime, String endTime, String agentName,
 			String brokerName, Integer status, Integer payType, String isView) throws ParseException;
 	/**
 	 *

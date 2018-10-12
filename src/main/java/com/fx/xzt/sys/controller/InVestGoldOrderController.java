@@ -297,7 +297,7 @@ public class InVestGoldOrderController {
     @RequestMapping(value="/excelAllDelivery")
     @ResponseBody
     public void excelAllDelivery(HttpServletRequest request, HttpServletResponse response,
-                         String userName, String startTime, String endTime, String agentName, String brokerName,
+                         String userName,Long investGoldId, String startTime, String endTime, String agentName, String brokerName,
                          Integer status, Integer payType) throws Exception{
         //操作日志
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -323,21 +323,21 @@ public class InVestGoldOrderController {
                 if (users.getPid() != null &&  users.getPid() == 1) {
                     agentNameStr = users.getId().toString();
                 }
-                List<Map<String, Object>> list = inVestGoldOrderService.excelByAllDelivery(userName, startTime, endTime,
+                List<Map<String, Object>> list = inVestGoldOrderService.excelByAllDelivery(userName, investGoldId,startTime, endTime,
                         agentNameStr, brokerName, status, payType, isView);
                 POIUtils poi = new POIUtils();
                 //判断是否为代理商账户
                 if (users.getPid() != null && users.getPid() == 1) {
                     String[] heads = {"用户账号", "经纪人", "克重", "买入价", "合约金额", "交割手续费","交易手续费","加工费",
-                            "物流费","发票","订单金额","优惠金额","实际支付", "联系人", "联系电话", "收货地址","支付时间", "发货时间","完成时间","订单状态", "交割状态", "订单号","物流单号"};
+                            "物流费","发票","订单金额","优惠金额","实际支付", "联系人", "联系电话", "收货地址","交割时间","支付时间", "发货时间","完成时间","订单状态", "交割状态", "订单号","物流单号"};
                     String[] colums = {"userName", "brokerName",  "goldTotalWeight", "goldBasePrice", "goldMoney","investGoldService", "poundage","processingService",
-                            "logisticsFee","invoiceService","totalMoney","discountAmount","actualPayment", "contactName","contactPhone","deliveryAddress", "payTime", "sendTime","endTime","status", "payType", "id","logisticsNo"};
+                            "logisticsFee","invoiceService","totalMoney","discountAmount","actualPayment", "contactName","contactPhone","deliveryAddress", "createTime","payTime", "sendTime","endTime","status", "payType", "id","logisticsNo"};
                     poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                 } else if (users.getPid() == null || users.getPid() == 0) {
                     String[] heads = {"用户账号", "代理商", "经纪人",  "克重", "买入价", "合约金额", "交割手续费","交易手续费","加工费",
-                            "物流费","发票","订单金额","优惠金额","实际支付", "联系人", "联系电话", "收货地址","支付时间", "发货时间","完成时间","订单状态", "交割状态","订单号", "物流单号"};
+                            "物流费","发票","订单金额","优惠金额","实际支付", "联系人", "联系电话", "收货地址","交割时间","支付时间", "发货时间","完成时间","订单状态", "交割状态","订单号", "物流单号"};
                     String[] colums = {"userName", "agentName", "brokerName", "goldTotalWeight", "goldBasePrice", "goldMoney", "investGoldService","poundage","processingService",
-                            "logisticsFee","invoiceService","totalMoney","discountAmount","actualPayment", "contactName","contactPhone","deliveryAddress", "payTime", "sendTime","endTime","status", "payType","id", "logisticsNo"};
+                            "logisticsFee","invoiceService","totalMoney","discountAmount","actualPayment", "contactName","contactPhone","deliveryAddress","createTime", "payTime", "sendTime","endTime","status", "payType","id", "logisticsNo"};
                     poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                 }
                 log.setUserId(users.getId());

@@ -523,7 +523,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             params.append('agentName', sform.agentName);
             params.append('brokerName', sform.brokerName);
             params.append('payType', sform.payType);
-
+            params.append('investGoldId', sform.investGoldId);
             console.info(this.exportUrl + "?" + params);
             window.location = this.exportUrl + "?" + params;
         },
@@ -1095,14 +1095,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
-      "prop": "payTime",
-      "label": "支付时间",
+      "prop": "createTime",
+      "label": "交割时间",
       "width": "180"
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
-      "prop": "createTime",
-      "label": "交割时间",
+      "prop": "payTime",
+      "label": "支付时间",
       "width": "180"
     }
   }), _vm._v(" "), _c('el-table-column', {
