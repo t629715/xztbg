@@ -74,7 +74,7 @@ public class LoginController {
         Map<String, Object> map = new HashMap<String, Object>();
         Users users = (Users) request.getSession().getAttribute("currentUser");
         if (users != null){
-            map.put("msg","您已登录其他账号，请退出再进行本次登录");
+            map.put("msg","您已登录其他账号，请退出或重启浏览器后再登录");
             return map;
         }
         String sessionId = request.getSession().getId();
