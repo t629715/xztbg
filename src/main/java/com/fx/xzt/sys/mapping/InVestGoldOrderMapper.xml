@@ -29,7 +29,7 @@
 		LEFT JOIN users ub ON o.broker_id = ub.id
 
 		<where>
-    	 o.status != 0 and  o.pay_type between 1 and 2
+    	 o.status != 0 and  o.pay_type in(1,2)
     	<if test="userName != null and userName != '' ">
 	    	and u.UserName = #{userName,jdbcType=VARCHAR}
 	    </if>
@@ -45,13 +45,23 @@
 	    <if test="payType != null">
 	    	and o.pay_type = #{payType,jdbcType=INTEGER}
 	    </if>
-	    <if test="agentName != null and agentName !='' ">
-	    	and ua.id = #{agentName,jdbcType=BIGINT}
-	    </if>
-	    <if test="brokerName != null and brokerName !='' ">
-	    	and ub.id = #{brokerName,jdbcType=BIGINT}
-	    </if>
-    </where>
+		<if test="agentName != null">
+			and ua.id in
+  		   <foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+				<if test="item != null">
+					${item}
+				</if>
+		   </foreach>
+		</if>
+		<if test="brokerName != null">
+			and ua.id in
+		  <foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
+				<if test="item != null">
+					${item}
+				</if>
+		  </foreach>
+		</if>
+	 </where>
     
     order by o.create_time DESC
     </select>
@@ -89,7 +99,7 @@
 		LEFT JOIN users ub ON o.broker_id = ub.id
 
 		<where>
-			 o.status in (0,10,20,30,100) and  o.pay_type between 3 and 5
+			 o.status in (0,10,20,30,100) and  o.pay_type in(3,4,5)
 			<if test="userName != null and userName != '' ">
 				and u.UserName = #{userName,jdbcType=VARCHAR}
 			</if>
@@ -129,12 +139,21 @@
 			<if test="payType != null">
 				and o.pay_type = #{payType,jdbcType=INTEGER}
 			</if>
-
-			<if test="agentName != null and agentName !='' ">
-				and ua.id = #{agentName,jdbcType=BIGINT}
+			<if test="agentName != null">
+				and ua.id in
+			  <foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+				<if test="item != null">
+						${item}
+				</if>
+			  </foreach>
 			</if>
-			<if test="brokerName != null and brokerName !='' ">
-				and ub.id = #{brokerName,jdbcType=BIGINT}
+			<if test="brokerName != null">
+				and ua.id in
+			  <foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
+				<if test="item != null">
+						${item}
+				</if>
+			  </foreach>
 			</if>
 			<if test="investGoldId != null and investGoldId !='' ">
 				and o.id = #{investGoldId,jdbcType=BIGINT}
@@ -171,12 +190,22 @@
 	    <if test="payType != null">
 	    	and o.pay_type = #{payType,jdbcType=INTEGER}
 	    </if>
-	    <if test="agentName != null and agentName !='' ">
-	    	and ua.id = #{agentName,jdbcType=BIGINT}
-	    </if>
-	    <if test="brokerName != null and brokerName !='' ">
-	    	and ub.id = #{brokerName,jdbcType=BIGINT}
-	    </if>
+		<if test="agentName != null">
+			and ua.id in
+		  <foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+			<if test="item != null">
+				${item}
+			</if>
+		  </foreach>
+		</if>
+		<if test="brokerName != null">
+			and ua.id in
+		  <foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
+			<if test="item != null">
+				${item}
+			</if>
+		  </foreach>
+		</if>
     </where>
     </select>
     <!--金条投资订单统计结束-htt-->
@@ -227,11 +256,21 @@
 			<if test="payType != null">
 				and pay_type = #{payType,jdbcType=INTEGER}
 			</if>
-			<if test="agentName != null and agentName !='' ">
-				and agent_id = o.agent_id
+			<if test="agentName != null">
+				and ua.id in
+			  <foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+				<if test="item != null">
+						${item}
+				</if>
+			  </foreach>
 			</if>
-			<if test="brokerName != null and brokerName !='' ">
-				and broker_id = o.broker_id
+			<if test="brokerName != null">
+				and ua.id in
+			  <foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
+				<if test="item != null">
+						${item}
+				</if>
+			  </foreach>
 			</if>
 			<if test="investGoldId != null and investGoldId !='' ">
 				and id = #{investGoldId,jdbcType=BIGINT}
@@ -285,11 +324,21 @@
 			<if test="payType != null">
 				and o.pay_type = #{payType,jdbcType=INTEGER}
 			</if>
-			<if test="agentName != null and agentName !='' ">
-				and ua.id = #{agentName,jdbcType=BIGINT}
+			<if test="agentName != null">
+				and ua.id in
+			  <foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+				<if test="item != null">
+					${item}
+				</if>
+			  </foreach>
 			</if>
-			<if test="brokerName != null and brokerName !='' ">
-				and ub.id = #{brokerName,jdbcType=BIGINT}
+			<if test="brokerName != null">
+				and ua.id in
+			  <foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
+				<if test="item != null">
+					${item}
+				</if>
+			  </foreach>
 			</if>
 			<if test="investGoldId != null and investGoldId !='' ">
 				and o.id = #{investGoldId,jdbcType=BIGINT}

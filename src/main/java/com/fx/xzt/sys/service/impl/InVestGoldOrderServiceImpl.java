@@ -2,15 +2,13 @@ package com.fx.xzt.sys.service.impl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
 
 import com.fx.xzt.sys.util.DateUtil;
 import com.fx.xzt.sys.util.DateUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,14 +43,33 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 	 * 查询
 	 * @throws ParseException 
 	 */
+	@Override
 	public PageInfo<Map<String, Object>> selectByAll(String userName, String startTime, String endTime, String agentName,
 			String brokerName, Integer status, Integer payType, String isView, Integer pageNum, Integer pageSize) throws ParseException {
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
         map.put("userName", userName);
         map.put("startTime", startTime);
         map.put("endTime", endTime);
-        map.put("agentName", agentName);
-        map.put("brokerName", brokerName);
+		if(!StringUtils.isBlank(agentName))	{
+			String [ ] agentNames=agentName.split(",");
+			if(agentNames !=null || agentNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:agentNames) {
+					list.add(s);
+				}
+				map.put("agentName", list);
+			}
+		}
+		if(!StringUtils.isBlank(brokerName)){
+			String [ ] brokerNames=brokerName.split(",");
+			if(brokerNames !=null || brokerNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:brokerNames) {
+					list.add(s);
+				}
+				map.put("brokerName", list);
+			}
+		}
         map.put("status", status);
         map.put("payType", payType);
         map.put("isView", isView);
@@ -67,19 +84,39 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 	 * 金权交割查询
 	 * @throws ParseException
 	 */
+	@Override
 	public PageInfo<Map<String, Object>> selectByAllDelivery(String userName,Long investGoldId, String startTime, String endTime, String agentName,
 															 String brokerName, Integer status, Integer payType, String isView, Integer pageNum, Integer pageSize) throws ParseException {
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>(16);
 		map.put("userName", userName);
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
-		map.put("agentName", agentName);
-		map.put("brokerName", brokerName);
+		if(!StringUtils.isBlank(agentName))	{
+			String [ ] agentNames=agentName.split(",");
+			if(agentNames !=null || agentNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:agentNames) {
+					list.add(s);
+				}
+				map.put("agentName", list);
+			}
+		}
+		if(!StringUtils.isBlank(brokerName)){
+			String [ ] brokerNames=brokerName.split(",");
+			if(brokerNames !=null || brokerNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:brokerNames) {
+					list.add(s);
+				}
+				map.put("brokerName", list);
+			}
+		}
 		map.put("status", status);
 		map.put("payType", payType);
 		map.put("isView", isView);
 		map.put("investGoldId",investGoldId);
 		PageHelper.startPage(pageNum,pageSize);
+
 		List<Map<String, Object>> list = mapper.selectByAllDelivery(map);
 		handle(list);
 		PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
@@ -89,14 +126,35 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 	 * 导出
 	 * @throws ParseException 
 	 */
+	@Override
 	public List<Map<String, Object>> excelByAll(String userName, String startTime, String endTime, String agentName,
 			String brokerName, Integer status, Integer payType, String isView) throws ParseException {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("startTime", startTime);
         map.put("endTime", endTime);
-        map.put("agentName", agentName);
-        map.put("brokerName", brokerName);
+		if(!StringUtils.isBlank(agentName))	{
+			String [ ] agentNames=agentName.split(",");
+			if(agentNames !=null || agentNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:agentNames) {
+					list.add(s);
+				}
+				map.put("agentName", list);
+			}
+		}
+		if(!StringUtils.isBlank(brokerName)){
+			String [ ] brokerNames=brokerName.split(",");
+			if(brokerNames !=null || brokerNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:brokerNames) {
+					list.add(s);
+				}
+				map.put("brokerName", list);
+			}
+		}
+        /*map.put("agentName", agentName);
+        map.put("brokerName", brokerName);*/
         map.put("status", status);
         map.put("payType", payType);
         map.put("isView", isView);
@@ -108,14 +166,35 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 	 * 交割导出
 	 * @throws ParseException
 	 */
+	@Override
 	public List<Map<String, Object>> excelByAllDelivery(String userName,Long investGoldId, String startTime, String endTime, String agentName,
 												String brokerName, Integer status, Integer payType, String isView) throws ParseException {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("userName", userName);
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
-		map.put("agentName", agentName);
-		map.put("brokerName", brokerName);
+		if(!StringUtils.isBlank(agentName))	{
+			String [ ] agentNames=agentName.split(",");
+			if(agentNames !=null || agentNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:agentNames) {
+					list.add(s);
+				}
+				map.put("agentName", list);
+			}
+		}
+		if(!StringUtils.isBlank(brokerName)){
+			String [ ] brokerNames=brokerName.split(",");
+			if(brokerNames !=null || brokerNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:brokerNames) {
+					list.add(s);
+				}
+				map.put("brokerName", list);
+			}
+		}
+		/*map.put("agentName", agentName);
+		map.put("brokerName", brokerName);*/
 		map.put("status", status);
 		map.put("payType", payType);
 		map.put("isView", isView);
@@ -226,8 +305,28 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
         map.put("userName", userName);
         map.put("startTime", startTime);
         map.put("endTime", endTime);
-        map.put("agentName", agentName);
-        map.put("brokerName", brokerName);
+		if(!StringUtils.isBlank(agentName))	{
+			String [ ] agentNames=agentName.split(",");
+			if(agentNames !=null || agentNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:agentNames) {
+					list.add(s);
+				}
+				map.put("agentName", list);
+			}
+		}
+		if(!StringUtils.isBlank(brokerName)){
+			String [ ] brokerNames=brokerName.split(",");
+			if(brokerNames !=null || brokerNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:brokerNames) {
+					list.add(s);
+				}
+				map.put("brokerName", list);
+			}
+		}
+        /*map.put("agentName", agentName);
+        map.put("brokerName", brokerName);*/
         map.put("status", status);
         map.put("payType", payType);
         Map<String, Object> map1 = mapper.countByAll(map);
@@ -253,12 +352,30 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 	public Map<String, Object> countByAllDelivery(String userName,Long investGoldId, String startTime,
 												  String endTime, String agentName, String brokerName,
 												  Integer status, Integer payType) {
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("userName", userName);
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
-		map.put("agentName", agentName);
-		map.put("brokerName", brokerName);
+	if(!StringUtils.isBlank(agentName))	{
+		String [ ] agentNames=agentName.split(",");
+		if(agentNames !=null || agentNames.length!=0 ){
+			List<String> list = new ArrayList();
+			for(String s:agentNames) {
+				list.add(s);
+			}
+			map.put("agentName", list);
+		}
+	}
+		if(!StringUtils.isBlank(brokerName)){
+			String [ ] brokerNames=brokerName.split(",");
+			if(brokerNames !=null || brokerNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:brokerNames) {
+					list.add(s);
+				}
+				map.put("brokerName", list);
+			}
+		}
 		map.put("status", status);
 		map.put("payType", payType);
 		map.put("investGoldId", investGoldId);
