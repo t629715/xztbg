@@ -64,8 +64,9 @@ public interface UsersService extends IService<Users>{
 	 * @param pid
 	 * @return
 	 */
-	List<Map<String,Object>> selectByBrokerMessage(Long pid);
-	List<Map<String,Object>> selectByBrokerMessage1(Long pid);
+	List<Map<String,Object>> selectByBrokerMessage(String  pid);
+	List<Map<String,Object>> selectByBrokerMessage2(Long pid);
+	List<Map<String,Object>> selectByBrokerMessage1(String pid);
 
 	/**
 	 * @param usersInfo

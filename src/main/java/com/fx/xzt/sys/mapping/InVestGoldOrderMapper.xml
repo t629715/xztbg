@@ -54,7 +54,7 @@
 		   </foreach>
 		</if>
 		<if test="brokerName != null">
-			and ua.id in
+			and ub.id in
 		  <foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
 				<if test="item != null">
 					${item}
@@ -142,17 +142,13 @@
 			<if test="agentName != null">
 				and ua.id in
 			  <foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
-				<if test="item != null">
-						${item}
-				</if>
+					${item}
 			  </foreach>
 			</if>
 			<if test="brokerName != null">
-				and ua.id in
+				and ub.id in
 			  <foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
-				<if test="item != null">
-						${item}
-				</if>
+					${item}
 			  </foreach>
 			</if>
 			<if test="investGoldId != null and investGoldId !='' ">
@@ -199,7 +195,7 @@
 		  </foreach>
 		</if>
 		<if test="brokerName != null">
-			and ua.id in
+			and ub.id in
 		  <foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
 			<if test="item != null">
 				${item}
@@ -265,7 +261,7 @@
 			  </foreach>
 			</if>
 			<if test="brokerName != null">
-				and ua.id in
+				and ub.id in
 			  <foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
 				<if test="item != null">
 						${item}
@@ -333,7 +329,7 @@
 			  </foreach>
 			</if>
 			<if test="brokerName != null">
-				and ua.id in
+				and ub.id in
 			  <foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
 				<if test="item != null">
 					${item}

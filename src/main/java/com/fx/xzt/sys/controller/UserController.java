@@ -392,12 +392,12 @@ public class UserController {
         	HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
-            	if (StringUtil.isNotEmpty(pid)) {
+            	/*if (StringUtil.isNotEmpty(pid)) {
             		pidl = Long.parseLong(pid);
             	} else {
             		pidl = users.getId();
-            	}
-            	List<Map<String, Object>> list = userService.selectByBrokerMessage(pidl);
+            	}*/
+            	List<Map<String, Object>> list = userService.selectByBrokerMessage(pid);
             	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(list);
                 cr.setMsg("操作成功！");
@@ -429,14 +429,14 @@ public class UserController {
 				cr.setMsg("操作失败！");
 				return cr;
 			}
-			Long pid1 = null;
+			/*Long pid1 = null;
 			if (StringUtil.isNotEmpty(pid)){
 				pid1 = Long.valueOf(pid);
 			}else {
 				pid1 = users.getId();
-			}
+			}*/
 			if (users != null) {
-				List<Map<String, Object>> list = userService.selectByBrokerMessage1(pid1);
+				List<Map<String, Object>> list = userService.selectByBrokerMessage1(pid);
 				cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 				cr.setData(list);
 				cr.setMsg("操作成功！");

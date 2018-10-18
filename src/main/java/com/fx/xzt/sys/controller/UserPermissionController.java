@@ -262,7 +262,7 @@ public class UserPermissionController {
 	public Object selectByBrokerMessage(@RequestParam Long pid){
 		CommonResponse cr = new CommonResponse();
         try {
-        	List<Map<String, Object>> list = userService.selectByBrokerMessage(pid);
+        	List<Map<String, Object>> list = userService.selectByBrokerMessage2(pid);
         	cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
             cr.setData(list);
             cr.setMsg("操作成功！");

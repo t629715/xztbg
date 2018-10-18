@@ -5,8 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.annotation.Resource;
-
-import com.fx.xzt.sys.util.DateUtil;
 import com.fx.xzt.sys.util.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -153,8 +151,6 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 				map.put("brokerName", list);
 			}
 		}
-        /*map.put("agentName", agentName);
-        map.put("brokerName", brokerName);*/
         map.put("status", status);
         map.put("payType", payType);
         map.put("isView", isView);
@@ -193,8 +189,6 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 				map.put("brokerName", list);
 			}
 		}
-		/*map.put("agentName", agentName);
-		map.put("brokerName", brokerName);*/
 		map.put("status", status);
 		map.put("payType", payType);
 		map.put("isView", isView);
@@ -213,6 +207,7 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 	* @throws 
 	* @author htt
 	 */
+
 	public void handle(List<Map<String, Object>> list) throws ParseException {
 		if (list != null && list.size() > 0) {
 			for (Map<String, Object> map : list) {
@@ -298,6 +293,7 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 	/**
 	 * 金条订单统计
 	 */
+	@Override
 	public Map<String, Object> countByAll(String userName, String startTime,
 			String endTime, String agentName, String brokerName,
 			Integer status, Integer payType) {
@@ -325,8 +321,6 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 				map.put("brokerName", list);
 			}
 		}
-        /*map.put("agentName", agentName);
-        map.put("brokerName", brokerName);*/
         map.put("status", status);
         map.put("payType", payType);
         Map<String, Object> map1 = mapper.countByAll(map);
@@ -349,6 +343,7 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 	/**
 	 * 交割订单统计
 	 */
+	@Override
 	public Map<String, Object> countByAllDelivery(String userName,Long investGoldId, String startTime,
 												  String endTime, String agentName, String brokerName,
 												  Integer status, Integer payType) {
@@ -424,6 +419,7 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 	 * 新增物流单号
 	 * @throws ParseException 
 	 */
+	@Override
 	@Transactional
 	public int addLogisticsNoById(String logisticsNo, Long id, Long operatorId, String operatorName) throws ParseException {
 		int flag = 0;
@@ -453,6 +449,7 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 	 * 修改物流单号
 	 * @throws ParseException 
 	 */
+	@Override
 	@Transactional
 	public int updateLogisticsNoById(String logisticsNo, Long id, Long operatorId, String operatorName) throws ParseException {
 		int flag = 0;
@@ -481,6 +478,7 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 	 * 修改订单状态
 	 * @throws ParseException 
 	 */
+	@Override
 	@Transactional
 	public int updateStatusById(String status, Long id, Long operatorId, String operatorName) throws ParseException {
 		int flag = 0;

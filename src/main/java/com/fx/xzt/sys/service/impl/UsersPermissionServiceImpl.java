@@ -1,9 +1,6 @@
 package com.fx.xzt.sys.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
 
@@ -232,6 +229,7 @@ public class UsersPermissionServiceImpl extends BaseService<UsersPermission> imp
 	* @throws 
 	* @author htt
 	 */
+	@Override
 	public Map<String, Object> getByUsersPermissionAllNew() {
 		List<UsersPermission> data = usersPermissionMapper.getByRidsAll();
 		Map<String,Object> permission = new HashMap<String,Object>();
@@ -250,6 +248,7 @@ public class UsersPermissionServiceImpl extends BaseService<UsersPermission> imp
 	 * @Description：获取全部菜单
 	 * @return
 	 */
+	@Override
 	public Map<String, Object> getByUsersPermissionAllNew1() {
 		List<UsersPermission> data = usersPermissionMapper.getByRidsAll();
 		Map<String,Object> permission = new HashMap<String,Object>();
@@ -264,12 +263,22 @@ public class UsersPermissionServiceImpl extends BaseService<UsersPermission> imp
 	/**
 	 * 根据用户角色获取菜单
 	 */
-	public Map<String, Object> getByUsersPermission(List<Integer> rids) {
+	@Override
+	public Map<String, Object> getByUsersPermission(List<Integer> rids, String userName) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		if(rids != null && rids.size() > 0){
 			map.put("rids", rids);
 		}
 		List<UsersPermission> data = usersPermissionMapper.getByRids(map);
+		if (!"admin".equals(userName)){
+			Iterator<UsersPermission> it = data.iterator();
+			while(it.hasNext()){
+				UsersPermission x = it.next();
+				if(x.getText().equals("金权交割")){
+					it.remove();
+				}
+			}
+		}
 		Map<String,Object> permission = new HashMap<String,Object>();
 		permission.put("icon", "");
 		permission.put("pid", -1);
@@ -283,6 +292,7 @@ public class UsersPermissionServiceImpl extends BaseService<UsersPermission> imp
 	/**
 	 * 新增
 	 */
+	@Override
 	@Transactional
 	public int insert(String text, String icon, String label, String translate,
 			String pid, String type, String sref) {
@@ -312,6 +322,7 @@ public class UsersPermissionServiceImpl extends BaseService<UsersPermission> imp
 	/**
 	 * 修改
 	 */
+	@Override
 	@Transactional
 	public int update(String text, String icon, String label, String translate,
 			String pid, String type, String sref, String id) {
@@ -349,6 +360,7 @@ public class UsersPermissionServiceImpl extends BaseService<UsersPermission> imp
 	* @throws 
 	* @author htt
 	 */
+	@Override
 	@Transactional
 	public int deleteById(String id) {
 		int flag = 0;

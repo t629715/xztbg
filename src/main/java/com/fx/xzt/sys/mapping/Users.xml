@@ -231,9 +231,17 @@
         SELECT CAST(id as CHAR) id,user_name brokerName,CAST(pid as CHAR) pid,phone,create_time createTime FROM users
         <where>
             <!-- status = 1-->
-            <if test="pid != null and pid!='' ">
-                and pid = #{pid,jdbcType=BIGINT}
+            <if test="pid != null">
+                and pid in
+                <foreach collection="pid" index="index" item="item" open="(" separator="," close=")" >
+                    <if test="item != null">
+                        #{item}
+                    </if>
+                </foreach>
             </if>
+            <!--<if test="pid != null and pid!='' ">
+                and pid = #{pid,jdbcType=BIGINT}
+            </if>-->
             <if test="startTime != null and startTime!='' ">
                 and create_time &gt; = #{startTime,jdbcType=TIMESTAMP}
             </if>

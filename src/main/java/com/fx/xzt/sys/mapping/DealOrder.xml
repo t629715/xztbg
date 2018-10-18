@@ -85,12 +85,19 @@
           <if test="regEndTime !=null and regEndTime != '' ">
               and i.RegisterTime &lt;=#{regEndTime,jdbcType=TIMESTAMP}
           </if>
-          <if test="agentName != null and agentName !='' ">
-              and ua.id = #{agentName,jdbcType=BIGINT}
+          <if test="agentName != null">
+              and ua.id in
+              <foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+                  ${item}
+              </foreach>
           </if>
-          <if test="brokerName != null and brokerName !='' ">
-              and ub.id = #{brokerName,jdbcType=BIGINT}
+          <if test="brokerName != null">
+              and ub.id in
+              <foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
+                  ${item}
+              </foreach>
           </if>
+
           <if test="orderState != null">
               and o.order_state = #{orderState,jdbcType=INTEGER}
           </if>
@@ -140,12 +147,18 @@
           <if test="regEndTime !=null and regEndTime != '' ">
               and i.RegisterTime &lt;=#{regEndTime,jdbcType=TIMESTAMP}
           </if>
-          <if test="agentName != null and agentName !='' ">
-              and ua.id = #{agentName,jdbcType=BIGINT}
-          </if>
-          <if test="brokerName != null and brokerName !='' ">
-              and ub.id = #{brokerName,jdbcType=BIGINT}
-          </if>
+          <if test="agentName != null">
+                and ua.id in
+                <foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+                    ${item}
+                </foreach>
+           </if>
+           <if test="brokerName != null">
+                and ub.id in
+                <foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
+                    ${item}
+                </foreach>
+           </if>
           <if test="orderState != null">
               and o.order_state = #{orderState,jdbcType=INTEGER}
           </if>

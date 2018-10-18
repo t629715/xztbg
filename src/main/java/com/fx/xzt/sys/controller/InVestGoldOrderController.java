@@ -242,7 +242,7 @@ public class InVestGoldOrderController {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
-            if (users != null) {
+            if (users != null ) {
                 String agentNameStr = agentName;
                 String isView = "0";
                 if (role != null && role.get("roleIsView") != null) {
@@ -314,7 +314,7 @@ public class InVestGoldOrderController {
             HttpSession httpSession = request.getSession();
             Users users = (Users) httpSession.getAttribute("currentUser");
             Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
-            if (users != null) {
+            if (users != null ) {
                 String isView = "0";
                 if (role != null && role.get("roleIsView") != null) {
                     isView = role.get("roleIsView").toString();
@@ -431,7 +431,7 @@ public class InVestGoldOrderController {
     /**
      *
      * @Title: countByAll
-     * @Description: 统计
+     * @Description: 交割统计
      * @param request
      * @param userName 用户名
      * @param startTime 开始时间

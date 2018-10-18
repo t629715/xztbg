@@ -70,7 +70,7 @@ public interface UsersPermissionService extends IService<UsersPermission>{
 	* @throws 
 	* @author htt
 	 */
-	Map<String, Object> getByUsersPermission(List<Integer> rids);
+	Map<String, Object> getByUsersPermission(List<Integer> rids,String userName);
 	
 	/**
 	 * 

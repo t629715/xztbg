@@ -90,7 +90,7 @@ public class RoleController {
 					List<UsersMenuModel> list = new ArrayList<>();
 					list.add(model);*/
 					//map.put("items", permission);
-					Map<String, Object> permission = usersPermissionService.getByUsersPermission(rids);
+					Map<String, Object> permission = usersPermissionService.getByUsersPermission(rids,u.getUserName());
 					cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
 		            cr.setData(permission);
 		            cr.setMsg("操作成功！");

@@ -3,6 +3,7 @@ package com.fx.xzt.sys.service.impl;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import com.fx.xzt.sys.util.ConstantUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.fx.xzt.sys.entity.DealOrder;
@@ -59,8 +61,27 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
         map.put("endTime", endTime);
         map.put("regStartTime", regStartTime);
         map.put("regEndTime", regEndTime);
-        map.put("agentName", agentName);
-        map.put("brokerName", brokerName);
+        if(!StringUtils.isBlank(agentName))	{
+            String [ ] agentNames=agentName.split(",");
+            if(agentNames !=null || agentNames.length!=0 ){
+                List<String> list = new ArrayList();
+                for(String s:agentNames) {
+                    list.add(s);
+                }
+                map.put("agentName", list);
+            }
+        }
+        if(!StringUtils.isBlank(brokerName)){
+            String [ ] brokerNames=brokerName.split(",");
+            if(brokerNames !=null || brokerNames.length!=0 ){
+                List<String> list = new ArrayList();
+                for(String s:brokerNames) {
+                    list.add(s);
+                }
+                map.put("brokerName", list);
+            }
+        }
+
         map.put("orderState", orderState);
         /*map.put("isUseCard", isUseCard);
         map.put("upOrDown", upOrDown);*/
@@ -95,8 +116,27 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
         map.put("endTime", endTime);
         map.put("regStartTime", regStartTime);
         map.put("regEndTime", regEndTime);
-        map.put("agentName", agentName);
-        map.put("brokerName", brokerName);
+        if(!StringUtils.isBlank(agentName))	{
+            String [ ] agentNames=agentName.split(",");
+            if(agentNames !=null || agentNames.length!=0 ){
+                List<String> list = new ArrayList();
+                for(String s:agentNames) {
+                    list.add(s);
+                }
+                map.put("agentName", list);
+            }
+        }
+        if(!StringUtils.isBlank(brokerName)){
+            String [ ] brokerNames=brokerName.split(",");
+            if(brokerNames !=null || brokerNames.length!=0 ){
+                List<String> list = new ArrayList();
+                for(String s:brokerNames) {
+                    list.add(s);
+                }
+                map.put("brokerName", list);
+            }
+        }
+
         map.put("orderState", orderState);
        /* map.put("isUseCard", isUseCard);
         map.put("upOrDown", upOrDown);*/
@@ -129,8 +169,27 @@ public class DealOrderServiceImpl extends BaseService<DealOrder> implements Deal
         map.put("endTime", endTime);
         map.put("regStartTime", regStartTime);
         map.put("regEndTime", regEndTime);
-        map.put("agentName", agentName);
-        map.put("brokerName", brokerName);
+
+        if(!StringUtils.isBlank(agentName))	{
+            String [ ] agentNames=agentName.split(",");
+            if(agentNames !=null || agentNames.length!=0 ){
+                List<String> list = new ArrayList();
+                for(String s:agentNames) {
+                    list.add(s);
+                }
+                map.put("agentName", list);
+            }
+        }
+        if(!StringUtils.isBlank(brokerName)){
+            String [ ] brokerNames=brokerName.split(",");
+            if(brokerNames !=null || brokerNames.length!=0 ){
+                List<String> list = new ArrayList();
+                for(String s:brokerNames) {
+                    list.add(s);
+                }
+                map.put("brokerName", list);
+            }
+        }
         map.put("orderState", orderState);
         map.put("isUseCard", isUseCard);
         map.put("upOrDown", upOrDown);

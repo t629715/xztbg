@@ -8,6 +8,8 @@ import javax.annotation.Resource;
 
 import com.fx.xzt.sys.entity.*;
 import com.fx.xzt.sys.mapper.*;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,7 +53,7 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 
 	IncomeSharingConfMapper incomeSharingConfMapper;
 	public static final String USER_INFO = "uid";
-
+	@Override
 	public Users getUserInfo(Long uid) {
 		String json = redisService.get(USER_INFO+uid);
 		if(json==null){
@@ -65,15 +67,15 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 
 		return JsonUtils.toBean(json, Users.class);
 	}
-
+	@Override
 	public List<Users> listUserInfo() {
 		return usersMapper.selectAll();
 	}
-
+	@Override
 	public Users getUserInfoNyName(String currentUserName) {
 		return usersMapper.getUserInfoNyName(currentUserName);
 	}
-
+	@Override
 	public Users getUserInfo(String username, String password) {
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("username", username);
@@ -87,7 +89,7 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		map.put("password", password);
 		return usersMapper.getUserInfoNyPhone(map);
 	}
-	
+	@Override
 	@Transactional
 	public int insertUsers(Users users,List<Integer> rids) {
 		String phone = users.getUserName();
@@ -125,7 +127,7 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		}
 		return msg;
 	}
-	
+	@Override
 	@Transactional
 	public int updateByIdSelective(Users users,List<Integer> rids) {
 		String phone = users.getPhone();
@@ -151,7 +153,7 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		}
 		return msg;
 	}
-	
+	@Override
 	@Transactional
 	public int deleteById(Long id) {
 		int i = 0;
@@ -217,7 +219,7 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		}
 		return i;
 	}
-
+	@Override
 	public PageInfo<UsersModel> selectByUsersModel(String phone, String startTime, String endTime, Integer pageNum,
 			Integer pageSize) {
 		Map map = new HashMap();
@@ -252,6 +254,7 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 	 *  获取代理商列表
 	 * @return
 	 */
+	@Override
 	public List<Map<String,Object>> selectByAgentMessage(Long pid){
 		Map map = new HashMap();
 		map.put("pid",pid);
@@ -267,6 +270,7 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		}
 		return resultList;
 	}
+	@Override
 	public List<Map<String,Object>> selectByAgentMessage1(){
 		List<Map<String, Object>> resultList = new ArrayList<>();
 		if (usersMapper.selectByAgentMessage().size() != 0 && usersMapper.selectByAgentMessage() != null){
@@ -280,7 +284,28 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 	 * @param pid
 	 * @return
 	 */
-	public List<Map<String,Object>> selectByBrokerMessage(Long pid) {
+	@Override
+	public List<Map<String,Object>> selectByBrokerMessage(String  pid) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		if(!StringUtils.isBlank(pid)){
+			String [ ] pids=pid.split(",");
+			if(pids !=null || pids.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:pids) {
+					list.add(s);
+				}
+				map.put("pid", list);
+			}
+		}
+	//	map.put("pid",pid);
+		List<Map<String, Object>> resultList = new ArrayList<>();
+		if (usersMapper.selectByBrokerMessage(map).size() != 0 && usersMapper.selectByBrokerMessage(map) != null){
+			resultList.addAll(usersMapper.selectByBrokerMessage(map));
+		}
+		return resultList;
+	}
+	@Override
+	public List<Map<String,Object>> selectByBrokerMessage2(Long pid) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("pid",pid);
 		List<Map<String, Object>> resultList = new ArrayList<>();
@@ -289,7 +314,8 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 		}
 		return resultList;
 	}
-	public List<Map<String,Object>> selectByBrokerMessage1(Long pid) {
+	@Override
+	public List<Map<String,Object>> selectByBrokerMessage1(String pid) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("pid",pid);
 		List<Map<String, Object>> resultList = new ArrayList<>();
@@ -312,6 +338,7 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 	 * @Description: 运营商视角-新建经纪人
 	 * @Date:11:18 2017/10/21
 	*/
+	@Override
 	@Transactional
 	public int insertAgent(Users usersInfo) {
 		int msg = usersMapper.insertUsers(usersInfo);
@@ -321,6 +348,7 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 	/**
 	 * 获取渠道商数据
 	 */
+	@Override
 	public List<Map<String, Object>> selectByChannelMessage() {
 		return usersMapper.selectByChannelMessage();
 	}
