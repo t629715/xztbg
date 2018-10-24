@@ -1,19 +1,19 @@
-webpackJsonp([57],{
+webpackJsonp([12],{
 
-/***/ 535:
+/***/ 584:
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(860)
+__webpack_require__(892)
 
 var Component = __webpack_require__(197)(
   /* script */
-  __webpack_require__(624),
+  __webpack_require__(673),
   /* template */
-  __webpack_require__(776),
+  __webpack_require__(809),
   /* scopeId */
-  "data-v-03565f06",
+  "data-v-48657494",
   /* cssModules */
   null
 )
@@ -23,37 +23,11 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 624:
+/***/ 673:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -206,75 +180,54 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         value: "",
         label: "全部"
       }, {
-        value: 10,
-        label: '未发货'
-      }, {
-        value: 20,
-        label: '已发货'
-      }, {
-        value: 30,
-        label: '已完成'
-      }, {
-        value: 40,
-        label: '已取消'
-      }, {
-        value: 50,
-        label: '已关闭'
-      }],
-      payTypeOptions: [{
-        value: "",
-        label: "全部"
+        value: 0,
+        label: '持仓中'
       }, {
         value: 1,
-        label: '实金提取'
+        label: '已平仓'
       }, {
         value: 2,
-        label: '实金兑换'
+        label: '待确认'
       }],
-      orderTotal: {
-        logisticsFeeSum: "0",
-        serviceMoneySum: "0",
-        goldNumSum: "0"
-      },
+      /*upOrDownOptions: [
+          {
+              value:"",
+              label:"全部"
+          },{
+        value: 0,
+        label: '买涨'
+      }, {
+        value: 1,
+        label: '买跌'
+      }],*/
       agentOptions: "",
       brokerOptions: "",
       sform: {
         userName: '',
+        orderNo: '',
         startTime: '',
         endTime: '',
-        status: '',
+        regStartTime: '',
+        regEndTime: '',
+        orderState: '',
         agentName: '',
-        brokerName: '',
-        payType: ''
+        brokerName: ''
+        /*isUseCard: '',
+        upOrDown:''*/
       },
-      newformAdd: {
-        id: '',
-        logisticsNo: ''
-      },
-      newformEdit: {
-        logisticsNo: ''
-      },
-      rules: {
-        logisticsNo: [{ required: true, message: '请填写物流单号', trigger: 'blur' }]
-      },
-      url: this.api + "inVestGoldOrder/selectByAll",
+      url: this.api + "dealOrder/selectByDealOrder",
       agentUrl: this.api + "user/selectByAgentMessage",
       brokeUrl: this.api + "user/selectByBrokerMessage",
       brokerUrl1: this.api + "user/selectByBrokerMessage1",
-      exportUrl: this.api + "inVestGoldOrder/excelAll",
-      countUrl: this.api + "inVestGoldOrder/countByAll",
-      addUrl: this.api + 'inVestGoldOrder/addLogisticsNoById',
-      editUrl: this.api + 'inVestGoldOrder/updateLogisticsNoById',
-      completeUrl: this.api + 'inVestGoldOrder/completeOrderById',
+      exportUrl: this.api + "dealOrder/excelDealOrderMessage",
+      countUrl: this.api + "dealOrder/selectByDealOrderCount",
       currentPage: 0,
       pagesize: 10,
       pageNum: 1,
       totalNum: 0,
       tableData: [],
       dialogFormVisible: false,
-      dialogFormVisibleAdd: false,
       dialogFormVisibleEdit: false,
-      dialogFormVisibleComplete: false,
       formLabelWidth: '120px',
       userId: ""
     };
@@ -299,7 +252,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     //获取统计数据
     axios.get(this.countUrl).then(function (response) {
       if (response.data.code == 1001) {
-        _this.orderTotal = response.data.data;
+        document.getElementById("bzjId").innerText = _this.amountHandle1(response.data.data.enSureAmountSum);
+        document.getElementById("ykId").innerText = _this.amountHandle1(response.data.data.costSum);
+
+        //document.getElementById ("ykId").innerText = _this.amountHandle1(response.data.data.profitLossNumberCount);
+        /*document.getElementById ("ykId").innerText = Number(_this.amountHandle1(response.data.data.profitLossNumberCount) - _this.amountHandle1(response.data.data.enSureAmountSumYpc)).toFixed(2);*/
+        //document.getElementById ("ykId").innerText = Number(_this.amountHandle1(response.data.data.profitLossNumberCount) - _this.amountHandle1(response.data.data.enSureAmountSum)).toFixed(2);
+        //document.getElementById ("jycbId").innerText = _this.amountHandle1(response.data.data.costSum);
+        document.getElementById("poundageId").innerText = _this.amountHandle1(response.data.data.poundageSum);
       }
     }).catch(function (error) {
       console.log(error);
@@ -314,6 +274,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       let _this = this;
       var date1 = '';
       var date2 = '';
+      var date3 = '';
+      var date4 = '';
 
       if (sform.startTime != "") {
         date1 = this.dateFormat(sform.startTime);
@@ -321,17 +283,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       if (sform.endTime != "") {
         date2 = this.dateFormat(sform.endTime);
       }
+      if (sform.regStartTime != "") {
+        date3 = this.dateFormat(sform.regStartTime);
+      }
+      if (sform.regEndTime != "") {
+        date4 = this.dateFormat(sform.regEndTime);
+      }
 
       params.append('pageSize', this.pagesize);
       params.append('pageNum', this.currentPage);
       params.append('startTime', date1);
       params.append('endTime', date2);
+      params.append('regStartTime', date3);
+      params.append('regEndTime', date4);
       params.append('userName', sform.userName);
-      params.append('status', sform.status);
+      params.append('orderNo', sform.orderNo);
+      params.append('orderState', sform.orderState);
       params.append('agentName', sform.agentName);
       params.append('brokerName', sform.brokerName);
-      params.append('payType', sform.payType);
-
+      /* params.append('isUseCard', this.isNotEmpty(sform.isUseCard) ? Number(sform.isUseCard) : '');
+       params.append('upOrDown', sform.upOrDown);
+      */
       axios.post(this.url, params).then(function (response) {
         if (response.data.code == 1001) {
           _this.$message({
@@ -343,6 +315,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           //_this.pagesize = response.data.data.pageSize;
           _this.pageNum = response.data.data.pages;
           _this.totalNum = response.data.data.total;
+          _this.handelData(list);
           _this.tableData = list;
         } else {
           _this.$message({
@@ -355,7 +328,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       //获取统计金额
       axios.post(this.countUrl, params).then(function (response) {
         if (response.data.code == 1001) {
-          _this.orderTotal = response.data.data;
+          document.getElementById("bzjId").innerText = _this.amountHandle1(response.data.data.enSureAmountSum);
+          if (_this.sform.orderState === 0 || _this.sform.orderState === 2 || _this.sform.orderState === 3) {
+            document.getElementById("ykId").innerText = "------";
+          } else {
+            document.getElementById("ykId").innerText = Number(_this.amountHandle1(response.data.data.profitLossNumberCount) - _this.amountHandle1(response.data.data.enSureAmountSumYpc)).toFixed(2);
+          }
+          //document.getElementById ("ykId").innerText = Number(_this.amountHandle1(response.data.data.profitLossNumberCount) - _this.amountHandle1(response.data.data.enSureAmountSum)).toFixed(2);
+          //document.getElementById ("jycbId").innerText = _this.amountHandle1(response.data.data.costSum);
+          document.getElementById("poundageId").innerText = _this.amountHandle1(response.data.data.poundageSum);
         }
       }).catch(function (error) {
         console.log(error);
@@ -366,12 +347,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var params = new URLSearchParams();
       var date1 = '';
       var date2 = '';
+      var date3 = '';
+      var date4 = '';
 
       if (this.sform.startTime != "") {
         date1 = this.dateFormat(this.sform.startTime);
       }
       if (this.sform.endTime != "") {
         date2 = this.dateFormat(this.sform.endTime);
+      }
+      if (this.sform.regStartTime != "") {
+        date3 = this.dateFormat(this.sform.regStartTime);
+      }
+      if (this.sform.regEndTime != "") {
+        date4 = this.dateFormat(this.sform.regEndTime);
       }
 
       this.pagesize = pageSize;
@@ -380,16 +369,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       params.append('pageNum', this.currentPage);
       params.append('startTime', date1);
       params.append('endTime', date2);
+      params.append('regStartTime', date3);
+      params.append('regEndTime', date4);
       params.append('userName', this.sform.userName);
-      params.append('status', this.sform.status);
+      params.append('orderNo', this.sform.orderNo);
+      params.append('orderState', this.sform.orderState);
       params.append('agentName', this.sform.agentName);
       params.append('brokerName', this.sform.brokerName);
-      params.append('payType', this.sform.payType);
-
+      /* params.append('isUseCard', this.isNotEmpty(this.sform.isUseCard) ? Number(this.sform.isUseCard) : '');
+       params.append('upOrDown', this.sform.upOrDown);
+      */
       let _this = this;
       axios.post(this.url, params).then(function (response) {
         if (response.data.code == 1001) {
           var list = response.data.data.list;
+          _this.handelData(list);
           //_this.currentPage = response.data.data.pageNum == 0 ? 1 : response.data.data.pageNum;
           //_this.pagesize = response.data.data.pageSize;
           _this.pageNum = response.data.data.pages;
@@ -398,10 +392,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
       }).catch(function (error) {});
     },
+    //数据处理
+    handelData(list) {
+      if (list.length > 0) {
+        for (var i = 0; i < list.length; i++) {
+
+          list[i].buyPreRmb = this.amountHandle1(list[i].buyPreRmb);
+          list[i].buyAfterRmb = this.amountHandle1(list[i].buyAfterRmb);
+          list[i].ensureAmount = this.amountHandle1(list[i].ensureAmount);
+          /* list[i].voucherValue = this.amountHandle1(list[i].voucherValue);*/
+          list[i].cost = this.amountHandle1(list[i].cost);
+
+          if (this.isNotEmpty(list[i].profitLossNumber)) {
+            list[i].profitLossNumber = Number(this.amountHandle1(list[i].profitLossNumber) - list[i].ensureAmount).toFixed(2);
+          }
+
+          //买涨：买入+点差；买跌：卖出+点差
+          if (list[i].upOrDown == "0") {
+            if (this.isNotEmpty(list[i].openPositionPrice)) {
+              list[i].openPositionPrice = Number(list[i].openPositionPrice + Number(list[i].pointCount)).toFixed(2);
+            }
+            list[i].upOrDown = '买涨';
+          } else if (list[i].upOrDown == "1") {
+            if (this.isNotEmpty(list[i].closePositionPrice)) {
+              list[i].closePositionPrice = Number(list[i].closePositionPrice + Number(list[i].pointCount)).toFixed(2);
+            }
+            list[i].upOrDown = '买跌';
+          }
+        }
+      }
+    },
     //根据代理商取经纪人列表
     getBrokerOptions() {
       let _this = this;
-      _this.sform.brokerName = "";
+      _this.sform.brokerName = [];
       var params = new URLSearchParams();
       if (_this.sform.agentName == null || _this.sform.agentName == "") {
         _this.brokerOptions = [];
@@ -421,7 +445,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       //获取统计数据
       axios.get(this.countUrl).then(function (response) {
         if (response.data.code == 1001) {
-          _this.orderTotal = response.data.data;
+          document.getElementById("bzjId").innerText = _this.amountHandle1(response.data.data.enSureAmountSum);
+          //document.getElementById ("ykId").innerText = _this.amountHandle1(response.data.data.profitLossNumberCount);
+          /*document.getElementById ("ykId").innerText = Number(_this.amountHandle1(response.data.data.profitLossNumberCount) - _this.amountHandle1(response.data.data.enSureAmountSumYpc)).toFixed(2);*/
+          document.getElementById("ykId").innerText = "------";
+          //document.getElementById ("ykId").innerText = Number(_this.amountHandle1(response.data.data.profitLossNumberCount) - _this.amountHandle1(response.data.data.enSureAmountSum)).toFixed(2);
+          //   document.getElementById ("jycbId").innerText = _this.amountHandle1(response.data.data.costSum);
+          document.getElementById("poundageId").innerText = _this.amountHandle1(response.data.data.poundageSum);
         }
       }).catch(function (error) {
         console.log(error);
@@ -434,6 +464,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       let _this = this;
       var date1 = '';
       var date2 = '';
+      var date3 = '';
+      var date4 = '';
 
       if (sform.startTime != "") {
         date1 = this.dateFormat(sform.startTime);
@@ -441,127 +473,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       if (sform.endTime != "") {
         date2 = this.dateFormat(sform.endTime);
       }
+      if (sform.regStartTime != "") {
+        date3 = this.dateFormat(sform.regStartTime);
+      }
+      if (sform.regEndTime != "") {
+        date4 = this.dateFormat(sform.regEndTime);
+      }
 
       params.append('startTime', date1);
       params.append('endTime', date2);
+      params.append('regStartTime', date3);
+      params.append('regEndTime', date4);
       params.append('userName', sform.userName);
-      params.append('status', sform.status);
+      params.append('orderNo', sform.orderNo);
+      params.append('orderState', sform.orderState);
       params.append('agentName', sform.agentName);
       params.append('brokerName', sform.brokerName);
-      params.append('payType', sform.payType);
+      /* params.append('isUseCard', this.isNotEmpty(sform.isUseCard) ? Number(sform.isUseCard) : '');
+       params.append('upOrDown', sform.upOrDown);*/
 
       console.info(this.exportUrl + "?" + params);
       window.location = this.exportUrl + "?" + params;
-    },
-    //新增运单号
-    handleAdd(index, row) {
-      this.newformAdd = {
-        logisticsNo: ''
-      };
-      this.tqId = row.id;
-      this.userId = row.userId;
-      this.dialogFormVisibleAdd = true;
-    },
-    //新增-确定
-    confirmAdd(formName) {
-      var params = new URLSearchParams();
-      params.append('logisticsNo', this.newformAdd.logisticsNo);
-      params.append('id', this.tqId);
-      params.append('userId', this.userId);
-      let _this = this;
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          axios.post(this.addUrl, params).then(function (response) {
-            if (response.data.code == 1000) {
-              _this.$message({
-                message: '操作成功',
-                type: 'success'
-              });
-              _this.dialogFormVisibleAdd = false;
-              _this.loadData(_this.pagesize, 1);
-            } else {
-              _this.$message({
-                message: response.data.msg,
-                type: 'warning'
-              });
-            }
-          }).catch(function (error) {
-            _this.dialogFormVisibleAdd = false;
-            _this.$message.error('网络错误');
-          });
-        }
-      });
-    },
-    //编辑运单号
-    handleEdit(index, row) {
-      this.newformEdit = {
-        logisticsNo: row.logisticsNo
-      };
-      this.tqId = row.id;
-      this.userId = row.userId;
-      this.dialogFormVisibleEdit = true;
-    },
-    //编辑-确定
-    confirmEdit(formName) {
-      var params = new URLSearchParams();
-      params.append('logisticsNo', this.newformEdit.logisticsNo);
-      params.append('id', this.tqId);
-      params.append('userId', this.userId);
-      let _this = this;
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          axios.post(this.editUrl, params).then(function (response) {
-            if (response.data.code == 1000) {
-              _this.$message({
-                message: '操作成功',
-                type: 'success'
-              });
-              _this.dialogFormVisibleEdit = false;
-              _this.loadData(_this.pagesize, 1);
-            } else {
-              _this.$message({
-                message: response.data.msg,
-                type: 'warning'
-              });
-            }
-          }).catch(function (error) {
-            _this.dialogFormVisibleEdit = false;
-            _this.$message.error('网络错误');
-          });
-        }
-      });
-    },
-    //完成订单
-    completeDialog(index, row) {
-      this.dialogFormVisibleComplete = true;
-      this.row = row;
-      this.tqId = row.id;
-      this.userId = row.userId;
-    },
-    //完成订单
-    handleComplete() {
-      let _this = this;
-      var params = new URLSearchParams();
-      params.append('id', this.tqId);
-      params.append('userId', this.userId);
-      axios.post(this.completeUrl, params).then(function (response) {
-        if (response.data.code == 1000) {
-          _this.$message({
-            message: '操作成功',
-            type: 'success'
-          });
-          _this.dialogFormVisibleComplete = false;
-          _this.loadData(_this.pagesize, 1);
-        } else {
-          _this.$message({
-            message: response.data.msg,
-            type: 'warning'
-          });
-        }
-      }).catch(function (error) {
-        _this.dialogFormVisibleEdit = false;
-        _this.$message.error('网络错误');
-      });
     },
     //当前页改变是执行
     handleCurrentChange(val) {
@@ -597,7 +529,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 682:
+/***/ 714:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(136)(false);
@@ -605,14 +537,14 @@ exports = module.exports = __webpack_require__(136)(false);
 
 
 // module
-exports.push([module.i, ".el-row[data-v-03565f06]{margin-bottom:20px;&:last-child{margin-bottom:0}}.el-col[data-v-03565f06]{border-radius:4px}.bg-purple-dark[data-v-03565f06]{background:#99a9bf}.bg-color1[data-v-03565f06]{color:#da542e;border:.5px solid #da542e;background:#f2dede}.bg-color2[data-v-03565f06]{color:#468849;background:#dff0d8;border:.5px solid #468847}.bg-color3[data-v-03565f06]{color:#27a9e3;background:#d9edf7;border:.5px solid #3a87ad}.bg-color4[data-v-03565f06]{color:#c3881f;background:#fcf8e3;border:.5px solid #c3881e}.bg-color5[data-v-03565f06]{background:#d3dce6}.bg-purple-light[data-v-03565f06]{background:#e5e9f2}.gridBox[data-v-03565f06]{padding-left:20px}.grid-content[data-v-03565f06]{height:75px;border-radius:4px;min-height:75px;text-align:center;font-size:14px}.row-bg[data-v-03565f06]{padding:10px 0;background-color:#f9fafc}", ""]);
+exports.push([module.i, ".el-row[data-v-48657494]{margin-bottom:20px;&:last-child{margin-bottom:0}}.el-col[data-v-48657494]{border-radius:4px}.bg-purple-dark[data-v-48657494]{background:#99a9bf}.bg-color1[data-v-48657494]{color:#da542e;border:.5px solid #da542e;background:#f2dede}.bg-color2[data-v-48657494]{color:#468849;background:#dff0d8;border:.5px solid #468847}.bg-color3[data-v-48657494]{color:#27a9e3;background:#d9edf7;border:.5px solid #3a87ad}.bg-color4[data-v-48657494]{color:#c3881f;background:#fcf8e3;border:.5px solid #c3881e}.bg-color5[data-v-48657494]{background:#d3dce6}.bg-purple-light[data-v-48657494]{background:#e5e9f2}.gridBox[data-v-48657494]{padding-left:20px}.grid-content[data-v-48657494]{height:75px;border-radius:4px;min-height:75px;text-align:center;font-size:14px}.row-bg[data-v-48657494]{padding:10px 0;background-color:#f9fafc}", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ 776:
+/***/ 809:
 /***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -648,8 +580,24 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
+      "label": "交易订单号：",
+      "prop": "orderNo"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "size": "small"
+    },
+    model: {
+      value: (_vm.sform.orderNo),
+      callback: function($$v) {
+        _vm.$set(_vm.sform, "orderNo", $$v)
+      },
+      expression: "sform.orderNo"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
       "label": "订单状态：",
-      "prop": "status"
+      "prop": "orderState"
     }
   }, [_c('el-select', {
     attrs: {
@@ -657,11 +605,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "placeholder": "请选择"
     },
     model: {
-      value: (_vm.sform.status),
+      value: (_vm.sform.orderState),
       callback: function($$v) {
-        _vm.$set(_vm.sform, "status", $$v)
+        _vm.$set(_vm.sform, "orderState", $$v)
       },
-      expression: "sform.status"
+      expression: "sform.orderState"
     }
   }, _vm._l((_vm.stateOptions), function(item) {
     return _c('el-option', {
@@ -673,32 +621,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     })
   }))], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
-      "label": "提取类型：",
-      "prop": "payType"
-    }
-  }, [_c('el-select', {
-    attrs: {
-      "size": "small",
-      "placeholder": "请选择"
-    },
-    model: {
-      value: (_vm.sform.payType),
-      callback: function($$v) {
-        _vm.$set(_vm.sform, "payType", $$v)
-      },
-      expression: "sform.payType"
-    }
-  }, _vm._l((_vm.payTypeOptions), function(item) {
-    return _c('el-option', {
-      key: item.value,
-      attrs: {
-        "label": item.label,
-        "value": item.value
-      }
-    })
-  }))], 1), _vm._v(" "), _c('el-form-item', {
-    attrs: {
-      "label": "申请时间：",
+      "label": "建仓时间：",
       "prop": "startTime"
     }
   }, [_c('el-col', {
@@ -743,11 +666,58 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })], 1)], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
+      "label": "注册时间：",
+      "prop": "regStartTime"
+    }
+  }, [_c('el-col', {
+    attrs: {
+      "span": 10
+    }
+  }, [_c('el-date-picker', {
+    attrs: {
+      "size": "small",
+      "type": "datetime",
+      "placeholder": "选择日期时间",
+      "align": "right"
+    },
+    model: {
+      value: (_vm.sform.regStartTime),
+      callback: function($$v) {
+        _vm.$set(_vm.sform, "regStartTime", $$v)
+      },
+      expression: "sform.regStartTime"
+    }
+  })], 1)], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "prop": "regEndTime"
+    }
+  }, [_c('el-col', {
+    attrs: {
+      "span": 10
+    }
+  }, [_c('el-date-picker', {
+    attrs: {
+      "size": "small",
+      "type": "datetime",
+      "placeholder": "选择日期时间",
+      "align": "right"
+    },
+    model: {
+      value: (_vm.sform.regEndTime),
+      callback: function($$v) {
+        _vm.$set(_vm.sform, "regEndTime", $$v)
+      },
+      expression: "sform.regEndTime"
+    }
+  })], 1)], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
       "label": "代理商：",
       "prop": "agentName"
     }
   }, [_c('el-select', {
+    staticClass: "demo",
     attrs: {
+      "multiple": "multiple",
       "size": "small",
       "placeholder": "请选择"
     },
@@ -777,7 +747,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "prop": "brokerName"
     }
   }, [_c('el-select', {
+    staticClass: "demo2",
     attrs: {
+      "multiple": "multiple",
       "size": "small",
       "placeholder": "请选择"
     },
@@ -829,7 +801,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("导出")])], 1)], 1), _vm._v(" "), _c('el-row', {
     staticClass: "gridBox",
     attrs: {
-      "gutter": 40,
+      "gutter": 60,
       "justify": "end"
     }
   }, [_c('el-col', {
@@ -838,19 +810,31 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('div', {
     staticClass: "grid-content bg-color1"
-  }, [_c('p', [_vm._v("黄金出货总计（克）")]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.orderTotal.goldNumSum))])])]), _vm._v(" "), _c('el-col', {
+  }, [_c('p', [_vm._v("合约总计（元）")]), _vm._v(" "), _c('p', {
+    attrs: {
+      "id": "bzjId"
+    }
+  })])]), _vm._v(" "), _c('el-col', {
     attrs: {
       "span": 5
     }
   }, [_c('div', {
     staticClass: "grid-content bg-color2"
-  }, [_c('p', [_vm._v("手续费（元）")]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.orderTotal.serviceMoneySum))])])]), _vm._v(" "), _c('el-col', {
+  }, [_c('p', [_vm._v("盈亏总计（元）")]), _vm._v(" "), _c('p', {
+    attrs: {
+      "id": "ykId"
+    }
+  })])]), _vm._v(" "), _c('el-col', {
     attrs: {
       "span": 5
     }
   }, [_c('div', {
-    staticClass: "grid-content bg-color3"
-  }, [_c('p', [_vm._v("物流费（元）")]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.orderTotal.logisticsFeeSum))])])])], 1), _vm._v(" "), _c('el-table', {
+    staticClass: "grid-content bg-color4"
+  }, [_c('p', [_vm._v("合约手续费总计（元）")]), _vm._v(" "), _c('p', {
+    attrs: {
+      "id": "poundageId"
+    }
+  })])])], 1), _vm._v(" "), _c('el-table', {
     staticStyle: {
       "width": "auto",
       "display": "inline-block"
@@ -876,6 +860,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
+      "prop": "registerTime",
+      "label": "注册时间",
+      "width": "180"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
       "prop": "agentName",
       "label": "代理商",
       "width": "180"
@@ -888,130 +878,100 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
-      "prop": "payType",
-      "label": "提取类型",
+      "prop": "orderNo",
+      "label": "交易订单号",
       "width": "220"
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
-      "prop": "goldNum",
-      "label": "数量",
+      "prop": "orderState",
+      "label": "订单状态",
+      "width": "220"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "prop": "productName",
+      "label": "合约类型",
+      "width": "180"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "prop": "upOrDown",
+      "label": "方向",
       "width": "100"
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
-      "prop": "goldTotalWeight",
-      "label": "克重",
+      "prop": "handNumber",
+      "label": "黄金克数",
       "width": "100"
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
-      "prop": "goldBasePrice",
-      "label": "买入价",
-      "width": "100"
+      "prop": "buyPreRmb",
+      "label": "建仓前余额",
+      "width": "180"
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
-      "prop": "goldMoney",
+      "prop": "buyAfterRmb",
+      "label": "建仓后余额",
+      "width": "180"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "prop": "ensureAmount",
+      "label": "合约金额",
+      "width": "180"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "prop": "ensureAmount",
       "label": "买入金额",
       "width": "180"
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
-      "prop": "serviceMoney",
-      "label": "手续费",
+      "prop": "poundage",
+      "label": "合约手续费",
       "width": "180"
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
-      "prop": "logisticsFee",
-      "label": "物流费",
+      "prop": "cost",
+      "label": "交易成本",
       "width": "180"
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
-      "prop": "contactName",
-      "label": "联系人",
-      "width": "180"
-    }
-  }), _vm._v(" "), _c('el-table-column', {
-    attrs: {
-      "prop": "contactPhone",
-      "label": "联系电话",
-      "width": "180"
-    }
-  }), _vm._v(" "), _c('el-table-column', {
-    attrs: {
-      "prop": "deliveryAddress",
-      "label": "收货地址",
-      "width": "250"
-    }
-  }), _vm._v(" "), _c('el-table-column', {
-    attrs: {
-      "prop": "createTime",
-      "label": "申请提取时间",
-      "width": "180"
-    }
-  }), _vm._v(" "), _c('el-table-column', {
-    attrs: {
-      "prop": "sendTime",
-      "label": "发货时间",
-      "width": "180"
-    }
-  }), _vm._v(" "), _c('el-table-column', {
-    attrs: {
-      "prop": "status",
-      "label": "状态",
+      "prop": "openPositionPrice",
+      "label": "买入点数",
       "width": "100"
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
-      "prop": "logisticsNo",
-      "label": "物流单号",
+      "prop": "closePositionPrice",
+      "label": "卖出点数",
+      "width": "100"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "prop": "createTime",
+      "label": "建仓时间",
       "width": "180"
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
-      "label": "操作",
-      "fixed": "right",
-      "width": "200"
-    },
-    scopedSlots: _vm._u([{
-      key: "default",
-      fn: function(scope) {
-        return [(scope.row.status == '未发货') ? [_c('el-button', {
-          attrs: {
-            "size": "small",
-            "type": "primary"
-          },
-          on: {
-            "click": function($event) {
-              _vm.handleAdd(scope.$index, scope.row)
-            }
-          }
-        }, [_vm._v("填入单号")])] : _vm._e(), _vm._v(" "), (scope.row.status == '已发货') ? [_c('el-button', {
-          attrs: {
-            "size": "small",
-            "type": "primary"
-          },
-          on: {
-            "click": function($event) {
-              _vm.handleEdit(scope.$index, scope.row)
-            }
-          }
-        }, [_vm._v("修改单号")]), _vm._v(" "), _c('el-button', {
-          attrs: {
-            "size": "small",
-            "type": "danger"
-          },
-          on: {
-            "click": function($event) {
-              _vm.completeDialog(scope.$index, scope.row)
-            }
-          }
-        }, [_vm._v("订单完成")])] : _vm._e()]
-      }
-    }])
+      "prop": "endTime",
+      "label": "平仓时间",
+      "width": "180"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "prop": "profitLossNumber",
+      "label": "盈亏",
+      "width": "100"
+    }
   })], 1), _vm._v(" "), _c('br'), _c('br'), _vm._v(" "), _c('el-pagination', {
     attrs: {
       "current-page": _vm.currentPage,
@@ -1024,171 +984,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "size-change": _vm.handleSizeChange,
       "current-change": _vm.handleCurrentChange
     }
-  }), _vm._v(" "), _c('el-dialog', {
-    attrs: {
-      "title": "请填入物流单号",
-      "center": "",
-      "visible": _vm.dialogFormVisibleAdd,
-      "width": "25%"
-    },
-    on: {
-      "update:visible": function($event) {
-        _vm.dialogFormVisibleAdd = $event
-      }
-    }
-  }, [_c('el-form', {
-    ref: "newformAdd",
-    attrs: {
-      "model": _vm.newformAdd,
-      "rules": _vm.rules
-    }
-  }, [_c('el-form-item', {
-    attrs: {
-      "label": "物流单号：",
-      "label-width": _vm.formLabelWidth,
-      "prop": "logisticsNo"
-    }
-  }, [_c('el-input', {
-    attrs: {
-      "size": "small",
-      "auto-complete": "off",
-      "maxlength": 25
-    },
-    model: {
-      value: (_vm.newformAdd.logisticsNo),
-      callback: function($$v) {
-        _vm.$set(_vm.newformAdd, "logisticsNo", $$v)
-      },
-      expression: "newformAdd.logisticsNo"
-    }
-  })], 1), _vm._v(" "), _c('el-form-item', {
-    attrs: {
-      "label": "说明：",
-      "label-width": _vm.formLabelWidth
-    }
-  }, [_vm._v("\n            物流单号保存后，默认发货。\n          ")])], 1), _vm._v(" "), _c('div', {
-    staticClass: "dialog-footer",
-    attrs: {
-      "slot": "footer"
-    },
-    slot: "footer"
-  }, [_c('el-button', {
-    attrs: {
-      "size": "small",
-      "type": "primary"
-    },
-    on: {
-      "click": function($event) {
-        _vm.confirmAdd('newformAdd')
-      }
-    }
-  }, [_vm._v("确 定")]), _vm._v(" "), _c('el-button', {
-    attrs: {
-      "size": "small"
-    },
-    on: {
-      "click": function($event) {
-        _vm.dialogFormVisibleAdd = false
-      }
-    }
-  }, [_vm._v("取 消")])], 1)], 1), _vm._v(" "), _c('el-dialog', {
-    attrs: {
-      "title": "请填入物流单号",
-      "center": "",
-      "visible": _vm.dialogFormVisibleEdit,
-      "width": "30%"
-    },
-    on: {
-      "update:visible": function($event) {
-        _vm.dialogFormVisibleEdit = $event
-      }
-    }
-  }, [_c('el-form', {
-    ref: "newformEdit",
-    attrs: {
-      "model": _vm.newformEdit,
-      "rules": _vm.rules
-    }
-  }, [_c('el-form-item', {
-    attrs: {
-      "label": "物流单号：",
-      "label-width": _vm.formLabelWidth,
-      "prop": "logisticsNo"
-    }
-  }, [_c('el-input', {
-    attrs: {
-      "size": "small",
-      "auto-complete": "off",
-      "maxlength": 25
-    },
-    model: {
-      value: (_vm.newformEdit.logisticsNo),
-      callback: function($$v) {
-        _vm.$set(_vm.newformEdit, "logisticsNo", $$v)
-      },
-      expression: "newformEdit.logisticsNo"
-    }
-  })], 1)], 1), _vm._v(" "), _c('div', {
-    staticClass: "dialog-footer",
-    attrs: {
-      "slot": "footer"
-    },
-    slot: "footer"
-  }, [_c('el-button', {
-    attrs: {
-      "size": "small",
-      "type": "primary"
-    },
-    on: {
-      "click": function($event) {
-        _vm.confirmEdit('newformEdit')
-      }
-    }
-  }, [_vm._v("确 定")]), _vm._v(" "), _c('el-button', {
-    attrs: {
-      "size": "small"
-    },
-    on: {
-      "click": function($event) {
-        _vm.dialogFormVisibleEdit = false
-      }
-    }
-  }, [_vm._v("取 消")])], 1)], 1), _vm._v(" "), _c('el-dialog', {
-    attrs: {
-      "title": "确认执行此操作？",
-      "center": "",
-      "width": "30%",
-      "visible": _vm.dialogFormVisibleComplete
-    },
-    on: {
-      "update:visible": function($event) {
-        _vm.dialogFormVisibleComplete = $event
-      }
-    }
-  }, [_c('div', {
-    staticClass: "dialog-footer",
-    attrs: {
-      "slot": "footer"
-    },
-    slot: "footer"
-  }, [_c('el-button', {
-    attrs: {
-      "size": "small"
-    },
-    on: {
-      "click": function($event) {
-        _vm.dialogFormVisibleComplete = false
-      }
-    }
-  }, [_vm._v("取 消")]), _vm._v(" "), _c('el-button', {
-    attrs: {
-      "size": "small",
-      "type": "primary"
-    },
-    on: {
-      "click": _vm.handleComplete
-    }
-  }, [_vm._v("确 定")])], 1)])], 1)])
+  })], 1)])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     attrs: {
@@ -1211,22 +1007,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "href": "javascript:;"
     }
-  }, [_vm._v("金条订单")])]), _vm._v(" "), _c('h1')])
+  }, [_vm._v("金权交易")])]), _vm._v(" "), _c('h1')])
 }]}
 
 /***/ }),
 
-/***/ 860:
+/***/ 892:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(682);
+var content = __webpack_require__(714);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(198)("72715925", content, true);
+var update = __webpack_require__(198)("d042000e", content, true);
 
 /***/ })
 

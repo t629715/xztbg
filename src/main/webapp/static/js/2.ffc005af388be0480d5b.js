@@ -156,6 +156,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     //model 初始数据
@@ -175,9 +182,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 money: '',
                 payType: '03',
                 payTypeDesc: "支付宝",
+                thirdName: 1,
                 payOrderId: ""
             },
-
+            rechargeDescriptions: [{
+                value: 1,
+                label: '充值'
+            }, {
+                value: 2,
+                label: '运费退回'
+            }],
             payUrl: this.api + "userRecharge/recharge",
             formLabelWidth: '120px',
             dialogForConfirm: false
@@ -195,6 +209,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             params.append('money', this.formForPay.money * 100);
             params.append('payType', this.formForPay.payType + "");
             params.append('payOrderId', this.formForPay.payOrderId);
+            params.append('thirdName', this.formForPay.thirdName);
             axios.post(this.payUrl, params).then(function (response) {
                 if (response.data.code == 1000) {
                     _this.dialogForConfirm = false;
@@ -356,6 +371,34 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       expression: "formForPay.payOrderId"
     }
   })], 1), _vm._v(" "), _c('el-form-item', {
+    staticStyle: {
+      "margin-left": "100px"
+    },
+    attrs: {
+      "label": "充值说明：",
+      "prop": "orderState"
+    }
+  }, [_c('el-select', {
+    attrs: {
+      "size": "small",
+      "placeholder": "请选择"
+    },
+    model: {
+      value: (_vm.formForPay.thirdName),
+      callback: function($$v) {
+        _vm.$set(_vm.formForPay, "thirdName", $$v)
+      },
+      expression: "formForPay.thirdName"
+    }
+  }, _vm._l((_vm.rechargeDescriptions), function(item) {
+    return _c('el-option', {
+      key: item.value,
+      attrs: {
+        "label": item.label,
+        "value": item.value
+      }
+    })
+  }))], 1), _vm._v(" "), _c('el-form-item', {
     staticStyle: {
       "margin-left": "100px"
     },

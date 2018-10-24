@@ -251,7 +251,7 @@ public class UserRechargeController {
      */
     @RequestMapping(value="/recharge",method = RequestMethod.POST)
     @ResponseBody
-    public Object recharge(HttpServletRequest request, String userName, String money, String payType, String payOrderId) throws ParseException, GlobalException {
+    public Object recharge(HttpServletRequest request, String userName, String money, String payType, String payOrderId,String thirdName) throws ParseException, GlobalException {
         CommonResponse cr = new CommonResponse();
         //操作日志
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -269,7 +269,7 @@ public class UserRechargeController {
                 Subject subject = SecurityUtils.getSubject();
                 boolean is = subject.hasRole("人工充值");
                 if (is){
-                    cr = userRechargeService.manualRecharge(users, userName, money, payType, payOrderId);
+                    cr = userRechargeService.manualRecharge(users, userName, money, payType, payOrderId,thirdName);
                 }else {
                     cr.setMsg("没有操作权限");
                     cr.setCode(Constant.RESCODE_NOAUTH);

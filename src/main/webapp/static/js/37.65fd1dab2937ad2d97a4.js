@@ -148,6 +148,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   //model 初始数据
@@ -538,7 +539,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "prop": "brokerName"
     }
   }, [_c('el-select', {
+    staticClass: "demo2",
     attrs: {
+      "multiple": "multiple",
       "size": "small",
       "placeholder": "请选择"
     },

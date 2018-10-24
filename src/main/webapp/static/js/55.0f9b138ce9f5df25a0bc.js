@@ -68,6 +68,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   //model 初始数据
@@ -122,6 +124,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 str += "，微信";
               } else {
                 str += "微信";
+              }
+            } else if (list[i].payWays[j].payWay == 5) {
+              if (str != "") {
+                str += "，官方支付宝";
+              } else {
+                str += "官方支付宝";
+              }
+            } else if (list[i].payWays[j].payWay == 6) {
+              if (str != "") {
+                str += "，官方微信";
+              } else {
+                str += "官方微信";
               }
             }
           }
@@ -316,7 +330,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "label": "2",
       "name": "payWays"
     }
-  }, [_vm._v("微信")])], 1)], 1)], 1), _vm._v(" "), _c('div', {
+  }, [_vm._v("微信")]), _vm._v(" "), _c('el-checkbox', {
+    attrs: {
+      "label": "5",
+      "name": "payWays"
+    }
+  }, [_vm._v("官方支付宝")]), _vm._v(" "), _c('el-checkbox', {
+    attrs: {
+      "label": "6",
+      "name": "payWays"
+    }
+  }, [_vm._v("官方微信")])], 1)], 1)], 1), _vm._v(" "), _c('div', {
     staticClass: "dialog-footer",
     attrs: {
       "slot": "footer"

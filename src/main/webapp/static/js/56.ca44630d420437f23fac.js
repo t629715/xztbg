@@ -245,6 +245,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     //model 初始数据
@@ -333,6 +341,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             totalNum: 0,
             tableData: [],
             //disabledEdit: true,
+            //checkbox:false,
             dialogFormVisible: false,
             dialogFormVisibleAdd: false,
             dialogFormVisibleEdit: false,
@@ -455,6 +464,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             params.append('endTime', date2);
             params.append('userName', this.sform.userName);
             params.append('status', this.sform.status);
+
             params.append('agentName', this.sform.agentName);
             params.append('brokerName', this.sform.brokerName);
             params.append('payType', this.sform.payType);
@@ -474,7 +484,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         //根据代理商取经纪人列表
         getBrokerOptions() {
             let _this = this;
-            _this.sform.brokerName = "";
+            _this.sform.brokerName = [];
             var params = new URLSearchParams();
 
             if (_this.sform.agentName == null || _this.sform.agentName == "") {
@@ -840,7 +850,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "prop": "agentName"
     }
   }, [_c('el-select', {
+    staticClass: "demo",
     attrs: {
+      "multiple": "multiple",
       "size": "small",
       "placeholder": "请选择"
     },
@@ -870,7 +882,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "prop": "brokerName"
     }
   }, [_c('el-select', {
+    staticClass: "demo2",
     attrs: {
+      "multiple": "multiple",
       "size": "small",
       "placeholder": "请选择"
     },
@@ -1377,7 +1391,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('i', {
     staticClass: "icon-home"
-  }), _vm._v("\n            交易管理")]), _vm._v(" "), _c('a', {
+  }), _vm._v("\n            出入金管理")]), _vm._v(" "), _c('a', {
     staticClass: "current",
     attrs: {
       "href": "javascript:;"

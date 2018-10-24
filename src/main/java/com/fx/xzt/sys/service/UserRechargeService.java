@@ -94,9 +94,10 @@ public interface UserRechargeService extends IService<UserRecharge>{
 	 * @param rechargeAccount 充值账户
 	 * @param money 充值金额
 	 * @param payWay 支付方式
+	 * @param thirdName   充值说明
 	 * @param rechargeNo 充值单号
 	 * @return
 	 */
-	CommonResponse manualRecharge(Users users, String rechargeAccount, String money, String payWay, String rechargeNo) throws GlobalException;
+	CommonResponse manualRecharge(Users users, String rechargeAccount, String money, String payWay, String rechargeNo,String thirdName) throws GlobalException;
 
 }

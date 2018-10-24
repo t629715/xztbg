@@ -211,12 +211,13 @@ public class UserRechargeServiceImpl extends BaseService<UserRecharge> implement
 	 * @param rechargeAccount 充值账户
 	 * @param money 充值金额
 	 * @param payWay 支付方式
+	 * @param thirdName   充值说明
 	 * @param rechargeNo 充值单号
 	 * @return
 	 */
 	@Override
 	@Transactional
-	public CommonResponse manualRecharge(Users users, String rechargeAccount, String money, String payWay, String rechargeNo) throws GlobalException {
+	public CommonResponse manualRecharge(Users users, String rechargeAccount, String money, String payWay, String rechargeNo,String thirdName) throws GlobalException {
 		CommonResponse commonResponse = new CommonResponse();
 		//验证操作人是否登录
 		if (users == null){
@@ -271,7 +272,12 @@ public class UserRechargeServiceImpl extends BaseService<UserRecharge> implement
 			//设置交易号
 			userRecharge.setTradeNo(rechargeNo);
 			//设置三方平台的名称 -- 本方法为  人工充值
-			userRecharge.setThirdName("后台管理-人工充值");
+			if ("1".equals(thirdName)) {
+				userRecharge.setThirdName("充值");
+			}else {
+				userRecharge.setThirdName("运费退回");
+			}
+
 			//设置记录生成时间
 			userRecharge.setCreateTime(new Date());
 			int i = userRechargeMapper.insertOneRecord(userRecharge);
