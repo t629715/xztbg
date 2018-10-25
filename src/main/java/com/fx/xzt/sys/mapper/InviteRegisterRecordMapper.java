@@ -15,6 +15,13 @@ public interface InviteRegisterRecordMapper extends BaseMapper<InviteRegisterRec
     List<Map<String, Object>> selectAllRecords (Map<String,Object> map);
 
     /**
+     * 邀友返佣记录查询
+     * @param map
+     * @return
+     */
+    List<Map<String, Object>> selectInviteFriendsRecords (Map<String,Object> map);
+
+    /**
      * @CreateBy：tianliya
      * @CreateTime：2018/7/19 13:44
      * @Description：获取已领奖的最新的交易时间

@@ -62,6 +62,42 @@ public class InviteRegisterRecordServiceImpl implements InviteRegisterRecordServ
     }
 
     /**
+     * 邀友返佣明细
+     * @param userName
+     * @param startTime
+     * @param endTime
+     * @param acceptPrize
+     * @param agentName
+     * @param brokerName
+     * @param isView
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public PageInfo<Map<String, Object>> getSelectInviteFriendsAll(String userName, String startTime, String endTime, String acceptPrize, String agentName, String brokerName, String isView, Integer pageNum, Integer pageSize) {
+        try {
+            Map<String, Object> map = new HashMap<String, Object>();
+            DecimalFormat df = new DecimalFormat("#.00");
+            map.put("userName", userName);
+            map.put("startTime", startTime);
+            map.put("endTime", endTime);
+            map.put("acceptPrize", acceptPrize);
+            map.put("agentName", agentName);
+            map.put("brokerName", brokerName);
+            map.put("isView", isView);
+            PageHelper.startPage(pageNum, pageSize);
+            List<Map<String, Object>> list = inviteRegisterRecordMapper.selectInviteFriendsRecords(map);
+            PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
+            return pagehelper;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new GlobalException("邀友返佣记录查询", "邀友返佣记录查询出现异常");
+        }
+    }
+
+    /**
      * 导出
      */
 
@@ -88,6 +124,28 @@ public class InviteRegisterRecordServiceImpl implements InviteRegisterRecordServ
             throw new GlobalException("邀请注册记录查询", "邀请注册记录查询出现异常");
         }
 
+    }
+
+    @Override
+    public List<Map<String, Object>> exportInviteFriendsRecords(String userName, String startTime, String endTime, String acceptPrize, String isView, String agentName, String brokerName) {
+        try {
+            Map<String, Object> map = new HashMap<String, Object>();
+
+            map.put("userName", userName);
+            map.put("startTime", startTime);
+            map.put("endTime", endTime);
+            map.put("acceptPrize", acceptPrize);
+            map.put("agentName", agentName);
+            map.put("brokerName", brokerName);
+            map.put("isView", isView);
+            List<Map<String, Object>> list = inviteRegisterRecordMapper.selectInviteFriendsRecords(map);
+            list = this.handleData(list);
+            return list;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new GlobalException("邀友返佣记录查询", "邀友返佣记录查询出现异常");
+        }
     }
 
     private List handleData(List<Map<String, Object>> list) {

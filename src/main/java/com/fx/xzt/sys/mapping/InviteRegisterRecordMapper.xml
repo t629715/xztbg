@@ -94,4 +94,49 @@
     <select id="selectPointCont" resultType="java.util.Map">
         select point_count pointCont from gold_right_deal_conf
     </select>
+
+    <!--邀友返佣记录查询-->
+    <select id="selectInviteFriendsRecords" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT irr.id id,irr.inviter_id inviterId,
+
+        <if test='isView == "1"'>
+            ul.UserName inviterName,
+        </if>
+        <if test='isView != "1"'>
+            INSERT(ul.UserName, 4, 4, '****') inviterName,
+        </if>
+        irr.userId userId,
+        <if test='isView == "1"'>
+            ul2.UserName userName,
+        </if>
+        <if test='isView != "1"'>
+            INSERT(ul2.UserName, 4, 4, '****') userName,
+        </if>
+        irr.expire_time expireTime,irr.buy_time buyTime
+        ,irr.reward_money rewardMoney
+        FROM inviter_reward_record AS irr
+        LEFT JOIN User_Login ul ON irr.inviter_id=ul.UserID
+        LEFT JOIN User_Login ul2 ON irr.userId=ul2.UserID
+        LEFT JOIN users ua ON ul2.agent_id = ua.id
+        LEFT JOIN users ub ON ul2.broker_id = ub.id
+        WHERE 1=1
+        <if test="userName != null and userName != '' ">
+            and ul.UserName = #{userName,jdbcType=VARCHAR}
+        </if>
+        <if test="startTime !=null and startTime !='' ">
+            and irr.buy_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="endTime !=null and endTime != '' ">
+            and irr.buy_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="agentName != null and agentName !='' ">
+            and ua.id = #{agentName,jdbcType=BIGINT}
+        </if>
+        <if test="brokerName != null and brokerName !='' ">
+            and ub.id = #{brokerName,jdbcType=BIGINT}
+        </if>
+        order BY irr.buy_time DESC
+
+    </select>
+
 </mapper>
