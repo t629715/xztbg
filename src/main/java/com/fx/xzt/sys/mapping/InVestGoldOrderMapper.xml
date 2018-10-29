@@ -253,7 +253,7 @@
 				and pay_type = #{payType,jdbcType=INTEGER}
 			</if>
 			<if test="agentName != null">
-				and ua.id in
+				and agent_id in
 			  <foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
 				<if test="item != null">
 						${item}
@@ -261,7 +261,7 @@
 			  </foreach>
 			</if>
 			<if test="brokerName != null">
-				and ub.id in
+				and broker_id in
 			  <foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
 				<if test="item != null">
 						${item}
