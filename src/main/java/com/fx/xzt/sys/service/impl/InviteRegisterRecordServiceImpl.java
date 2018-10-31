@@ -93,7 +93,7 @@ public class InviteRegisterRecordServiceImpl implements InviteRegisterRecordServ
                     Object rewardMoneyObj = mapList.get("rewardMoney");
                     if (rewardMoneyObj != null && rewardMoneyObj != "") {
                         Double rewardMoney = Double.valueOf(rewardMoneyObj.toString());
-                        mapList.put("rewardMoney", new DecimalFormat("0").format(rewardMoney / 10000));
+                        mapList.put("rewardMoney",(new BigDecimal(rewardMoney).multiply(new BigDecimal(0.0001))).intValue());
                     }
                 }
             }
