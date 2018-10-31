@@ -88,6 +88,15 @@ public class InviteRegisterRecordServiceImpl implements InviteRegisterRecordServ
             map.put("isView", isView);
             PageHelper.startPage(pageNum, pageSize);
             List<Map<String, Object>> list = inviteRegisterRecordMapper.selectInviteFriendsRecords(map);
+            if (list != null && list.size() > 0) {
+                for (Map<String, Object> mapList : list) {
+                    Object rewardMoneyObj = mapList.get("rewardMoney");
+                    if (rewardMoneyObj != null && rewardMoneyObj != "") {
+                        Double rewardMoney = Double.valueOf(rewardMoneyObj.toString());
+                        mapList.put("rewardMoney", new DecimalFormat("0").format(rewardMoney / 10000));
+                    }
+                }
+            }
             PageInfo<Map<String, Object>> pagehelper = new PageInfo<>(list);
             return pagehelper;
 
