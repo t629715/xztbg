@@ -219,7 +219,8 @@ public class ConstantUtil {
         WX("微信","04"),
         ZFBSM("支付宝扫码","05"),
         GFZFB("官方支付宝","06"),
-        GFWX("官方微信","07");
+        GFWX("官方微信","07"),
+        GFZFB1("官方支付宝(1)","08");
         private String name;
         private String index;
         private rechargeChannel(String name,String index){
