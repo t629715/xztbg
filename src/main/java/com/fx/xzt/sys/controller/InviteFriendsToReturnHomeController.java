@@ -19,6 +19,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -133,7 +134,7 @@ public class InviteFriendsToReturnHomeController {
                 if (role != null && role.get("roleIsView") != null) {
                     isView = role.get("roleIsView").toString();
                 }
-                List<Map<String, Object>> list = inviteRegisterRecordService.exportInviteFriendsRecords(userName, startTime, endTime, isView, acceptPrize,agentName ,brokerName);
+                List<Map<String, Object>> list = inviteRegisterRecordService.exportInviteFriendsRecords(userName, startTime, endTime, acceptPrize, isView ,agentName ,brokerName);
                 if (list != null && list.size() > 0) {
                     for (Map<String, Object> map : list) {
 
@@ -144,7 +145,12 @@ public class InviteFriendsToReturnHomeController {
 
                         Object buyTimeObj = map.get("buyTime");
                         if (buyTimeObj != null && buyTimeObj != "") {
-                            map.put("expireTime", sdf.format(sdf.parse(buyTimeObj.toString())));
+                            map.put("buyTime", sdf.format(sdf.parse(buyTimeObj.toString())));
+                        }
+                        Object rewardMoneyObj = map.get("rewardMoney");
+                        if (rewardMoneyObj != null && rewardMoneyObj != "") {
+                            Double rewardMoney = Double.valueOf(rewardMoneyObj.toString());
+                            map.put("rewardMoney",(new BigDecimal(rewardMoney).multiply(new BigDecimal(0.0001))).intValue());
                         }
                     }
                     POIUtils poi = new POIUtils();

@@ -148,7 +148,7 @@ public class InviteRegisterRecordServiceImpl implements InviteRegisterRecordServ
             map.put("brokerName", brokerName);
             map.put("isView", isView);
             List<Map<String, Object>> list = inviteRegisterRecordMapper.selectInviteFriendsRecords(map);
-            list = this.handleData(list);
+//            list = this.handleData(list);
             return list;
 
         } catch (Exception e) {
