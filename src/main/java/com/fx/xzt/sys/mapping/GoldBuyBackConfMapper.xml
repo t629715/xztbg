@@ -20,10 +20,10 @@
     <result column="create_by" property="createBy" jdbcType="BIGINT" />
   </resultMap>
 
-  <select id="selectGoldBuyBack" resultType="java.util.Map" parameterType="java.util.Map" >
-    select 
-   id, company_address, company_phone, name, pick_up_time, revise_value, revise_price,
-    type, state, is_status, pre_num, invalid_time, spare, gtm_create, gmt_modified, create_by
+  <select id="selectGoldBuyBack" resultType="java.util.Map" >
+    select id, company_address companyAddress, company_phone companyPhone, name, pick_up_time pickUpTime,
+       revise_value reviseValue, revise_price revisePrice, type, state, is_status isStatus, pre_num preNum,
+       invalid_time invalidTime, spare, gtm_create gtmCreate, gmt_modified gmtModified, create_by createBy
     from gold_buy_back_conf  where type=2
 
   </select>
@@ -131,7 +131,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.fx.xzt.sys.entity.GoldBuyBackConf" >
+  <update id="updateGoldBuyBackByid" parameterType="com.fx.xzt.sys.entity.GoldBuyBackConf" >
     update gold_buy_back_conf
     <set >
       <if test="companyAddress != null" >
