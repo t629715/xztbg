@@ -9,6 +9,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -135,6 +136,7 @@ public class GoldBuyBackOrderServiceimpl extends BaseService<GoldBuyBackOrder> i
      * @return
      */
     @Override
+    @Transactional
     public int updateState(String id) {
         GoldBuyBackOrder goldBuyBackOrder=new GoldBuyBackOrder();
         goldBuyBackOrder.setId(Long.parseLong(id));

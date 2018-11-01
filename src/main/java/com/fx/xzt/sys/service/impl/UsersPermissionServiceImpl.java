@@ -270,7 +270,7 @@ public class UsersPermissionServiceImpl extends BaseService<UsersPermission> imp
 			map.put("rids", rids);
 		}
 		List<UsersPermission> data = usersPermissionMapper.getByRids(map);
-		if (!"admin".equals(userName)){
+		/*if (!"admin".equals(userName)){
 			Iterator<UsersPermission> it = data.iterator();
 			while(it.hasNext()){
 				UsersPermission x = it.next();
@@ -278,7 +278,7 @@ public class UsersPermissionServiceImpl extends BaseService<UsersPermission> imp
 					it.remove();
 				}
 			}
-		}
+		}*/
 		Map<String,Object> permission = new HashMap<String,Object>();
 		permission.put("icon", "");
 		permission.put("pid", -1);
