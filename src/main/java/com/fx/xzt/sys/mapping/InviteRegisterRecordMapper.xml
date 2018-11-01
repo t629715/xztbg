@@ -47,7 +47,9 @@
         <if test="brokerName != null and brokerName !='' ">
             and ub.id = #{brokerName,jdbcType=BIGINT}
         </if>
+
        order BY irr.create_time DESC
+
 
     </select>
 
@@ -135,6 +137,7 @@
         <if test="brokerName != null and brokerName !='' ">
             and ub.id = #{brokerName,jdbcType=BIGINT}
         </if>
+        and (irr.buy_time BETWEEN '2018-11-01' AND '2018-12-31')
         order BY irr.buy_time DESC
 
     </select>
