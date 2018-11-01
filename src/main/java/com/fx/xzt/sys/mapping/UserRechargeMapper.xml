@@ -61,6 +61,10 @@
 				and r.RechargeChannel =
 				#{rechargechannel,jdbcType=VARCHAR}
 			</if>
+			<if test="PlatformName != null and PlatformName!='' ">
+				and r.PlatformName =
+				#{PlatformName,jdbcType=VARCHAR}
+			</if>
 			<if test="status != null">
 				and r.Status = #{status,jdbcType=SMALLINT}
 			</if>
@@ -97,6 +101,10 @@
 			<if test="rechargechannel != null and rechargechannel!='' ">
 				and r.RechargeChannel =
 				#{rechargechannel,jdbcType=VARCHAR}
+			</if>
+			<if test="PlatformName != null and PlatformName!='' ">
+				and r.PlatformName =
+				#{PlatformName,jdbcType=VARCHAR}
 			</if>
 			<if test="status != null">
 				and r.Status = #{status,jdbcType=SMALLINT}

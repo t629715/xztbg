@@ -75,7 +75,7 @@ public class UserRechargeController {
     @ResponseBody
     public Object selectByUserRecharge(HttpServletRequest request, String userName,
 			String startTime, String endTime, String agentName,
-			String brokerName, String rechargechannel, Integer status,
+			String brokerName, String rechargechannel, Integer status,String PlatformName,
 			@RequestParam Integer pageNum, @RequestParam Integer pageSize) throws ParseException {
         CommonResponse cr = new CommonResponse();
         //操作日志
@@ -97,7 +97,7 @@ public class UserRechargeController {
 		            isView = role.get("roleIsView").toString();
 		        }
                 PageInfo<Map<String, Object>> pageInfo = userRechargeService.selectByRecharge(userName, startTime, endTime, 
-                		agentName, brokerName, rechargechannel, status, isView, pageNum, pageSize);
+                		agentName, brokerName, rechargechannel,PlatformName, status, isView, pageNum, pageSize);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(pageInfo);
                 cr.setMsg("操作成功！");
@@ -141,7 +141,7 @@ public class UserRechargeController {
 	@RequestMapping(value="/excelUserRecharge")
     @ResponseBody
     public void excelUserRecharge(HttpServletRequest request, HttpServletResponse response, String userName, String startTime, String endTime, String agentName,
-			String brokerName, String rechargechannel, Integer status) throws Exception{
+			String brokerName, String rechargechannel,String PlatformName, Integer status) throws Exception{
 		//操作日志
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         LogRecord log = new LogRecord();
@@ -163,7 +163,7 @@ public class UserRechargeController {
 		            isView = role.get("roleIsView").toString();
 		        }
                 String agentNameStr = agentName;
-                List<Map<String, Object>> list = userRechargeService.excelRecharge(userName, startTime, endTime, agentNameStr, brokerName, rechargechannel, status, isView);
+                List<Map<String, Object>> list = userRechargeService.excelRecharge(userName, startTime, endTime, agentNameStr, brokerName, rechargechannel,PlatformName, status, isView);
                 POIUtils poi = new POIUtils();
                 String[] heads = {"用户账号", "用户姓名", "代理商", "经纪人", "充值金额", "商户订单号", "充值渠道", "充值时间"};
                 String[] colums = {"UserName", "realName", "agentName", "brokerName", "RMBAmt", "MerchantOrderNum", "RechargeChannel", "RechargeTime"};
@@ -199,7 +199,7 @@ public class UserRechargeController {
 	@RequestMapping(value="/selectByUserRechargeCount")
     @ResponseBody
     public Object selectByUserRechargeCount(HttpServletRequest request, String userName, String startTime, String endTime, String agentName,
-			String brokerName, String rechargechannel, Integer status) throws ParseException{
+			String brokerName, String rechargechannel,String PlatformName, Integer status) throws ParseException{
         CommonResponse cr = new CommonResponse();
       //操作日志
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -215,7 +215,7 @@ public class UserRechargeController {
             Users users = (Users) httpSession.getAttribute("currentUser");
             if (users != null) {
                 Map<String, Object> map = new HashMap<String, Object>();
-                map = userRechargeService.selectByRechargeCount(userName, startTime, endTime, agentName, brokerName, rechargechannel, status);
+                map = userRechargeService.selectByRechargeCount(userName, startTime, endTime, agentName, brokerName, rechargechannel,PlatformName, status);
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
                 cr.setData(map);
                 cr.setMsg("操作成功！");
@@ -317,4 +317,6 @@ public class UserRechargeController {
 		String[] columns = {"username","rechargeid","merchantordernum","rmbamt","uamt","rechargeChannelName","formatRechargetime","statusName"};
 		poi.doExport(request, response, list, "充值记录", "充值记录", heads, columns);
 	}
+
+
 }

@@ -44,6 +44,12 @@ public interface UserRechargeMapper extends BaseMapper<UserRecharge>{
     Map<String, Object> selectByRechargeCount(Map<String,Object> map);
 
 	/**
+	 * liaijiao
+	 * 获取充值平台
+	 * @return
+	 */
+	List<Map<String,Object>> selectPlatformName();
+	/**
 	 * @CreateBy：tianliya
 	 * @CreateTime：2018/4/23 13:24
 	 * @Description：人工充值的记录

@@ -102,9 +102,10 @@ public class UserRechargeServiceImpl extends BaseService<UserRecharge> implement
 	 * 现金充值记录查询
 	 * @throws ParseException 
 	 */
+	@Override
 	public PageInfo<Map<String, Object>> selectByRecharge(String userName,
 			String startTime, String endTime, String agentName,
-			String brokerName, String rechargechannel, Integer status, String isView ,
+			String brokerName, String rechargechannel,String PlatformName, Integer status, String isView ,
 			Integer pageNum, Integer pageSize) throws ParseException {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
@@ -113,6 +114,7 @@ public class UserRechargeServiceImpl extends BaseService<UserRecharge> implement
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         map.put("rechargechannel", rechargechannel);
+		map.put("PlatformName", PlatformName);
         map.put("status", status);
         map.put("isView", isView);
         PageHelper.startPage(pageNum,pageSize);
@@ -126,9 +128,10 @@ public class UserRechargeServiceImpl extends BaseService<UserRecharge> implement
 	 * 现金充值记录导出
 	 * @throws ParseException 
 	 */
+	@Override
 	public List<Map<String, Object>> excelRecharge(String userName,
-			String startTime, String endTime, String agentName,
-			String brokerName, String rechargechannel, Integer status, String isView ) throws ParseException {
+												   String startTime, String endTime, String agentName,
+												   String brokerName, String rechargechannel,String PlatformName, Integer status, String isView ) throws ParseException {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("startTime", startTime);
@@ -136,7 +139,8 @@ public class UserRechargeServiceImpl extends BaseService<UserRecharge> implement
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         map.put("rechargechannel", rechargechannel);
-        map.put("status", status);
+		map.put("PlatformName", PlatformName);
+		map.put("status", status);
         map.put("isView", isView);
         List<Map<String, Object>> list = userRechargeMapper.selectByRecharge(map);
         handleRecharge(list);
@@ -183,7 +187,7 @@ public class UserRechargeServiceImpl extends BaseService<UserRecharge> implement
 	 */
 	public Map<String, Object> selectByRechargeCount(String userName,
 			String startTime, String endTime, String agentName,
-			String brokerName, String rechargechannel, Integer status) {
+			String brokerName, String rechargechannel,String PlatformName, Integer status) {
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         map.put("startTime", startTime);
@@ -191,6 +195,8 @@ public class UserRechargeServiceImpl extends BaseService<UserRecharge> implement
         map.put("agentName", agentName);
         map.put("brokerName", brokerName);
         map.put("rechargechannel", rechargechannel);
+		map.put("PlatformName", PlatformName);
+
         map.put("status", status);
         Map<String, Object> map1 = userRechargeMapper.selectByRechargeCount(map);
         if (map1 != null && map1.size() > 0) {
@@ -311,7 +317,13 @@ public class UserRechargeServiceImpl extends BaseService<UserRecharge> implement
 			//设置状态
 			userAccountRecord.setStatus(1);
 			//设置描述信息
-			userAccountRecord.setDescription("后台管理-人工充值");
+			if ("1".equals(thirdName)) {
+				userAccountRecord.setDescription("后台管理-人工充值");
+
+			}else {
+				userAccountRecord.setDescription("运费退回");
+			}
+
 			//设置代理商id
 			if (userInfo.get(0).get("agentId") != null){
 				userAccountRecord.setAgentId(Long.valueOf(userInfo.get(0).get("agentId").toString()));
@@ -358,5 +370,7 @@ public class UserRechargeServiceImpl extends BaseService<UserRecharge> implement
 		}
 		return commonResponse;
 	}
-	
+
+
+
 }

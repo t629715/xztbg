@@ -532,7 +532,8 @@ public class ConstantUtil {
         GJJGCX("冠军结果查询","58"),
         HDKZ("活动查询","54"),
         JTTZ("金条投资","60"),
-        JTTZCPGZ("金条投资产品规则","59");
+        JTTZCPGZ("金条投资产品规则","59"),
+        HGDD("回购订单","61");
 
         private String name;
         private String index;

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fx.xzt.sys.mapper.GoldBuyBackOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.fx.xzt.sys.entity.GoldBuyBackOrder" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="order_no" property="orderNo" jdbcType="CHAR" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="recover_price" property="recoverPrice" jdbcType="DECIMAL" />
+    <result column="repurchase_amount" property="repurchaseAmount" jdbcType="DECIMAL" />
+    <result column="gold_weight" property="goldWeight" jdbcType="DECIMAL" />
+    <result column="gold_num" property="goldNum" jdbcType="INTEGER" />
+    <result column="sender_name" property="senderName" jdbcType="VARCHAR" />
+    <result column="sender_phone" property="senderPhone" jdbcType="VARCHAR" />
+    <result column="sender_address" property="senderAddress" jdbcType="VARCHAR" />
+    <result column="tracking_num" property="trackingNum" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="SMALLINT" />
+    <result column="spare" property="spare" jdbcType="VARCHAR" />
+    <result column="gtm_create" property="gtmCreate" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="submit_time" property="submitTime" jdbcType="TIMESTAMP" />
+    <result column="expire_time" property="expireTime" jdbcType="TIMESTAMP" />
+    <result column="complete_time" property="completeTime" jdbcType="TIMESTAMP" />
+    <result column="agent_id" property="agentId" jdbcType="BIGINT" />
+    <result column="broker_id" property="brokerId" jdbcType="BIGINT" />
+  </resultMap>
+  <select id="selectYgGold" resultType="java.util.Map" parameterType="java.util.Map" >
+ SELECT u.UserName userName, ygro.id id, ygro.order_no orderNo,ygro.user_id userId,ygro.recover_price recoverPrice,
+  ygro.gold_weight goldWeight,ygro.gold_num goldNum,ygro.sender_name senderName,ygro.sender_phone senderPhone,
+  ygro.sender_address,ygro.tracking_num,ygro.status,ygro.spare,ygro.gtm_create,ygro.gmt_modified gmtModified,
+  ygro.complete_time completeTime, ygro.agent_id agentId,ua.user_name  agentName,ygro.broker_id brokerId,
+  ub.user_name brokerName,ygro.submit_time submitTime,ygro.expire_time expireTime,ygro.repurchase_amount repurchaseAmount
+ from gold_buy_back_order ygro
+   LEFT JOIN User_Login u ON ygro.user_id = u.UserID
+   LEFT JOIN users ua ON ygro.agent_id = ua.id
+   LEFT JOIN users ub ON ygro.broker_id = ub.id
+   <where>
+     <if test="orderNo != null and orderNo != '' ">
+       and ygro.order_no = #{orderNo,jdbcType=CHAR}
+     </if>
+     <if test="userName != null and userName != '' ">
+       and u.UserName = #{userName,jdbcType=VARCHAR}
+     </if>
+     <if test="agentName != null">
+       and ua.id in
+       <foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+         ${item}
+       </foreach>
+     </if>
+     <if test="brokerName != null">
+       and ub.id in
+       <foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
+         ${item}
+       </foreach>
+     </if>
+     <if test="gtmStartTime !=null and gtmStartTime !='' ">
+       and ygro.gtm_create &gt;=#{gtmStartTime,jdbcType=TIMESTAMP}
+     </if>
+     <if test="gtmEndTime !=null and gtmEndTime !='' ">
+       and ygro.gtm_create &lt;=#{gtmEndTime,jdbcType=TIMESTAMP}
+     </if>
+     <if test="comStartTime !=null and comStartTime !='' ">
+       and ygro.complete_time &gt;=#{comStartTime,jdbcType=TIMESTAMP}
+     </if>
+     <if test="comEndTime !=null and comEndTime !='' ">
+       and ygro.complete_time &lt;=#{comEndTime,jdbcType=TIMESTAMP}
+     </if>
+     <if test="subStartTime !=null and subStartTime !='' ">
+       and ygro.submit_time &gt;=#{subStartTime,jdbcType=TIMESTAMP}
+     </if>
+     <if test="subEndTime !=null and subEndTime !='' ">
+       and ygro.submit_time &lt;=#{subEndTime,jdbcType=TIMESTAMP}
+     </if>
+     <if test="expStartTime !=null and expStartTime !='' ">
+       and ygro.expire_time &gt;=#{expStartTime,jdbcType=TIMESTAMP}
+     </if>
+     <if test="expEndTime !=null and expEndTime !='' ">
+       and ygro.expire_time &lt;=#{expEndTime,jdbcType=TIMESTAMP}
+     </if>
+   </where>
+  </select>
+
+  <update id="updateState" parameterType="com.fx.xzt.sys.entity.GoldBuyBackOrder">
+    update gold_buy_back_order
+    <set>
+    <if test="status != null" >
+      status = #{status,jdbcType=SMALLINT},
+    </if>
+    <if test="completeTime != null" >
+      complete_time = #{completeTime,jdbcType=TIMESTAMP},
+    </if>
+    </set>
+     where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateById" parameterType="com.fx.xzt.sys.entity.GoldBuyBackOrder" >
+    update gold_buy_back_order
+    <set >
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=CHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="recoverPrice != null" >
+        recover_price = #{recoverPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="goldWeight != null" >
+        gold_weight = #{goldWeight,jdbcType=DECIMAL},
+      </if>
+      <if test="goldNum != null" >
+        gold_num = #{goldNum,jdbcType=INTEGER},
+      </if>
+      <if test="senderName != null" >
+        sender_name = #{senderName,jdbcType=VARCHAR},
+      </if>
+      <if test="senderPhone != null" >
+        sender_phone = #{senderPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="senderAddress != null" >
+        sender_address = #{senderAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="trackingNum != null" >
+        tracking_num = #{trackingNum,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="spare != null" >
+        spare = #{spare,jdbcType=VARCHAR},
+      </if>
+      <if test="gtmCreate != null" >
+        gtm_create = #{gtmCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="completeTime != null" >
+        complete_time = #{completeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="agentId != null" >
+        agent_id = #{agentId,jdbcType=BIGINT},
+      </if>
+      <if test="brokerId != null" >
+        broker_id = #{brokerId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

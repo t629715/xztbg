@@ -12,6 +12,9 @@ import com.fx.xzt.sys.model.UserRechargeModel;
 import com.fx.xzt.sys.util.CommonResponse;
 import com.github.pagehelper.PageInfo;
 
+/**
+ * @author Administrator
+ */
 public interface UserRechargeService extends IService<UserRecharge>{
 	/**
 	 * 查询充值集合
@@ -44,7 +47,7 @@ public interface UserRechargeService extends IService<UserRecharge>{
 	* @author htt
 	 */
 	PageInfo<Map<String, Object>> selectByRecharge(String userName, String startTime, String endTime, String agentName, String brokerName, 
-			String rechargechannel, Integer status, String isView, Integer pageNum, Integer pageSize) throws ParseException;
+			String rechargechannel, String PlatformName,Integer status, String isView, Integer pageNum, Integer pageSize) throws ParseException;
 
 	/**
 	 * 
@@ -65,7 +68,7 @@ public interface UserRechargeService extends IService<UserRecharge>{
 	* @author htt
 	 */
     List<Map<String, Object>> excelRecharge(String userName, String startTime, String endTime, String agentName, String brokerName, 
-			String rechargechannel, Integer status, String isView) throws ParseException;
+			String rechargechannel,String PlatformName, Integer status, String isView) throws ParseException;
 
     /**
      * 
@@ -84,7 +87,7 @@ public interface UserRechargeService extends IService<UserRecharge>{
     * @author htt
      */
     Map<String, Object> selectByRechargeCount(String userName, String startTime, String endTime, String agentName, String brokerName, 
-			String rechargechannel, Integer status);
+			String rechargechannel,String PlatformName, Integer status);
 
 	/**
 	 * @CreateBy：tianliya
@@ -99,5 +102,4 @@ public interface UserRechargeService extends IService<UserRecharge>{
 	 * @return
 	 */
 	CommonResponse manualRecharge(Users users, String rechargeAccount, String money, String payWay, String rechargeNo,String thirdName) throws GlobalException;
-
 }
