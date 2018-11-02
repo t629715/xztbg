@@ -148,16 +148,9 @@ public class GoldBuyBackOrderServiceimpl extends BaseService<GoldBuyBackOrder> i
     public void handle(List<Map<String, Object>> list) {
         if (list != null && list.size() > 0) {
             for (Map<String, Object> map : list) {
-
-
-                Object repurchaseAmountObj = map.get("repurchaseAmount");
-                if (repurchaseAmountObj != null && repurchaseAmountObj != "") {
-
-                    BigDecimal repurchaseAmount =new BigDecimal(repurchaseAmountObj.toString());
-                  //  map.put("poundage",repurchaseAmount/100);
-                    BigDecimal bigDecimal = new BigDecimal(100);
-                    map.put("poundage",repurchaseAmount.divide(bigDecimal, 2));
-
+                Object statusObj = map.get("status");
+                if (statusObj != null && statusObj != "") {
+                    map.put("status", ConstantUtil.status2.toMap().get(statusObj.toString()));
                 }
             }
         }

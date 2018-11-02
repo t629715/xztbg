@@ -805,6 +805,36 @@ public class ConstantUtil {
         }
     }
 
+    /**
+     * 回购订单状态配置
+     */
+    public static enum status2 {
+
+        DWS("待完善","0"),
+        SX("已生效","1"),
+        YSX("已失效","2"),
+        YQX("已取消","3"),
+        YWC("已完成","4");
+
+        private String name;
+        private String index;
+        private status2(String name,String index){
+            this.name = name;
+            this.index = index;
+        }
+        public String toString() {
+            return this.index;
+        }
+        public static Map<String, String> toMap() {
+            status2[] ds = status2.values();
+            Map<String, String> rlt = new Hashtable<String, String>();
+            for (status2 d : ds) {
+                rlt.put(d.index, d.name);
+            }
+            return rlt;
+        }
+    }
+
     public static enum statuss {
 
         YX("有效","1"),

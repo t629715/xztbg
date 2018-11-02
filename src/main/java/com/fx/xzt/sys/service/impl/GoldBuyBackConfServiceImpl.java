@@ -35,7 +35,7 @@ public class GoldBuyBackConfServiceImpl extends BaseService<GoldBuyBackConf> imp
     @Transactional
     public int updateGoldBuyBack(GoldBuyBackConf goldBuyBackConf) {
 
-        goldBuyBackConf.setId(goldBuyBackConf.getId());
+      // goldBuyBackConf.setId(goldBuyBackConf.getId());
         goldBuyBackConf.setCompanyAddress(goldBuyBackConf.getCompanyAddress());
         goldBuyBackConf.setCompanyPhone(goldBuyBackConf.getCompanyPhone());
         goldBuyBackConf.setIsStatus(goldBuyBackConf.getIsStatus());

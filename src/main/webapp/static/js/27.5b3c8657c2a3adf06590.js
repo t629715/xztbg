@@ -78,19 +78,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data() {
@@ -100,20 +87,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 revisePrice: '',
                 isStatus: '',
                 state: '',
-                invalidTime: ''
+                invalidTime: '',
+                type: "",
+                reviseValue: ""
             },
 
             url: this.api + "goldBuyBackConf/selectGoldBuyBackConf",
             editUrl: this.api + "goldBuyBackConf/updateGoldBuyBackConf",
-            urlPrice: this.api + "investGold/getInestGoldPrice",
-            editUrlPrice: this.api + "investGold/updateInestGoldPrice",
             tableData: [],
-            tableDataPirce: [],
             dialogFormVisibleEdit: false,
             dialogFormVisibleEditGoldPrice: false,
             formLabelWidth: '140px',
+            value: "",
             id: ""
-            // status: ""
         };
     },
     created() {
@@ -123,37 +109,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         loadData() {
             let _this = this;
             var params = new URLSearchParams();
-            axios.post(this.url).then(function (response) {
+            this.$axios.post(this.url).then(function (response) {
                 _this.tableData = response.data.data;
+                _this.newformEdit = {
+                    revisePrice: _this.tableData[0].revisePrice,
+                    isStatus: _this.tableData[0].isStatus,
+                    state: _this.tableData[0].state,
+                    invalidTime: _this.tableData[0].invalidTime,
+                    type: _this.tableData[0].type,
+                    reviseValue: _this.tableData[0].reviseValue
+
+                };
             }).catch(function (error) {});
-        },
-
-        /*编辑弹窗取值方法*/
-        handleEdit(index, row) {
-            this.newformEdit = {
-                revisePrice: row.revisePrice,
-                isStatus: row.isStatus,
-                state: row.state,
-                invalidTime: row.invalidTime
-
-            };
-
-            this.id = row.id;
-            this.dialogFormVisibleEdit = true;
         },
         /*提交编辑*/
         confirmEdit() {
             var params = new URLSearchParams();
-
             params.append("revisePrice", this.newformEdit.revisePrice);
+            params.append("reviseValue", this.newformEdit.reviseValue);
             params.append("isStatus", this.newformEdit.isStatus);
             params.append("state", this.newformEdit.state);
             params.append("invalidTime", this.newformEdit.invalidTime);
-
+            params.append("type", this.newformEdit.type);
             params.append("id", this.id);
             let _this = this;
             axios.post(this.editUrl, params).then(function (response) {
-                if (response.data.data) {
+                if (response.data.code == 1001) {
                     _this.$message({
                         message: '修改成功',
                         type: 'success'
@@ -172,7 +153,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             });
         }
-
     }
 });
 
@@ -186,7 +166,7 @@ exports = module.exports = __webpack_require__(136)(false);
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".inputWidth[data-v-60be6161]{width:200px}.dialog-footer[data-v-60be6161]{margin-left:140px}", ""]);
 
 // exports
 
@@ -205,121 +185,47 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "container-fluid"
   }, [_c('div', {
     staticClass: "tableBox"
-  }, [_c('el-table', {
-    staticStyle: {
-      "width": "100%"
-    },
-    attrs: {
-      "data": _vm.tableData,
-      "border": "",
-      "stripe": ""
-    }
-  }, [_c('el-table-column', {
-    attrs: {
-      "label": "序号",
-      "type": "index",
-      "width": "160"
-    }
-  }), _vm._v(" "), _c('el-table-column', {
-    attrs: {
-      "label": "公司地址",
-      "prop": "companyAddress",
-      "width": "200"
-    }
-  }), _vm._v(" "), _c('el-table-column', {
-    attrs: {
-      "label": "公司电话",
-      "prop": "companyPhone",
-      "width": "150"
-    }
-  }), _vm._v(" "), _c('el-table-column', {
-    attrs: {
-      "label": "收件人",
-      "prop": "name",
-      "width": "180"
-    }
-  }), _vm._v(" "), _c('el-table-column', {
-    attrs: {
-      "label": "固定回收价格(元)",
-      "prop": "revisePrice",
-      "width": "200"
-    }
-  }), _vm._v(" "), _c('el-table-column', {
-    attrs: {
-      "label": "交易操作",
-      "prop": "isStatus",
-      "width": "150"
-    }
-  }), _vm._v(" "), _c('el-table-column', {
-    attrs: {
-      "label": "交易状态",
-      "prop": "state",
-      "width": "150"
-    }
-  }), _vm._v(" "), _c('el-table-column', {
-    attrs: {
-      "label": "每天可预约次数",
-      "prop": "preNum",
-      "width": "150"
-    }
-  }), _vm._v(" "), _c('el-table-column', {
-    attrs: {
-      "label": "预约过期时间",
-      "prop": "invalidTime",
-      "width": "150"
-    }
-  }), _vm._v(" "), _c('el-table-column', {
-    attrs: {
-      "label": "创建人",
-      "prop": "createBy",
-      "width": "150"
-    }
-  }), _vm._v(" "), _c('el-table-column', {
-    attrs: {
-      "label": "操作",
-      "fixed": "right",
-      "width": "220"
-    },
-    scopedSlots: _vm._u([{
-      key: "default",
-      fn: function(scope) {
-        return [_c('el-button', {
-          attrs: {
-            "size": "small",
-            "type": "primary"
-          },
-          on: {
-            "click": function($event) {
-              _vm.handleEdit(scope.$index, scope.row)
-            }
-          }
-        }, [_vm._v("编辑\n                        ")])]
-      }
-    }])
-  })], 1)], 1), _vm._v(" "), _c('div', {
-    staticClass: "tableBox"
-  }, [_c('el-dialog', {
-    attrs: {
-      "title": "编辑",
-      "visible": _vm.dialogFormVisibleEdit,
-      "center": "",
-      "width": "30%"
-    },
-    on: {
-      "update:visible": function($event) {
-        _vm.dialogFormVisibleEdit = $event
-      }
-    }
   }, [_c('el-form', {
     attrs: {
       "model": _vm.newformEdit
     }
   }, [_c('el-form-item', {
     attrs: {
-      "label": "固定回收价格",
+      "label": "回收价格 :",
       "label-width": _vm.formLabelWidth
     }
-  }, [_c('el-input', {
+  }, [_c('el-radio-group', {
+    attrs: {
+      "size": "small"
+    },
+    model: {
+      value: (_vm.newformEdit.type),
+      callback: function($$v) {
+        _vm.$set(_vm.newformEdit, "type", $$v)
+      },
+      expression: "newformEdit.type"
+    }
+  }, [_c('el-radio-button', {
+    attrs: {
+      "label": "0",
+      "name": "3"
+    }
+  }, [_vm._v("实时价")]), _vm._v(" "), _c('el-radio-button', {
+    attrs: {
+      "label": "1",
+      "name": "3"
+    }
+  }, [_vm._v("昨收价")]), _vm._v(" "), _c('el-radio-button', {
+    attrs: {
+      "label": "2",
+      "name": "3"
+    }
+  }, [_vm._v("固定值")])], 1)], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label-width": _vm.formLabelWidth
+    }
+  }, [(_vm.newformEdit.type != 2) ? _c('spran', [_vm._v("+")]) : _vm._e(), _vm._v(" "), (_vm.newformEdit.type == 2) ? _c('el-input', {
+    staticClass: "inputWidth",
     attrs: {
       "size": "small",
       "auto-complete": "off"
@@ -331,46 +237,26 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       expression: "newformEdit.revisePrice"
     }
-  })], 1), _vm._v(" "), _c('el-form-item', {
-    attrs: {
-      "label": "交易操作",
-      "label-width": _vm.formLabelWidth
-    }
-  }, [_c('el-input', {
+  }) : _vm._e(), _vm._v(" "), (_vm.newformEdit.type != 2) ? _c('el-input', {
+    staticClass: "inputWidth",
     attrs: {
       "size": "small",
       "auto-complete": "off"
     },
     model: {
-      value: (_vm.newformEdit.status),
+      value: (_vm.newformEdit.reviseValue),
       callback: function($$v) {
-        _vm.$set(_vm.newformEdit, "status", $$v)
+        _vm.$set(_vm.newformEdit, "reviseValue", $$v)
       },
-      expression: "newformEdit.status"
+      expression: "newformEdit.reviseValue"
     }
-  })], 1), _vm._v(" "), _c('el-form-item', {
+  }) : _vm._e()], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
-      "label": "交易状态",
+      "label": "预约过期时间 :",
       "label-width": _vm.formLabelWidth
     }
   }, [_c('el-input', {
-    attrs: {
-      "size": "small",
-      "auto-complete": "off"
-    },
-    model: {
-      value: (_vm.newformEdit.state),
-      callback: function($$v) {
-        _vm.$set(_vm.newformEdit, "state", $$v)
-      },
-      expression: "newformEdit.state"
-    }
-  })], 1), _vm._v(" "), _c('el-form-item', {
-    attrs: {
-      "label": "预约过期时间",
-      "label-width": _vm.formLabelWidth
-    }
-  }, [_c('el-input', {
+    staticClass: "inputWidth",
     attrs: {
       "size": "small",
       "auto-complete": "off"
@@ -382,7 +268,64 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       expression: "newformEdit.invalidTime"
     }
-  })], 1)], 1), _vm._v(" "), _c('div', {
+  }), _vm._v("分钟\n                ")], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "交易状态 :",
+      "label-width": _vm.formLabelWidth
+    }
+  }, [_c('el-radio-group', {
+    attrs: {
+      "size": "small"
+    },
+    model: {
+      value: (_vm.newformEdit.isStatus),
+      callback: function($$v) {
+        _vm.$set(_vm.newformEdit, "isStatus", $$v)
+      },
+      expression: "newformEdit.isStatus"
+    }
+  }, [_c('el-radio-button', {
+    attrs: {
+      "label": true,
+      "name": "1"
+    }
+  }, [_vm._v("可回收")]), _vm._v(" "), _c('el-radio-button', {
+    attrs: {
+      "label": false,
+      "name": "1"
+    }
+  }, [_vm._v("禁止回收")])], 1)], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "交易操作 :",
+      "label-width": _vm.formLabelWidth
+    }
+  }, [_c('el-radio-group', {
+    attrs: {
+      "size": "small"
+    },
+    model: {
+      value: (_vm.newformEdit.state),
+      callback: function($$v) {
+        _vm.$set(_vm.newformEdit, "state", $$v)
+      },
+      expression: "newformEdit.state"
+    }
+  }, [_c('el-radio-button', {
+    attrs: {
+      "label": "0",
+      "name": "2"
+    }
+  }, [_vm._v("正常规则")]), _vm._v(" "), _c('el-radio-button', {
+    attrs: {
+      "label": "1",
+      "name": "2"
+    }
+  }, [_vm._v("强制回购")]), _vm._v(" "), _c('el-radio-button', {
+    attrs: {
+      "label": "2",
+      "name": "2"
+    }
+  }, [_vm._v("禁止回购")])], 1)], 1)], 1), _vm._v(" "), _c('div', {
     staticClass: "dialog-footer",
     attrs: {
       "slot": "footer"
@@ -390,22 +333,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     slot: "footer"
   }, [_c('el-button', {
     attrs: {
-      "size": "small"
-    },
-    on: {
-      "click": function($event) {
-        _vm.dialogFormVisibleEdit = false
-      }
-    }
-  }, [_vm._v("取 消")]), _vm._v(" "), _c('el-button', {
-    attrs: {
-      "size": "small",
+      "size": "medium",
       "type": "primary"
     },
     on: {
-      "click": _vm.confirmEdit
+      "click": function($event) {
+        _vm.confirmEdit()
+      }
     }
-  }, [_vm._v("确 定")])], 1)], 1)], 1)])])
+  }, [_vm._v("生 效")])], 1)], 1)])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     attrs: {

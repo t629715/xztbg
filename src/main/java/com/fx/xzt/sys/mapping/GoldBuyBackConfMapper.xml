@@ -78,7 +78,7 @@
         create_by = #{createBy,jdbcType=BIGINT},
       </if>
     </set>
-    where id = #{id,jdbcType=BIGINT}
+
   </update>
 
 </mapper>

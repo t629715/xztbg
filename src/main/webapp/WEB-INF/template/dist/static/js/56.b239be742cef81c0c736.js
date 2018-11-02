@@ -158,6 +158,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     //model 初始数据
@@ -297,24 +298,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     });
                 }
             }).catch(function (error) {});
-
-            //获取统计金额
-            /*axios.post(this.countUrl, params)
-                .then(function (response) {
-                    if (response.data.code == 1001) {
-                        _this.orderTotal = response.data.data;
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });*/
         },
-        //审核通过
+        //收货确认无误
         confirmationOfReceipt(index, row) {
             this.dialogFormVisibleEdit = true;
             this.row = row;
         },
-        //审核通过
+        //收货确认无误
         handleEdit(index, row) {
             let _this = this;
             var params = new URLSearchParams();
@@ -392,8 +382,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios.post(this.url, params).then(function (response) {
                 if (response.data.code == 1001) {
                     var list = response.data.data.list;
-                    //_this.currentPage = response.data.data.pageNum == 0 ? 1 : response.data.data.pageNum;
-                    //_this.pagesize = response.data.data.pageSize;
                     _this.pageNum = response.data.data.pages;
                     _this.totalNum = response.data.data.total;
                     _this.tableData = list;
@@ -421,17 +409,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         resetForm(sform) {
             this.$refs.sform.resetFields();
             this.loadData(10, 1);
-            //获取统计数据
-            /*  axios.get(this.countUrl)
-                  .then(function (response) {
-                      if (response.data.code == 1001) {
-                          _this.orderTotal = response.data.data;
-                      }
-                  })
-                  .catch(function (error) {
-                      console.log(error);
-                  });*/
-            // this.loadData(10, 1);
         },
 
         //导出
@@ -931,6 +908,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
+      "prop": "status",
+      "label": "订单状态",
+      "width": "100"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
       "prop": "trackingNum",
       "label": "物流单号",
       "width": "180"
@@ -968,7 +951,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     scopedSlots: _vm._u([{
       key: "default",
       fn: function(scope) {
-        return [(scope.row.status == '1') ? [_c('el-button', {
+        return [(scope.row.status == '已生效') ? [_c('el-button', {
           attrs: {
             "size": "small",
             "type": "primary"

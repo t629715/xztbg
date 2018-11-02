@@ -26,9 +26,10 @@
   <select id="selectYgGold" resultType="java.util.Map" parameterType="java.util.Map" >
  SELECT u.UserName userName, ygro.id id, ygro.order_no orderNo,ygro.user_id userId,ygro.recover_price recoverPrice,
   ygro.gold_weight goldWeight,ygro.gold_num goldNum,ygro.sender_name senderName,ygro.sender_phone senderPhone,
-  ygro.sender_address,ygro.tracking_num,ygro.status,ygro.spare,ygro.gtm_create,ygro.gmt_modified gmtModified,
-  ygro.complete_time completeTime, ygro.agent_id agentId,ua.user_name  agentName,ygro.broker_id brokerId,
-  ub.user_name brokerName,ygro.submit_time submitTime,ygro.expire_time expireTime,ygro.repurchase_amount repurchaseAmount
+  ygro.sender_address,ygro.tracking_num,ygro.status,ygro.spare,DATE_FORMAT(ygro.gtm_create,'%Y-%m-%d %H:%i:%s') gtmCreate,
+    DATE_FORMAT( ygro.gmt_modified,'%Y-%m-%d %H:%i:%s') gmtModified, DATE_FORMAT( ygro.complete_time,'%Y-%m-%d %H:%i:%s') completeTime,
+    ygro.agent_id agentId,ua.user_name  agentName,ygro.broker_id brokerId, ub.user_name brokerName,
+    DATE_FORMAT( ygro.submit_time,'%Y-%m-%d %H:%i:%s') submitTime,DATE_FORMAT( ygro.expire_time,'%Y-%m-%d %H:%i:%s') expireTime,ygro.repurchase_amount repurchaseAmount
  from gold_buy_back_order ygro
    LEFT JOIN User_Login u ON ygro.user_id = u.UserID
    LEFT JOIN users ua ON ygro.agent_id = ua.id
