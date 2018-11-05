@@ -32,11 +32,11 @@
                <if test="invoiceFee != null" >
                    invoice_fee = #{invoiceFee,jdbcType=DECIMAL},
                </if>
-               <if test="logisticsFees != null" >
-                   logistics_fee = #{logisticsFees,jdbcType=BIGINT},
+               <if test="logisticsFee != null" >
+                   logistics_fee = #{logisticsFee,jdbcType=BIGINT},
                </if>
-               <if test="custodyFees != null" >
-                   custody_fee = #{custodyFees,jdbcType=BIGINT},
+               <if test="custodyFee != null" >
+                   custody_fee = #{custodyFee,jdbcType=BIGINT},
                </if>
                <if test="custodyStartDate != null" >
                    custody_start_date = #{custodyStartDate,jdbcType=INTEGER},
