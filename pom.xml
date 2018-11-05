@@ -311,6 +311,21 @@
       <artifactId>poi</artifactId>
       <version>3.9</version>
     </dependency>
+
+		<dependency>
+			<groupId>sf.sdk</groupId>
+			<artifactId>sf</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/SF-CSIM-EXPRESS-SDK-V1.6.jar</systemPath>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/dom4j/dom4j -->
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>
 	</dependencies>
   <profiles>
     <profile>
