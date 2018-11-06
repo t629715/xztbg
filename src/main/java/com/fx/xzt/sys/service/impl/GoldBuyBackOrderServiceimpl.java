@@ -55,8 +55,6 @@ public class GoldBuyBackOrderServiceimpl extends BaseService<GoldBuyBackOrder> i
                 }
             }
 
-           /* map.put("agentName", agentName);
-            map.put("brokerName", brokerName);*/
             map.put("gtmStartTime", gtmStartTime);
             map.put("gtmEndTime", gtmEndTime);
             map.put("comStartTime",comStartTime);
@@ -109,8 +107,7 @@ public class GoldBuyBackOrderServiceimpl extends BaseService<GoldBuyBackOrder> i
                     map.put("brokerName", list);
                 }
             }
-            /*map.put("agentName", agentName);
-            map.put("brokerName", brokerName);*/
+
             map.put("gtmStartTime", gtmStartTime);
             map.put("gtmEndTime", gtmEndTime);
             map.put("comStartTime",comStartTime);
@@ -145,6 +142,20 @@ public class GoldBuyBackOrderServiceimpl extends BaseService<GoldBuyBackOrder> i
         return goldBuyBackOrderMapper.updateState(goldBuyBackOrder);
     }
 
+    /**
+     * 取消
+     * @param id
+     * @return
+     */
+    @Override
+    @Transactional
+    public int cancelState(String id) {
+        GoldBuyBackOrder goldBuyBackOrder=new GoldBuyBackOrder();
+        goldBuyBackOrder.setId(Long.parseLong(id));
+        goldBuyBackOrder.setExpireTime(new Date());
+        goldBuyBackOrder.setStatus(new Short("3"));
+        return goldBuyBackOrderMapper.updateState(goldBuyBackOrder);
+    }
     public void handle(List<Map<String, Object>> list) {
         if (list != null && list.size() > 0) {
             for (Map<String, Object> map : list) {

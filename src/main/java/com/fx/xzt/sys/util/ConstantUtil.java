@@ -534,7 +534,8 @@ public class ConstantUtil {
         JTTZ("金条投资","60"),
         JTTZCPGZ("金条投资产品规则","59"),
         HGDD("回购订单","61"),
-        HGGZSD("回购规则设置","62");
+        HGGZSD("回购规则设置","62"),
+        HGPZ("回购配置","63");
 
         private String name;
         private String index;

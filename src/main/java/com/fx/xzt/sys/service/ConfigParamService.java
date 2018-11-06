@@ -86,6 +86,14 @@ public interface ConfigParamService extends IService<ConfigParam>{
     * @author htt
      */
     int deleteByName(String paramName);
+
+    /**
+     * 获取回购配置  liaijiao
+     * @return
+     */
+    List<Map<String, Object>> selectBuyBackConf();
+
+
 }
 
 

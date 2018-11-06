@@ -53,6 +53,12 @@ public interface ConfigParamMapper extends BaseMapper<ConfigParam>{
     * @author htt
      */
     int deleteByName(String paramName);
-    
-   
+
+    /**
+     * 获取回购配置
+     * @return
+     */
+    List<Map<String, Object>> selectBuyBack();
+
+
 }

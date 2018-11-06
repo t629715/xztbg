@@ -25,11 +25,15 @@
   </resultMap>
   <select id="selectYgGold" resultType="java.util.Map" parameterType="java.util.Map" >
  SELECT u.UserName userName, ygro.id id, ygro.order_no orderNo,ygro.user_id userId,ygro.recover_price recoverPrice,
-  ygro.gold_weight goldWeight,ygro.gold_num goldNum,ygro.sender_name senderName,ygro.sender_phone senderPhone,
+  ygro.gold_weight goldWeight,ygro.gold_num goldNum,ygro.sender_name senderName,ygro.sender_phone senderPhone,ygro.tracking_num  trackingNum,
   ygro.sender_address,ygro.tracking_num,ygro.status,ygro.spare,DATE_FORMAT(ygro.gtm_create,'%Y-%m-%d %H:%i:%s') gtmCreate,
     DATE_FORMAT( ygro.gmt_modified,'%Y-%m-%d %H:%i:%s') gmtModified, DATE_FORMAT( ygro.complete_time,'%Y-%m-%d %H:%i:%s') completeTime,
     ygro.agent_id agentId,ua.user_name  agentName,ygro.broker_id brokerId, ub.user_name brokerName,
-    DATE_FORMAT( ygro.submit_time,'%Y-%m-%d %H:%i:%s') submitTime,DATE_FORMAT( ygro.expire_time,'%Y-%m-%d %H:%i:%s') expireTime,ygro.repurchase_amount repurchaseAmount
+    DATE_FORMAT( ygro.submit_time,'%Y-%m-%d %H:%i:%s') submitTime,
+
+    if(ygro.status in (2,3),DATE_FORMAT( ygro.expire_time,'%Y-%m-%d %H:%i:%s'),'')  expireTime,
+
+    ygro.repurchase_amount repurchaseAmount
  from gold_buy_back_order ygro
    LEFT JOIN User_Login u ON ygro.user_id = u.UserID
    LEFT JOIN users ua ON ygro.agent_id = ua.id
@@ -78,17 +82,21 @@
        and ygro.expire_time &lt;=#{expEndTime,jdbcType=TIMESTAMP}
      </if>
    </where>
+    order by ygro.gtm_create desc
   </select>
 
   <update id="updateState" parameterType="com.fx.xzt.sys.entity.GoldBuyBackOrder">
     update gold_buy_back_order
     <set>
-    <if test="status != null" >
+      <if test="status != null" >
       status = #{status,jdbcType=SMALLINT},
-    </if>
-    <if test="completeTime != null" >
+      </if>
+      <if test="completeTime != null" >
       complete_time = #{completeTime,jdbcType=TIMESTAMP},
-    </if>
+      </if>
+      <if test="expireTime != null" >
+        expire_time = #{expireTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
      where id = #{id,jdbcType=BIGINT}
   </update>

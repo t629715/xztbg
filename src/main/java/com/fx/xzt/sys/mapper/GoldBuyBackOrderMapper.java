@@ -12,7 +12,7 @@ public interface GoldBuyBackOrderMapper extends BaseMapper<GoldBuyBackOrder> {
     List<Map<String, Object>> selectYgGold(Map<String, Object> map);
 
     /**
-     * 确认收货无误
+     * 确认收货无误/取消
      * @param goldBuyBackOrder
      * @return
      */

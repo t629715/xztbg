@@ -13,4 +13,5 @@ public interface GoldBuyBackConfMapper extends BaseMapper<GoldBuyBackConf> {
     List<Map<String, Object>> selectGoldBuyBack();
 
     int updateGoldBuyBackByid(GoldBuyBackConf goldBuyBackConf);
+    int updateBuyBackByid(GoldBuyBackConf goldBuyBackConf);
 }

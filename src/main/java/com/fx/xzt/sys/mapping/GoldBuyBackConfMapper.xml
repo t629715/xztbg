@@ -27,8 +27,57 @@
     from gold_buy_back_conf
 
   </select>
-
-
+  <update id="updateBuyBackByid" parameterType="com.fx.xzt.sys.entity.GoldBuyBackConf" >
+    update gold_buy_back_conf
+    <set >
+      <if test="companyAddress != null" >
+        company_address = #{companyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="companyPhone != null" >
+        company_phone = #{companyPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="pickUpTime != null" >
+        pick_up_time = #{pickUpTime,jdbcType=VARCHAR},
+      </if>
+      <if test="reviseValue != null" >
+        revise_value = #{reviseValue,jdbcType=DECIMAL},
+      </if>
+      <if test="revisePrice != null" >
+        revise_price = #{revisePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=SMALLINT},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=SMALLINT},
+      </if>
+      <if test="isStatus != null" >
+        is_status = #{isStatus,jdbcType=BIT},
+      </if>
+      <if test="preNum != null" >
+        pre_num = #{preNum,jdbcType=INTEGER},
+      </if>
+      <if test="invalidTime != null" >
+        invalid_time = #{invalidTime,jdbcType=INTEGER},
+      </if>
+      <if test="spare != null" >
+        spare = #{spare,jdbcType=VARCHAR},
+      </if>
+      <if test="gtmCreate != null" >
+        gtm_create = #{gtmCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=BIGINT},
+      </if>
+    </set>
+       where id= #{id,jdbcType=BIGINT}
+  </update>
   <update id="updateGoldBuyBackByid" parameterType="com.fx.xzt.sys.entity.GoldBuyBackConf" >
     update gold_buy_back_conf
     <set >

@@ -26,5 +26,17 @@ public interface GoldBuyBackOrderService extends IService<GoldBuyBackOrder>{
                                                     String gtmStartTime, String gtmEndTime, String comStartTime, String comEndTime, String subStartTime,
                                                     String subEndTime, String expStartTime, String expEndTime);
 
+    /**
+     * 确认收货无误
+     * @param id
+     * @return
+     */
     int updateState(String id);
+
+    /**
+     * 取消
+     * @param id
+     * @return
+     */
+    int cancelState(String id);
 }

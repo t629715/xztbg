@@ -125,4 +125,16 @@ public class ConfigParamServiceImpl extends BaseService<ConfigParam> implements 
 		}
 		return flag;
 	}
+
+	/**
+	 * 获取回购配置 liaijiao
+	 * @return
+	 */
+	@Override
+	public List<Map<String, Object>> selectBuyBackConf() {
+		List<Map<String, Object>> list=configParamMapper.selectBuyBack();
+		return list;
+	}
+
+
 }

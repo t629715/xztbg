@@ -3,13 +3,11 @@ package com.fx.xzt.sys.service.impl;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -444,13 +442,24 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 	/**
 	 * 用户分析查询
 	 */
+	@Override
 	public PageInfo<Map<String, Object>> getByUserAnalysis(String startTime, String endTime, String loginFrom, String agentName,
 			Integer pageNum, Integer pageSize) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
 		map.put("registerFrom", loginFrom);
-		map.put("agentName", agentName);
+		if(!StringUtils.isBlank(agentName))	{
+			String [ ] agentNames=agentName.split(",");
+			if(agentNames !=null || agentNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:agentNames) {
+					list.add(s);
+				}
+				map.put("agentName", list);
+			}
+		}
+		/*map.put("agentName", agentName);*/
 		PageHelper.startPage(pageNum,pageSize);
 		List<Map<String, Object>> list = userInfoMapper.getByUserAnalysis(map);
 		handleUserAnalysis(list);

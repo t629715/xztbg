@@ -35,6 +35,12 @@ public class GoldBuyBackConController {
     @Resource
     LogRecordService logRecordService;
 
+    /**
+     * 回购规则设定查询
+     * @param request
+     * @return
+     * @throws ParseException
+     */
     @RequestMapping(value="/selectGoldBuyBackConf")
     @ResponseBody
     public Object selectGoldBuyBackConf(HttpServletRequest request)throws ParseException {
@@ -77,6 +83,13 @@ public class GoldBuyBackConController {
         return cr;
     }
 
+    /**
+     * 回购规则设定修改
+     * @param request
+     * @param goldBuyBackConf
+     * @return
+     * @throws ParseException
+     */
     @RequestMapping(value="/updateGoldBuyBackConf")
     @ResponseBody
     public Object updateGoldBuyBackConf(HttpServletRequest request,GoldBuyBackConf goldBuyBackConf)throws ParseException {
@@ -119,4 +132,100 @@ public class GoldBuyBackConController {
         return cr;
     }
 
+    /**
+     * 回购配置查询
+     * @param request
+     * @return
+     * @throws ParseException
+     */
+    @RequestMapping(value="/selectBuyBackConf")
+    @ResponseBody
+    public Object selectBuyBackConf(HttpServletRequest request)throws ParseException {
+        CommonResponse cr = new CommonResponse();
+        //操作日志
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("回购配置查询");
+        log.setContent("查询失败");
+        log.setModuleName(ConstantUtil.logRecordModule.HGPZ.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
+        try {
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
+            if (users != null) {
+                List<Map<String, Object>> list = goldBuyBackConfService.selectGoldBuyBack();
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+                cr.setData(list);
+                cr.setMsg("操作成功！");
+                log.setUserId(users.getId());
+                log.setContent("查询成功");
+            }else{
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("操作失败！");
+            }
+
+        }catch (Exception e){
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("操作失败！");
+            throw e;
+
+        }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
+        return cr;
+    }
+
+    /**
+     * 回购配置修改
+     * @param request
+     * @param goldBuyBackConf
+     * @return
+     * @throws ParseException
+     */
+    @RequestMapping(value="/updateBuyBackConf")
+    @ResponseBody
+    public Object updateBuyBackConf(HttpServletRequest request,GoldBuyBackConf goldBuyBackConf)throws ParseException {
+        CommonResponse cr = new CommonResponse();
+        //操作日志
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("回购配置修改");
+        log.setContent("修改失败");
+        log.setModuleName(ConstantUtil.logRecordModule.HGPZ.getName());
+        log.setType(ConstantUtil.logRecordType.CX.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
+        try {
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
+            if (users != null) {
+                Integer s = goldBuyBackConfService.updateBuyBack(goldBuyBackConf);
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+                cr.setData(s);
+                cr.setMsg("修改成功！");
+                log.setUserId(users.getId());
+                log.setContent("修改成功");
+            }else{
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("修改失败！");
+            }
+
+        }catch (Exception e){
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("修改失败！");
+            throw e;
+
+        }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
+        return cr;
+    }
 }

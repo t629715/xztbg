@@ -184,7 +184,7 @@ public class GoldBuyBackOrderController {
                 cr.setData(l);
                 cr.setMsg("操作成功！");
                 log.setUserId(users.getId());
-                log.setContent("查询成功");
+                log.setContent("操作成功");
             }else{
                 cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
                 cr.setData("{}");
@@ -195,6 +195,56 @@ public class GoldBuyBackOrderController {
             cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
             cr.setData("{}");
             cr.setMsg("操作失败！");
+            throw e;
+
+        }
+        logRecordService.add(log);
+        AuditLog.info(log.toString());
+        return cr;
+
+    }
+
+    /**
+     * 取消
+     * @param request
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="/cancelState")
+    @ResponseBody
+    public Object cancelState(HttpServletRequest request,String id)throws Exception{
+        CommonResponse cr = new CommonResponse();
+        //操作日志
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LogRecord log = new LogRecord();
+        log.setTitle("取消");
+        log.setContent("取消失败");
+        log.setModuleName(ConstantUtil.logRecordModule.HGDD.getName());
+        log.setType(ConstantUtil.logRecordType.XG.getIndex());
+        log.setIp(IPUtil.getHost(request));
+        log.setCreateTime(sdf.parse(sdf.format(new Date())));
+        try {
+            HttpSession httpSession = request.getSession();
+            Users users = (Users) httpSession.getAttribute("currentUser");
+            Map<String, Object> role = (Map<String, Object>)httpSession.getAttribute("currentUserRole");
+            if (users != null) {
+                int l = GoldBuyBackOrderService.cancelState(id);
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+                cr.setData(l);
+                cr.setMsg("取消成功！");
+                log.setUserId(users.getId());
+                log.setContent("取消成功");
+            }else{
+                cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
+                cr.setData("{}");
+                cr.setMsg("取消失败！");
+            }
+
+        }catch (Exception e){
+            cr.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+            cr.setData("{}");
+            cr.setMsg("取消失败！");
             throw e;
 
         }

@@ -20,10 +20,14 @@ import java.util.Map;
 public class GoldBuyBackConfServiceImpl extends BaseService<GoldBuyBackConf> implements GoldBuyBackConfService {
     @Autowired
     GoldBuyBackConfMapper goldBuyBackConfMapper;
+
+    /**
+     * 回购规则设置查询
+     * @return
+     */
     @Override
     public List<Map<String, Object>> selectGoldBuyBackConf() {
         List<Map<String,Object>> list=goldBuyBackConfMapper.selectGoldBuyBack();
-        System.out.print(list+"*********");
         for (Map m:list){
             m.put("id",m.get("id").toString());
 
@@ -31,24 +35,55 @@ public class GoldBuyBackConfServiceImpl extends BaseService<GoldBuyBackConf> imp
         return list;
     }
 
+    /**
+     * 回购规则设置修改
+     * @param goldBuyBackConf
+     * @return
+     */
     @Override
     @Transactional
     public int updateGoldBuyBack(GoldBuyBackConf goldBuyBackConf) {
 
       // goldBuyBackConf.setId(goldBuyBackConf.getId());
-        goldBuyBackConf.setCompanyAddress(goldBuyBackConf.getCompanyAddress());
-        goldBuyBackConf.setCompanyPhone(goldBuyBackConf.getCompanyPhone());
+
         goldBuyBackConf.setIsStatus(goldBuyBackConf.getIsStatus());
-        goldBuyBackConf.setPickUpTime(goldBuyBackConf.getPickUpTime());
-        goldBuyBackConf.setPreNum(goldBuyBackConf.getPreNum());
         goldBuyBackConf.setInvalidTime(goldBuyBackConf.getInvalidTime());
         goldBuyBackConf.setState(goldBuyBackConf.getState());
         goldBuyBackConf.setRevisePrice(goldBuyBackConf.getRevisePrice());
         goldBuyBackConf.setReviseValue(goldBuyBackConf.getReviseValue());
-        goldBuyBackConf.setName(goldBuyBackConf.getName());
         goldBuyBackConf.setCreateBy(goldBuyBackConf.getCreateBy());
         goldBuyBackConf.setGmtModified(new Date());
         return goldBuyBackConfMapper.updateGoldBuyBackByid(goldBuyBackConf);
+    }
+
+    /**
+     * 回购配置查询
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> selectGoldBuyBack() {
+        List<Map<String,Object>> list=goldBuyBackConfMapper.selectGoldBuyBack();
+        for (Map m:list){
+            m.put("id",m.get("id").toString());
+
+        }
+        return list;
+    }
+
+    /**
+     * 回购配置修改
+     * @param goldBuyBackConf
+     * @return
+     */
+    @Override
+    @Transactional
+    public int updateBuyBack(GoldBuyBackConf goldBuyBackConf) {
+        goldBuyBackConf.setName(goldBuyBackConf.getName());
+        goldBuyBackConf.setCompanyPhone(goldBuyBackConf.getCompanyPhone());
+        goldBuyBackConf.setCompanyAddress((goldBuyBackConf.getCompanyAddress()));
+        goldBuyBackConf.setGmtModified(new Date());
+        goldBuyBackConf.setId(goldBuyBackConf.getId());
+        return goldBuyBackConfMapper.updateBuyBackByid(goldBuyBackConf);
     }
 
 
