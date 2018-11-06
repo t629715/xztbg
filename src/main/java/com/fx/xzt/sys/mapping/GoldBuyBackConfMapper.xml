@@ -23,7 +23,7 @@
   <select id="selectGoldBuyBack" resultType="java.util.Map" >
     select id, company_address companyAddress, company_phone companyPhone, name, pick_up_time pickUpTime,
        revise_value reviseValue, revise_price revisePrice, type, state, is_status isStatus, pre_num preNum,
-       invalid_time invalidTime, spare, gtm_create gtmCreate, gmt_modified gmtModified, create_by createBy
+       invalid_time invalidTime, spare, gtm_create gtmCreate, gmt_modified gmtModified, create_by createBy, pick_up_date_revise pickUpDateRevise,max_gold_weight maxGoldWeight
     from gold_buy_back_conf
 
   </select>
@@ -81,6 +81,16 @@
   <update id="updateGoldBuyBackByid" parameterType="com.fx.xzt.sys.entity.GoldBuyBackConf" >
     update gold_buy_back_conf
     <set >
+      <if test="maxGoldWeight != null" >
+        max_gold_weight = #{maxGoldWeight,jdbcType=DECIMAL},
+      </if>
+      <if test="pickUpTime != null" >
+        pick_up_time = #{pickUpTime,jdbcType=VARCHAR},
+      </if>
+
+      <if test="pickUpDateRevise != null" >
+        pick_up_date_revise = #{pickUpDateRevise,jdbcType=INTEGER},
+      </if>
       <if test="companyAddress != null" >
         company_address = #{companyAddress,jdbcType=VARCHAR},
       </if>
