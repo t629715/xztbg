@@ -51,12 +51,28 @@
 			<if test="endTime !=null and endTime != '' ">
 				and r.RechargeTime &lt;=#{endTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="agentName != null and agentName !='' ">
+			<if test="agentName != null">
+				and ua.id in
+				<foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+					<if test="item != null">
+						${item}
+					</if>
+				</foreach>
+			</if>
+			<if test="brokerName != null">
+				and ub.id  in
+				<foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
+					<if test="item != null">
+						${item}
+					</if>
+				</foreach>
+			</if>
+			<!--<if test="agentName != null and agentName !='' ">
 				and ua.id = #{agentName,jdbcType=VARCHAR}
 			</if>
 			<if test="brokerName != null and brokerName !='' ">
 				and ub.id = #{brokerName,jdbcType=VARCHAR}
-			</if>
+			</if>-->
 			<if test="rechargechannel != null and rechargechannel!='' ">
 				and r.RechargeChannel =
 				#{rechargechannel,jdbcType=VARCHAR}
@@ -92,12 +108,28 @@
 			<if test="endTime !=null and endTime != '' ">
 				and r.RechargeTime &lt;=#{endTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="agentName != null and agentName !='' ">
+			<if test="agentName != null">
+				and ua.id in
+				<foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+					<if test="item != null">
+						${item}
+					</if>
+				</foreach>
+			</if>
+			<if test="brokerName != null">
+				and ub.id  in
+				<foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
+					<if test="item != null">
+						${item}
+					</if>
+				</foreach>
+			</if>
+			<!--<if test="agentName != null and agentName !='' ">
 				and ua.id = #{agentName,jdbcType=VARCHAR}
 			</if>
 			<if test="brokerName != null and brokerName !='' ">
 				and ub.id = #{brokerName,jdbcType=VARCHAR}
-			</if>
+			</if>-->
 			<if test="rechargechannel != null and rechargechannel!='' ">
 				and r.RechargeChannel =
 				#{rechargechannel,jdbcType=VARCHAR}

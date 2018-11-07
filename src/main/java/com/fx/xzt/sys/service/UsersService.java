@@ -95,7 +95,7 @@ public interface UsersService extends IService<Users>{
 	 * @param endTime
 	 * @return
 	 */
-	PageInfo<Map<String, Object>> sightOfElephant(Long  id,Long pid,String startTime, String endTime, Integer pageNum, Integer pageSize,Integer type);
+	PageInfo<Map<String, Object>> sightOfElephant(String  id,String pid,String startTime, String endTime, Integer pageNum, Integer pageSize,Integer type);
 
 	/**
 	 * 商户管理-运营商视角
@@ -116,7 +116,7 @@ public interface UsersService extends IService<Users>{
 	 * @param endTime
 	 * @return
 	 */
-	public List<Map<String, Object>> execelSightOfElephant(Long id , Long  pid,
+	public List<Map<String, Object>> execelSightOfElephant(String id , String  pid,
 														   String startTime, String endTime
 	);
 

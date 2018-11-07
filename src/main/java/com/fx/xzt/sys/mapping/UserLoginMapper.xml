@@ -86,12 +86,28 @@
             <if test="lastLoginFrom != null and lastLoginFrom !='' ">
                 and m.lastloginfrom = #{lastLoginFrom,jdbcType=VARCHAR}
             </if>
-            <if test="agentName != null and agentName !='' ">
+            <if test="agentName != null">
+                and u.id in
+                <foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+                    <if test="item != null">
+                        ${item}
+                    </if>
+                </foreach>
+            </if>
+            <if test="brokerName != null">
+                and u1.id  in
+                <foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
+                    <if test="item != null">
+                        ${item}
+                    </if>
+                </foreach>
+            </if>
+            <!--<if test="agentName != null and agentName !='' ">
                 and u.id = #{agentName,jdbcType=BIGINT}
             </if>
             <if test="brokerName != null and brokerName !='' ">
                 and u1.id = #{brokerName,jdbcType=BIGINT}
-            </if>
+            </if>-->
             <if test="attributionProvince != null and attributionProvince !='' ">
                 and i.attribution_province = #{attributionProvince,jdbcType=VARCHAR}
             </if>

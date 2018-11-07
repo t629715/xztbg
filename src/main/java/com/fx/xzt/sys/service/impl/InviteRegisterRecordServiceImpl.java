@@ -9,6 +9,7 @@ import com.fx.xzt.sys.util.ConstantUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import javax.annotation.Resource;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,8 +47,28 @@ public class InviteRegisterRecordServiceImpl implements InviteRegisterRecordServ
             map.put("startTime", startTime);
             map.put("endTime", endTime);
             map.put("acceptPrize", acceptPrize);
-            map.put("agentName", agentName);
-            map.put("brokerName", brokerName);
+            if(!StringUtils.isBlank(agentName))	{
+                String [ ] agentNames=agentName.split(",");
+                if(agentNames !=null || agentNames.length!=0 ){
+                    List<String> list = new ArrayList();
+                    for(String s:agentNames) {
+                        list.add(s);
+                    }
+                    map.put("agentName", list);
+                }
+            }
+            if(!StringUtils.isBlank(brokerName)){
+                String [ ] brokerNames=brokerName.split(",");
+                if(brokerNames !=null || brokerNames.length!=0 ){
+                    List<String> list = new ArrayList();
+                    for(String s:brokerNames) {
+                        list.add(s);
+                    }
+                    map.put("brokerName", list);
+                }
+            }
+           /* map.put("agentName", agentName);
+            map.put("brokerName", brokerName);*/
             map.put("isView", isView);
             PageHelper.startPage(pageNum, pageSize);
             List<Map<String, Object>> list = inviteRegisterRecordMapper.selectAllRecords(map);
@@ -83,8 +105,28 @@ public class InviteRegisterRecordServiceImpl implements InviteRegisterRecordServ
             map.put("startTime", startTime);
             map.put("endTime", endTime);
             map.put("acceptPrize", acceptPrize);
-            map.put("agentName", agentName);
-            map.put("brokerName", brokerName);
+            if(!StringUtils.isBlank(agentName))	{
+                String [ ] agentNames=agentName.split(",");
+                if(agentNames !=null || agentNames.length!=0 ){
+                    List<String> list = new ArrayList();
+                    for(String s:agentNames) {
+                        list.add(s);
+                    }
+                    map.put("agentName", list);
+                }
+            }
+            if(!StringUtils.isBlank(brokerName)){
+                String [ ] brokerNames=brokerName.split(",");
+                if(brokerNames !=null || brokerNames.length!=0 ){
+                    List<String> list = new ArrayList();
+                    for(String s:brokerNames) {
+                        list.add(s);
+                    }
+                    map.put("brokerName", list);
+                }
+            }
+           /* map.put("agentName", agentName);
+            map.put("brokerName", brokerName);*/
             map.put("isView", isView);
             PageHelper.startPage(pageNum, pageSize);
             List<Map<String, Object>> list = inviteRegisterRecordMapper.selectInviteFriendsRecords(map);
@@ -121,8 +163,28 @@ public class InviteRegisterRecordServiceImpl implements InviteRegisterRecordServ
             map.put("startTime", startTime);
             map.put("endTime", endTime);
             map.put("acceptPrize", acceptPrize);
-            map.put("agentName", agentName);
-            map.put("brokerName", brokerName);
+            if(!StringUtils.isBlank(agentName))	{
+                String [ ] agentNames=agentName.split(",");
+                if(agentNames !=null || agentNames.length!=0 ){
+                    List<String> list = new ArrayList();
+                    for(String s:agentNames) {
+                        list.add(s);
+                    }
+                    map.put("agentName", list);
+                }
+            }
+            if(!StringUtils.isBlank(brokerName)){
+                String [ ] brokerNames=brokerName.split(",");
+                if(brokerNames !=null || brokerNames.length!=0 ){
+                    List<String> list = new ArrayList();
+                    for(String s:brokerNames) {
+                        list.add(s);
+                    }
+                    map.put("brokerName", list);
+                }
+            }
+            /*map.put("agentName", agentName);
+            map.put("brokerName", brokerName);*/
             map.put("isView", isView);
             List<Map<String, Object>> list = inviteRegisterRecordMapper.selectAllRecords(map);
             list = this.handleData(list);
@@ -144,8 +206,28 @@ public class InviteRegisterRecordServiceImpl implements InviteRegisterRecordServ
             map.put("startTime", startTime);
             map.put("endTime", endTime);
             map.put("acceptPrize", acceptPrize);
-            map.put("agentName", agentName);
-            map.put("brokerName", brokerName);
+            if(!StringUtils.isBlank(agentName))	{
+                String [ ] agentNames=agentName.split(",");
+                if(agentNames !=null || agentNames.length!=0 ){
+                    List<String> list = new ArrayList();
+                    for(String s:agentNames) {
+                        list.add(s);
+                    }
+                    map.put("agentName", list);
+                }
+            }
+            if(!StringUtils.isBlank(brokerName)){
+                String [ ] brokerNames=brokerName.split(",");
+                if(brokerNames !=null || brokerNames.length!=0 ){
+                    List<String> list = new ArrayList();
+                    for(String s:brokerNames) {
+                        list.add(s);
+                    }
+                    map.put("brokerName", list);
+                }
+            }
+           /* map.put("agentName", agentName);
+            map.put("brokerName", brokerName);*/
             map.put("isView", isView);
             List<Map<String, Object>> list = inviteRegisterRecordMapper.selectInviteFriendsRecords(map);
 //            list = this.handleData(list);

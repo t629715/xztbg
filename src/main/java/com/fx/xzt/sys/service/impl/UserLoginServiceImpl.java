@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,8 +42,28 @@ public class UserLoginServiceImpl extends BaseService<UserLogin> implements User
         map.put("lastStartTime", lastStartTime);
         map.put("lastEndTime", lastEndTime);
         map.put("lastLoginFrom", lastLoginFrom);
-        map.put("agentName", agentName);
-        map.put("brokerName", brokerName);
+        if(!StringUtils.isBlank(agentName))	{
+            String [ ] agentNames=agentName.split(",");
+            if(agentNames !=null || agentNames.length!=0 ){
+                List<String> list = new ArrayList();
+                for(String s:agentNames) {
+                    list.add(s);
+                }
+                map.put("agentName", list);
+            }
+        }
+        if(!StringUtils.isBlank(brokerName)){
+            String [ ] brokerNames=brokerName.split(",");
+            if(brokerNames !=null || brokerNames.length!=0 ){
+                List<String> list = new ArrayList();
+                for(String s:brokerNames) {
+                    list.add(s);
+                }
+                map.put("brokerName", list);
+            }
+        }
+        /*map.put("agentName", agentName);
+        map.put("brokerName", brokerName);*/
         map.put("attributionProvince", attribution);//归属地省份
         map.put("isView", isView);
         PageHelper.startPage(pageNum, pageSize);
@@ -64,8 +85,28 @@ public class UserLoginServiceImpl extends BaseService<UserLogin> implements User
         map.put("lastStartTime", lastStartTime);
         map.put("lastEndTime", lastEndTime);
         map.put("lastLoginFrom", lastLoginFrom);
-        map.put("agentName", agentName);
-        map.put("brokerName", brokerName);
+        if(!StringUtils.isBlank(agentName))	{
+            String [ ] agentNames=agentName.split(",");
+            if(agentNames !=null || agentNames.length!=0 ){
+                List<String> list = new ArrayList();
+                for(String s:agentNames) {
+                    list.add(s);
+                }
+                map.put("agentName", list);
+            }
+        }
+        if(!StringUtils.isBlank(brokerName)){
+            String [ ] brokerNames=brokerName.split(",");
+            if(brokerNames !=null || brokerNames.length!=0 ){
+                List<String> list = new ArrayList();
+                for(String s:brokerNames) {
+                    list.add(s);
+                }
+                map.put("brokerName", list);
+            }
+        }
+       /* map.put("agentName", agentName);
+        map.put("brokerName", brokerName);*/
         map.put("attributionProvince", attribution);
         map.put("isView", isView);
         List<Map<String, Object>> list = userLoginMapper.getByRegisterMessage(map);

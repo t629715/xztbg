@@ -84,12 +84,28 @@
             <if test="buyType != null and buyType != ''">
                 AND o.buy_time = #{buyType,jdbcType=SMALLINT}
             </if>
-            <if test="agentName != null and agentName != ''">
+            <if test="agentName != null">
+                and o.agent_id in
+                <foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+                    <if test="item != null">
+                        ${item}
+                    </if>
+                </foreach>
+            </if>
+            <if test="brokerName != null">
+                and o.broker_id  in
+                <foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
+                    <if test="item != null">
+                        ${item}
+                    </if>
+                </foreach>
+            </if>
+          <!--  <if test="agentName != null and agentName != ''">
                 AND o.agent_id = #{agentName,jdbcType=BIGINT}
             </if>
             <if test="brokerName != null and brokerName != ''">
                 AND o.broker_id = #{brokerName,jdbcType=BIGINT}
-            </if>
+            </if>-->
 
             <if test="regStartTime != null and regStartTime != ''">
                 AND u1.RegisterTime &gt;= #{regStartTime,jdbcType=TIMESTAMP}
@@ -160,12 +176,28 @@
             <if test="buyType != null and buyType != ''">
                 AND o.buy_time = #{buyType,jdbcType=SMALLINT}
             </if>
-            <if test="agentName != null and agentName != ''">
+            <if test="agentName != null">
+                and o.agent_id in
+                <foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+                    <if test="item != null">
+                        ${item}
+                    </if>
+                </foreach>
+            </if>
+            <if test="brokerName != null">
+                and o.broker_id  in
+                <foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
+                    <if test="item != null">
+                        ${item}
+                    </if>
+                </foreach>
+            </if>
+            <!--<if test="agentName != null and agentName != ''">
                 AND o.agent_id = #{agentName,jdbcType=BIGINT}
             </if>
             <if test="brokerName != null and brokerName != ''">
                 AND o.broker_id = #{brokerName,jdbcType=BIGINT}
-            </if>
+            </if>-->
 
             <if test="regStartTime != null and regStartTime != ''">
                 AND u1.RegisterTime &gt;= #{regStartTime,jdbcType=TIMESTAMP}
@@ -207,12 +239,28 @@
             <if test="buyType != null and buyType != ''">
                 AND o.buy_time = #{buyType,jdbcType=SMALLINT}
             </if>
-            <if test="agentName != null and agentName != ''">
+            <if test="agentName != null">
+                and o.agent_id in
+                <foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+                    <if test="item != null">
+                        ${item}
+                    </if>
+                </foreach>
+            </if>
+            <if test="brokerName != null">
+                and o.broker_id  in
+                <foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
+                    <if test="item != null">
+                        ${item}
+                    </if>
+                </foreach>
+            </if>
+           <!-- <if test="agentName != null and agentName != ''">
                 AND o.agent_id = #{agentName,jdbcType=BIGINT}
             </if>
             <if test="brokerName != null and brokerName != ''">
                 AND o.broker_id = #{brokerName,jdbcType=BIGINT}
-            </if>
+            </if>-->
 
             <if test="regStartTime != null and regStartTime != ''">
                 AND u1.RegisterTime &gt;= #{regStartTime,jdbcType=TIMESTAMP}

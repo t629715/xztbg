@@ -37,12 +37,28 @@
           <if test="useEndTime !=null and useEndTime != '' ">
               and v.use_time &lt;=#{useEndTime,jdbcType=TIMESTAMP}
           </if>
-          <if test="agentName != null and agentName !='' ">
+          <if test="agentName != null">
+              and ua.id in
+              <foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+                  <if test="item != null">
+                      ${item}
+                  </if>
+              </foreach>
+          </if>
+          <if test="brokerName != null">
+              and ub.id  in
+              <foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
+                  <if test="item != null">
+                      ${item}
+                  </if>
+              </foreach>
+          </if>
+          <!--<if test="agentName != null and agentName !='' ">
               and ua.id = #{agentName,jdbcType=BIGINT}
           </if>
           <if test="brokerName != null and brokerName !='' ">
               and ub.id = #{brokerName,jdbcType=BIGINT}
-          </if>
+          </if>-->
           <if test="useStatus != null">
               and v.use_status = #{useStatus,jdbcType=INTEGER}
           </if>

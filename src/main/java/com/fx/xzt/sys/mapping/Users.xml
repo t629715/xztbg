@@ -286,12 +286,28 @@
                     and u1.pid != 1 and u1.pid != -1
                 </if>
 
-                <if test="pid != null and pid != ''">
+                <if test="pid != null">
+                    and u2.id in
+                    <foreach collection="pid" index="index" item="item" open="(" separator="," close=")" >
+                        <if test="item != null">
+                            ${item}
+                        </if>
+                    </foreach>
+                </if>
+                <if test="id != null">
+                    and u1.id  in
+                    <foreach collection="id" index="index" item="item" open="(" separator="," close=")" >
+                        <if test="item != null">
+                            ${item}
+                        </if>
+                    </foreach>
+                </if>
+                <!--<if test="pid != null and pid != ''">
                     and u2.id=#{pid,jdbcType=BIGINT}
                 </if>
                 <if test="id != null and id != ''">
                     and u1.id=#{id,jdbcType=BIGINT}
-                </if>
+                </if>-->
                 <if test="startTime != null and startTime != ''">
                     and u1.create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
                 </if>

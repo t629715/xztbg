@@ -6,7 +6,7 @@
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
     <result column="product_id" jdbcType="BIGINT" property="productId" />
-    <result column="product_no" jdbcType="VARCHAR" property="productNo" />
+    <result column="product_no" jdbcType="VARCHAR" property="prooductNo" />
     <result column="product_name" jdbcType="VARCHAR" property="productName" />
     <result column="buy_amount" jdbcType="INTEGER" property="buyAmount" />
     <result column="buy_time" jdbcType="TIMESTAMP" property="buyTime" />
@@ -28,7 +28,7 @@
 	</if>
     i.RegisterTime  registerTime,
     o.agent_id AS agentId, ua.user_name AS agentName, o.broker_id AS brokerId, ub.user_name AS brokerName ,
-    o.product_id productId, c.product_name productName,c.product_no productNo,o.cycle,o.year_incom_percent yearIncomPercent,
+    o.product_id productId, c.product_name productName,c.product_no prooductNo,o.cycle,o.year_incom_percent yearIncomPercent,
     o.float_percent floatPercent, o.nper nper, c.type type,
     o.buy_amount buyAmount,o.buy_time buyTime,o.redeem_time redeemTime,o.status,o.income,
     o.initial_price initialPrice, o.clear_price clearPrice, o.gram,
@@ -67,12 +67,28 @@
       <if test="redeemEndTime !=null and redeemEndTime != '' ">
         and o.redeem_time &lt;=#{redeemEndTime,jdbcType=TIMESTAMP}
       </if>
-      <if test="agentName != null and agentName !='' ">
+      <if test="agentName != null">
+        and ua.id in
+        <foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+          <if test="item != null">
+            ${item}
+          </if>
+        </foreach>
+      </if>
+      <if test="brokerName != null">
+        and ub.id  in
+        <foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
+          <if test="item != null">
+            ${item}
+          </if>
+        </foreach>
+      </if>
+     <!-- <if test="agentName != null and agentName !='' ">
         and ua.id = #{agentName,jdbcType=BIGINT}
       </if>
       <if test="brokerName != null and brokerName !='' ">
         and ub.id = #{brokerName,jdbcType=BIGINT}
-      </if>
+      </if>-->
       <if test="status != null and status !='' ">
         and o.status = #{status,jdbcType=INTEGER}
       </if>
@@ -125,12 +141,28 @@
       <if test="redeemEndTime !=null and redeemEndTime != '' ">
         and o.redeem_time &lt;=#{redeemEndTime,jdbcType=TIMESTAMP}
       </if>
-      <if test="agentName != null and agentName !='' ">
+      <if test="agentName != null">
+        and ua.id in
+        <foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+          <if test="item != null">
+            ${item}
+          </if>
+        </foreach>
+      </if>
+      <if test="brokerName != null">
+        and ub.id  in
+        <foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
+          <if test="item != null">
+            ${item}
+          </if>
+        </foreach>
+      </if>
+     <!-- <if test="agentName != null and agentName !='' ">
         and ua.id = #{agentName,jdbcType=BIGINT}
       </if>
       <if test="brokerName != null and brokerName !='' ">
         and ub.id = #{brokerName,jdbcType=BIGINT}
-      </if>
+      </if>-->
       <if test="status != null and status !='' ">
         and o.status = #{status,jdbcType=INTEGER}
       </if>
@@ -155,7 +187,7 @@
 	</if>
     i.RegisterTime  registerTime,
     o.agent_id AS agentId, ua.user_name AS agentName, o.broker_id AS brokerId, ub.user_name AS brokerName ,
-    o.product_id productId, c.product_name productName,c.product_no productNo,o.cycle,o.year_incom_percent yearIncomPercent,
+    o.product_id productId, c.product_name productName,c.product_no prooductNo,o.cycle,o.year_incom_percent yearIncomPercent,
     o.float_percent floatPercent, o.nper nper, c.type type,
     o.buy_amount buyAmount,o.buy_time buyTime,o.redeem_time redeemTime,o.status,o.income,
     o.initial_price initialPrice, o.clear_price clearPrice, s.share_amount shareAmount 
@@ -193,12 +225,28 @@
       <if test="redeemEndTime !=null and redeemEndTime != '' ">
         and o.redeem_time &lt;=#{redeemEndTime,jdbcType=TIMESTAMP}
       </if>
-      <if test="agentName != null and agentName !='' ">
+      <if test="agentName != null">
+        and ua.id in
+        <foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+          <if test="item != null">
+            ${item}
+          </if>
+        </foreach>
+      </if>
+      <if test="brokerName != null">
+        and ub.id  in
+        <foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
+          <if test="item != null">
+            ${item}
+          </if>
+        </foreach>
+      </if>
+      <!--<if test="agentName != null and agentName !='' ">
         and ua.id = #{agentName,jdbcType=BIGINT}
       </if>
       <if test="brokerName != null and brokerName !='' ">
         and ub.id = #{brokerName,jdbcType=BIGINT}
-      </if>
+      </if>-->
       <if test="status != null and status !='' ">
         and o.status = #{status,jdbcType=INTEGER}
       </if>
@@ -250,12 +298,28 @@
       <if test="redeemEndTime !=null and redeemEndTime != '' ">
         and o.redeem_time &lt;=#{redeemEndTime,jdbcType=TIMESTAMP}
       </if>
-      <if test="agentName != null and agentName !='' ">
+      <if test="agentName != null">
+        and ua.id in
+        <foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+          <if test="item != null">
+            ${item}
+          </if>
+        </foreach>
+      </if>
+      <if test="brokerName != null">
+        and ub.id  in
+        <foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
+          <if test="item != null">
+            ${item}
+          </if>
+        </foreach>
+      </if>
+      <!--<if test="agentName != null and agentName !='' ">
         and ua.id = #{agentName,jdbcType=BIGINT}
       </if>
       <if test="brokerName != null and brokerName !='' ">
         and ub.id = #{brokerName,jdbcType=BIGINT}
-      </if>
+      </if>-->
       <if test="status != null and status !='' ">
         and o.status = #{status,jdbcType=INTEGER}
       </if>

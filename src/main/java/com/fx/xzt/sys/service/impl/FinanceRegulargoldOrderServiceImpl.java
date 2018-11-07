@@ -8,8 +8,10 @@ import com.fx.xzt.sys.util.Constant;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,8 +61,28 @@ public class FinanceRegulargoldOrderServiceImpl implements FinanceRegulargoldOrd
         conditions.put("redeemStartTime",redeemStartTime);
         conditions.put("redeemEndTime",redeemEndTime);
         conditions.put("buyType",buyType);
-        conditions.put("brokerName",brokerName);
-        conditions.put("agentName",agentName);
+        if(!StringUtils.isBlank(agentName))	{
+            String [ ] agentNames=agentName.split(",");
+            if(agentNames !=null || agentNames.length!=0 ){
+                List<String> list = new ArrayList();
+                for(String s:agentNames) {
+                    list.add(s);
+                }
+                conditions.put("agentName", list);
+            }
+        }
+        if(!StringUtils.isBlank(brokerName)){
+            String [ ] brokerNames=brokerName.split(",");
+            if(brokerNames !=null || brokerNames.length!=0 ){
+                List<String> list = new ArrayList();
+                for(String s:brokerNames) {
+                    list.add(s);
+                }
+                conditions.put("brokerName", list);
+            }
+        }
+        /*conditions.put("brokerName",brokerName);
+        conditions.put("agentName",agentName);*/
         conditions.put("status",status);
         conditions.put("isView",isView);
         try{
@@ -112,8 +134,28 @@ public class FinanceRegulargoldOrderServiceImpl implements FinanceRegulargoldOrd
         conditions.put("redeemStartTime",redeemStartTime);
         conditions.put("redeemEndTime",redeemEndTime);
         conditions.put("buyType",buyType);
-        conditions.put("brokerName",brokerName);
-        conditions.put("agentName",agentName);
+        if(!StringUtils.isBlank(agentName))	{
+            String [ ] agentNames=agentName.split(",");
+            if(agentNames !=null || agentNames.length!=0 ){
+                List<String> list = new ArrayList();
+                for(String s:agentNames) {
+                    list.add(s);
+                }
+                conditions.put("agentName", list);
+            }
+        }
+        if(!StringUtils.isBlank(brokerName)){
+            String [ ] brokerNames=brokerName.split(",");
+            if(brokerNames !=null || brokerNames.length!=0 ){
+                List<String> list = new ArrayList();
+                for(String s:brokerNames) {
+                    list.add(s);
+                }
+                conditions.put("brokerName", list);
+            }
+        }
+        /*conditions.put("brokerName",brokerName);
+        conditions.put("agentName",agentName);*/
         conditions.put("status",status);
         conditions.put("isView",isView);
         List<Map> financeRegulargoldOrders = null;
@@ -163,8 +205,28 @@ public class FinanceRegulargoldOrderServiceImpl implements FinanceRegulargoldOrd
             conditions.put("redeemStartTime",redeemStartTime);
             conditions.put("redeemEndTime",redeemEndTime);
             conditions.put("buyType",buyType);
-            conditions.put("brokerName",brokerName);
-            conditions.put("agentName",agentName);
+            if(!StringUtils.isBlank(agentName))	{
+                String [ ] agentNames=agentName.split(",");
+                if(agentNames !=null || agentNames.length!=0 ){
+                    List<String> list = new ArrayList();
+                    for(String s:agentNames) {
+                        list.add(s);
+                    }
+                    conditions.put("agentName", list);
+                }
+            }
+            if(!StringUtils.isBlank(brokerName)){
+                String [ ] brokerNames=brokerName.split(",");
+                if(brokerNames !=null || brokerNames.length!=0 ){
+                    List<String> list = new ArrayList();
+                    for(String s:brokerNames) {
+                        list.add(s);
+                    }
+                    conditions.put("brokerName", list);
+                }
+            }
+           /* conditions.put("brokerName",brokerName);
+            conditions.put("agentName",agentName);*/
             conditions.put("status",status);
             Integer amount = financeRegulargoldOrderMapper.selectTotalCount(conditions);
             commonResponse.setData(amount);
