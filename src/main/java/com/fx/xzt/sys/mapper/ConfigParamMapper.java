@@ -60,5 +60,14 @@ public interface ConfigParamMapper extends BaseMapper<ConfigParam>{
      */
     List<Map<String, Object>> selectBuyBack();
 
+    /**
+     * fetch 获取参数值
+     * @author:
+     * @time: 2018/11/7
+     * @param paramName
+     * @return
+     */
+    String getValueByName(String paramName);
+
 
 }

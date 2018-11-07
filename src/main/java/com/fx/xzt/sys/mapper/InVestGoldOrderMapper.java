@@ -1,5 +1,6 @@
 package com.fx.xzt.sys.mapper;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -76,4 +77,6 @@ public interface InVestGoldOrderMapper extends BaseMapper<InVestGoldOrder> {
 	* @author htt
 	 */
 	int updateById(InVestGoldOrder inVestGoldOrder);
+
+	int updateToSended(@Param("orderList") String orderList, @Param("logisticsNo") String logisticsNo, @Param("sendTime") Date sendTime);
 }

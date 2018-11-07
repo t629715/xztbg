@@ -363,4 +363,16 @@
   </update>
 	<!-- 金条投资订单修改结束-htt -->
 
+	<update id="updateToSended" parameterType="com.fx.xzt.sys.entity.InVestGoldOrder">
+		update invest_gold_order
+		<set>
+				send_time = #{sendTime,jdbcType=TIMESTAMP},
+				status = 20,
+			<if test="logisticsNo != null and logisticsNo !=''">
+				logistics_no = #{logisticsNo,jdbcType=VARCHAR},
+			</if>
+				update_time =#{sendTime,jdbcType=TIMESTAMP},
+		</set>
+		where id in (#{orderList,jdbcType=VARCHAR})
+	</update>
 </mapper>

@@ -3,8 +3,16 @@ package com.fx.xzt.sys.service.impl;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
+
+import com.fx.xzt.exception.GlobalException;
+import com.fx.xzt.sfserver.service.SfExpressResponse;
+import com.fx.xzt.sfserver.service.SfServiceImpl;
+import com.fx.xzt.sys.mapper.ConfigParamMapper;
 import com.fx.xzt.sys.util.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -36,6 +44,11 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 	InVestGoldOrderMapper mapper;
 	@Resource
 	InVestGoldOrderItemMapper itemMapper;
+
+	@Resource
+	SfServiceImpl sfService;
+	@Resource
+	private ConfigParamMapper configParamMapper;
 
 	/**
 	 * 查询
@@ -502,7 +515,59 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 		}
 		return flag;
 	}
-/*	*//**
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public Map<String,String> sendCargo(String name, String phone, String address, String userId, String orderIdList) {
+		String mailNo = null;
+		Map<String,String> resultMap = new ConcurrentHashMap<>();
+		Map<String,String> checkResult = this.addressResolution(address);
+		if (checkResult.get("result").equals("ERR")){
+			return checkResult;
+		}
+
+		Map<String, String> params = new ConcurrentHashMap<>(16);
+		params.put("orderNo",userId);
+		params.put("jContact", configParamMapper.getValueByName("send_contact"));
+		params.put("jTel", configParamMapper.getValueByName("send_tel"));
+		params.put("jAddress", configParamMapper.getValueByName("send_address"));
+		params.put("jCompany", configParamMapper.getValueByName("send_name"));
+		params.put("dContact", name);
+		params.put("dTel", phone);
+		params.put("dAddress", address);
+		params.put("itemName", "黄金");
+		params.put("itemCount", "1");
+		params.put("custid",configParamMapper.getValueByName("SF_CUST_ID"));
+		SfExpressResponse sfExpressResponse = this.sfService.generatorOrder(params);
+		if ("OK".equals(sfExpressResponse.getHead())) {
+			if (sfExpressResponse.getBody() != null){
+				if (sfExpressResponse.getBody().getOrderResponse() != null){
+					if (sfExpressResponse.getBody().getOrderResponse().getMailNo() != null){
+						mailNo = sfExpressResponse.getBody().getOrderResponse().getMailNo();
+					}
+				}
+			}
+		} else {
+			resultMap.put("result","ERR");
+			resultMap.put("msg","调用顺丰异常");
+		}
+		try{
+			int result = this.mapper.updateToSended(orderIdList,mailNo,new Date());
+			if (result>0){
+				resultMap.put("result","OK");
+
+			}else {
+				resultMap.put("result","ERR");
+				resultMap.put("msg","失败");
+			}
+		}catch (Exception e){
+			this.sfService.cancelOrder(userId);
+			e.printStackTrace();
+		}
+
+		return resultMap;
+	}
+	/*	*//**
 	 * 交割修改订单状态
 	 * @throws ParseException
 	 *//*
@@ -530,5 +595,35 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
 		return flag;
 	}*/
 
+	private  Map<String, String> addressResolution(String address){
+		String regex="((?<province>[^省]+省|.+自治区)|上海|北京|天津|重庆)(?<city>[^市]+市|.+自治州)(?<county>[^县]+县|.+区|.+镇|.+局)?(?<town>[^区]+区|.+镇)?(?<village>.*)";
+		Matcher m= Pattern.compile(regex).matcher(address);
+		String province=null,city=null,county=null,town=null,village=null;
+		Map<String, String> res=new ConcurrentHashMap<>(6);
+		while(m.find()){
+			province=m.group("province");
+			city=m.group("city");
+//            county=m.group("county");
+//            town=m.group("town");
+//            village=m.group("village");
+		}
+		if (province == null && city == null){
+			res.put("result","ERR");
+			res.put("msg","收货地址不是：XX省XX市格式");
+			return res;
+		}else if (province == null && city != null){
+			province = city.substring(city.length());
+			res.put("result","SUC");
+			res.put("province",province);
+			return res;
 
+		}else if (province != null && city == null){
+			res.put("result","ERR");
+			res.put("msg","收货地址不是：XX省XX市格式");
+			return res;
+		}else {
+			res.put("result","OK");
+		}
+		return res;
+	}
 }

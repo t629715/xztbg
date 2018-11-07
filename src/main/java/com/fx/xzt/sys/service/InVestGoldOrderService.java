@@ -182,11 +182,15 @@ public interface InVestGoldOrderService {
 	int updateStatusById(String status, Long id, Long operatorId, String operatorName) throws ParseException;
 
 	/**
-	 * 调用shu'feng
-	 * @param userAddress
-	 * @param deliverName
-	 * @param deliverPhone
+	 *
+	 * fetch
+	 * @time: 2018/11/7
+	 * @param name
+	 * @param phone
+	 * @param address
+	 * @param userId
+	 * @param orderIdList
 	 * @return
 	 */
-//	String sendCargo(String userAddress, String deliverName, String deliverPhone);
+	Map<String,String> sendCargo(String name, String phone,String address, String userId, String orderIdList);
 }

@@ -32,8 +32,8 @@ public class SfXmlUtil {
         String jContact = params.get("jContact");
         String jTel = params.get("jTel");
         String jAddress = params.get("jAddress");
-        //收件人公司
-        String dCompany = params.get("dCompany");
+
+        String jCompany = params.get("jCompany");
         //收件人
         String dContact = params.get("dContact");
         //收件人电话
@@ -56,17 +56,15 @@ public class SfXmlUtil {
         //返回顺丰运单号
         strBuilder.append("is_gen_bill_no='1'").append(" ");
         //寄件方信息
-        strBuilder.append("j_company='" + "河南省千旗电子商务有限公司" + "'").append(" ");
+        strBuilder.append("j_company='" + jCompany + "'").append(" ");
         strBuilder.append("j_contact='" + jContact + "'").append(" ");
         strBuilder.append("j_tel='" + jTel + "'").append(" ");
         strBuilder.append("j_address='" + jAddress + "'").append(" ");
         //收件方信息
-        strBuilder.append("d_company='" + dCompany + "'").append(" ");
         strBuilder.append("d_contact='" + dContact.trim() + "'").append(" ");
         strBuilder.append("d_tel='" + dTel.trim() + "'").append(" ");
         strBuilder.append("d_address='" + dAddress.trim() + "'").append(" ");
-        strBuilder.append("sendstarttime='" + params.get("sendStartTime") + "'").append(" ");
-//        strBuilder.append("custid='" + custid.trim() + "'").append(" ");
+        strBuilder.append("custid='" + custid.trim() + "'").append(" ");
 
 
         strBuilder.append(" > ");

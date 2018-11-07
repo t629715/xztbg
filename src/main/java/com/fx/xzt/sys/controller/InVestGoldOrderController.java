@@ -573,7 +573,7 @@ public class InVestGoldOrderController {
 	* @Title: updateLogisticsNoById 
 	* @Description:  黄金提取-物流单号变更
 	* @param logisticsNo  物流单号
-	* @param updateTime 修改时间
+	* @param
 	* @param id id
 	* @return    设定文件 
 	* @return Object    返回类型 
@@ -703,4 +703,20 @@ public class InVestGoldOrderController {
         return cr;
     }
 
+
+
+    @RequestMapping(value="/sendCargo")
+    @ResponseBody
+    public CommonResponse sendCargo(String orderIds, String userId,String name,String address,String phone){
+        CommonResponse commonResponse = new CommonResponse();
+	    Map result = this.inVestGoldOrderService.sendCargo(name,phone,address,userId,orderIds);
+	    if (result.get("result").equals("OK")){
+	        commonResponse.setCode(ConstantUtil.COMMON_RESPONSE_CODE_SUCCESS_DATA);
+	        return commonResponse;
+        }else {
+	        commonResponse.setCode(ConstantUtil.COMMON_RESPONSE_CODE_EXCEPTION);
+	        commonResponse.setMsg(result.get("msg").toString());
+	        return commonResponse;
+        }
+    }
 }
