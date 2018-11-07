@@ -157,12 +157,28 @@
 			<if test="userName != null and userName != '' ">
 				and l.UserName = #{userName,jdbcType=VARCHAR}
 			</if>
-			<if test="agentsName != null and agentsName !='' ">
+			<if test="agentsName != null">
+				and ua.id in
+				<foreach collection="agentsName" index="index" item="item" open="(" separator="," close=")" >
+					<if test="item != null">
+						${item}
+					</if>
+				</foreach>
+			</if>
+			<if test="brokerName != null">
+				and ul.id  in
+				<foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
+					<if test="item != null">
+						${item}
+					</if>
+				</foreach>
+			</if>
+			<!--<if test="agentsName != null and agentsName !='' ">
 				and ua.id = #{agentsName,jdbcType=BIGINT}
 			</if>
 			<if test="brokerName != null and brokerName !='' ">
 				and u1.id = #{brokerName,jdbcType=BIGINT}
-			</if>
+			</if>-->
 			<if test="startTime !=null and startTime !='' ">
 				and u.RegisterTime &gt;=#{startTime,jdbcType=TIMESTAMP}
 			</if>
@@ -191,12 +207,28 @@
 			<if test="userName != null and userName != '' ">
 				and l.UserName = #{userName,jdbcType=VARCHAR}
 			</if>
-			<if test="agentsName != null and agentsName !='' ">
+			<if test="agentName != null">
+				and ua.id in
+				<foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+					<if test="item != null">
+						${item}
+					</if>
+				</foreach>
+			</if>
+			<if test="brokerName != null">
+				and ub.id  in
+				<foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
+					<if test="item != null">
+						${item}
+					</if>
+				</foreach>
+			</if>
+			<!--<if test="agentsName != null and agentsName !='' ">
 				and ua.id = #{agentsName,jdbcType=BIGINT}
 			</if>
 			<if test="brokerName != null and brokerName !='' ">
 				and ub.id = #{brokerName,jdbcType=BIGINT}
-			</if>
+			</if>-->
 			<if test="startTime !=null and startTime !='' ">
 				and u.RegisterTime &gt;=#{startTime,jdbcType=TIMESTAMP}
 			</if>
@@ -218,82 +250,155 @@
 				SUM(t.xzc) xzc FROM (
 				SELECT d.date,	
 					(SELECT COUNT(DISTINCT r.UserID) FROM User_Recharge r 
-						LEFT JOIN User_Info u ON u.UserID = u.UserID WHERE DATE_FORMAT(r.RechargeTime,'%Y-%m-%d') = d.date 
-						<if test="agentName != null and agentName !='' ">
+						LEFT JOIN User_Info u ON u.UserID = u.UserID WHERE DATE_FORMAT(r.RechargeTime,'%Y-%m-%d') = d.date
+		<if test="agentName != null">
+			and u.agent_id in
+			<foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+				<if test="item != null">
+					${item}
+				</if>
+			</foreach>
+		</if>
+
+						<!--<if test="agentName != null and agentName !='' ">
 							and u.agent_id = #{agentName,jdbcType=BIGINT}
-						</if>
+						</if>-->
 						<if test="registerFrom != null and registerFrom !='' ">
 							and u.RegisterFrom = #{registerFrom,jdbcType=BIGINT}
 						</if>
 					) hjrj,
 					(SELECT COUNT(r2.UserID) FROM (SELECT r1.UserID,MIN(DATE_FORMAT(r1.RechargeTime,'%Y-%m-%d')) minDate FROM User_Recharge r1
-						LEFT JOIN User_Info u ON u.UserID = r1.UserID where 1=1 
-						<if test="agentName != null and agentName !='' ">
+						LEFT JOIN User_Info u ON u.UserID = r1.UserID where 1=1
+		<if test="agentName != null">
+			and u.agent_id in
+			<foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+				<if test="item != null">
+					${item}
+				</if>
+			</foreach>
+		</if>
+					<!--	<if test="agentName != null and agentName !='' ">
 							and u.agent_id = #{agentName,jdbcType=BIGINT}
-						</if>
+						</if>-->
 						<if test="registerFrom != null and registerFrom !='' ">
 							and u.RegisterFrom = #{registerFrom,jdbcType=BIGINT}
 						</if>
 						GROUP BY r1.UserID) r2 WHERE r2.minDate = d.date) xrj,
 					(SELECT COUNT(DISTINCT o.user_id) FROM deal_order o 
 						LEFT JOIN User_Info u ON u.UserID = o.user_id WHERE DATE_FORMAT(o.create_time,'%Y-%m-%d') = d.date 
-						<if test="agentName != null and agentName !='' ">
+						<!--<if test="agentName != null and agentName !='' ">
 							and u.agent_id = #{agentName,jdbcType=BIGINT}
-						</if>
+						</if>-->
+		<if test="agentName != null">
+			and u.agent_id in
+			<foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+				<if test="item != null">
+					${item}
+				</if>
+			</foreach>
+		</if>
 						<if test="registerFrom != null and registerFrom !='' ">
 							and u.RegisterFrom = #{registerFrom,jdbcType=BIGINT}
 						</if>
 					) hjjqjy,
 					(SELECT COUNT(d1.user_id) FROM (SELECT o1.user_id,MIN(DATE_FORMAT(o1.create_time,'%Y-%m-%d')) minDate FROM deal_order o1 
 						LEFT JOIN User_Info u ON u.UserID = o1.user_id where 1=1  
-						<if test="agentName != null and agentName !='' ">
+						<!--<if test="agentName != null and agentName !='' ">
 							and u.agent_id = #{agentName,jdbcType=BIGINT}
-						</if>
+						</if>-->
+		<if test="agentName != null">
+			and u.agent_id in
+			<foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+				<if test="item != null">
+					${item}
+				</if>
+			</foreach>
+		</if>
 						<if test="registerFrom != null and registerFrom !='' ">
 							and u.RegisterFrom = #{registerFrom,jdbcType=BIGINT}
 						</if>
 						GROUP BY o1.user_id) d1 WHERE d1.minDate = d.date) xjqjy,
 					(SELECT COUNT(DISTINCT f.user_id) FROM finance_regulargold_order f 
 						LEFT JOIN User_Info u ON u.UserID = f.user_id WHERE 1=1 AND DATE_FORMAT(f.buy_time,'%Y-%m-%d') = d.date 
-						<if test="agentName != null and agentName !='' ">
+						<!--<if test="agentName != null and agentName !='' ">
 							and u.agent_id = #{agentName,jdbcType=BIGINT}
-						</if>
+						</if>-->
+		<if test="agentName != null">
+			and u.agent_id in
+			<foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+				<if test="item != null">
+					${item}
+				</if>
+			</foreach>
+		</if>
 						<if test="registerFrom != null and registerFrom !='' ">
 							and u.RegisterFrom = #{registerFrom,jdbcType=BIGINT}
 						</if>
 					) hjdqj,
 					(SELECT COUNT(e.user_id) FROM (SELECT f1.user_id,MIN(DATE_FORMAT(f1.buy_time,'%Y-%m-%d')) minDate FROM finance_regulargold_order f1 
 						LEFT JOIN User_Info u ON u.UserID = f1.user_id WHERE 1=1 
-						<if test="agentName != null and agentName !='' ">
+						<!--<if test="agentName != null and agentName !='' ">
 							and u.agent_id = #{agentName,jdbcType=BIGINT}
-						</if>
+						</if>-->
+		<if test="agentName != null">
+			and u.agent_id in
+			<foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+				<if test="item != null">
+					${item}
+				</if>
+			</foreach>
+		</if>
 						<if test="registerFrom != null and registerFrom !='' ">
 							and u.RegisterFrom = #{registerFrom,jdbcType=BIGINT}
 						</if>
 						GROUP BY f1.user_id) e WHERE e.minDate = d.date) xdqj,
 					(SELECT COUNT(DISTINCT f2.user_id) FROM save_gold_record f2 
 						LEFT JOIN User_Info u ON u.UserID = f2.user_id WHERE f2.type = 1 AND DATE_FORMAT(f2.create_time,'%Y-%m-%d') = d.date 
-						<if test="agentName != null and agentName !='' ">
+						<!--<if test="agentName != null and agentName !='' ">
 							and u.agent_id = #{agentName,jdbcType=BIGINT}
-						</if>
+						</if>-->
+		<if test="agentName != null">
+			and u.agent_id in
+			<foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+				<if test="item != null">
+					${item}
+				</if>
+			</foreach>
+		</if>
 						<if test="registerFrom != null and registerFrom !='' ">
 							and u.RegisterFrom = #{registerFrom,jdbcType=BIGINT}
 						</if>
 					) hjcjb,
 					(SELECT COUNT(g.user_id) FROM (SELECT f3.user_id,MIN(DATE_FORMAT(f3.create_time,'%Y-%m-%d')) minDate FROM save_gold_record f3 
 						LEFT JOIN User_Info u ON u.UserID = f3.user_id WHERE f3.type = 1 
-						<if test="agentName != null and agentName !='' ">
+						<!--<if test="agentName != null and agentName !='' ">
 							and u.agent_id = #{agentName,jdbcType=BIGINT}
-						</if>
+						</if>-->
+		<if test="agentName != null">
+			and u.agent_id in
+			<foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+				<if test="item != null">
+					${item}
+				</if>
+			</foreach>
+		</if>
 						<if test="registerFrom != null and registerFrom !='' ">
 							and u.RegisterFrom = #{registerFrom,jdbcType=BIGINT}
 						</if>
 						GROUP BY f3.user_id) g WHERE g.minDate = d.date) xcjb,
 					(SELECT COUNT(i.UserID) FROM User_Info i 
 						LEFT JOIN User_Info u ON u.UserID = i.UserID WHERE DATE_FORMAT(i.RegisterTime,'%Y-%m-%d') = d.date 
-						<if test="agentName != null and agentName !='' ">
+						<!--<if test="agentName != null and agentName !='' ">
 							and u.agent_id = #{agentName,jdbcType=BIGINT} 
-						</if>
+						</if>-->
+		<if test="agentName != null">
+			and u.agent_id in
+			<foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+				<if test="item != null">
+					${item}
+				</if>
+			</foreach>
+		</if>
 						<if test="registerFrom != null and registerFrom !='' ">
 							and u.RegisterFrom = #{registerFrom,jdbcType=BIGINT} 
 						</if>
@@ -501,14 +606,26 @@
 		SELECT a.date, 
 			IFNULL((SELECT COUNT(DISTINCT l.UserID) FROM User_LoginInfo l LEFT JOIN User_Info i ON l.UserID = i.UserID
 			LEFT JOIN users u ON i.agent_id = u.id WHERE DATE_FORMAT(l.LoginTime,'%Y-%m-%d') = a.date 
-			<if test="agentName != null and agentName !=''">
+			<!--<if test="agentName != null and agentName !=''">
 				and i.agent_id = #{agentName,jdbcType=VARCHAR} 
-			</if>
+			</if>-->
+		<if test="agentName != null">
+			and  i.agent_id in
+			<foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+				${item}
+			</foreach>
+		</if>
 			), 0) dlNum,
 			IFNULL((SELECT COUNT(i.UserID) FROM User_Info i WHERE DATE_FORMAT(i.RegisterTime,'%Y-%m-%d') &lt;= a.date 
-			<if test="agentName != null and agentName !=''">
+			<!--<if test="agentName != null and agentName !=''">
 				and i.agent_id = #{agentName,jdbcType=VARCHAR} 
-			</if>
+			</if>-->
+		<if test="agentName != null">
+			and  i.agent_id in
+			<foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+				${item}
+			</foreach>
+		</if>
 			), 0) zNum,
 			SUM(a.nvNum) nvNum,SUM(a.nNum) nNum,SUM(a.wzNum) wzNum,SUM(a.pgNum) pgNum,SUM(a.azNum) azNum,SUM(a.qtNum) qtNum 
 			FROM 

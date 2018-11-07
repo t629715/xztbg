@@ -360,12 +360,32 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 	 * @return
 	 */
 	@Override
-	public PageInfo<Map<String, Object>> sightOfElephant(Long id , Long  pid,
+	public PageInfo<Map<String, Object>> sightOfElephant(String id , String  pid,
 														 String startTime, String endTime,
 														 Integer pageNum, Integer pageSize,Integer type) {
 		Map map = new HashMap();
-		map.put("id",id);
-		map.put("pid",pid);
+		if(!StringUtils.isBlank(id))	{
+			String [ ] agentNames=id.split(",");
+			if(agentNames !=null || agentNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:agentNames) {
+					list.add(s);
+				}
+				map.put("id", list);
+			}
+		}
+		if(!StringUtils.isBlank(pid)){
+			String [ ] brokerNames=pid.split(",");
+			if(brokerNames !=null || brokerNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:brokerNames) {
+					list.add(s);
+				}
+				map.put("pid", list);
+			}
+		}
+		/*map.put("id",id);
+		map.put("pid",pid);*/
 		map.put("startTime",startTime);
 		map.put("endTime",endTime);
 		map.put("type",type);
@@ -397,12 +417,32 @@ public class UsersImpl extends BaseService<Users> implements UsersService {
 	}
 
 	@Override
-	public List<Map<String, Object>> execelSightOfElephant(Long id , Long  pid,
+	public List<Map<String, Object>> execelSightOfElephant(String id , String  pid,
 														 String startTime, String endTime
 														 ) {
 		Map map = new HashMap();
-		map.put("id",id);
-		map.put("pid",pid);
+		if(!StringUtils.isBlank(id))	{
+			String [ ] agentNames=id.split(",");
+			if(agentNames !=null || agentNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:agentNames) {
+					list.add(s);
+				}
+				map.put("id", list);
+			}
+		}
+		if(!StringUtils.isBlank(pid)){
+			String [ ] brokerNames=pid.split(",");
+			if(brokerNames !=null || brokerNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:brokerNames) {
+					list.add(s);
+				}
+				map.put("pid", list);
+			}
+		}
+		/*map.put("id",id);
+		map.put("pid",pid);*/
 		map.put("startTime",startTime);
 		map.put("endTime",endTime);
 		List<Map<String,Object>> list  = usersMapper.getByAgentNameAndType(map);

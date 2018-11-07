@@ -124,8 +124,27 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 			String startTime,String endTime, String isView, Integer pageNum,Integer pageSize) throws ParseException {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
-		map.put("agentsName", agentsName);
-		map.put("brokerName", brokerName);
+		if(!StringUtils.isBlank(agentsName))	{
+			String [ ] agentNames=agentsName.split(",");
+			if(agentNames !=null || agentNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:agentNames) {
+					list.add(s);
+				}
+				map.put("agentsName", list);
+			}
+		}
+		if(!StringUtils.isBlank(brokerName)){
+			String [ ] brokerNames=brokerName.split(",");
+			if(brokerNames !=null || brokerNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:brokerNames) {
+					list.add(s);
+				}
+				map.put("brokerName", list);
+			}
+		}
+
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
 		map.put("isView", isView);
@@ -198,8 +217,27 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 			String startTime, String endTime, String isView) throws ParseException {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
-		map.put("agentsName", agentsName);
-		map.put("brokerName", brokerName);
+		if(!StringUtils.isBlank(agentsName))	{
+			String [ ] agentNames=agentsName.split(",");
+			if(agentNames !=null || agentNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:agentNames) {
+					list.add(s);
+				}
+				map.put("agentsName", list);
+			}
+		}
+		if(!StringUtils.isBlank(brokerName)){
+			String [ ] brokerNames=brokerName.split(",");
+			if(brokerNames !=null || brokerNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:brokerNames) {
+					list.add(s);
+				}
+				map.put("brokerName", list);
+			}
+		}
+
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
 		map.put("isView", isView);
@@ -248,8 +286,27 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 			String startTime, String endTime) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
-		map.put("agentsName", agentsName);
-		map.put("brokerName", brokerName);
+		if(!StringUtils.isBlank(agentsName))	{
+			String [ ] agentNames=agentsName.split(",");
+			if(agentNames !=null || agentNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:agentNames) {
+					list.add(s);
+				}
+				map.put("agentsName", list);
+			}
+		}
+		if(!StringUtils.isBlank(brokerName)){
+			String [ ] brokerNames=brokerName.split(",");
+			if(brokerNames !=null || brokerNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:brokerNames) {
+					list.add(s);
+				}
+				map.put("brokerName", list);
+			}
+		}
+
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
 		Map<String,Object> map1 = userInfoMapper.getByAccountCount(map);
@@ -282,8 +339,27 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 	public PageInfo<Map<String,Object>> getSubClients(String userName, String agentName, String brokerName, String isView , Integer pageNum, Integer pageSize) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
-		map.put("agentName", agentName);
-		map.put("brokerName", brokerName);
+		if(!StringUtils.isBlank(agentName))	{
+			String [ ] agentNames=agentName.split(",");
+			if(agentNames !=null || agentNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:agentNames) {
+					list.add(s);
+				}
+				map.put("agentName", list);
+			}
+		}
+		if(!StringUtils.isBlank(brokerName)){
+			String [ ] brokerNames=brokerName.split(",");
+			if(brokerNames !=null || brokerNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:brokerNames) {
+					list.add(s);
+				}
+				map.put("brokerName", list);
+			}
+		}
+
 		map.put("isView", isView);
 		PageHelper.startPage(pageNum,pageSize);
 		List<Map<String, Object>> list = userInfoMapper.getSubClients(map);
@@ -304,8 +380,27 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 	public List<Map<String, Object>> getExcelSubClientsAccount(String userName, String agentName, String brokerName, String isView) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
-		map.put("agentName", agentName);
-		map.put("brokerName", brokerName);
+		if(!StringUtils.isBlank(agentName))	{
+			String [ ] agentNames=agentName.split(",");
+			if(agentNames !=null || agentNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:agentNames) {
+					list.add(s);
+				}
+				map.put("agentName", list);
+			}
+		}
+		if(!StringUtils.isBlank(brokerName)){
+			String [ ] brokerNames=brokerName.split(",");
+			if(brokerNames !=null || brokerNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:brokerNames) {
+					list.add(s);
+				}
+				map.put("brokerName", list);
+			}
+		}
+
 		map.put("isView", isView);
 		List<Map<String, Object>> list = userInfoMapper.getSubClients(map);
 
@@ -323,8 +418,27 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 	public Map<String, Object> getSubClientsAccountCount(String userName, String agentName, String brokerName) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userName", userName);
-		map.put("agentName", agentName);
-		map.put("brokerName", brokerName);
+		if(!StringUtils.isBlank(agentName))	{
+			String [ ] agentNames=agentName.split(",");
+			if(agentNames !=null || agentNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:agentNames) {
+					list.add(s);
+				}
+				map.put("agentName", list);
+			}
+		}
+		if(!StringUtils.isBlank(brokerName)){
+			String [ ] brokerNames=brokerName.split(",");
+			if(brokerNames !=null || brokerNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:brokerNames) {
+					list.add(s);
+				}
+				map.put("brokerName", list);
+			}
+		}
+
 		return userInfoMapper.getSubClientsAccountCount(map);
 	}
 
@@ -475,7 +589,17 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
 		map.put("registerFrom", loginFrom);
-		map.put("agentName", agentName);
+		if(!StringUtils.isBlank(agentName))	{
+			String [ ] agentNames=agentName.split(",");
+			if(agentNames !=null || agentNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:agentNames) {
+					list.add(s);
+				}
+				map.put("agentName", list);
+			}
+		}
+		//map.put("agentName", agentName);
 		List<Map<String, Object>> list = userInfoMapper.getByUserAnalysis(map);
 		handleUserAnalysis(list);
 		return list;
@@ -530,7 +654,17 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
 		map.put("registerFrom", loginFrom);
-		map.put("agentName", agentName);
+		if(!StringUtils.isBlank(agentName))	{
+			String [ ] agentNames=agentName.split(",");
+			if(agentNames !=null || agentNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:agentNames) {
+					list.add(s);
+				}
+				map.put("agentName", list);
+			}
+		}
+		//map.put("agentName", agentName);
 		List<Map<String, Object>> list = userInfoMapper.getByUserAnalysisCount(map);
 		if (list != null && list.size() > 0) {
 			for (Map<String, Object> map1 : list) {
@@ -561,7 +695,17 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
 		map.put("loginFrom", loginFrom);
-		map.put("agentName", agentName);
+		if(!StringUtils.isBlank(agentName))	{
+			String [ ] agentNames=agentName.split(",");
+			if(agentNames !=null || agentNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:agentNames) {
+					list.add(s);
+				}
+				map.put("agentName", list);
+			}
+		}
+		//map.put("agentName", agentName);
 		PageHelper.startPage(pageNum,pageSize);
 		List<Map<String, Object>> list = userInfoMapper.getByUserAttribute(map);
 		PageInfo<Map<String, Object>> pagehelper = new PageInfo<Map<String, Object>>(list);
@@ -576,7 +720,17 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
 		map.put("loginFrom", loginFrom);
-		map.put("agentName", agentName);
+		if(!StringUtils.isBlank(agentName))	{
+			String [ ] agentNames=agentName.split(",");
+			if(agentNames !=null || agentNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:agentNames) {
+					list.add(s);
+				}
+				map.put("agentName", list);
+			}
+		}
+	//	map.put("agentName", agentName);
 		List<Map<String, Object>> list = userInfoMapper.getByUserAttributeCount(map);
 		return list;
 	}
@@ -589,7 +743,17 @@ public class UserInfoServiceImpl extends BaseService<UserInfo> implements UserIn
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
 		map.put("loginFrom", loginFrom);
-		map.put("agentName", agentName);
+		if(!StringUtils.isBlank(agentName))	{
+			String [ ] agentNames=agentName.split(",");
+			if(agentNames !=null || agentNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:agentNames) {
+					list.add(s);
+				}
+				map.put("agentName", list);
+			}
+		}
+		//map.put("agentName", agentName);
 		List<Map<String, Object>> list = userInfoMapper.getByUserAttribute(map);
 		return list;
 	}

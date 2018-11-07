@@ -39,12 +39,28 @@
             <if test="regEndTime !=null and regEndTime != '' ">
                 and my2.RegisterTime &lt;=#{regEndTime,jdbcType=TIMESTAMP}
             </if>
-            <if test="agentName != null and agentName !='' ">
+            <if test="agentName != null">
+                and my2.agentId in
+                <foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+                    <if test="item != null">
+                        ${item}
+                    </if>
+                </foreach>
+            </if>
+            <if test="brokerName != null">
+                and my2.brokerId  in
+                <foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
+                    <if test="item != null">
+                        ${item}
+                    </if>
+                </foreach>
+            </if>
+           <!-- <if test="agentName != null and agentName !='' ">
                 and my2.agentId = #{agentName,jdbcType=BIGINT}
             </if>
             <if test="brokerName != null and brokerName !='' ">
                 and my2.brokerId = #{brokerName,jdbcType=BIGINT}
-            </if>
+            </if>-->
             <if test="userName != null and userName != '' ">
                 and my2.UserName = #{userName,jdbcType=VARCHAR}
             </if>
@@ -130,12 +146,28 @@
             <if test="regEndTime !=null and regEndTime != '' ">
                 and my2.RegisterTime &lt;=#{regEndTime,jdbcType=TIMESTAMP}
             </if>
-            <if test="agentName != null and agentName !='' ">
+            <if test="agentName != null">
+                and my2.agentId in
+                <foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+                    <if test="item != null">
+                        ${item}
+                    </if>
+                </foreach>
+            </if>
+            <if test="brokerName != null">
+                and my2.brokerId  in
+                <foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
+                    <if test="item != null">
+                        ${item}
+                    </if>
+                </foreach>
+            </if>
+           <!-- <if test="agentName != null and agentName !='' ">
                 and my2.agentId = #{agentName,jdbcType=BIGINT}
             </if>
             <if test="brokerName != null and brokerName !='' ">
                 and my2.brokerId = #{brokerName,jdbcType=BIGINT}
-            </if>
+            </if>-->
             <if test="userName != null and userName != '' ">
                 and my2.UserName = #{userName,jdbcType=VARCHAR}
             </if>

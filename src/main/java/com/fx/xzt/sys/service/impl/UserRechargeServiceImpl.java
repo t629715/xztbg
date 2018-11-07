@@ -2,10 +2,7 @@ package com.fx.xzt.sys.service.impl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
 
@@ -111,8 +108,28 @@ public class UserRechargeServiceImpl extends BaseService<UserRecharge> implement
         map.put("userName", userName);
         map.put("startTime", startTime);
         map.put("endTime", endTime);
-        map.put("agentName", agentName);
-        map.put("brokerName", brokerName);
+		if(!StringUtils.isBlank(agentName))	{
+			String [ ] agentNames=agentName.split(",");
+			if(agentNames !=null || agentNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:agentNames) {
+					list.add(s);
+				}
+				map.put("agentName", list);
+			}
+		}
+		if(!StringUtils.isBlank(brokerName)){
+			String [ ] brokerNames=brokerName.split(",");
+			if(brokerNames !=null || brokerNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:brokerNames) {
+					list.add(s);
+				}
+				map.put("brokerName", list);
+			}
+		}
+       /* map.put("agentName", agentName);
+        map.put("brokerName", brokerName);*/
         map.put("rechargechannel", rechargechannel);
 		map.put("PlatformName", PlatformName);
         map.put("status", status);
@@ -136,8 +153,28 @@ public class UserRechargeServiceImpl extends BaseService<UserRecharge> implement
         map.put("userName", userName);
         map.put("startTime", startTime);
         map.put("endTime", endTime);
-        map.put("agentName", agentName);
-        map.put("brokerName", brokerName);
+		if(!StringUtils.isBlank(agentName))	{
+			String [ ] agentNames=agentName.split(",");
+			if(agentNames !=null || agentNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:agentNames) {
+					list.add(s);
+				}
+				map.put("agentName", list);
+			}
+		}
+		if(!StringUtils.isBlank(brokerName)){
+			String [ ] brokerNames=brokerName.split(",");
+			if(brokerNames !=null || brokerNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:brokerNames) {
+					list.add(s);
+				}
+				map.put("brokerName", list);
+			}
+		}
+       /* map.put("agentName", agentName);
+        map.put("brokerName", brokerName);*/
         map.put("rechargechannel", rechargechannel);
 		map.put("PlatformName", PlatformName);
 		map.put("status", status);
@@ -192,8 +229,28 @@ public class UserRechargeServiceImpl extends BaseService<UserRecharge> implement
         map.put("userName", userName);
         map.put("startTime", startTime);
         map.put("endTime", endTime);
-        map.put("agentName", agentName);
-        map.put("brokerName", brokerName);
+		if(!StringUtils.isBlank(agentName))	{
+			String [ ] agentNames=agentName.split(",");
+			if(agentNames !=null || agentNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:agentNames) {
+					list.add(s);
+				}
+				map.put("agentName", list);
+			}
+		}
+		if(!StringUtils.isBlank(brokerName)){
+			String [ ] brokerNames=brokerName.split(",");
+			if(brokerNames !=null || brokerNames.length!=0 ){
+				List<String> list = new ArrayList();
+				for(String s:brokerNames) {
+					list.add(s);
+				}
+				map.put("brokerName", list);
+			}
+		}
+        /*map.put("agentName", agentName);
+        map.put("brokerName", brokerName);*/
         map.put("rechargechannel", rechargechannel);
 		map.put("PlatformName", PlatformName);
 

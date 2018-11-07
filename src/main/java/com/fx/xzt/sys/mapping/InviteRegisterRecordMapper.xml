@@ -41,12 +41,28 @@
         <if test="acceptPrize != null and acceptPrize != '' ">
             and irr.accept_prize = #{acceptPrize,jdbcType=INTEGER}
         </if>
-        <if test="agentName != null and agentName !='' ">
+        <if test="agentName != null">
+            and ua.id in
+            <foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+                <if test="item != null">
+                    ${item}
+                </if>
+            </foreach>
+        </if>
+        <if test="brokerName != null">
+            and ub.id  in
+            <foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
+                <if test="item != null">
+                    ${item}
+                </if>
+            </foreach>
+        </if>
+        <!--<if test="agentName != null and agentName !='' ">
             and ua.id = #{agentName,jdbcType=BIGINT}
         </if>
         <if test="brokerName != null and brokerName !='' ">
             and ub.id = #{brokerName,jdbcType=BIGINT}
-        </if>
+        </if>-->
 
        order BY irr.create_time DESC
 
@@ -131,12 +147,28 @@
         <if test="endTime !=null and endTime != '' ">
             and irr.buy_time &lt;=#{endTime,jdbcType=TIMESTAMP}
         </if>
-        <if test="agentName != null and agentName !='' ">
+        <if test="agentName != null">
+            and ua.id in
+            <foreach collection="agentName" index="index" item="item" open="(" separator="," close=")" >
+                <if test="item != null">
+                    ${item}
+                </if>
+            </foreach>
+        </if>
+        <if test="brokerName != null">
+            and ub.id  in
+            <foreach collection="brokerName" index="index" item="item" open="(" separator="," close=")" >
+                <if test="item != null">
+                    ${item}
+                </if>
+            </foreach>
+        </if>
+        <!--<if test="agentName != null and agentName !='' ">
             and ua.id = #{agentName,jdbcType=BIGINT}
         </if>
         <if test="brokerName != null and brokerName !='' ">
             and ub.id = #{brokerName,jdbcType=BIGINT}
-        </if>
+        </if>-->
         and (irr.buy_time BETWEEN '2018-11-01' AND '2018-12-31')
         order BY irr.buy_time DESC
 

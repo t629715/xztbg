@@ -604,7 +604,7 @@ public class UserController {
 	 */
 	@RequestMapping(value="/sightOfElephant")
 	@ResponseBody
-	public Object sightOfsightOfElephant(HttpServletRequest request, Long agentName ,Long brokerName, Integer type,String startTime, String endTime, Integer pageNum, Integer pageSize) throws ParseException {
+	public Object sightOfsightOfElephant(HttpServletRequest request, String agentName ,String brokerName, Integer type,String startTime, String endTime, Integer pageNum, Integer pageSize) throws ParseException {
 		CommonResponse cr = new CommonResponse();
 		//操作日志
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -654,7 +654,7 @@ public class UserController {
 	@RequestMapping(value="/excelSightOfElephant")
 	@ResponseBody
 	public void excelSightOfElephant(HttpServletRequest request,HttpServletResponse response,
-									 Long agentName , Long brokerName, String startTime,
+									 String agentName , String brokerName, String startTime,
 									 String endTime) throws Exception{
 		//操作日志
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
