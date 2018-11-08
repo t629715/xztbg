@@ -4,7 +4,9 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
+import com.fx.xzt.sys.entity.Users;
 import com.github.pagehelper.PageInfo;
+import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
 
 /**
  * 
@@ -190,7 +192,17 @@ public interface InVestGoldOrderService {
 	 * @param address
 	 * @param userId
 	 * @param orderIdList
+	 * @param clickCount
 	 * @return
 	 */
-	Map<String,String> sendCargo(String name, String phone,String address, String userId, String orderIdList);
+	Map<String,String> sendCargo(Users user, String name, String phone, String address, String userId, String orderIdList, Integer clickCount, String mailNo);
+
+	/**
+	 * fetch 取消顺丰订单
+	 * @author:
+	 * @time: 2018/11/8
+	 * @param orderId
+	 * @return
+	 */
+	Map<String,String> cancelSfOrder(String orderId);
 }
