@@ -697,8 +697,8 @@ public class InVestGoldOrderController {
         }
         //操作日志
         LogRecord log = new LogRecord();
-        log.setTitle("调用顺丰发货");
-        log.setContent("更新失败");
+        log.setTitle("发货");
+        log.setContent("失败失败");
         log.setModuleName(ConstantUtil.logRecordModule.SJTZGL.getName());
         log.setType(ConstantUtil.logRecordType.XG.getIndex());
         log.setIp(IPUtil.getHost(request));
