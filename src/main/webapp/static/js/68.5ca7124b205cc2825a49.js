@@ -165,6 +165,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }, {
                 value: '08',
                 label: '官方支付宝(1)'
+            }, {
+                value: '09',
+                label: '官方微信(1)'
+            }, {
+                value: '10',
+                label: '银联(1)'
             }],
             PlatformNameOptions: [{
                 value: "",
