@@ -604,6 +604,7 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
                     resultMap.put("result", "OK");
                     resultMap.put("msg", "成功");
                 } else {
+                    this.logger.warn("金权交割-修改状态为发货失败，订单id：{}",orderIdList);
                     this.sfService.cancelOrder(orderId);
                     resultMap.put("result", "ERR");
                     resultMap.put("msg", "失败");
@@ -614,7 +615,7 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
             }
         } catch (Exception e) {
             this.sfService.cancelOrder(orderId);
-            this.logger.warn("金权交割-修改订单状态为发货异常，时间：{},订单id：{}",new Date(),orderId);
+            this.logger.warn("金权交割-修改订单状态为发货异常，时间：{},订单id：{}",new Date(),orderIdList);
             e.printStackTrace();
         }
         return resultMap;
