@@ -78,5 +78,14 @@ public interface InVestGoldOrderMapper extends BaseMapper<InVestGoldOrder> {
 	 */
 	int updateById(InVestGoldOrder inVestGoldOrder);
 
-	int updateToSended(@Param("orderList") String orderList, @Param("logisticsNo") String logisticsNo, @Param("sendTime") Date sendTime);
+	/**
+	 *  etch
+	 * @author:
+	 * @time: 2018/11/9
+	 * @param orderId
+	 * @param logisticsNo
+	 * @param sendTime
+	 * @return
+	 */
+	int updateToSended(@Param("orderId") String orderId, @Param("logisticsNo") String logisticsNo, @Param("sendTime") Date sendTime);
 }

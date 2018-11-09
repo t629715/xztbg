@@ -580,7 +580,16 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
         try {
             if (clickCount == 2) {
                 this.logger.debug("金权交割-修改订单状态为发货，时间：{}",new Date());
-                int result = this.mapper.updateToSended(orderIdList, mailNo, new Date());
+                if (orderId == null){
+                    throw new GlobalException("批量发货异常","订单id为空");
+                }
+                int result = 0;
+                String[] idList = orderIdList.split(",");
+
+                for (String id:idList){
+                   result = this.mapper.updateToSended(id, mailNo, new Date());
+                }
+
                 if (result > 0) {
                     //系统消息
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -595,6 +604,7 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
                     resultMap.put("result", "OK");
                     resultMap.put("msg", "成功");
                 } else {
+                    this.sfService.cancelOrder(orderId);
                     resultMap.put("result", "ERR");
                     resultMap.put("msg", "失败");
                 }
