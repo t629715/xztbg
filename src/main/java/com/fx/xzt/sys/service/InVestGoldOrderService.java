@@ -195,7 +195,7 @@ public interface InVestGoldOrderService {
 	 * @param clickCount
 	 * @return
 	 */
-	Map<String,String> sendCargo(Users user, String name, String phone, String address, String userId, String orderIdList, Integer clickCount, String mailNo);
+	Map<String,String> sendCargo(String reqUrl,Users user, String name, String phone, String address, String userId, String orderIdList, Integer clickCount, String mailNo);
 
 	/**
 	 * fetch 取消顺丰订单

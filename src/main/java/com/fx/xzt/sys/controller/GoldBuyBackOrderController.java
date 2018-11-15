@@ -139,9 +139,9 @@ public class GoldBuyBackOrderController {
                     POIUtils poi = new POIUtils();
                     //判断是否为代理商账户
                     String[] heads = {"订单号", "账户名","代理商", "经纪人", "订单克数", "预约价格", "数量", "回购金额","寄件人",
-                    "联系电话","物流单号","创建时间","过期时间","提交时间","确认时间"};
+                    "联系电话","订单状态","物流单号","创建时间","过期时间","提交时间","确认时间"};
                     String[] colums = {"orderNo", "userName","agentName", "brokerName", "goldWeight", "recoverPrice", "goldNum", "repurchaseAmount","senderName",
-                    "senderPhone","trackingNum","gtmCreate","expireTime","submitTime","completeTime"};
+                    "senderPhone","orderState","trackingNum","gtmCreate","expireTime","submitTime","completeTime"};
                     poi.doExport(request, response, list, tieleName, excelName, heads, colums);
                     log.setUserId(users.getId());
                     log.setContent("导出成功，共：" + list.size() + "条数据");

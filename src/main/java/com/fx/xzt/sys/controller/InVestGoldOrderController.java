@@ -690,7 +690,8 @@ public class InVestGoldOrderController {
         CommonResponse commonResponse = new CommonResponse();
         HttpSession httpSession = request.getSession();
         Users users = (Users) httpSession.getAttribute("currentUser");
-        Map<String, String> result = this.inVestGoldOrderService.sendCargo(users, name, phone, address, orderId, orderIds, clickCount,mailNo);
+        String reqUrl = IPUtil.getHost(request)+":4040/sf/waybill/print?type=V2.0_poster_100mm150mm&output=print";
+        Map<String, String> result = this.inVestGoldOrderService.sendCargo(reqUrl,users, name, phone, address, orderId, orderIds, clickCount,mailNo);
         if (users == null) {
             commonResponse.setCode(ConstantUtil.COMMON_RESPONSE_CODE_NOAUTH);
             commonResponse.setMsg("登陆过期，请登陆");
