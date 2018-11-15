@@ -567,12 +567,6 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
                     if (sfExpressResponse.getBody().getOrderResponse() != null) {
                         if (sfExpressResponse.getBody().getOrderResponse().getMailNo() != null) {
                             repMailNo = sfExpressResponse.getBody().getOrderResponse().getMailNo();
-                            try{
-                                printOrder(reqUrl,sfExpressResponse,address,phone,name);
-                            }catch (Exception e){
-                                e.printStackTrace();
-                            }
-
                         }
                     }
                 }
@@ -594,11 +588,11 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
                     throw new GlobalException("批量发货异常","订单id为空");
                 }
                 int result = 0;
-                String[] idList = orderIdList.split(",");
+//                String[] idList = orderIdList.split(",");
 
-                for (String id:idList){
-                   result = this.mapper.updateToSended(id, mailNo, new Date());
-                }
+//                for (String id:idList){
+//                   result = this.mapper.updateToSended(id, mailNo, new Date());
+//                }
 
                 if (result > 0) {
                     //系统消息
@@ -618,6 +612,13 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
                     this.sfService.cancelOrder(orderId);
                     resultMap.put("result", "ERR");
                     resultMap.put("msg", "失败");
+                }
+                try{
+                    //调用顺丰结果查询接口
+                    SfExpressResponse sfExpressResponse = sfService.queryOrder(orderId);
+                    printOrder(reqUrl,sfExpressResponse,address,phone,name,checkResult);
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
             }
             if (clickCount == 3) {
@@ -682,9 +683,9 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
         while (m.find()) {
             province = m.group("province");
             city = m.group("city");
-//            county=m.group("county");
-//            town=m.group("town");
-//            village=m.group("village");
+            county=m.group("county");
+            town=m.group("town");
+            village=m.group("village");
         }
         if (province == null && city == null) {
             res.put("result", "ERR");
@@ -694,6 +695,8 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
             province = city.substring(city.length());
             res.put("result", "SUC");
             res.put("province", province);
+            res.put("city", city);
+            res.put("county", county);
             return res;
 
         } else if (province != null && city == null) {
@@ -701,52 +704,53 @@ public class InVestGoldOrderServiceImpl extends BaseService<InVestGoldOrder> imp
             res.put("msg", "收货地址不是：XX省XX市格式");
             return res;
         } else {
+            res.put("province", province);
+            res.put("city", city);
+            res.put("county", county);
             res.put("result", "OK");
         }
         return res;
     }
 
-    private void printOrder(String reqUrl, SfExpressResponse sfExpressResponse,String address, String phone, String name) throws Exception {
+    private void printOrder(String reqUrl, SfExpressResponse sfExpressResponse,String address, String phone, String name,Map<String,String> receiveInfo) throws Exception {
         WaybillDto waybillDto = new WaybillDto();
         CargoInfoDto cargoInfoDto = new CargoInfoDto();
-        waybillDto.setAppId(configParamMapper.getValueByName("SF_CLIENT_CODE"));
-        waybillDto.setAppKey(configParamMapper.getValueByName("SF_CHECK_WORD"));
+//        waybillDto.setAppId(configParamMapper.getValueByName("SF_CLIENT_CODE"));
+//        waybillDto.setAppKey(configParamMapper.getValueByName("SF_CHECK_WORD"));
         waybillDto.setMailNo(sfExpressResponse.getBody().getOrderResponse().getMailNo());
         //收件人信息
-        waybillDto.setConsignerProvince("广东省");
-        waybillDto.setConsignerCity("深圳市");
-        waybillDto.setConsignerCounty("南山区");
-        waybillDto.setConsignerAddress(address); //详细地址建议最多30个字  字段过长影响打印效果
-//        dto.setConsignerCompany("神一样的科技");
+        waybillDto.setConsignerProvince(receiveInfo.get("province"));
+        waybillDto.setConsignerCity(receiveInfo.get("city"));
+        waybillDto.setConsignerCounty(receiveInfo.get("county"));
+        //详细地址建议最多30个字  字段过长影响打印效果
+        waybillDto.setConsignerAddress(address);
         waybillDto.setConsignerMobile(phone);
         waybillDto.setConsignerName(name);
-        waybillDto.setConsignerShipperCode("518052");
-//        dto.setConsignerTel("0755-33123456");
+//        waybillDto.setConsignerShipperCode("518052");
         //寄件人信息
-        waybillDto.setDeliverProvince("浙江省");
-        waybillDto.setDeliverCity("杭州市");
-        waybillDto.setDeliverCounty("拱墅区");
+        waybillDto.setDeliverProvince("河南省");
+        waybillDto.setDeliverCity("郑州市");
+        waybillDto.setDeliverCounty("郑东新区");
         waybillDto.setDeliverCompany(configParamMapper.getValueByName("send_name"));
-        waybillDto.setDeliverAddress(configParamMapper.getValueByName("send_address"));//详细地址建议最多30个字  字段过长影响打印效果
+//        waybillDto.setDeliverCompany("河南阜新科技");
+        //详细地址建议最多30个字  字段过长影响打印效果
+        waybillDto.setDeliverAddress(configParamMapper.getValueByName("send_address"));
+//        waybillDto.setDeliverAddress(configParamMapper.getValueByName("河南省郑州市金水区"));
         waybillDto.setDeliverName(configParamMapper.getValueByName("send_contact"));
-        waybillDto.setDeliverMobile("15881234567");
-        waybillDto.setDeliverShipperCode("310000");
+//        waybillDto.setDeliverName("李兄阿宁");
+//        waybillDto.setDeliverShipperCode("310000");
         waybillDto.setDeliverTel(configParamMapper.getValueByName("send_tel"));
-        waybillDto.setDestCode(sfExpressResponse.getBody().getOrderResponse().getDestCode());//目的地代码 参考顺丰地区编号
-        waybillDto.setZipCode(sfExpressResponse.getBody().getOrderResponse().getOriginCode());//原寄地代码 参考顺丰地区编号
+//        waybillDto.setDeliverTel("012345678");
+        //目的地代码 参考顺丰地区编号
+        waybillDto.setDestCode(sfExpressResponse.getBody().getOrderResponse().getDestCode());
+        //原寄地代码 参考顺丰地区编号
+        waybillDto.setZipCode(sfExpressResponse.getBody().getOrderResponse().getOriginCode());
         waybillDto.setMonthAccount(configParamMapper.getValueByName("SF_CUST_ID"));
         cargoInfoDto.setCargo("千旗黄金");
         cargoInfoDto.setCargoCount(1);
         cargoInfoDto.setCargoUnit("件");
         cargoInfoDto.setSku("00015645");
         cargoInfoDto.setRemark("贵重物品 小心轻放");
-
-        SfPrintUtil.WayBillPrinterTools();
-    }
-
-    public static void main(String [] args) throws Exception{
-        SfPrintUtil.WayBillPrinterTools();
-
-
+        SfPrintUtil.WayBillPrinterTools(reqUrl,waybillDto,cargoInfoDto);
     }
 }

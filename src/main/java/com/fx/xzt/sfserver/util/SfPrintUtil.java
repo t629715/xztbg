@@ -27,12 +27,12 @@ import org.springframework.stereotype.Component;
 public class SfPrintUtil {
 
     public static void main(String[] args) throws Exception {
-        SfPrintUtil.WayBillPrinterTools();
+        SfPrintUtil.WayBillPrinterTools(null,null,null);
 
 
     }
 
-    public static void WayBillPrinterTools() throws Exception {
+    public static void WayBillPrinterTools(String reqUrl,WaybillDto dto,CargoInfoDto cargo) throws Exception {
 
 
         /*********2联单**************/
@@ -115,7 +115,7 @@ public class SfPrintUtil {
         System.out.println(reqURL);
 
         /**注意 需要使用对应业务场景的url  **/
-        URL myURL = new URL(reqURL);
+        URL myURL = new URL(reqUrl);
 
         //其中127.0.0.1:4040为打印服务部署的地址（端口如未指定，默认为4040），
         //type为模板类型（支持两联、三联，尺寸为100mm*150mm和100mm*210mm，type为poster_100mm150mm和poster_100mm210mm）
@@ -137,44 +137,22 @@ public class SfPrintUtil {
         httpConn.setReadTimeout(2 * 5000);
 
         List<WaybillDto> waybillDtoList = new ArrayList<WaybillDto>();
-        WaybillDto dto = new WaybillDto();
 
 
         //这个必填
-        dto.setAppId("QQDZSW");//对应clientCode
-        dto.setAppKey("cjUeKvweJix4AfUL9zke9LlDUlfmd2NK");//对应checkWord
+//        dto.setAppId("QQDZSW");//对应clientCode
+//        dto.setAppKey("cjUeKvweJix4AfUL9zke9LlDUlfmd2NK");//对应checkWord
 
 
-        dto.setMailNo("755123456789");
+//        dto.setMailNo("755123456789");
         //dto.setMailNo("755123456788,001000000002");//子母单方式
 
 
         //收件人信息
-        dto.setConsignerProvince("广东省");
-        dto.setConsignerCity("深圳市");
-        dto.setConsignerCounty("南山区");
-        dto.setConsignerAddress("学府路软件产业基地2B12楼5200708号"); //详细地址建议最多30个字  字段过长影响打印效果
-        dto.setConsignerCompany("神一样的科技");
-        dto.setConsignerMobile("15893799999");
-        dto.setConsignerName("风一样的旭哥");
-        dto.setConsignerShipperCode("518052");
-        dto.setConsignerTel("0755-33123456");
 
 
-        //寄件人信息
-        dto.setDeliverProvince("浙江省");
-        dto.setDeliverCity("杭州市");
-        dto.setDeliverCounty("拱墅区");
-        dto.setDeliverCompany("神罗科技集团有限公司");
-        dto.setDeliverAddress("舟山东路708号古墩路北（玉泉花园旁）百花苑西区7-2-201室");//详细地址建议最多30个字  字段过长影响打印效果
-        dto.setDeliverName("艾丽斯");
-        dto.setDeliverMobile("15881234567");
-        dto.setDeliverShipperCode("310000");
-        dto.setDeliverTel("0571-26508888");
 
 
-        dto.setDestCode("755");//目的地代码 参考顺丰地区编号
-        dto.setZipCode("571");//原寄地代码 参考顺丰地区编号
 
         //签回单号  签单返回服务 会打印两份快单 其中第二份作为返寄的单
         //如客户使用签单返还业务则需打印“POD”字段，用以提醒收派员此件为签单返还快件。
@@ -190,10 +168,10 @@ public class SfPrintUtil {
         dto.setExpressType(1);
 
         //COD代收货款金额,只需填金额, 单位元- 此项和月结卡号绑定的增值服务相关
-        dto.setCodValue("999.9");
+
 
         dto.setInsureValue("501");//声明货物价值的保价金额,只需填金额,单位元
-        dto.setMonthAccount("7550385912");//月结卡号
+//        dto.setMonthAccount("7551234567");//月结卡号
         dto.setPayMethod(1);//
 
 
@@ -218,22 +196,11 @@ public class SfPrintUtil {
         dto.setEncryptMobile(true);//加密寄件人及收件人联系手机
 
 
-        CargoInfoDto cargo = new CargoInfoDto();
-        cargo.setCargo("苹果7S");
-        cargo.setCargoCount(1);
-        cargo.setCargoUnit("件");
-        cargo.setSku("00015645");
-        cargo.setRemark("手机贵重物品 小心轻放");
 
-        CargoInfoDto cargo2 = new CargoInfoDto();
-        cargo2.setCargo("苹果macbook pro");
-        cargo2.setCargoCount(1);
-        cargo2.setCargoUnit("件");
-        cargo2.setSku("00015646");
-        cargo2.setRemark("笔记本贵重物品 小心轻放");
+
+
 
         List<CargoInfoDto> cargoInfoList = new ArrayList<CargoInfoDto>();
-        cargoInfoList.add(cargo2);
         cargoInfoList.add(cargo);
 
         dto.setCargoInfoDtoList(cargoInfoList);
@@ -247,7 +214,7 @@ public class SfPrintUtil {
         StringWriter stringWriter = new StringWriter();
         objectMapper.writeValue(stringWriter, waybillDtoList);
 
-        httpConn.getOutputStream().write(stringWriter.toString().getBytes());
+        httpConn.getOutputStream().write(stringWriter.toString().getBytes("UTF-8"));
         httpConn.getOutputStream().flush();
         httpConn.getOutputStream().close();
         InputStream in = null;
